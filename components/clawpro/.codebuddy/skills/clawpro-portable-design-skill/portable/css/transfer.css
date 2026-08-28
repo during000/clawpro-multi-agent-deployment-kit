@@ -1,0 +1,256 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Transfer — ClawPro（双面板穿梭框，弹窗内使用）
+ *   等宽双面板，外壳 4px 圆角 + var(--cp-border) 描边；
+ *   面板内分割线 #f0f0f0；头部底色 var(--cp-bg-subtle)；
+ *   标题 14px medium text-emphasis；计数 12px text-muted；空态 12px text-weak；
+ *   清空选择 = 品牌蓝文字按钮；行高 40px / 字号 12px（Table compact）；
+ *   instant 模式右侧行末 X 按钮；batch 模式中间 outline > / < 按钮。
+ *   body 默认高 330px；分页 simple small（弹窗内紧凑）。
+ * 配套：portable/react/transfer.tsx
+ * 规范：component-specs/transfer.md §3
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-transfer {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+/* ─── 单面板 ─── */
+.cp-transfer__panel {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+}
+
+.cp-transfer__header {
+  display: flex;
+  height: 36px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 12px;
+  border-bottom: 1px solid #f0f0f0;
+  background: var(--cp-bg-subtle);
+}
+
+.cp-transfer__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cp-text-emphasis);
+}
+
+.cp-transfer__count {
+  font-size: 12px;
+  color: var(--cp-text-muted);
+}
+
+.cp-transfer__clear {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 12px;
+  color: var(--cp-text-brand);
+  cursor: pointer;
+}
+
+.cp-transfer__clear:hover {
+  text-decoration: underline;
+}
+
+/* ─── 搜索 ─── */
+.cp-transfer__search {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cp-transfer__search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  color: var(--cp-text-weak);
+  pointer-events: none;
+}
+
+.cp-transfer__search-input {
+  width: 100%;
+  height: 28px;
+  padding: 0 8px 0 28px;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  font-size: 12px;
+  color: var(--cp-text-body);
+  outline: none;
+}
+
+.cp-transfer__search-input::placeholder {
+  color: var(--cp-text-weak);
+}
+
+.cp-transfer__search-input:focus {
+  border-color: var(--cp-brand-blue);
+}
+
+/* ─── Body（紧凑列表 40px 行 / 12px） ─── */
+.cp-transfer__body {
+  flex: 1 1 auto;
+  min-height: 160px;
+  overflow-y: auto;
+}
+
+.cp-transfer__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 12px;
+  color: var(--cp-text-body);
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.cp-transfer__row:hover {
+  background: var(--cp-bg-subtle);
+}
+
+.cp-transfer__row--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cp-transfer__row--disabled:hover {
+  background: transparent;
+}
+
+.cp-transfer__checkbox {
+  flex: 0 0 auto;
+}
+
+.cp-transfer__cell {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-transfer__remove {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--cp-text-muted);
+  cursor: pointer;
+}
+
+.cp-transfer__remove:hover {
+  color: var(--cp-text-emphasis);
+  background: var(--cp-bg-subtle);
+}
+
+/* ─── 空态 ─── */
+.cp-transfer__empty {
+  display: flex;
+  height: 100%;
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-size: 12px;
+  color: var(--cp-text-weak);
+  text-align: center;
+}
+
+/* ─── Footer（共 N 条 + simple 分页） ─── */
+.cp-transfer__footer {
+  display: flex;
+  height: 36px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 12px;
+  color: var(--cp-text-muted);
+}
+
+.cp-transfer__pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-transfer__pager-btn {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  color: var(--cp-text-body);
+  cursor: pointer;
+}
+
+.cp-transfer__pager-btn:disabled {
+  color: var(--cp-text-weak);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ─── 中间穿梭操作列（batch 模式） ─── */
+.cp-transfer__actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cp-transfer__move-btn {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  color: var(--cp-text-body);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.cp-transfer__move-btn:hover:not(:disabled) {
+  border-color: var(--cp-brand-blue);
+}
+
+.cp-transfer__move-btn:disabled {
+  color: var(--cp-text-weak);
+  cursor: not-allowed;
+  opacity: 0.6;
+}

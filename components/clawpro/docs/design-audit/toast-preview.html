@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toast 组件预览 — 关闭按钮右上角</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; background: #808080; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; padding: 60px 20px; }
+  h1 { color: #fff; font-size: 20px; font-weight: 600; }
+  .subtitle { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 4px; }
+
+  /* Toast 容器 */
+  .toast-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Toast 主体 */
+  .toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #EAEEF4;
+    border-radius: 12px;
+    padding: 14px 20px;
+    min-width: 320px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 15px;
+    font-weight: 500;
+    color: #09090b;
+  }
+
+  /* 图标 */
+  .toast-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #0A0A0A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .toast-icon::after {
+    content: "!";
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* 关闭按钮 — 圆形，浮起在右上角 */
+  .close-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: background 0.15s;
+  }
+  .close-btn:hover {
+    background: #f4f4f5;
+  }
+  .close-btn svg {
+    width: 12px;
+    height: 12px;
+    stroke: #525252;
+    stroke-width: 2;
+  }
+
+  /* 对比区域 */
+  .compare {
+    display: flex; gap: 60px; align-items: flex-start;
+  }
+  .compare-item { text-align: center; }
+  .compare-label { color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 16px; }
+
+  /* 标注箭头 */
+  .annotation {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<div>
+  <h1>Toast 通知组件 — 关闭按钮位置修改</h1>
+  <p class="subtitle">圆形关闭按钮从左上角移至右上角，样式不变（浮起 + 圆形 + 白色背景 + 边框）</p>
+</div>
+
+<!-- 对比 -->
+<div class="compare">
+  <!-- Before -->
+  <div class="compare-item">
+    <div class="compare-label">修改前（左上角）</div>
+    <div class="toast-wrapper">
+      <button class="close-btn" style="right:unset; left:-8px;">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="toast">
+        <span class="toast-icon"></span>
+        <span>请输入用户 ID</span>
+      </div>
+    </div>
+    <div class="annotation">← 原始位置</div>
+  </div>
+
+  <!-- After -->
+  <div class="compare-item">
+    <div class="compare-label">修改后（右上角）✓</div>
+    <div class="toast-wrapper">
+      <button class="close-btn">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="toast">
+        <span class="toast-icon"></span>
+        <span>请输入用户 ID</span>
+      </div>
+    </div>
+    <div class="annotation">→ 新位置 ✓</div>
+  </div>
+</div>
+
+<!-- 多种 Toast 类型展示 -->
+<div style="display:flex; flex-direction:column; gap:20px;">
+  <div class="compare-label" style="color:rgba(255,255,255,0.6); font-size:12px; text-align:center;">不同类型 Toast 示例</div>
+
+  <div class="toast-wrapper">
+    <button class="close-btn">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="toast">
+      <span class="toast-icon"></span>
+      <span>请输入用户 ID</span>
+    </div>
+  </div>
+
+  <div class="toast-wrapper">
+    <button class="close-btn">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="toast">
+      <span class="toast-icon" style="background:#16a34a;">
+      </span>
+      <span>操作成功</span>
+    </div>
+  </div>
+
+  <div class="toast-wrapper">
+    <button class="close-btn">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="toast">
+      <span class="toast-icon" style="background:#0A0A0A;"></span>
+      <span>文件上传完成，共 3 个文件</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+# Python hook / script 编译产物，不入库
+__pycache__/
+*.pyc

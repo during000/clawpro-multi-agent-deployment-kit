@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用统计 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+    <script src="/static/chart.min.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <!-- Global Usage Section -->
+            <div class="mb-8">
+                <h2 class="text-[16px] font-semibold text-gray-800 mb-4">全局使用统计</h2>
+                <div class="bg-white rounded shadow-sm border border-gray-100 p-5">
+                    <!-- Controls -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <button onclick="setRange(7)" id="btn-7" class="range-btn h-8 px-4 text-[13px] font-medium rounded transition-colors bg-[#0052d9] text-white">7天</button>
+                            <button onclick="setRange(30)" id="btn-30" class="range-btn h-8 px-4 text-[13px] font-medium rounded transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">30天</button>
+                            <button onclick="setRange(90)" id="btn-90" class="range-btn h-8 px-4 text-[13px] font-medium rounded transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">90天</button>
+                        </div>
+                        <div>
+                            <select id="model-filter" onchange="refreshAll()" class="h-8 px-3 text-[13px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] transition-colors bg-white">
+                                <option value="">全部模型</option>
+                                {{range .Models}}
+                                <option value="{{.ID}}">{{.DisplayName}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Chart -->
+                    <div style="height: 300px;">
+                        <canvas id="globalChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User + Instance Ranking -->
+            <div class="mb-8">
+                <h2 class="text-[16px] font-semibold text-gray-800 mb-4">用户使用排名</h2>
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full text-[14px] text-left whitespace-nowrap">
+                        <thead class="bg-[#f5f6fa] text-gray-500 text-[12px]">
+                            <tr>
+                                <th class="px-6 py-3.5 font-medium w-10">#</th>
+                                <th class="px-6 py-3.5 font-medium">用户</th>
+                                <th class="px-6 py-3.5 font-medium">实例</th>
+                                <th class="px-6 py-3.5 font-medium text-right">输入 tokens</th>
+                                <th class="px-6 py-3.5 font-medium text-right">输出 tokens</th>
+                                <th class="px-6 py-3.5 font-medium text-right">总 tokens</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ranking-body" class="divide-y divide-gray-100">
+                            <tr>
+                                <td colspan="6" class="px-6 py-8 text-center text-gray-400 text-[14px]">加载中...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Call Logs -->
+            <div>
+                <h2 class="text-[16px] font-semibold text-gray-800 mb-4">调用日志</h2>
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full text-[14px] text-left whitespace-nowrap">
+                        <thead class="bg-[#f5f6fa] text-gray-500 text-[12px]">
+                            <tr>
+                                <th class="px-6 py-3.5 font-medium">时间</th>
+                                <th class="px-6 py-3.5 font-medium">用户</th>
+                                <th class="px-6 py-3.5 font-medium">模型</th>
+                                <th class="px-6 py-3.5 font-medium text-right">输入</th>
+                                <th class="px-6 py-3.5 font-medium text-right">输出</th>
+                                <th class="px-6 py-3.5 font-medium text-right">总计</th>
+                                <th class="px-6 py-3.5 font-medium text-right">耗时</th>
+                                <th class="px-6 py-3.5 font-medium text-right">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-body" class="divide-y divide-gray-100">
+                            <tr>
+                                <td colspan="8" class="px-6 py-8 text-center text-gray-400 text-[14px]">加载中...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="logs-pager" class="flex items-center justify-between px-6 py-3 border-t border-gray-100 text-[13px] text-gray-500" style="display:none;">
+                        <span id="logs-total"></span>
+                        <div class="flex items-center gap-2">
+                            <button id="logs-prev" onclick="logsPage(-1)" class="px-3 py-1 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-default">上一页</button>
+                            <span id="logs-page-info"></span>
+                            <button id="logs-next" onclick="logsPage(1)" class="px-3 py-1 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-default">下一页</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {{template "admin_scripts" .}}
+
+    <script>
+    (function() {
+        var currentDays = 7;
+        var globalChart = null;
+
+        function formatDate(d) {
+            var y = d.getFullYear();
+            var m = String(d.getMonth() + 1).padStart(2, '0');
+            var day = String(d.getDate()).padStart(2, '0');
+            return y + '-' + m + '-' + day;
+        }
+
+        function getDateRange(days) {
+            var end = new Date();
+            var start = new Date();
+            start.setDate(end.getDate() - days + 1);
+            return { start: formatDate(start), end: formatDate(end) };
+        }
+
+        function buildDateLabels(startStr, endStr) {
+            var labels = [];
+            var cur = new Date(startStr + 'T00:00:00');
+            var end = new Date(endStr + 'T00:00:00');
+            while (cur <= end) {
+                labels.push(formatDate(cur));
+                cur.setDate(cur.getDate() + 1);
+            }
+            return labels;
+        }
+
+        function getModelFilter() {
+            return document.getElementById('model-filter').value;
+        }
+
+        function fetchJSON(url) {
+            return fetch(url, { headers: { 'Accept': 'application/json' } }).then(function(r) { return r.json(); });
+        }
+
+        function aggregateByDate(rows, labels) {
+            var promptMap = {};
+            var completionMap = {};
+            rows.forEach(function(r) {
+                var d = r.date;
+                if (!d) return;
+                if (!promptMap[d]) { promptMap[d] = 0; completionMap[d] = 0; }
+                promptMap[d] += r.prompt_tokens;
+                completionMap[d] += r.completion_tokens;
+            });
+            return {
+                prompt: labels.map(function(l) { return promptMap[l] !== undefined ? promptMap[l] : null; }),
+                completion: labels.map(function(l) { return completionMap[l] !== undefined ? completionMap[l] : null; })
+            };
+        }
+
+        function fmtTokens(n) {
+            return n.toLocaleString();
+        }
+
+        function createChart(canvas, labels, promptData, completionData) {
+            var ctx = canvas.getContext('2d');
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels.map(function(l) { return l.substring(5); }),
+                    datasets: [
+                        {
+                            label: '输入 tokens',
+                            data: promptData,
+                            borderColor: '#0052d9',
+                            backgroundColor: 'rgba(0, 82, 217, 0.1)',
+                            borderWidth: 2,
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            tension: 0.3,
+                            fill: false,
+                            spanGaps: false
+                        },
+                        {
+                            label: '输出 tokens',
+                            data: completionData,
+                            borderColor: '#7eb8ff',
+                            backgroundColor: 'rgba(126, 184, 255, 0.1)',
+                            borderWidth: 2,
+                            borderDash: [5, 3],
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            tension: 0.3,
+                            fill: false,
+                            spanGaps: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { font: { size: 12 }, usePointStyle: true, padding: 15 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11 }, maxRotation: 0 }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f0f0f0' },
+                            ticks: {
+                                font: { size: 11 },
+                                callback: function(v) {
+                                    if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+                                    if (v >= 1000) return (v / 1000).toFixed(0) + 'K';
+                                    return v;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function refreshGlobalChart() {
+            var range = getDateRange(currentDays);
+            var modelId = getModelFilter();
+            var url = '/admin/usage/data?group_by=date&start_date=' + range.start + '&end_date=' + range.end;
+            if (modelId) url += '&ai_model_id=' + modelId;
+
+            fetchJSON(url).then(function(data) {
+                var labels = buildDateLabels(range.start, range.end);
+                var agg = aggregateByDate(data.rows || [], labels);
+
+                if (globalChart) globalChart.destroy();
+                var canvas = document.getElementById('globalChart');
+                globalChart = createChart(canvas, labels, agg.prompt, agg.completion);
+            });
+        }
+
+        function refreshRanking() {
+            var range = getDateRange(currentDays);
+            var modelId = getModelFilter();
+            var url = '/admin/usage/data?group_by=user,instance&order=desc&start_date=' + range.start + '&end_date=' + range.end;
+            if (modelId) url += '&ai_model_id=' + modelId;
+
+            fetchJSON(url).then(function(data) {
+                var tbody = document.getElementById('ranking-body');
+                var rows = data.rows || [];
+                if (rows.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-8 text-center text-gray-400 text-[14px]">暂无使用数据</td></tr>';
+                    return;
+                }
+                var html = '';
+                for (var i = 0; i < rows.length; i++) {
+                    var r = rows[i];
+                    html += '<tr class="hover:bg-[#f9fafb]">' +
+                        '<td class="px-6 py-3.5 text-gray-400">' + (i + 1) + '</td>' +
+                        '<td class="px-6 py-3.5">' + (r.user_email || '<span class="text-gray-300">-</span>') + '</td>' +
+                        '<td class="px-6 py-3.5">' + (r.instance_name || '<span class="text-gray-300">-</span>') + '</td>' +
+                        '<td class="px-6 py-3.5 text-right">' + fmtTokens(r.prompt_tokens) + '</td>' +
+                        '<td class="px-6 py-3.5 text-right">' + fmtTokens(r.completion_tokens) + '</td>' +
+                        '<td class="px-6 py-3.5 text-right font-medium">' + fmtTokens(r.total_tokens) + '</td>' +
+                        '</tr>';
+                }
+                tbody.innerHTML = html;
+            });
+        }
+
+        window.setRange = function(days) {
+            currentDays = days;
+            document.querySelectorAll('.range-btn').forEach(function(btn) {
+                btn.className = 'range-btn h-8 px-4 text-[13px] font-medium rounded transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200';
+            });
+            var active = document.getElementById('btn-' + days);
+            if (active) {
+                active.className = 'range-btn h-8 px-4 text-[13px] font-medium rounded transition-colors bg-[#0052d9] text-white';
+            }
+            refreshAll();
+        };
+
+        window.refreshAll = function() {
+            logsCurrentPage = 1;
+            refreshGlobalChart();
+            refreshRanking();
+            refreshLogs();
+        };
+
+        // --- Call Logs ---
+        var logsCurrentPage = 1;
+        var logsPageSize = 50;
+        var logsTotalCount = 0;
+
+        function refreshLogs() {
+            var range = getDateRange(currentDays);
+            var modelId = getModelFilter();
+            var url = '/admin/usage/logs?start_date=' + range.start + '&end_date=' + range.end +
+                '&page=' + logsCurrentPage + '&page_size=' + logsPageSize;
+            if (modelId) url += '&ai_model_id=' + modelId;
+
+            fetchJSON(url).then(function(data) {
+                logsTotalCount = data.total || 0;
+                var logs = data.logs || [];
+                var tbody = document.getElementById('logs-body');
+                var pager = document.getElementById('logs-pager');
+
+                if (logs.length === 0 && logsCurrentPage === 1) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-8 text-center text-gray-400 text-[14px]">暂无调用日志</td></tr>';
+                    pager.style.display = 'none';
+                    return;
+                }
+
+                tbody.innerHTML = logs.map(function(log) {
+                    var sc = log.status_code || 0;
+                    var scCls = sc >= 200 && sc < 300 ? 'text-green-600' : 'text-red-500';
+                    return '<tr class="hover:bg-[#f9fafb]">' +
+                        '<td class="px-6 py-3.5 text-gray-500 text-[13px]">' + (log.created_at ? new Date(log.created_at).toLocaleString() : '') + '</td>' +
+                        '<td class="px-6 py-3.5">' + (log.user_name || '-') + '</td>' +
+                        '<td class="px-6 py-3.5">' + (log.provider ? log.provider + '/' : '') + (log.model || '-') + '</td>' +
+                        '<td class="px-6 py-3.5 text-right">' + (log.prompt_tokens || 0).toLocaleString() + '</td>' +
+                        '<td class="px-6 py-3.5 text-right">' + (log.completion_tokens || 0).toLocaleString() + '</td>' +
+                        '<td class="px-6 py-3.5 text-right font-medium">' + (log.total_tokens || 0).toLocaleString() + '</td>' +
+                        '<td class="px-6 py-3.5 text-right text-gray-400">' + (log.latency || 0) + 'ms</td>' +
+                        '<td class="px-6 py-3.5 text-right ' + scCls + '">' + sc + '</td>' +
+                    '</tr>';
+                }).join('');
+
+                // Pager
+                var totalPages = Math.ceil(logsTotalCount / logsPageSize);
+                pager.style.display = '';
+                document.getElementById('logs-total').textContent = '共 ' + logsTotalCount + ' 条';
+                document.getElementById('logs-page-info').textContent = logsCurrentPage + ' / ' + totalPages;
+                document.getElementById('logs-prev').disabled = logsCurrentPage <= 1;
+                document.getElementById('logs-next').disabled = logsCurrentPage >= totalPages;
+            });
+        }
+
+        window.logsPage = function(delta) {
+            logsCurrentPage += delta;
+            if (logsCurrentPage < 1) logsCurrentPage = 1;
+            refreshLogs();
+        };
+
+        // Initial load
+        refreshAll();
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+# hatchery/.clawpro/product-news.yml
+# 由 product-news skill 生成，AutoSync Bot 消费
+# 请勿手动编辑此文件
+
+changes:
+  - id: "feat-agent-runtime-migration-20260716"
+    title: "Agent 迁移新增 OpenClaw 与 Hermes 双向迁移"
+    type: "功能上线"
+    date: "2026-07-16"
+    endpoint: ""
+    description: "ClawPro 用户端 Agent 详情页新增跨类型 Agent 迁移入口，支持在受管控的 OpenClaw 与 Hermes 实例之间选择可迁移目标，并由平台自动完成迁移和目标实例验证；原有同类型 Agent 迁入入口继续保留。"
+    source:
+      type: "repo_skill"
+      author_gongfeng_id: "evaqqlin"
+    needs_guide: false
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "impr-local-agent-detail-info-20260716"
+    title: "本地 Agent 详情优化客户端信息展示"
+    type: "体验优化"
+    date: "2026-07-16"
+    endpoint: ""
+    description: "ClawPro 用户端本地 Agent 详情页优化客户端类型、版本和用户级资源组织信息展示，移除无关联项目和重复组织信息，帮助您更清晰地了解本地客户端状态及资源归属。"
+    source:
+      type: "repo_skill"
+      author_gongfeng_id: "evaqqlin"
+    needs_guide: false
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "ux-standards-resource-card-layout-20260715"
+    title: "企业规范资源卡片布局提升文件可读性"
+    type: "体验优化"
+    date: "2026-07-15"
+    endpoint: ""
+    description: "管控端企业规范库优化上传资源类型卡片的文件标签布局，三类资源卡片保持等宽，入口文件标签可自然换行并统一对齐，避免文件名挤压重叠。"
+    source:
+      type: "repo_skill"
+      mr_id: "!211"
+      commit: "863eb61f"
+      author_gongfeng_id: "evaqqlin"
+    needs_guide: false
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "feat-enterprise-hook-settings-20260720"
+    title: "企业规范库新增用户级 Hook Settings 管理"
+    type: "功能上线"
+    date: "2026-07-20"
+    endpoint: ""
+    description: "管控端企业规范库新增 settings.json 配置资源管理，支持上传、校验、更新和下发 Hook 配置，并按用户或用户组应用到 CodeBuddy、WorkBuddy、Codex 和 Claude Code 的用户级配置。"
+    source:
+      type: "repo_skill"
+      commit: "d6c95b8e"
+      author_gongfeng_id: "evaqqlin"
+    needs_guide: false
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "feat-agent-type-switch-20260720"
+    title: "Agent 详情页新增类型切换"
+    type: "功能上线"
+    date: "2026-07-20"
+    endpoint: ""
+    description: "ClawPro 用户端 Agent 详情页新增类型切换入口，支持在当前实例上将 OpenClaw 与 Hermes 相互切换，并自动迁移配置、模型、技能、记忆和角色设定；会话历史将保留为只读记录，原有跨实例 Agent 迁移能力继续保留。"
+    source:
+      type: "repo_skill"
+      author_gongfeng_id: "evaqqlin"
+    needs_guide: false
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "feat-local-agent-model-distribution-20260721"
+    title: "管控端模型配置新增本地 Agent 下发"
+    type: "功能上线"
+    date: "2026-07-21"
+    endpoint: ""
+    description: "管控端模型配置页面新增本地 Agent 模型下发入口，支持筛选和批量选择目标 Agent，查看当前模型、连接状态与下发状态，并通过下发记录跟踪处理结果；离线 Agent 恢复连接后可继续下发。"
+    needs_guide: false
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "impr-agent-type-switch-info-display-20260721"
+    title: "Agent 类型切换信息展示优化"
+    type: "体验优化"
+    date: "2026-07-21"
+    endpoint: ""
+    description: "ClawPro 用户端优化 Agent 类型切换确认弹窗和详情页信息展示，数据备份入口与自动备份说明直接关联，并将实例类型、ID 和版本集中在同一行展示。"
+    source:
+      type: "repo_skill"
+      mr_id: "!251"
+      commit: "84ffc43c"
+      author_gongfeng_id: "evaqqlin"
+    needs_guide: false
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "impr-plugin-list-scope-uninstall-20260721"
+    title: "企业插件库列表新增应用范围展示并优化卸载流程"
+    type: "体验优化"
+    date: "2026-07-21"
+    endpoint: ""
+    description: "管控端企业插件库列表页在发布时间列前新增应用范围列，支持查看和编辑插件可见范围；卸载操作统一为与企业技能库一致的确认弹窗，避免误用下发弹窗导致的操作歧义。"
+    source:
+      type: "repo_skill"
+    needs_guide: false
+    auto_publish: true
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "impr-agent-tool-library-batch-confirmation-20260721"
+    title: "Agent 工具库优化批量操作确认体验"
+    type: "体验优化"
+    date: "2026-07-21"
+    endpoint: ""
+    description: "管控端 Agent 工具库优化批量下发和卸载的确认流程，移除全选场景下重复的范围确认弹窗，并保留下发风险提示、再次下发覆盖确认和卸载确认，帮助管理员更顺畅地完成批量操作。"
+    needs_guide: false
+    auto_publish: true
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "feat-asset-model-config-20260722"
+    title: "资产管理新增模型配置资产"
+    type: "功能上线"
+    date: "2026-07-22"
+    endpoint: ""
+    description: "管控端资产管理新增模型配置资产，支持在组织和项目资产编辑中筛选、选择及直接添加模型配置；新增模型将自动加入当前资产选择，便于管理员统一维护并向范围内 Agent 下发模型配置。"
+    needs_guide: false
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "impr-model-config-asset-sync-20260723"
+    title: "模型配置统一模型应用入口"
+    type: "体验优化"
+    date: "2026-07-23"
+    endpoint: ""
+    description: "管控端模型配置页面移除按 Agent 手工下发入口，模型接入、应用范围和默认配置继续在模型配置页面维护；组织、项目、成员及实例的模型授权与同步统一在资产管理中配置，减少重复操作和配置口径歧义。"
+    source:
+      type: "repo_skill"
+      frontend_mr_id: "!258"
+      commit: "882cf793"
+      author_gongfeng_id: "evaqqlin"
+    needs_guide: false
+    auto_publish: true
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "feat-tenant-public-skills-20260729"
+    title: "用户端技能广场新增公共技能"
+    type: "功能上线"
+    date: "2026-07-29"
+    endpoint: ""
+    description: "用户端技能广场新增公共技能 Tab，支持浏览公共技能，并按需安装到 Agent，帮助便捷获取公共技能能力。"
+    needs_guide: false
+    auto_publish: true
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "feat-multi-role-batch-switch-20260730"
+    title: "多角色实例支持批量切换角色"
+    type: "功能上线"
+    date: "2026-07-30"
+    endpoint: ""
+    description: "ClawPro 用户端多角色实例支持批量切换角色，您可为每个角色分别指定新角色并批量切换。多个角色间各自独立操作、互不干扰，切换角色不会删除已有的技能配置，并将自动安装新角色的专属技能。"
+    source:
+      type: "repo_skill"
+      frontend_mr_id: "!295"
+      author_gongfeng_id: "hawkechen"
+    needs_guide: false
+    auto_publish: true
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "feat-role-version-update-20260715"
+    title: "角色设定支持版本管理与存量实例更新"
+    type: "功能上线"
+    date: "2026-07-15"
+    endpoint: ""
+    description: "管控端角色设定新增版本号管理机制，管理员修改角色配置后可一键更新至已有该角色的存量 Agent 实例。更新弹窗支持按实例的更新状态筛选和批量推送，并可在更新记录中查看历史下发明细与失败原因。"
+    source:
+      type: "repo_skill"
+      frontend_mr_id: "!169"
+      commit: "461dc1eb"
+      author_gongfeng_id: "hawkechen"
+    needs_guide: true
+    guide:
+      doc_type: "operation_guide"
+      feature_name: "角色版本管理与存量实例更新"
+      feature_url: "https://clawpro.woa.com/admin/skills/roles"
+      endpoint: "管控端"
+    auto_publish: true
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false
+
+  - id: "feat-clone-agent-image-20260818"
+    title: "Agent 支持克隆为自定义镜像"
+    type: "功能上线"
+    date: "2026-08-18"
+    endpoint: "管控端"
+    description: "ClawPro 管控端 Agent 列表新增克隆为自定义镜像入口，您可将完成二次开发的 Agent 一键制作为自定义镜像，沉淀为企业可复用模板，用于批量复制与分发；新镜像自动导入对应 Agent 类型的自定义镜像列表，切换生效后新建 Agent 即可使用。自定义 Agent 类型新增兼容 DeepSeek Harness 内核选项。"
+    source:
+      type: "repo_skill"
+      commit: "961cc1af"
+      author_gongfeng_id: "petzhou"
+    needs_guide: false
+    auto_publish: true
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: true
+        duration_days: 14

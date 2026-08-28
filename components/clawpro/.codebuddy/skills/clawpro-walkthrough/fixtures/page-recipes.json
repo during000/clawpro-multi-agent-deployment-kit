@@ -1,0 +1,328 @@
+{
+  "schema": "clawpro.page-recipes/v1",
+  "source_root": ".codebuddy/skills/clawpro-portable-design-skill/assets/page-references",
+  "generated_at": "2026-07-02T05:54:12.948Z",
+  "aggregate_sha256": "3e6765041cb45c8969e07cb5417fdc4f6e52b8e32449ced414f13096cc196484",
+  "count": 8,
+  "items": [
+    {
+      "id": "admin-agent-template",
+      "file": "assets/page-references/admin-agent-template.md",
+      "png": "assets/page-references/admin-agent-template.png",
+      "name": "空页面 · 资源管理（即将开放）(admin/agent-template)",
+      "sha256": "232db2c373ebe1de9add52a21c62161c753002ec8adccb9fd1611ebe1f37848d",
+      "kind": "空页面",
+      "route": "/admin/agent-template",
+      "source": [
+        "client/src/pages/admin/ResourceManagement.tsx"
+      ],
+      "required_components": [
+        "@/components/ui/Typography"
+      ],
+      "required_specs": [
+        "empty-state"
+      ],
+      "skeleton": "┌──────────────────────────────────────────────────────────────────┐\n│ AdminLayout（保留 Sidebar + 顶部 Banner Alert）                   │\n│   ┌──────────────────────────────────────────────────────────┐   │\n│   │  flex 居中容器（min-h:calc(100vh-200px)）                │   │\n│   │   ┌──────────────────────────────┐                       │   │\n│   │   │  Empty illustration (120px)  │                       │   │\n│   │   │  TenantPageTitle \"资源管理\"   │                       │   │\n│   │   │  BodyText muted（2 行描述）   │                       │   │\n│   │   └──────────────────────────────┘                       │   │\n│   └──────────────────────────────────────────────────────────┘   │\n└──────────────────────────────────────────────────────────────────┘",
+      "antipatterns": [],
+      "bytes": 3459
+    },
+    {
+      "id": "admin-channel-config",
+      "file": "assets/page-references/admin-channel-config.md",
+      "png": "assets/page-references/admin-channel-config.png",
+      "name": "配置页 · 通道配置 (admin/channel-config)",
+      "sha256": "9c306be2bb14910400730c582a3b0a55f35038686c65008498e8123d063fc2f9",
+      "kind": "配置页",
+      "route": "/admin/channel-config",
+      "source": [
+        "client/src/pages/admin/ChannelConfig.tsx"
+      ],
+      "required_components": [
+        "@/components/ui/Typography",
+        "@/components/ui/admin-page-header",
+        "@/components/ui/alert",
+        "@/components/ui/dialog",
+        "@/components/ui/line-tabs",
+        "@/components/ui/switch",
+        "@/components/ui/table"
+      ],
+      "required_specs": [
+        "alert",
+        "dialog-drawer",
+        "page-header",
+        "selection-controls",
+        "table",
+        "tabs",
+        "toast"
+      ],
+      "skeleton": "┌──────────────────────────────────────────────────────────────────┐\n│ AdminLayout                                                      │\n│  ├─ Sidebar (left, 14% 默认折叠区可展开)                          │\n│  └─ Main                                                         │\n│      ├─ Top Banner Alert（\"3 项基础配置未完成\"）                  │\n│      ├─ AdminPageHeader · 标题\"通道配置\"                          │\n│      ├─ LineTabs：内置通道 / 自定义通道                           │\n│      ├─ HelperText 描述段（一行说明 1-2 句）                      │\n│      └─ Table（无 SurfaceCard 包裹，直接平铺）                    │\n│          列：产品（Logo + 名称） / 应用范围（链接+笔图标）/ 用户可见（Switch） │\n└──────────────────────────────────────────────────────────────────┘",
+      "antipatterns": [
+        "用 Tabs（pills）做\"内置/自定义\"切换",
+        "表格外面套一层 SurfaceCard 又给 bg-white 卡片",
+        "行尾再加\"编辑\"按钮 + Switch 双控件",
+        "Alert 用硬编码蓝底 + emoji",
+        "描述文案用 <p className=\"text-sm text-gray-500\">"
+      ],
+      "bytes": 2715
+    },
+    {
+      "id": "admin-cloud-dev-activation",
+      "file": "assets/page-references/admin-cloud-dev-activation.md",
+      "png": "assets/page-references/admin-cloud-dev-activation.png",
+      "name": "云开发开通页 · 动态 hero 未开通态 · admin-cloud-dev-activation",
+      "sha256": "5113d367c512005fa721a468d0a69d0d48c26eef4705e3327116af142b5c6633",
+      "kind": "云开发开通页",
+      "route": null,
+      "source": [],
+      "required_components": [
+        "@/components/ui/DarkVeil",
+        "@/components/ui/Surface",
+        "@/components/ui/Typography",
+        "@/components/ui/admin-page-header",
+        "@/components/ui/button"
+      ],
+      "required_specs": [
+        "button",
+        "card-surface",
+        "dark-veil",
+        "page-header",
+        "typography"
+      ],
+      "skeleton": "SurfaceCard（overflow-hidden）\n├─ AdminPageHeader  Title「云开发管理」/ Subtitle「管理企业云开发环境的创建、分配与生命周期」\n│\n├─ ▼ Hero 区（relative overflow-hidden · px-[60px] py-12 · 动态背景三件套）\n│   背景三层（全部 pointer-events-none）：\n│     · 第 0 层 基底  absolute inset-0 bg-[#E0EBFE]\n│     · 第 1 层 DarkVeil  absolute inset-0 h-full w-full（tint #B2C3FF / translateY 72px / 顶部 mask 22% 淡出）\n│     · 第 2 层 收束叠层  bg-gradient-to-b from-transparent via-white/10 to-[#E0EBFE]\n│   内容层 relative z-10 · grid md:grid-cols-2 items-end gap-4：\n│   ├─ 左列：\n│   │   · 图标徽章（h-14 w-14 · rounded-[8px] · border-white/60 bg-white/30 backdrop-blur-md）内嵌 cloud-dev.svg 28px\n│   │   · TenantPageTitle「开通云开发能力」\n│   │   · BodyText（max-w-[580px] · text-muted）\"为企业成员提供独立的云端开发环境…快速构建与部署应用\"\n│   │   · Button variant=claw-primary size=lg「立即开通 →」（loading 态：spinner +「开通中...」）\n│   └─ 右列：开通后可获得 —— grid-cols-[repeat(2,minmax(0,240px))] gap-2.5，4 张玻璃拟态权益卡\n│       卡：rounded-[9px] · border-white/60 bg-white/40 backdrop-blur-sm · icon 16px + 12px 文案\n│       ① 管理员可创建、删除、管理云开发环境  ② 灵活分配环境给指定成员使用\n│       ③ 统一监控环境运行状态与资源用量      ④ 企业级安全管控与审计日志\n│\n├─ ▼ 核心能力（px-[60px] pt-10 pb-10）\n│   SectionTitle「核心能力」\n│   └─ grid md:grid-cols-2 gap-4 · SurfaceInner ×4（图标 36px + h4 标题 + 副标题，hover 上浮 0.5）\n│      · 独立云开发环境 · 云数据库 · 云函数 · 静态网站托管\n│\n└─ ▼ 底部说明（居中 · text-weak 12px）Zap icon +「开通即用，无需额外配置基础设施」",
+      "antipatterns": [
+        "何时上 DarkVeil",
+        "背景层级",
+        "canvas 交互",
+        "权益卡圆角",
+        "主按钮",
+        "无 ogl 环境",
+        "图标"
+      ],
+      "bytes": 5562
+    },
+    {
+      "id": "admin-members",
+      "file": "assets/page-references/admin-members.md",
+      "png": "assets/page-references/admin-members.png",
+      "name": "列表页 · 用户管理 (admin/members)",
+      "sha256": "45149d805979c30fe75bcabfa6b6b29924be0af61dd37ac189121fe9dae4171c",
+      "kind": "列表页",
+      "route": "/admin/members",
+      "source": [
+        "client/src/pages/admin/MemberManagement.tsx"
+      ],
+      "required_components": [
+        "@/components/ui/admin-page-header",
+        "@/components/ui/alert",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/input",
+        "@/components/ui/pagination",
+        "@/components/ui/segment",
+        "@/components/ui/status-tag",
+        "@/components/ui/table"
+      ],
+      "required_specs": [
+        "alert",
+        "badge",
+        "button",
+        "dialog-drawer",
+        "input-select",
+        "page-header",
+        "pagination",
+        "popover-dropdown-menu",
+        "segment",
+        "status-tag",
+        "table"
+      ],
+      "skeleton": "┌──────────────────────────────────────────────────────────────────┐\n│ Top Banner Alert（同 AdminLayout 全局）                            │\n│ AdminPageHeader · 标题\"用户管理\" + 副标题\"管理企业用户的访问权限和资源配置\" │\n│ Toolbar Row（同行三段）                                            │\n│  ├─ 左：Segment（全部 / 分组）+ Search                              │\n│  └─ 右：IconButton(Download) + Button(添加用户) ▾                  │\n│ Table                                                            │\n│  列：用户 ID(?) · 分组 · 角色(Badge+icon) · 状态(StatusTag) ·       │\n│       Agent 上限 · 每日 Tokens 上限 · 加入时间 · 操作（编辑/更多）   │\n│ Footer Row                                                        │\n│  ├─ 左：HelperText\"共 19 名用户\"                                    │\n│  └─ 右：Pagination                                                  │\n└──────────────────────────────────────────────────────────────────┘",
+      "antipatterns": [
+        "用 Tabs/LineTabs 做\"全部/分组\"切换",
+        "把\"添加用户\"放页头右上角",
+        "角色列写文本 \"管理员\"",
+        "状态列写自定义颜色文本",
+        "操作列罗列 编辑 / 删除 / 重置密码 / 转让（4 个外露）",
+        "分页放表格上方"
+      ],
+      "bytes": 3371
+    },
+    {
+      "id": "admin-openclaw-monitor",
+      "file": "assets/page-references/admin-openclaw-monitor.md",
+      "png": "assets/page-references/admin-openclaw-monitor.png",
+      "name": "Agent 列表页（富功能版） · admin-openclaw-monitor",
+      "sha256": "f0ec35b3bcfc7bae5b7c89d91b666d9717fff79b3203fad2e06bc3d8cf74cfbf",
+      "kind": "Agent 列表页（富功能版）",
+      "route": null,
+      "source": [],
+      "required_components": [
+        "@/components/ui/admin-page-header",
+        "@/components/ui/alert",
+        "@/components/ui/alert-dialog",
+        "@/components/ui/badge",
+        "@/components/ui/drawer",
+        "@/components/ui/dropdown-menu",
+        "@/components/ui/input",
+        "@/components/ui/number-card",
+        "@/components/ui/popover",
+        "@/components/ui/status-tag",
+        "@/components/ui/table",
+        "@/components/ui/tree-select"
+      ],
+      "required_specs": [
+        "admin-page-header",
+        "alert",
+        "alert-dialog",
+        "badge",
+        "drawer",
+        "dropdown-menu",
+        "input",
+        "number-card",
+        "popover",
+        "status-tag",
+        "table",
+        "tree-select"
+      ],
+      "skeleton": "ConsoleShell（左导航）\n└─ ContentArea\n   ├─ AlertBanner（warning：私有网络 VPC 配额已耗尽 · 含「前往腾讯云控制台提交工单」链接）\n   ├─ AdminPageHeader\n   │  ├─ Title「Agent 列表」\n   │  ├─ Subtitle「查看和管理由企业用户创建的 Agent 云服务器。」\n   │  └─ Right: DateRange + RefreshIcon\n   │\n   ├─ NumberCard Group ×4  （grid-cols-4 gap=12）\n   │  · 总数 24      (CountIcon · 蓝 · selected 态：实色边框 + 浅蓝底)\n   │  · 运行中 18    (RunningIcon · 绿)\n   │  · 已关机 1     (PowerOffIcon · 灰)\n   │  · 其他 5       (InfoIcon · 灰)\n   │\n   ├─ Toolbar Row（白底无卡）\n   │  ├─ Left: Input「搜索名称、ID 或创建人」（带 Search icon · 280px）\n   │  └─ Right Buttons:\n   │     ├─ Badge「3 个新版本」+ ChevronRight  (ghost · 触发版本面板)\n   │     ├─ 批量更新       (ghost · disabled 态)\n   │     ├─ 批量销毁       (ghost · disabled 态)\n   │     ├─ 命令下发 ▾     (DropdownMenu)\n   │     ├─ 配置默认标签\n   │     └─ 智能体迁移\n   │\n   └─ Table（卡内）\n      cols:\n       □ 名称/ID                        (Checkbox + 双行 · ID 用 CodeText)\n       当前状态 ▼   （列头带 Filter，状态值用 StatusTag · 绿点+\"运行中\"）\n       创建人        (email + truncate + Tooltip)\n       分组 ▼        （列头筛选）\n       创建时间\n       Agent 类型 ▼  （列头筛选 · 取值：Hermes Agent / OpenClaw / LightClaw ACE）\n       Agent 版本    (CodeText)\n       操作          (内联：终端 关机 删除 更多 ▾)",
+      "antipatterns": [
+        "Toolbar 与 Table 关系",
+        "多个批量按钮",
+        "列头筛选",
+        "行操作过多",
+        "状态列",
+        "email 列",
+        "NumberCard 数量 selected",
+        "Alert banner 提示"
+      ],
+      "bytes": 4348
+    },
+    {
+      "id": "admin-ops-observation",
+      "file": "assets/page-references/admin-ops-observation.md",
+      "png": "assets/page-references/admin-ops-observation.png",
+      "name": "运维观测页 · 服务未开通态 · admin-ops-observation",
+      "sha256": "9d3d76ab897a03be4347bb2a1400f3b471db6c33fe3a78acd62f1d0164fabc65",
+      "kind": "运维观测页",
+      "route": null,
+      "source": [],
+      "required_components": [
+        "@/components/ui/Surface",
+        "@/components/ui/Typography",
+        "@/components/ui/admin-page-header",
+        "@/components/ui/alert",
+        "@/components/ui/button",
+        "@/components/ui/date-picker"
+      ],
+      "required_specs": [
+        "admin-page-header",
+        "alert",
+        "button",
+        "date-picker",
+        "surface",
+        "typography"
+      ],
+      "skeleton": "ConsoleShell（左导航）\n└─ ContentArea\n   ├─ AlertBanner（warning：3 项基础配置未完成）\n   ├─ AdminPageHeader\n   │  ├─ Title「运维观测」\n   │  ├─ Subtitle「全方位守护系统稳定运行，从被动救火到主动防御」\n   │  └─ Right: DateRange [2026-06-10] — [2026-06-10]\n   │\n   ├─ ▼ CTA 卡（横长 banner · 主开通行动）\n   │  SurfaceCard padding=24\n   │  ├─ Left:\n   │  │  · Title「运维观测需要开启 CLS 日志服务」（PanelTitle）\n   │  │  · Body「开启后，为您赠送3个 ClawPro 专属 CLS 日志服务免费额度，\n   │  │   预估可覆盖 500 台 Agent 机器3个月的日均使用量；服务到期后，\n   │  │   CLS 将按量计费。计费详情↗」\n   │  └─ Right: Button「开启 CLS 日志服务」（**深色实心 · primary**）\n   │\n   ├─ ▼ Section ①「开启CLS日志服务后您可以在此处获得以下观测数据：」\n   │  └─ SurfaceCard 内 grid-cols-2 gap=16\n   │     ├─ FeatureCell（icon + 标题 + 副标题）\n   │     │   📈 业务运行健康度实时监控\n   │     │   \"聚焦消息处理总量，介入效率与卡死会话，保障系统稳定运行\"\n   │     └─ FeatureCell\n   │         📊 应用日志与 OTEL 指标全景洞察\n   │         \"多维度分析日志级别与模块分布，精细化运营消息处理，队列状态与执行时延\"\n   │\n   └─ ▼ Section ②「开启CLS日志服务后您还可以在Tokens监控和运维观测页面中获得以下观测数据：」\n      └─ SurfaceCard 内 grid-cols-2 gap=16 row-gap=20\n         ├─ 📈 高Token会话实时分析与管控\n         ├─ 🔗 单会话全链路Tokens透视\n         ├─ 📈 会话全局运行态势监控\n         └─ 📈 会话详情与交互效率精细化分析",
+      "antipatterns": [
+        "未开通态怎么表达",
+        "Feature grid 列数",
+        "Feature icon 装饰",
+        "CTA 按钮",
+        "章节标题位置",
+        "多个开通服务",
+        "计费链接"
+      ],
+      "bytes": 3629
+    },
+    {
+      "id": "admin-security-management",
+      "file": "assets/page-references/admin-security-management.md",
+      "png": "assets/page-references/admin-security-management.png",
+      "name": "复杂列表页 · AI Agent 安全 (admin/security-management)",
+      "sha256": "17c0061a2740627451cf229550c09c76f35e49ec6d1f462c0b7a7b7953d8ffb3",
+      "kind": "复杂列表页",
+      "route": "/admin/security-management",
+      "source": [
+        "client/src/pages/admin/Security/index.tsx"
+      ],
+      "required_components": [
+        "@/components/ui/admin-page-header",
+        "@/components/ui/alert",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/empty",
+        "@/components/ui/info-popover",
+        "@/components/ui/line-tabs",
+        "@/components/ui/spinner",
+        "@/components/ui/table",
+        "@/components/ui/tooltip"
+      ],
+      "required_specs": [
+        "alert",
+        "button",
+        "chart-stat",
+        "dialog-drawer",
+        "empty-state",
+        "loading-progress",
+        "number-card",
+        "page-header",
+        "table",
+        "tabs",
+        "tooltip"
+      ],
+      "skeleton": "┌──────────────────────────────────────────────────────────────────┐\n│ AdminLayout · 顶部 Banner Alert                                   │\n│ AdminPageHeader · 标题\"AI Agent 安全\"                             │\n│   └ 副描述（多行）+ \"功能使用说明 ⌄\"（折叠展开）                    │\n│ NumberCard Row（3 列等宽）                                        │\n│   ├─ AI Agent 资产    [icon] 0 ←（选中态：蓝色描边 + 蓝底）       │\n│   ├─ 存在风险/告警资产 [icon] 0 + InfoTooltip                     │\n│   └─ 威胁告警        [icon] 0                                    │\n│ LineTabs：AI Agent 资产 / 管控配置 / 审计日志 / 恶意 Skills / 威胁告警 │\n│ SubSection                                                       │\n│   ├─ Title \"AI Agent 列表\"  + 右侧工具栏：刷新 ⟳ · 批量开启防护 · 同步资产 │\n│   └─ Content area                                                │\n│       └─ EmptyState（暂无 AI Agent 资产 + 引导文案）              │\n│ Bottom Bar Right                                                 │\n│   ├─ 左：MockData Pill（黄点 + Mock 数据 (仅设计走查用) · 已关闭）  │\n│   └─ 右：计费状态模拟  ⌃                                          │\n└──────────────────────────────────────────────────────────────────┘",
+      "antipatterns": [
+        "NumberCard 选中态用 border-2 border-blue-500 直接画粗线",
+        "LineTabs 与 NumberCard 之间垫 <SurfaceCard> 又加阴影",
+        "子区域标题用 AdminPageHeader 复用",
+        "工具栏顺序：同步资产 · 批量开启 · ⟳",
+        "EmptyState 仅一行\"暂无数据\"",
+        "数字卡片把数字放上、标题放下",
+        "Mock 数据切换写在 PageHeader 右侧"
+      ],
+      "bytes": 4059
+    },
+    {
+      "id": "admin-tokens-monitor",
+      "file": "assets/page-references/admin-tokens-monitor.md",
+      "png": "assets/page-references/admin-tokens-monitor.png",
+      "name": "Tokens 监控页 · admin-tokens-monitor",
+      "sha256": "92b8949cb812f4ee0af0bbd4ec2d761d7130fb77e26770f092c5ce9f821987af",
+      "kind": "Tokens 监控页",
+      "route": null,
+      "source": [],
+      "required_components": [
+        "@/components/ui/Surface",
+        "@/components/ui/Typography",
+        "@/components/ui/admin-page-header",
+        "@/components/ui/alert",
+        "@/components/ui/date-picker",
+        "@/components/ui/number-card",
+        "@/components/ui/pagination",
+        "@/components/ui/table",
+        "@/components/ui/tabs"
+      ],
+      "required_specs": [
+        "admin-page-header",
+        "alert",
+        "date-picker",
+        "number-card",
+        "pagination",
+        "surface",
+        "table",
+        "tabs",
+        "typography"
+      ],
+      "skeleton": "ConsoleShell（左导航）\n└─ ContentArea\n   ├─ AlertBanner（待配置：3 项基础配置未完成）   ← 全局提醒条\n   ├─ AdminPageHeader\n   │  ├─ Title「Tokens 监控」\n   │  ├─ Subtitle「查看企业用户和模型的 Tokens 消耗情况。查看tokens统计规则」\n   │  └─ Right: DateRange [from] — [to]  +  RefreshIcon\n   │\n   ├─ NumberCard Group ×5  （等宽 grid，gap=12）\n   │  · 总请求数 1,841            (RequestsIcon · 蓝)\n   │  · 输入 Tokens 533,112        (InputTokensIcon · 蓝紫)\n   │  · 输出 Tokens 419,040        (OutputTokensIcon · 紫)\n   │  · 总 Tokens 952,152          (TotalTokensIcon · 蓝)\n   │  · 本月全局配额消耗 95.2%     (含警示条 · ProgressBar 红色)\n   │\n   ├─ SurfaceCard「最近 7 天 Tokens 趋势」\n   │  └─ LineChart（双线：输入 Tokens · 输出 Tokens · 蓝/灰）\n   │     - X: 06-04 ... 06-10\n   │     - Y: 0 ~ 600k\n   │     - Legend 居中底部\n   │\n   └─ SurfaceCard\n      ├─ LineTabs：按实例 | 按用户 | 按模型 | 按分组 ● | 按会话\n      │  （\"按分组\"右上角带红点 · 表示新功能或差异提示）\n      ├─ 副标题「汇总所选时间范围内每台实例的 Token 消耗，按总 Tokens 降序排序」\n      │  └─ 右：DownloadIcon（导出）\n      └─ Table\n         · cols: 名称/ID  用户ID  总请求数  输入 Tokens  输出 Tokens  总 Tokens\n         · 双行表头单元（ins-loadfail01 这类副 ID 用 CodeText 灰）\n         · 长名称用 truncate + Tooltip",
+      "antipatterns": [
+        "5 张 NumberCard 等宽",
+        "配额卡进度条",
+        "LineTabs 红点",
+        "Chart 双线配色",
+        "表格 ID 列",
+        "AlertBanner 位置"
+      ],
+      "bytes": 4033
+    }
+  ]
+}

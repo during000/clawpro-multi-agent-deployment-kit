@@ -1,0 +1,225 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Chart / Stat — ClawPro（图表卡片 + 图例 + Tooltip + 各态）
+ *   顶部 KPI 用 NumberCard（见 number-card.css），本文件聚焦 ChartCard 外壳：
+ *   header（标题 + 操作）+ chart 区（保留高度）+ legend + explanation；
+ *   主色 var(--cp-brand-blue)；辅助线弱灰；网格细弱；
+ *   Tooltip 白底 4px overlay shadow 文本 12-14px；
+ *   Legend 小色块 + 文本；空 / 加载 / 错误 / 无权限态保留卡片尺寸。
+ *   宿主仓保留自有图表库，仅复用本卡壳 / 配色 / Tooltip / Legend / 状态。
+ * 配套：portable/react/chart-stat.tsx
+ * 规范：component-specs/chart-stat.md §3
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ─── 图表调色板（tokens.css 未定义，按品牌蓝主序列在此补充） ─── */
+:root {
+  --cp-chart-1: var(--cp-brand-blue); /* 主指标固定 chart-1 */
+  --cp-chart-2: #38BDF8;
+  --cp-chart-3: #818CF8;
+  --cp-chart-4: #34D399;
+  --cp-chart-5: #FBBF24;
+  --cp-chart-6: #F472B6;
+  --cp-chart-grid: #EAEEF4;   /* 细弱网格 */
+  --cp-chart-axis: #94A3B8;   /* 轴文字 = text-weak */
+}
+
+/* ─── ChartCard 外壳（Admin 4px；Tenant 业务卡请用 12px 容器包裹） ─── */
+.cp-chart-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+}
+
+.cp-chart-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--cp-border);
+}
+
+.cp-chart-card__heading {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cp-chart-card__title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--cp-text-title);
+}
+
+.cp-chart-card__subtitle {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--cp-text-muted);
+}
+
+.cp-chart-card__actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ─── 图表区（保留高度，loading / empty / error 都不塌陷） ─── */
+.cp-chart-card__chart {
+  position: relative;
+  min-height: 240px;
+  padding: 16px 20px;
+}
+
+/* ─── Legend（小色块 + 文本） ─── */
+.cp-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 0 20px 16px;
+}
+
+.cp-chart-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--cp-text-secondary);
+}
+
+.cp-chart-legend__item--muted {
+  color: var(--cp-text-weak);
+}
+
+.cp-chart-legend__swatch {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  border-radius: 2px;
+  background: var(--cp-chart-1);
+}
+
+.cp-chart-legend__value {
+  margin-left: 4px;
+  font-family: var(--cp-font-din);
+  font-variant-numeric: tabular-nums;
+  color: var(--cp-text-body);
+}
+
+/* ─── 解释文案 ─── */
+.cp-chart-card__explanation {
+  padding: 0 20px 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--cp-text-muted);
+}
+
+/* ─── Tooltip（白底 4px overlay shadow 12-14px） ─── */
+.cp-chart-tooltip {
+  min-width: 120px;
+  padding: 8px 10px;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-overlay);
+}
+
+.cp-chart-tooltip__label {
+  margin-bottom: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--cp-text-muted);
+}
+
+.cp-chart-tooltip__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cp-text-body);
+}
+
+.cp-chart-tooltip__series {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cp-chart-tooltip__dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--cp-chart-1);
+}
+
+.cp-chart-tooltip__num {
+  font-family: var(--cp-font-din);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--cp-text-emphasis);
+}
+
+/* ─── 状态层（绝对覆盖图表区，保留尺寸） ─── */
+.cp-chart-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+}
+
+.cp-chart-state__title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cp-text-secondary);
+}
+
+.cp-chart-state__desc {
+  max-width: 320px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--cp-text-muted);
+}
+
+.cp-chart-state__action {
+  margin-top: 4px;
+}
+
+/* loading 态 spinner 关键帧（与 loading-progress.css 同名同义，单独引入本文件亦可用） */
+@keyframes cp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* delta 趋势语义色（不只靠颜色，请同时配 ↑ / ↓ 符号） */
+.cp-chart-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  font-family: var(--cp-font-din);
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-chart-delta--up {
+  color: var(--cp-text-success, #16A34A);
+}
+
+.cp-chart-delta--down {
+  color: var(--cp-text-danger);
+}
+
+.cp-chart-delta--flat {
+  color: var(--cp-text-muted);
+}

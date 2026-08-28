@@ -1,0 +1,7 @@
+# 错误示例：缺少必填字段 title 和 description
+changes:
+  - id: "test-missing-fields"
+    type: "功能上线"
+    date: "2026-07-05"
+    endpoint: "管控端"
+    display_components: {banner: {enabled: false}, floating_window: {enabled: false}}

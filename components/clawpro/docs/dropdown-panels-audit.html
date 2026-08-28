@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>下拉/筛选面板组件总览与一致性审计</title>
+<style>
+:root{--brand:#355EF1;--brand-bg:#EFF4FF;--bg:#F7F8FA;--card:#fff;--border:#EAEEF4;--bs:#D6DAE3;--t:#0A0A0A;--t2:#525252;--t3:#8A8F99;--t4:#A3A3A3;--dg:#D42A1E;--wn:#F59E0B;--ok:#10B981;--shp:0 0 2px rgba(0,0,0,.1),0 4px 16px rgba(0,0,0,.12);--shm:0 6px 16px rgba(0,0,0,.08),0 3px 6px -4px rgba(0,0,0,.12),0 9px 28px 8px rgba(0,0,0,.05)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--t);padding:32px 40px 80px}
+.wrap{max-width:1320px;margin:0 auto}
+header h1{font-size:26px;font-weight:700}
+header .sub{color:var(--t3);font-size:13px;margin-top:6px}
+.sm{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0 28px}
+.smc{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.smc .n{font-size:28px;font-weight:700;color:var(--brand)}
+.smc .l{font-size:12px;color:var(--t3)}
+.smc.w .n{color:var(--wn)}.smc.d .n{color:var(--dg)}.smc.o .n{color:var(--ok)}
+nav.toc{position:sticky;top:0;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--border);z-index:100;margin-bottom:24px;display:flex;flex-wrap:wrap;gap:14px;font-size:13px}
+nav.toc a{color:var(--brand);text-decoration:none}nav.toc a:hover{text-decoration:underline}
+section{margin-bottom:48px}
+section>h2{font-size:19px;font-weight:700;padding-bottom:8px;border-bottom:2px solid var(--brand);margin-bottom:18px}
+section>h2 .c{font-size:12px;color:var(--t3);font-weight:400;margin-left:8px}
+.cc{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:20px;overflow:hidden}
+.ch{padding:14px 18px;background:linear-gradient(180deg,#FAFBFD,#fff);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ch .nm{font-size:15px;font-weight:600}.ch .nm code{font-family:'SF Mono',Menlo,monospace;font-size:13px}
+.tg{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:500}
+.tg.b{background:var(--brand-bg);color:var(--brand)}.tg.g{background:#F1F4F8;color:var(--t2)}
+.tg.w{background:#FEF3C7;color:#92400E}.tg.d{background:#FEE2E2;color:#991B1B}.tg.s{background:#D1FAE5;color:#065F46}
+.cm{padding:12px 18px;font-size:13px;color:var(--t2);border-bottom:1px solid var(--border)}
+.cm .pa{font-family:'SF Mono',Menlo,monospace;font-size:12px;color:var(--t3)}
+.cm .ds{margin-top:4px}
+.cb{display:grid;grid-template-columns:1.1fr 1fr;gap:0}
+@media(max-width:980px){.cb{grid-template-columns:1fr}}
+.pp{padding:24px;background:#FAFBFD;border-right:1px solid var(--border)}
+.up{padding:18px 22px}
+.pt{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:12px}
+.ul{font-size:12.5px;color:var(--t2)}
+.ul li{padding:4px 0;border-bottom:1px dashed #F1F4F8;font-family:'SF Mono',Menlo,monospace;font-size:11.5px;list-style:none}
+.ul li:last-child{border:none}.ul b{color:var(--t);font-family:inherit}
+.pl{margin-top:14px;font-size:12px}
+.pl .r{display:flex;gap:10px;padding:4px 0;border-bottom:1px dashed #F1F4F8}
+.pl .r:last-child{border:none}
+.pl .k{font-family:'SF Mono',Menlo,monospace;color:var(--brand);min-width:130px}
+.pl .v{color:var(--t2);flex:1}
+/* mocks */
+.mk{background:#fff;border-radius:4px;box-shadow:var(--shp);padding:8px}
+.mk.mn{padding:4px;border-radius:8px;box-shadow:var(--shm)}
+.mt{display:inline-flex;align-items:center;justify-content:space-between;gap:8px;height:36px;padding:0 12px;border:1px solid var(--border);border-radius:4px;background:#fff;font-size:13px;min-width:200px;cursor:pointer;color:var(--t)}
+.mt:hover,.mt.op{border-color:var(--brand)}
+.mt svg{width:14px;height:14px;color:var(--t3);flex-shrink:0}
+.ms{display:flex;align-items:center;gap:8px;height:32px;border:1px solid var(--border);border-radius:4px;padding:0 10px;margin-bottom:4px}
+.ms svg{width:14px;height:14px;color:var(--t3);flex-shrink:0}
+.ms input{border:none;outline:none;font-size:13px;flex:1;background:transparent;color:var(--t)}
+.ms input::placeholder{color:var(--t4)}
+.mi{display:flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:6px;font-size:13px;cursor:pointer;color:var(--t);position:relative}
+.mi:hover{background:#FAFAFA}.mi.se{background:var(--brand-bg);color:var(--brand);font-weight:500}
+.mi .ck{position:absolute;right:12px;width:14px;height:14px;color:var(--brand)}
+.mi .cv{width:12px;height:12px;color:var(--t4);flex-shrink:0}
+.cb-x{width:14px;height:14px;border:1.5px solid var(--bs);border-radius:3px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;background:#fff}
+.cb-x.cd{background:var(--brand);border-color:var(--brand)}
+.cb-x.cd::after{content:"";width:7px;height:4px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(0,-1px)}
+.cb-x.id{background:var(--brand);border-color:var(--brand)}
+.cb-x.id::after{content:"";width:8px;height:1.5px;background:#fff}
+.dv{height:1px;background:var(--border);margin:4px 8px}
+.sl{padding:8px 12px 4px;font-size:11px;color:var(--t4);font-weight:500}
+.fo{display:flex;align-items:center;justify-content:space-between;padding:8px 4px;border-top:1px solid var(--border);margin:4px 8px 0}
+.fo .cn{font-size:12px;color:var(--t3)}
+.btn{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:4px;font-size:12px;cursor:pointer;border:none}
+.btn.ol{border:1px solid var(--bs);background:#fff;color:var(--t)}
+.btn.pr{background:#0A0A0A;color:#fff}
+.btn.lk{color:var(--brand);background:transparent}
+.sg{display:flex;padding:2px;background:#F1F4F8;border-radius:6px}
+.sg>div{flex:1;text-align:center;height:28px;line-height:28px;font-size:12px;border-radius:4px;cursor:pointer;color:var(--t2)}
+.sg>div.ac{background:#fff;color:var(--t);font-weight:500;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.tag-x{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 8px;border-radius:999px;background:#F5F5F5;font-size:12px}
+.tag-x .x{width:10px;height:10px;color:var(--t4)}
+.ir{display:flex;flex-wrap:wrap;align-items:center;gap:4px;min-height:36px;border:1px solid var(--border);border-radius:4px;padding:6px 8px;background:#fff}
+.ir input{border:none;outline:none;flex:1;min-width:80px;font-size:13px}
+.fi{display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.fi svg{width:14px;height:14px;color:var(--t3)}
+.fi.ac svg{color:var(--brand)}
+.sz{font-size:10px;color:var(--t3);margin-left:4px}
+table.pl-t{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:8px;overflow:hidden}
+table.pl-t th,table.pl-t td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top}
+table.pl-t th{background:#F7F8FA;font-weight:600}
+table.pl-t tr:nth-child(odd) td{background:#FCFCFD}
+table.pl-t code{font-family:'SF Mono',Menlo,monospace;font-size:12px;background:#F1F4F8;padding:1px 5px;border-radius:3px}
+.ph{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
+.ph.p0{background:#FEE2E2;color:#991B1B}.ph.p1{background:#FEF3C7;color:#92400E}.ph.p2{background:#DBEAFE;color:#1E40AF}
+table.tk{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff}
+table.tk th,table.tk td{border:1px solid var(--border);padding:8px 10px;text-align:left}
+table.tk th{background:#F7F8FA;font-weight:600;font-size:12px}
+table.tk .ok{color:var(--ok);font-weight:600}
+table.tk .ba{color:var(--dg);font-weight:600}
+table.tk .wa{color:var(--wn);font-weight:600}
+table.tk code{font-family:'SF Mono',Menlo,monospace;font-size:11.5px}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:980px){.rg{grid-template-columns:1fr}}
+.rc{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 22px}
+.rc h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.rc.h{border-left:4px solid var(--dg)}.rc.m{border-left:4px solid var(--wn)}.rc.l{border-left:4px solid var(--brand)}
+.rc ul{padding-left:20px;font-size:13px;color:var(--t2)}
+.rc ul li{margin:4px 0}
+.rc code{font-family:'SF Mono',Menlo,monospace;font-size:12px;background:#F1F4F8;padding:1px 5px;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>下拉 / 筛选面板组件总览与一致性审计</h1>
+  <p class="sub">项目：openclaw-enterprise · 范围：<code>client/src</code> · 生成时间：2026-06-08 · 覆盖 <b>13 类</b>下拉/筛选面板组件</p>
+</header>
+
+<div class="sm">
+  <div class="smc"><div class="n">13</div><div class="l">下拉/筛选组件总数</div></div>
+  <div class="smc w"><div class="n">8</div><div class="l">视觉风格分支（潜在收敛点）</div></div>
+  <div class="smc d"><div class="n">2</div><div class="l">同质重复实现（必须收敛）</div></div>
+  <div class="smc o"><div class="n">95%+</div><div class="l">使用 Radix Popover/Select 基础</div></div>
+</div>
+
+<nav class="toc">
+  <a href="#s1">总览矩阵</a><a href="#s2">基础原子</a><a href="#s3">表头筛选</a><a href="#s4">应用范围</a>
+  <a href="#s5">树形单选</a><a href="#s6">可搜索单选</a><a href="#s7">值编辑</a><a href="#s8">操作菜单</a>
+  <a href="#s9">其它</a><a href="#s10">令牌对比</a><a href="#s11">收敛建议</a><a href="#s12">行动计划</a>
+</nav>
+
+<!-- 总览矩阵 -->
+<section id="s1">
+  <h2>总览矩阵 <span class="c">13 类组件 + 多个自实现浮层</span></h2>
+  <table class="pl-t">
+    <thead><tr><th style="width:18%">组件</th><th style="width:8%">分类</th><th style="width:24%">源文件</th><th style="width:8%">基座</th><th style="width:6%">引用数</th><th>核心特性</th></tr></thead>
+    <tbody>
+      <tr><td><b>Select</b><br><span class="tg b">原子</span></td><td>单选下拉</td><td><code>components/ui/select.tsx</code></td><td>Radix Select</td><td>41+ 文件</td><td>表单单选、含 tenant 胶囊变体</td></tr>
+      <tr><td><b>DropdownMenu</b><br><span class="tg b">原子</span></td><td>操作菜单</td><td><code>components/ui/dropdown-menu.tsx</code></td><td>Radix DropdownMenu</td><td>18+ 文件</td><td>命令式菜单、Sub/Checkbox/Radio 多变体</td></tr>
+      <tr><td><b>MoreActionsDropdown</b><br><span class="tg g">封装</span></td><td>操作菜单</td><td><code>components/ui/more-actions-dropdown.tsx</code></td><td>DropdownMenu</td><td>10 文件</td><td>表格行/卡片三点菜单标准化</td></tr>
+      <tr><td><b>SearchableSelect</b><br><span class="tg g">封装</span></td><td>单选+搜索</td><td><code>components/ui/searchable-select.tsx</code></td><td>Popover+Input</td><td>3 文件</td><td>带搜索的单选，对齐 Select 视觉</td></tr>
+      <tr><td><b>TableHeaderFilter</b><br><span class="tg w">业务</span></td><td>列头筛选</td><td><code>components/admin/TableHeaderFilter.tsx</code></td><td>Popover+Checkbox</td><td>1 文件</td><td>多选+全选分割线+重置/确认</td></tr>
+      <tr><td><b>TableHeaderTreeFilter</b><br><span class="tg w">业务</span></td><td>列头筛选</td><td><code>components/admin/TableHeaderTreeFilter.tsx</code></td><td>Popover+树</td><td>1 文件</td><td>树形单选+搜索+取消/确认</td></tr>
+      <tr><td><b>ScopeFilterDropdown</b><br><span class="tg w">业务</span></td><td>工具栏筛选</td><td><code>components/admin/ScopeFilterDropdown.tsx</code></td><td>Popover+Checkbox</td><td>多页</td><td>应用范围多选，<u>即时生效</u>，无确认</td></tr>
+      <tr><td><b>TreeSelectFilter</b><br><span class="tg w">业务</span></td><td>工具栏筛选</td><td><code>components/admin/TreeSelectFilter.tsx</code></td><td>Popover+树</td><td>1+ 文件</td><td>树形单选+触发器+路径面包屑</td></tr>
+      <tr><td><b>ScopeEditPopover</b><br><span class="tg w">业务</span></td><td>行内编辑</td><td><code>components/ScopeEditPopover.tsx</code></td><td>Popover+Segment+树</td><td>4 文件</td><td>SegmentGroup 切换+多选+标签输入框</td></tr>
+      <tr><td><b>GroupSelectPanel</b><br><span class="tg w">业务</span></td><td>表单选择</td><td><code>components/GroupSelectPanel.tsx</code></td><td>Popover+树</td><td>多页</td><td>多选+父子级联聚合+标签输入</td></tr>
+      <tr><td><b>TokenValueEditor</b><br><span class="tg w">业务</span></td><td>值编辑</td><td><code>components/policy/TokenValueEditor.tsx</code></td><td>Popover+Segment+Input</td><td>1 文件</td><td>无限制/自定义二选一</td></tr>
+      <tr><td><b>DepartmentColumnFilter / GroupColumnFilter</b><br><span class="tg d">⚠️ 重复</span></td><td>列头筛选</td><td><code>components/admin/ColumnFilters.tsx</code></td><td>Popover+树</td><td>多页</td><td>与 TableHeaderTreeFilter <u>能力高度重复</u></td></tr>
+      <tr><td><b>AgentCombobox</b><br><span class="tg w">业务</span></td><td>单选+搜索</td><td><code>components/OpenClawCombobox.tsx</code></td><td>Popover+Command</td><td>1 文件</td><td>cmdk 实现，与 SearchableSelect <u>重叠</u></td></tr>
+      <tr><td><b>PushUpgradePopover</b><br><span class="tg g">页面级</span></td><td>定制 Popover</td><td><code>pages/admin/ImageManagement/PushUpgradePopover.tsx</code></td><td>Popover</td><td>1 文件</td><td>多选+Alert+操作按钮，专用业务面板</td></tr>
+      <tr><td colspan="6" style="text-align:center;color:var(--t3);font-style:italic">注：原生 <code>&lt;select&gt;</code> 标签在 client/src 中 0 处使用 ✅</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 基础原子 -->
+<section id="s2">
+  <h2>一、基础原子组件</h2>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>Select</code></span><span class="tg b">原子</span><span class="tg g">Radix Select</span><span class="tg s">规范基线</span></div>
+    <div class="cm"><div class="pa">client/src/components/ui/select.tsx</div><div class="ds">表单/工具栏标准单选下拉。统一描边走 <code>--border (#EAEEF4)</code>，hover/open 变蓝；Item 选中态蓝字 + 蓝色 Check。<b>tenant=true</b> 时全圆角胶囊。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock</div>
+        <div class="mt op" style="margin-bottom:8px"><span>Production-Stable</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="mk" style="width:240px">
+          <div class="mi">Production-Stable</div>
+          <div class="mi">Beta</div>
+          <div class="mi se">Canary <svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="mi">Internal</div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">Props（关键）</div>
+        <div class="pl"><div class="r"><span class="k">size</span><span class="v">"sm" (h-8) | "default" (h-9)</span></div><div class="r"><span class="k">tenant</span><span class="v">true → 胶囊形态（仅 tenant 端）</span></div></div>
+        <div class="pt" style="margin-top:16px">使用位置（节选 41+ 文件）</div>
+        <ul class="ul">
+          <li><b>admin 表单/筛选</b>：MemberManagement、ModelConfig、PlatformPolicy、SecurityGroupManagement、ServerManagement、SkillLibrary/* (8 处)、Security/AIAgent/* (10+ 处)</li>
+          <li><b>tenant 端</b>：ChatView、ModelQuota、SkillSquare、MyOpenClaw、OpenClawDetail/OpenClawDetailGuide</li>
+          <li><b>组件库</b>：pagination.tsx、policy/PolicyEditCard、MemoryPreview、CvmKeySelectComponent</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>DropdownMenu</code></span><span class="tg b">原子</span><span class="tg g">Radix DropdownMenu</span></div>
+    <div class="cm"><div class="pa">client/src/components/ui/dropdown-menu.tsx</div><div class="ds">命令式操作菜单。容器 <code>rounded-[8px]</code>+三层投影；Item 紧凑（<code>py-1.5 px-2</code>），hover <code>bg-[var(--bg-grey-hover)]</code>；支持 destructive、Sub、Checkbox、Radio。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock</div>
+        <button class="mt" style="width:80px;min-width:80px;height:32px">⋯<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="mk mn" style="width:180px;margin-top:4px">
+          <div class="mi" style="border-radius:4px;height:30px;padding:0 8px">🔍 安全检测</div>
+          <div class="mi" style="border-radius:4px;height:30px;padding:0 8px">⬇️ 下载</div>
+          <div class="mi" style="border-radius:4px;height:30px;padding:0 8px;color:#A3A3A3">📦 卸载</div>
+          <div class="dv"></div>
+          <div class="mi" style="border-radius:4px;height:30px;padding:0 8px;color:var(--dg)">🗑 删除</div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置（节选 18 文件）</div>
+        <ul class="ul">
+          <li><b>topnav</b>：UserMenu.tsx</li>
+          <li><b>布局</b>：AdminLayout、TenantLayout</li>
+          <li><b>业务</b>：Security/AIAgent/* 多个、MemberManagement/GroupList、AgentCard、FileSpace</li>
+          <li><b>封装</b>：ui/more-actions-dropdown.tsx</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 表头筛选 -->
+<section id="s3">
+  <h2>二、表头筛选系列 <span class="c">3 类，存在能力重叠</span></h2>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>TableHeaderFilter</code></span><span class="tg w">业务封装</span><span class="tg g">列头·多选</span></div>
+    <div class="cm"><div class="pa">client/src/components/admin/TableHeaderFilter.tsx</div><div class="ds">表头列名旁挂 Filter 图标，点击展开多选面板。"全部"行带分割线，激活态图标变蓝。底部"重置/确认"。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock <span class="sz">220px</span></div>
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:8px;font-size:13px">状态 <span class="fi ac"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span></div>
+        <div class="mk" style="width:220px">
+          <div class="mi se"><span class="cb-x cd"></span> 全部</div>
+          <div class="dv"></div>
+          <div class="mi"><span class="cb-x cd"></span> 运行中</div>
+          <div class="mi"><span class="cb-x"></span> 已停止</div>
+          <div class="mi"><span class="cb-x"></span> 升级中</div>
+          <div class="fo"><span class="cn">已选 1 项</span><div style="display:flex;gap:6px"><button class="btn ol">重置</button><button class="btn pr">确认</button></div></div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置</div>
+        <ul class="ul"><li><b>OpenClawMonitor.tsx</b> — 监控页表头筛选（实例状态等）</li></ul>
+        <div class="pt" style="margin-top:16px">视觉规范</div>
+        <div class="pl"><div class="r"><span class="k">行高</span><span class="v">h-8 px-3</span></div><div class="r"><span class="k">圆角</span><span class="v">rounded-[6px]</span></div><div class="r"><span class="k">面板宽</span><span class="v">默认 220px</span></div><div class="r"><span class="k">阴影</span><span class="v">var(--shp)</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>TableHeaderTreeFilter</code></span><span class="tg w">业务封装</span><span class="tg g">列头·树形单选</span></div>
+    <div class="cm"><div class="pa">client/src/components/admin/TableHeaderTreeFilter.tsx</div><div class="ds">表头筛选树形单选面板，含搜索框。"全部"选项常驻顶部，选中态蓝底蓝字+Check。底部"取消/确认"。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock <span class="sz">280px</span></div>
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:8px;font-size:13px">所属部门 <span class="fi ac"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span></div>
+        <div class="mk" style="width:280px">
+          <div class="ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="搜索所属部门"></div>
+          <div class="mi">全部部门</div>
+          <div class="mi" style="padding-left:12px"><svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg> A 公司</div>
+          <div class="mi se" style="padding-left:28px">技术部<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="mi" style="padding-left:28px">产品部</div>
+          <div class="fo"><span class="cn">技术部</span><div style="display:flex;gap:6px"><button class="btn ol">取消</button><button class="btn pr">确认</button></div></div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置</div>
+        <ul class="ul"><li><b>OpenClawMonitor.tsx</b> — 表头部门/组织筛选（与 ColumnFilters.tsx 并存）</li></ul>
+        <div class="pt" style="margin-top:14px">视觉规范</div>
+        <div class="pl"><div class="r"><span class="k">行高</span><span class="v">h-8 px-3 rounded-[6px]</span></div><div class="r"><span class="k">缩进</span><span class="v">level × 16 + 12px</span></div><div class="r"><span class="k">面板宽</span><span class="v">默认 280px</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>DepartmentColumnFilter / GroupColumnFilter</code></span><span class="tg d">⚠️ 重复实现</span><span class="tg g">列头·树形单选</span></div>
+    <div class="cm"><div class="pa">client/src/components/admin/ColumnFilters.tsx</div><div class="ds">从 OpenClawMonitor 抽取的列头筛选 popover 内容两个组件。<b style="color:var(--dg)">视觉与 TableHeaderTreeFilter 几乎完全一致</b>（同样的 treeRowBaseClass、搜索框、取消/确认 footer），只是参数类型不同（DepartmentNode / UserGroup）。属于明确的双轨实现。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock — 与 TableHeaderTreeFilter 视觉一致</div>
+        <div class="mk" style="width:280px">
+          <div class="ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="搜索组织"></div>
+          <div class="sl">部门</div>
+          <div class="mi se">全部组织<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="sl">自定义组织</div>
+          <div class="mi">运维一组</div>
+          <div class="fo"><span class="cn">全部组织</span><div style="display:flex;gap:6px"><button class="btn ol">取消</button><button class="btn pr">确认</button></div></div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置（10 文件）</div>
+        <ul class="ul">
+          <li>OpenClawMonitor.tsx</li>
+          <li>MemberManagement.tsx + MemberManagement/GroupList.tsx</li>
+          <li>MemoryManagement/components/GroupColumn.tsx</li>
+          <li>SkillLibrary/SkillListTab、PluginListTab</li>
+          <li>TokensMonitor.tsx</li>
+        </ul>
+        <div class="pt" style="margin-top:14px">收敛建议</div>
+        <p style="font-size:12.5px;color:var(--t2)">应作为 <code>TableHeaderTreeFilter</code> 的<b>预设变体</b>下沉（参数化 sources / source labels），删除双轨文件。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 应用范围 -->
+<section id="s4">
+  <h2>三、应用范围（Scope）系列</h2>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>ScopeFilterDropdown</code></span><span class="tg w">业务封装</span><span class="tg g">即时生效</span></div>
+    <div class="cm"><div class="pa">client/src/components/admin/ScopeFilterDropdown.tsx</div><div class="ds"><b>无确认按钮</b>的多选筛选。结构：搜索 + "全部应用范围"全选切换 + "全部用户"区域 + "按组织"区域 + 已选计数 + 蓝色"清除"链接。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock <span class="sz">w-56 (224px)</span></div>
+        <div class="mk" style="width:224px">
+          <div class="ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="搜索..."></div>
+          <div class="mi se"><span class="cb-x cd"></span> 全部应用范围</div>
+          <div class="sl">全部用户</div>
+          <div class="mi se"><span class="cb-x cd"></span> 全部用户</div>
+          <div class="sl">按组织</div>
+          <div class="mi se"><span class="cb-x cd"></span> 技术中心</div>
+          <div class="mi"><span class="cb-x"></span> 产品部</div>
+          <div class="fo"><span class="cn">已选 3 个应用范围</span><button class="btn lk">清除</button></div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置</div>
+        <ul class="ul">
+          <li>SkillLibrary/SkillListTab、PluginListTab、SkillInitialPackageTab</li>
+          <li>SkillRolesTab.tsx</li>
+        </ul>
+        <div class="pt" style="margin-top:14px">差异点</div>
+        <p style="font-size:12.5px;color:var(--t2)">与 TableHeaderFilter 的核心差异：<b>选中即生效</b>（无重置/确认按钮），footer 用蓝色 link 风格"清除"。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>ScopeEditPopover</code></span><span class="tg w">业务封装</span><span class="tg g">行内编辑</span></div>
+    <div class="cm"><div class="pa">client/src/components/ScopeEditPopover.tsx</div><div class="ds">行内"应用范围"编辑面板。徽章组（AllUsersTag/组织 Badge）+ 铅笔触发器 → Popover 内 SegmentGroup 切换"全部用户/按组织" + 标签输入框 + 树形多选。底部"取消/确认"。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock <span class="sz">w-72 (288px)</span></div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:13px">
+          <span class="tag-x" style="background:#DBEAFE;color:#1E40AF">全部用户</span>
+          <button style="border:none;background:transparent;color:var(--t3);cursor:pointer">✏️</button>
+        </div>
+        <div class="mk" style="width:288px;padding:16px">
+          <div class="sg" style="margin-bottom:12px"><div>全部用户</div><div class="ac">按组织</div></div>
+          <div class="ir" style="margin-bottom:10px">
+            <span class="tag-x">技术部 <span class="x">×</span></span>
+            <span class="tag-x">产品部 <span class="x">×</span></span>
+            <input placeholder="">
+          </div>
+          <div class="mi" style="padding-left:8px"><svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg><span class="cb-x id"></span> A 公司</div>
+          <div class="mi se" style="padding-left:28px"><span class="cb-x cd"></span> 技术部</div>
+          <div class="mi se" style="padding-left:28px"><span class="cb-x cd"></span> 产品部</div>
+          <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;align-items:center">
+            <span class="cn">已选 2 个组织</span>
+            <div style="display:flex;gap:6px"><button class="btn ol">取消</button><button class="btn pr">确认</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置</div>
+        <ul class="ul">
+          <li>SkillRolesTab.tsx（2 处）</li>
+          <li>ChannelConfig.tsx（2 处）</li>
+          <li>ModelConfig.tsx</li>
+          <li>BasicInfo.tsx 等管控端配置页</li>
+        </ul>
+        <div class="pt" style="margin-top:14px">独有特性</div>
+        <p style="font-size:12.5px;color:var(--t2)">① <b>SegmentGroup</b> 切换 all/groups；② <b>标签输入框</b> 集成搜索 + 已选 chips；③ 触发态是徽章 + 铅笔图标，非按钮触发。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>GroupSelectPanel</code></span><span class="tg w">业务封装</span><span class="tg g">表单选择</span></div>
+    <div class="cm"><div class="pa">client/src/components/GroupSelectPanel.tsx</div><div class="ds">表单内"组织多选"控件。触发器形似 Select，内部 chips 展示已选；下拉面板含搜索 + 按 source 分桶 + 树形多选；支持<b>父子级联聚合</b>（全选子节点自动收敛为父节点）；变体：<code>default</code>/<code>confirm</code>。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock</div>
+        <div class="mt op" style="height:auto;padding:6px 12px;min-height:36px;align-items:flex-start;flex-wrap:wrap;gap:4px">
+          <span class="tag-x">A 公司 / 技术部 <span class="x">×</span></span>
+          <span class="tag-x">A 公司 / 产品部 <span class="x">×</span></span>
+        </div>
+        <div class="mk" style="width:240px;margin-top:4px">
+          <div class="ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="搜索组织"></div>
+          <div class="sl">部门</div>
+          <div class="mi" style="padding-left:8px"><svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg><span class="cb-x id"></span> A 公司</div>
+          <div class="mi se" style="padding-left:28px"><span class="cb-x cd"></span> 技术部</div>
+          <div class="mi se" style="padding-left:28px"><span class="cb-x cd"></span> 产品部</div>
+          <div class="sl">自定义组织</div>
+          <div class="mi" style="padding-left:8px"><span style="width:16px"></span><span class="cb-x"></span> 测试组</div>
+          <div class="fo"><span class="cn">已选 2 项</span><button class="btn ol">清除</button></div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置</div>
+        <ul class="ul">
+          <li>PlatformPolicy.tsx — 策略规则的组织范围</li>
+          <li>MemberManagement 添加用户弹窗</li>
+          <li>EditScopeDialog.tsx</li>
+        </ul>
+        <div class="pt" style="margin-top:14px">独特能力</div>
+        <ul class="ul" style="font-family:inherit;font-size:12.5px">
+          <li>父子级联聚合（aggregateSelection）</li>
+          <li>三态 Checkbox（含 indeterminate）</li>
+          <li>按 source 分桶（部门/用户组/自定义）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 树形单选 -->
+<section id="s5">
+  <h2>四、树形单选筛选</h2>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>TreeSelectFilter</code></span><span class="tg w">业务封装</span><span class="tg g">工具栏·树形单选</span></div>
+    <div class="cm"><div class="pa">client/src/components/admin/TreeSelectFilter.tsx</div><div class="ds">视觉对齐 Select 的树形单选筛选器，<b>带触发按钮</b>（不同于 TableHeaderTreeFilter 的 Filter icon）。底部不仅有取消/确认，还有<b>面包屑路径</b>展示选中节点完整路径。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock</div>
+        <div class="mt op" style="width:160px;min-width:160px;margin-bottom:4px"><span>技术部</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="mk" style="width:280px">
+          <div class="ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="搜索"></div>
+          <div class="mi">全部</div>
+          <div class="mi" style="padding-left:12px"><svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg> A 公司</div>
+          <div class="mi se" style="padding-left:28px">技术部<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div style="border-top:1px solid var(--border);padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:11px">
+            <span style="color:var(--t3)">A 公司 <svg style="width:10px;height:10px;display:inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg> <span style="color:var(--brand);font-weight:500">技术部</span></span>
+            <div style="display:flex;gap:6px"><button class="btn ol">取消</button><button class="btn pr">确认</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置</div>
+        <ul class="ul"><li>OpenClawMonitor.tsx 等</li></ul>
+        <div class="pt" style="margin-top:14px">与 TableHeaderTreeFilter 的差异</div>
+        <ul class="ul" style="font-family:inherit;font-size:12.5px">
+          <li>触发器：按钮 vs 列头 Filter icon</li>
+          <li>底部：面包屑 path vs 单标签</li>
+          <li>视觉骨架：99% 一致</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 可搜索单选 -->
+<section id="s6">
+  <h2>五、可搜索单选 <span class="c">2 个能力重叠组件</span></h2>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>SearchableSelect</code></span><span class="tg g">通用封装</span></div>
+    <div class="cm"><div class="pa">client/src/components/ui/searchable-select.tsx</div><div class="ds">基于 Popover 实现，视觉对齐 Select；含搜索 + 即时确认 + 底部计数（"共 N 条"）。无 Command/cmdk 依赖。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock</div>
+        <div class="mt op" style="width:240px;margin-bottom:4px"><span>vpc-7g8h9i0j</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="mk" style="width:240px">
+          <div class="ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="搜索..."></div>
+          <div class="mi">vpc-1a2b3c4d</div>
+          <div class="mi se">vpc-7g8h9i0j<svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="mi">vpc-5e6f7g8h</div>
+          <div style="border-top:1px solid var(--border);margin:4px 8px 0;padding:8px 4px"><span class="cn">共 28 条</span></div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">使用位置（3 处）</div>
+        <ul class="ul"><li>SessionManagement.tsx</li><li>OpsObservation.tsx</li><li>TokensMonitor.tsx</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>AgentCombobox</code></span><span class="tg d">⚠️ 能力重叠</span><span class="tg g">基于 cmdk Command</span></div>
+    <div class="cm"><div class="pa">client/src/components/OpenClawCombobox.tsx</div><div class="ds">基于 <code>Command</code>（cmdk）实现的 Agent 名称筛选，与 <code>SearchableSelect</code> 在能力上几乎一致，但视觉处理不同：高亮使用 <code>bg-blue-50</code>，与项目规范的 <code>--bg-brand-selected</code> 不一致。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock — 与 SearchableSelect 视觉略不同</div>
+        <div class="mt op" style="width:240px;margin-bottom:4px"><span>Agent-A</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="mk" style="width:240px">
+          <div class="ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="搜索 Agent 名称..."></div>
+          <div class="mi" style="background:#DBEAFE;color:var(--brand)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--brand)"><polyline points="20 6 9 17 4 12"/></svg> 全部</div>
+          <div class="mi" style="background:#DBEAFE;color:var(--brand)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--brand)"><polyline points="20 6 9 17 4 12"/></svg> Agent-A</div>
+          <div class="mi">Agent-B</div>
+        </div>
+      </div>
+      <div class="up">
+        <div class="pt">收敛建议</div>
+        <p style="font-size:12.5px;color:var(--t2)">建议直接以 <code>SearchableSelect</code> 替换，废弃自定义 Combobox（除非确需 cmdk 的命令式行为）。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 值编辑 -->
+<section id="s7">
+  <h2>六、值编辑型 Popover</h2>
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>TokenValueEditor</code></span><span class="tg w">业务封装</span></div>
+    <div class="cm"><div class="pa">client/src/components/policy/TokenValueEditor.tsx</div><div class="ds">触发器仿 Select，弹出面板内顶部 SegmentGroup（无限制/自定义），自定义模式下显示 Input。Footer 右对齐取消/确认（非全宽 footer）。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock <span class="sz">w-32 → 240px</span></div>
+        <div class="mt op" style="width:128px;min-width:128px;margin-bottom:4px"><span>1,000,000</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="mk" style="width:240px">
+          <div style="padding:4px 4px 8px 4px">
+            <div class="sg" style="margin-bottom:10px"><div>无限制</div><div class="ac">自定义</div></div>
+            <div style="border:1px solid var(--border);border-radius:4px;height:36px;padding:0 12px;display:flex;align-items:center;font-size:13px">1000000</div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding:10px;display:flex;justify-content:flex-end;gap:8px"><button class="btn ol">取消</button><button class="btn pr">确认</button></div>
+        </div>
+      </div>
+      <div class="up"><div class="pt">使用位置</div><ul class="ul"><li>policy/QuotaPolicyCard.tsx</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 操作菜单 -->
+<section id="s8">
+  <h2>七、操作菜单</h2>
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>MoreActionsDropdown</code></span><span class="tg g">DropdownMenu 封装</span><span class="tg s">规范明确</span></div>
+    <div class="cm"><div class="pa">client/src/components/ui/more-actions-dropdown.tsx</div><div class="ds">表格行/卡片三点菜单的<b>标准封装</b>。强制约束：每项必须带 icon；危险操作通过 <code>variant="destructive"</code> 表达红色；触发器支持 icon 按钮与"更多"文字按钮两种。</div></div>
+    <div class="cb">
+      <div class="pp">
+        <div class="pt">UI Mock</div>
+        <button class="mt" style="width:32px;min-width:32px;height:32px;padding:0;justify-content:center">⋯</button>
+        <div class="mk mn" style="width:160px;margin-top:4px">
+          <div class="mi" style="height:32px;border-radius:4px;padding:0 8px">🔍 安全检测</div>
+          <div class="mi" style="height:32px;border-radius:4px;padding:0 8px">⬇️ 下载</div>
+          <div class="dv"></div>
+          <div class="mi" style="height:32px;border-radius:4px;padding:0 8px;color:var(--dg)">🗑 删除</div>
+        </div>
+      </div>
+      <div class="up"><div class="pt">使用位置（10 文件）</div>
+        <ul class="ul">
+          <li>OpenClawMonitor、MemberManagement、TokensMonitor</li>
+          <li>SkillLibrary/SkillListTab、PluginListTab</li>
+          <li>MemberManagement/GroupList、MemoryManagement/GroupColumn</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 其它 -->
+<section id="s9">
+  <h2>八、其它定制 Popover</h2>
+  <div class="cc">
+    <div class="ch"><span class="nm"><code>PushUpgradePopover</code></span><span class="tg g">页面级专用</span></div>
+    <div class="cm"><div class="pa">client/src/pages/admin/ImageManagement/PushUpgradePopover.tsx</div><div class="ds">由 Dialog 改造而来的"推送升级提醒"业务面板：Agent 类型多选 Checkbox + Alert 信息提示 + 操作按钮。属于<b>专用业务面板</b>，不建议归入通用组件。</div></div>
+    <div class="cb"><div class="pp" style="grid-column:1/-1"><div class="pt">使用位置</div><ul class="ul"><li>ImageManagement.tsx</li></ul></div></div>
+  </div>
+</section>
+
+<!-- 令牌对比 -->
+<section id="s10">
+  <h2>九、设计令牌一致性对比</h2>
+  <p style="font-size:13px;color:var(--t2);margin-bottom:12px">比较 11 个组件在<b>圆角 / 阴影 / 选项行 / 选中态 / 描边</b>等关键样式上的 token 一致性，<span class="ok" style="color:var(--ok);font-weight:600">绿色=一致</span>，<span class="wa" style="color:var(--wn);font-weight:600">黄色=偏差</span>，<span class="ba" style="color:var(--dg);font-weight:600">红色=偏离规范</span>。</p>
+  <table class="tk">
+    <thead><tr><th>组件</th><th>容器圆角</th><th>阴影</th><th>选项行</th><th>选中态</th><th>触发描边</th><th>分割线</th><th>评级</th></tr></thead>
+    <tbody>
+      <tr><td>Select</td><td><code>rounded-[4px]</code></td><td><code>shadow-pop</code></td><td><code>h-8 px-3 rounded-[6px]</code></td><td>蓝字+Check</td><td>border + hover:blue-500</td><td><code>--border</code></td><td><span class="ok">基线</span></td></tr>
+      <tr><td>SearchableSelect</td><td><code>rounded-[4px]</code></td><td><code>shadow-pop</code></td><td><code>h-8 px-3 rounded-[6px]</code></td><td><code>--bg-brand-selected</code>+蓝字</td><td>同 Select</td><td><code>--border</code></td><td><span class="ok">一致</span></td></tr>
+      <tr><td>TableHeaderFilter</td><td><code>rounded-[4px]</code></td><td><code>shadow-pop</code></td><td><code>h-8 px-3 rounded-[6px]</code></td><td><code>--bg-brand-selected</code></td><td>—</td><td><code>#EAEEF4</code></td><td><span class="ok">一致</span></td></tr>
+      <tr><td>TableHeaderTreeFilter</td><td><code>rounded-[4px]</code></td><td><code>shadow-pop</code></td><td><code>h-8 px-3 rounded-[6px]</code></td><td><code>--bg-brand-selected</code>+蓝字</td><td>—</td><td><code>#EAEEF4</code></td><td><span class="ok">一致</span></td></tr>
+      <tr><td>ColumnFilters (Department/Group)</td><td>—（直接嵌入）</td><td>继承</td><td><code>h-8 px-3 rounded-[6px]</code></td><td><code>--bg-brand-selected</code></td><td>—</td><td><code>#EAEEF4</code></td><td><span class="wa">能力与 TableHeaderTreeFilter 重叠</span></td></tr>
+      <tr><td>ScopeFilterDropdown</td><td><code>rounded-[4px]</code></td><td><code>shadow-pop</code></td><td><code>h-8 px-3 rounded-[6px]</code></td><td><code>--bg-brand-selected</code></td><td>—</td><td><code>#EAEEF4</code></td><td><span class="ok">一致</span></td></tr>
+      <tr><td>TreeSelectFilter</td><td><code>rounded-[4px]</code></td><td><code>shadow-pop</code></td><td><code>h-8 px-3 rounded-[6px]</code></td><td><code>--bg-brand-selected</code>+蓝字</td><td>同 Select</td><td><code>border-border</code></td><td><span class="ok">一致</span></td></tr>
+      <tr><td>ScopeEditPopover</td><td>w-72 padding</td><td>默认</td><td><code>py-1.5 rounded-[4px]</code> ⚠️</td><td><code>--bg-brand-selected</code>，但<b>无蓝字</b></td><td>—</td><td><code>border-border</code></td><td><span class="wa">行高/圆角不齐</span></td></tr>
+      <tr><td>GroupSelectPanel</td><td><code>rounded-[4px]</code></td><td><code>shadow-pop</code></td><td><code>py-1.5 px-2.5 rounded-[4px]</code> ⚠️</td><td><code>bg-[#EFF4FF]</code>（硬编码）⚠️</td><td>border-border + #355EF1（硬编码）</td><td><code>#EAEEF4</code></td><td><span class="wa">硬编码颜色 + 行内圆角不齐</span></td></tr>
+      <tr><td>TokenValueEditor</td><td><code>rounded-[4px]</code></td><td><code>shadow-md</code> ⚠️</td><td>—</td><td>—</td><td><code>border-[var(--border)]</code> + hover:#1447E6 ⚠️</td><td><code>--border</code></td><td><span class="wa">阴影/hover 颜色与 Select 略偏</span></td></tr>
+      <tr><td>DropdownMenu</td><td><code>rounded-[8px]</code></td><td>shadow-menu</td><td><code>py-1.5 px-2 rounded-sm</code></td><td>focus 灰底</td><td>—</td><td>bg-gray-200</td><td><span class="ok">操作菜单基线</span></td></tr>
+      <tr><td>AgentCombobox</td><td>默认 Popover</td><td>默认</td><td>cmdk 内置</td><td><code>bg-blue-50</code> ⚠️ 与项目 token 不同</td><td>Button 复用</td><td>—</td><td><span class="ba">选中色硬编码 + 框架不同</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 收敛建议 -->
+<section id="s11">
+  <h2>十、组件收敛与一致性优化建议</h2>
+  <div class="rg">
+    <div class="rc h">
+      <h3>P0 · 必须收敛 <span class="ph p0">高优先级</span></h3>
+      <ul>
+        <li><b>合并 ColumnFilters → TableHeaderTreeFilter</b>：DepartmentColumnFilter 与 GroupColumnFilter 与 TableHeaderTreeFilter 视觉/交互几乎一致，应让后者支持<code>sources</code>分桶配置（可选 source labels），统一替换。</li>
+        <li><b>替换 AgentCombobox → SearchableSelect</b>：能力重叠，且选中色硬编码偏离规范；除非确需 cmdk 命令式行为，否则迁移到 SearchableSelect。</li>
+        <li><b>消灭硬编码选中色</b>：GroupSelectPanel 内 <code>bg-[#EFF4FF]</code>、AgentCombobox <code>bg-blue-50</code> → 统一改为 <code>bg-[var(--bg-brand-selected)]</code>。</li>
+      </ul>
+    </div>
+    <div class="rc m">
+      <h3>P1 · 视觉一致性 <span class="ph p1">中优先级</span></h3>
+      <ul>
+        <li><b>选项行规范统一</b>：所有面板选项行统一为 <code>h-8 px-3 rounded-[6px]</code>，禁止再用 <code>py-1.5 px-2.5 rounded-[4px]</code> 这类变体（GroupSelectPanel / ScopeEditPopover 内部）。</li>
+        <li><b>选中态文字色</b>：选中态的<b>文字颜色</b>统一 <code>text-blue-500 + font-medium</code>（参考 TableHeaderTreeFilter / Select），ScopeEditPopover、GroupSelectPanel 当前只有背景高亮无字色。</li>
+        <li><b>触发器 hover 描边色统一</b>：TokenValueEditor 用 <code>#1447E6</code>，其它统一 <code>blue-500</code>，应改为 <code>blue-500</code> 与 Select 一致。</li>
+        <li><b>面板阴影 token 化</b>：TokenValueEditor 用 <code>shadow-md</code>（Tailwind 默认），其它都用自定义 shadow-pop，应抽 CSS variable <code>--shadow-popover</code> 统一。</li>
+        <li><b>Footer 布局规范</b>：footer 高度 / padding 不齐（h-9 / py-2 / py-3 混用）。建议统一 <code>border-t px-1 h-9</code> 或 <code>border-t px-3 py-2</code> 二选一。</li>
+      </ul>
+    </div>
+    <div class="rc l">
+      <h3>P2 · 抽象更高层组件 <span class="ph p2">低优先级</span></h3>
+      <ul>
+        <li><b>抽 SelectPanel 通用骨架</b>：所有筛选面板都是「搜索框 + 列表区 + Footer」三段式，可抽出 <code>&lt;SelectPanel header={Search} body={...} footer={...} /&gt;</code> 复用。</li>
+        <li><b>统一交互模型 props</b>：在<code>SelectPanel</code>层提供 <code>commitMode: "instant" | "confirm"</code> 切换"即时生效 / 确认生效"，避免重复实现 ScopeFilter（即时） vs TableHeaderFilter（确认）。</li>
+        <li><b>触发器变体下沉</b>：把"按钮触发器 / Filter icon 触发器 / 徽章+铅笔触发器"做成 <code>FilterTrigger</code> 三个 variant，业务方按场景选择。</li>
+        <li><b>收敛 SearchableSelect 与 Select</b>：<code>Select</code> 加 <code>searchable</code> prop，长列表自动启用搜索，避免维护两套触发器。</li>
+        <li><b>建立 Storybook/preview 页面</b>：在 <code>ComponentPreview.tsx</code> 中集中陈列所有筛选面板的样式 demo，作为视觉对齐 ground truth。</li>
+      </ul>
+    </div>
+    <div class="rc l">
+      <h3>规范沉淀</h3>
+      <ul>
+        <li>在 <code>SKILL.md / SKILL-GLOBAL-COMPONENTS.md</code> 增设"下拉/筛选面板规范"小节，约束：① 容器圆角 4px、② 选项行 h-8 px-3 rounded-[6px]、③ 阴影使用统一 token、④ 选中态颜色使用 <code>--bg-brand-selected</code> + <code>text-blue-500</code>、⑤ Footer 三段式。</li>
+        <li>在 ESLint 自定义规则或 stylelint 中加规则：禁止裸 <code>bg-blue-50</code> / <code>bg-[#EFF4FF]</code>，强制走 token。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 行动计划 -->
+<section id="s12">
+  <h2>十一、分阶段行动计划</h2>
+  <table class="pl-t">
+    <thead><tr><th style="width:6%">阶段</th><th style="width:18%">任务</th><th>具体动作</th><th style="width:18%">影响范围</th><th style="width:8%">工作量</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ph p0">P0-1</span></td><td>消除 ColumnFilters 双轨</td><td>① 给 <code>TableHeaderTreeFilter</code> 增加 <code>sourceBuckets?: { source: string; label: string; nodes: TreeNode[] }[]</code> 多分桶能力；② 用其重写 OpenClawMonitor / MemberManagement / GroupList / TokensMonitor 等所有列头筛选；③ 删除 ColumnFilters.tsx 中两个组件。</td><td>OpenClawMonitor、MemberManagement、TokensMonitor、SkillLibrary 列表 5+ 文件</td><td>1 天</td></tr>
+      <tr><td><span class="ph p0">P0-2</span></td><td>替换 AgentCombobox</td><td>① 将 OpenClawCombobox 改造成 <code>SearchableSelect</code> 包装 + 业务侧 mock 数据；② 删除 AgentCombobox 相关 cmdk 引入（如其它组件不再用 Command 也可移除依赖）。</td><td>引用 AgentCombobox 的 1 处页面</td><td>0.5 天</td></tr>
+      <tr><td><span class="ph p0">P0-3</span></td><td>硬编码颜色 token 化</td><td>全局搜索 <code>bg-blue-50</code> / <code>bg-[#EFF4FF]</code> / <code>border-[#355EF1]</code> 替换为 <code>bg-[var(--bg-brand-selected)]</code> / <code>border-blue-500</code>。</td><td>GroupSelectPanel、AgentCombobox、其它零散页面</td><td>0.5 天</td></tr>
+      <tr><td><span class="ph p1">P1-1</span></td><td>选项行/选中态规范化</td><td>① 选项行统一 <code>h-8 px-3 rounded-[6px]</code>；② 选中态统一 <code>bg-[var(--bg-brand-selected)] text-blue-500 font-medium</code>；③ ScopeEditPopover、GroupSelectPanel 内部行样式按统一规范重写。</td><td>ScopeEditPopover、GroupSelectPanel</td><td>0.5 天</td></tr>
+      <tr><td><span class="ph p1">P1-2</span></td><td>触发器 hover 颜色统一</td><td>TokenValueEditor 的 <code>hover:border-[#1447E6]</code> → <code>hover:border-blue-500</code>。</td><td>TokenValueEditor</td><td>0.1 天</td></tr>
+      <tr><td><span class="ph p1">P1-3</span></td><td>阴影 token 化</td><td>在 globals.css 增加 <code>--shadow-popover</code>；将 8 处 <code>shadow-[0px_0px_2px...]</code> 替换为 <code>shadow-[var(--shadow-popover)]</code>，TokenValueEditor 的 shadow-md 一并替换。</td><td>11 个组件</td><td>0.3 天</td></tr>
+      <tr><td><span class="ph p2">P2-1</span></td><td>抽出 <code>SelectPanel</code> 通用骨架</td><td>新建 <code>components/ui/select-panel.tsx</code>，提供 Header/Body/Footer slot，所有筛选面板基于它重写；维持现有 API 兼容。</td><td>新增 + 6 个面板组件重构</td><td>3 天</td></tr>
+      <tr><td><span class="ph p2">P2-2</span></td><td>commitMode 抽象</td><td>SelectPanel 增加 <code>commitMode</code>，去除 ScopeFilterDropdown / TableHeaderFilter 的代码重复。</td><td>SelectPanel + 2 个组件</td><td>1 天</td></tr>
+      <tr><td><span class="ph p2">P2-3</span></td><td>FilterTrigger 三 variant</td><td>抽 <code>FilterTrigger</code>：button / icon / badge-pencil 三种触发器复用。</td><td>新增 + 替换</td><td>1 天</td></tr>
+      <tr><td><span class="ph p2">P2-4</span></td><td>Select 加 searchable</td><td>原生 <code>Select</code> 增加 <code>searchable</code> prop，逐步替换 SearchableSelect。</td><td>Select + 3 处使用方</td><td>1.5 天</td></tr>
+      <tr><td><span class="ph p2">P2-5</span></td><td>规范文档 & lint</td><td>SKILL.md 增加"下拉面板规范"小节；ESLint plugin 禁止硬编码颜色。</td><td>文档 + 工具链</td><td>1 天</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:12px;font-size:13px;color:var(--t2)">预计总投入 <b>~10 人日</b>。建议 P0 先行（约 2 人日），消除明确的双轨与硬编码；P1 紧随（约 1 人日），快速拉齐视觉；P2 在迭代窗口空闲时滚动推进。</p>
+</section>
+
+<footer style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--t3);text-align:center">
+  下拉/筛选面板组件审计报告 · openclaw-enterprise · 生成于 2026-06-08
+</footer>
+
+</div>
+</body>
+</html>

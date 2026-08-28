@@ -1,0 +1,1551 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ─── Webfont（v2）必须放在最顶部 ──────────────────────────────────
+ * PingFang SC / Menlo / DIN Alternate：系统字体，无需引入
+ * Open Sans：Google Fonts CDN（首版可用，后续可改 self-host）
+ * TCloud Number：用户端 QuickStart 步骤编号字体
+ * ──────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "TCloud Number";
+  src: url("/fonts/TCloudNumber.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TCloud Number";
+  src: url("/fonts/TCloudNumber-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── v2 字体 / 主题变量 ──────────────────────────────────────── */
+@theme {
+  --font-sans:
+    "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    sans-serif;
+  --font-mono: "Menlo", "Consolas", "Courier New", monospace;
+  --font-din: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif;
+  --font-din-stat: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif;
+  --font-en: "Open Sans", "Helvetica Neue", sans-serif;
+
+  /* v2 文字色阶（对齐 Figma 设计系统） */
+  --color-gray-950: #0a0a0a; /* 强调（数字、关键标题） */
+  --color-gray-900: #171717; /* 主文字 / 正文 */
+  --color-gray-700: #404040; /* 次级文字（描述正文、补充说明） */
+  --color-gray-600: #475569; /* 中等文字 */
+  --color-gray-500: #737373; /* 辅助文字（时间、描述） */
+  --color-gray-400: #94A3B8; /* 极弱文字（占位、空状态） */
+  --color-gray-300: #D4D4D4; /* 描边强调 */
+  --color-gray-200: #EAEEF4; /* 描边、分割线（全局统一 token） */
+  --color-gray-100: #F5F5F5; /* 浅背景（Tab 容器、卡片底） */
+  --color-gray-50: #FAFAFA;  /* 极浅背景 */
+
+  /* 品牌色覆盖 */
+  --color-blue-500: #355ef1;
+}
+
+@theme inline {
+  /* v2 圆角档位（0625 修订）：
+   *   - 控件层（Button/Input/Tab 滑块/SelectTrigger...）保持 ≤ 4px
+   *   - 浮层弹窗（Dialog/AlertDialog/Drawer/Popover/HoverCard/DropdownMenu/Toast/Select下拉面板）统一 12px（rounded-[12px]）
+   *   - 管理端 / 全局卡片：--radius-xl = 4px（与控件同档，几何感）
+   *   - 用户端业务卡：使用 <TenantCard>，圆角走 --radius-card = 12px（柔和感，对齐 Figma 1077:33986）
+   *   ⚠️ 不要把 rounded-xl 等同于 12px——本项目 --radius-xl 已被压到 4px。
+   *      用户端要 12px 必须用 <TenantCard>（见 SKILL-TENANT.md §5）。
+   */
+  --radius-sm: 2px; /* 状态徽章、内嵌活跃元素小尺寸 */
+  --radius-md: 3px; /* Tab 活跃滑块、Slider 把手 */
+  --radius-lg: 4px; /* shadcn 默认（Button/Input/Dialog/Popover...） */
+  --radius-xl: 4px; /* 控件层上限 / 管理端 SurfaceCard 圆角 */
+  --radius-card: 12px; /* 用户端业务卡专用（仅 <TenantCard> 消费） */
+
+  /* ───────────────────────────────────────────────────────────
+   * v2 阴影系统：5 档语义化 + 卡片三态（单一真理源 Single Source of Truth）
+   * 业务层禁止再写 inline boxShadow / Tailwind shadow-md/lg/xl/2xl，
+   * 统一通过 <SurfaceCard> 等语义组件或 shadow-card / shadow-overlay 工具类。
+   * 修改本组变量即可批量影响全站所有卡片，无需跨文件搜索替换。
+   * ─────────────────────────────────────────────────────────── */
+  /* L1 表层卡片：页面主区块、列表卡、统计卡（管理端 SurfaceCard 在用） */
+  --shadow-card:
+    0px 1px 4px rgba(0, 0, 0, 0.05), 0px 0px 2px rgba(0, 0, 0, 0.1);
+  /* L1 hover 态：阴影升一档（接近 L4 配置卡），用于 SurfaceCard hover prop 启用时 */
+  --shadow-card-hover:
+    0px 4px 12px -2px rgba(0, 0, 0, 0.08), 0px 2px 4px rgba(0, 0, 0, 0.06);
+  /* L6 用户端业务卡（TenantCard）阴影：严格对齐 Figma 1077:33987 effect_KNJ2UO
+   *   单层 0px 1px 4px rgba(0, 0, 0, 0.05)，比 --shadow-card 少一层 2px 环形描边阴影。
+   *   2px 环描边在 12px 大圆角卡片上会形成"灰圈感"，与 Figma 不符（Figma 是干净底阴影）。
+   *   active（按下）态也复用本变量，避免按下瞬间出现 2px 描边闪烁。 */
+  --shadow-tenant-card: 0px 1px 4px 0px rgba(0, 0, 0, 0.05);
+  /* L2 内嵌卡片：卡片内的子卡 / 表格容器（无阴影、靠浅描边） */
+  --shadow-inner: none;
+  /* L3 浮层：Dialog / Sheet / Drawer / Popover / DropdownMenu */
+  --shadow-overlay:
+    0px 4px 16px -2px rgba(0, 0, 0, 0.08), 0px 2px 6px rgba(0, 0, 0, 0.06);
+  /* L4 高亮配置卡：管理端"操作要点""引导卡"等需强调的卡 */
+  --shadow-config:
+    0px 2px 8px -1px rgba(0, 0, 0, 0.05), 0px 2px 4px 2px rgba(0, 0, 0, 0.05);
+  /* L5 Tab 滑块 / Segmented 指示器：极轻 */
+  --shadow-segment: 0px 1.11px 2.22px rgba(0, 0, 0, 0.05);
+  /* L6 下拉面板 / Popover 浮层：所有下拉选择面板统一阴影 */
+  --shadow-popover:
+    0px 0px 2px 0px rgba(0, 0, 0, 0.1), 0px 4px 16px 0px rgba(0, 0, 0, 0.12);
+  /* L7 抽屉容器（非模态侧边抽屉）柔和阴影规范：
+   * 与表格固定列阴影同色（rgba(0,0,0,0.06)），用于在不加遮罩蒙版的情况下分隔背景。
+   *   - drawer-left：右侧抽屉向左投影（ProductUpdatesDrawer / HelpPanel / NotificationPanel 等）
+   *   - drawer-right：左侧抽屉向右投影（对称备用）
+   * 使用方式：抽屉容器写 box-shadow: var(--shadow-drawer-left)；禁止再硬编码 -8px 0 24px ... 等。 */
+  --shadow-drawer-left: -8px 0 24px -6px rgba(0, 0, 0, 0.06);
+  --shadow-drawer-right: 8px 0 24px -6px rgba(0, 0, 0, 0.06);
+
+  /* shadcn 默认 shadow-* 类的兼容映射（确保历史代码 fallback 到 v2）：
+   * - shadow-2xs / xs / sm / shadow → L1 卡片（最常见）
+   * - shadow-md → L4 配置卡（兼容历史 hover:shadow-md 写法）
+   * - shadow-lg / xl / 2xl → L3 浮层
+   * 注意：业务层应优先使用语义类 shadow-card / shadow-overlay / shadow-config，本组只是兜底。 */
+  --shadow-2xs: var(--shadow-card);
+  --shadow-xs: var(--shadow-card);
+  --shadow-sm: var(--shadow-card);
+  --shadow: var(--shadow-card);
+  --shadow-md: var(--shadow-config);
+  --shadow-lg: var(--shadow-overlay);
+  --shadow-xl: var(--shadow-overlay);
+  --shadow-2xl: var(--shadow-overlay);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-control: var(--border-control);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  /* Brand Colors */
+  --brand-blue: #1447e6;
+  --brand-purple: #1447e6;
+
+  /* Text 文字语义色（TYPOGRAPHY_COLOR_MIGRATION_PLAN §2 / §3.1）
+   * 基于蓝灰色 Slate 建立全站文字语义层；
+   * Typography 组件的 typographyColorTokens 直接消费这些变量。
+   * 后续若要整体调整正文亮度，只需改下面变量，不必搜索全站。 */
+  --text-emphasis: #020617;  /* slate-950 强强调、关键数字、强标题 */
+  --text-title: #0F172A;     /* slate-900 页面标题、模块标题 */
+
+  /* ClawPro Portable Design Skill · spec token alias（§7.2 fallback 用）
+   * 与 .codebuddy/skills/clawpro-portable-design-skill/portable/css/tokens.css 对齐。
+   * 在本仓暴露 `--cp-*` 别名，让 spec-side（claw / shared）组件统一走 token；
+   * 后续宿主仓覆盖品牌色 / 描边 / 文字色，只需改这一组变量。
+   * tenant 侧不消费这组别名（见 button.md §3.1 / combobox.md §3.1 隔离规则）。*/
+  --cp-brand-black: #020617; /* claw-primary / dialog-confirm 主按钮底色，等同 --text-emphasis */
+  --cp-brand-blue: #1447E6;  /* 品牌蓝，链接 / focus / open / selected 强调，等同 --text-brand */
+  --cp-brand-tint: #EFF6FF;  /* 品牌蓝低饱和底（hover / selected 浅底） */
+  --cp-border: #EAEEF4;      /* 蓝灰描边 / 分割线，等同 --color-gray-200 */
+  --cp-border-control: #C8CFDA; /* 控件交互态描边强调 */
+  --cp-surface: #FFFFFF;     /* 卡 / 浮层 / Trigger 默认底色 */
+  --cp-text-emphasis: #020617; /* slate-950 强强调 */
+  --cp-text-title: #0F172A;  /* slate-900 标题 / 已选值 */
+  --cp-text-body: #1E293B;   /* slate-800 正文 */
+  --cp-text-muted: #64748B;  /* slate-500 时间 / 备注 */
+  --cp-text-weak: #94A3B8;   /* slate-400 占位 / 空状态 / chevron */
+  --cp-text-brand: #1447E6;  /* 链接 / selected check */
+  --cp-text-danger: #DC2626; /* 危险 / 错误 */
+  --cp-text-secondary: #334155; /* slate-700 描述、补充说明、表格次要字段 */
+  --cp-text-success: #16A34A; /* 成功、已完成、健康状态 */
+  --cp-shadow-overlay: 0px 4px 16px -2px rgba(0, 0, 0, 0.08), 0px 2px 6px rgba(0, 0, 0, 0.06); /* L3 浮层阴影，对齐 --shadow-overlay */
+
+  /* Onboarding 引导组件 token */
+  --guide-bubble-bg: #FFFFFF;
+  --guide-bubble-border: #EAEEF4;
+  --guide-bubble-arrow-stroke: #E5E5E5;
+  --guide-bubble-radius: 4px;
+  --guide-bubble-shadow: 0 8px 48px -12px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
+  --guide-bubble-title: #000000;
+  --guide-bubble-desc: rgba(0, 0, 0, 0.7);
+  --guide-bubble-close: rgba(0, 0, 0, 0.65);
+  --guide-bubble-btn-primary-bg: #202020;
+  --guide-bubble-btn-primary-text: rgba(255, 255, 255, 0.9);
+  --guide-bubble-btn-secondary-bg: #FFFFFF;
+  --guide-bubble-btn-secondary-border: #E5E5E5;
+  --guide-bubble-btn-secondary-text: #000000;
+  --guide-bubble-push-gradient: linear-gradient(180deg, #2C59E9, #5980FF);
+  --guide-bubble-push-title: #FFFFFF;
+  --guide-bubble-push-desc: rgba(255, 255, 255, 0.7);
+  --guide-bubble-push-shadow: 0 12px 48px -14px rgba(44, 89, 233, 0.4), 0 2px 8px rgba(0, 0, 0, 0.08);
+  --module-float-width: 360px;
+  --module-float-padding: 12px;
+  --module-float-radius: 4px;
+  --module-float-bg: #FFFFFF;
+  --module-float-border: var(--border);
+  --module-float-shadow: var(--shadow-overlay);
+  --module-float-subtitle: rgba(0, 0, 0, 0.5);
+  --module-float-title: #000000;
+  --module-float-desc: rgba(0, 0, 0, 0.7);
+  --module-float-link: #1447E6;
+  --module-float-step-text: rgba(0, 0, 0, 0.5);
+  --module-float-image-radius: 4px;
+  --module-float-close-size: 20px;
+
+  --text-body: #1E293B;      /* slate-800 普通正文 */
+  --text-secondary: #334155; /* slate-700 描述、补充说明、表格次要字段 */
+  --text-muted: #64748B;     /* slate-500 时间、备注、辅助信息 */
+  --text-weak: #94A3B8;      /* slate-400 占位、空状态、极弱提示 */
+  --text-brand: #1447E6;     /* 链接、活跃态、品牌强调 */
+  --text-brand-deep: #2E4385; /* 深蓝（蓝渐变提示条/按钮的文字与图标） */
+  --text-danger: #DC2626;    /* 删除、错误、危险操作 */
+  --text-success: #16A34A;   /* 成功、已完成、健康状态 */
+  --text-warning: #D97706;   /* 警告、待处理、需关注（amber-600） */
+  --decoration-purple: #A855F7; /* 装饰用紫色（AI 推荐/Sparkles 图标等） */
+
+  /* 背景交互色 */
+  --bg-white: #FFFFFF;
+  --bg-grey-normal: #FAFBFD;
+  --bg-grey-hover: #F5F6FA;
+  --bg-grey-hover-subtle: #FAFBFD;
+  /* Segment（管理端 4px 方角分段选择器）轨道背景色：
+     冷灰偏蓝低透明（#DBDDE4 + 20% alpha），轻盈不抢戏；
+     外描边与本色同值（融为一体，无可见描边）。 */
+  --bg-segment-track: #DBDDE432;
+  /* 行选中态背景：品牌蓝 #1447E6 的低透明叠加（Table / 列表选中行复用，禁止业务侧再写 rgba(20,71,230,...)） */
+  --bg-brand-selected: rgba(20, 71, 230, 0.06);
+  --bg-brand-selected-hover: rgba(20, 71, 230, 0.1);
+  /* 固定列（sticky）选中态专用：上面的半透明色叠加在白底上的"等效不透明色"。
+   * sticky 列横滚时其下方会经过其它流动列，半透明背景会让下层内容透出来（视觉穿透 bug），
+   * 因此固定列必须用不透明色。数值 = rgba 蓝 over #FFFFFF 的混合结果：
+   *   0.06 → #F1F4FD；0.10 → #E8EDFD。 */
+  --bg-brand-selected-solid: #F1F4FD;
+  --bg-brand-selected-hover-solid: #E8EDFD;
+  /* 容器底色 - 浅蓝灰：在浅灰底之上叠加一层极浅的品牌蓝（约蓝 #1447E6 3% over 白底等效不透明色）。
+   * 用于策略卡片"预设策略 / 访问方式"等容器底色，比 --bg-brand-selected-solid 更克制，
+   * 不传递"选中"语义，仅作为容器分层背景。 */
+  --bg-brand-subtle: #F8FAFE;
+
+  /* ── 引导气泡 GuidePointBubble 专用语义 token（对齐 Figma node 4096:9477「用户端指引气泡」）── */
+  --guide-bubble-bg: #FFFFFF;                 /* 浅色气泡底 */
+  --guide-bubble-border: #EAEEF4;             /* 气泡描边，等同 --border */
+  --guide-bubble-arrow-stroke: #E5E5E5;       /* 三角箭头描边 */
+  --guide-bubble-radius: 4px;                 /* 气泡圆角，等同 --radius-lg */
+  --guide-bubble-shadow: 0px 8px 48px -12px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
+  --guide-bubble-title: #000000;              /* 标题纯黑（设计稿 fill_34dc0314） */
+  --guide-bubble-desc: rgba(0, 0, 0, 0.7);    /* 描述/正文（设计稿 fill_f5d51dc8） */
+  --guide-bubble-close: rgba(0, 0, 0, 0.7);   /* 关闭图标 */
+  /* 1.2 按钮：主按钮黑底白字（设计稿 #202020 / rgba(255,255,255,.9)），次按钮白底描边 */
+  --guide-bubble-btn-primary-bg: #202020;
+  --guide-bubble-btn-primary-text: rgba(255, 255, 255, 0.9);
+  --guide-bubble-btn-secondary-bg: #FFFFFF;
+  --guide-bubble-btn-secondary-border: #E5E5E5;
+  --guide-bubble-btn-secondary-text: #000000;
+  /* 1.4 重点推送：蓝色渐变底（设计稿 fill_c0d49abf）+ 白色文字层级 */
+  --guide-bubble-push-gradient: linear-gradient(180deg, #2C59E9 0%, #5980FF 100%);
+  --guide-bubble-push-shadow: 0px 8px 48px -12px rgba(38, 58, 120, 0.28), 0px 1px 3px 0px rgba(38, 58, 120, 0.05);
+  --guide-bubble-push-title: #FFFFFF;
+  --guide-bubble-push-desc: rgba(255, 255, 255, 0.7);
+  --guide-bubble-push-arrow: #2C59E9;
+  /* 标签（如"还有 7 天上线"）：底 --bg-brand-selected，字 --text-brand */
+
+  /* ── 非阻断浮窗 GuideModuleFloat 专用语义 token（对齐 Figma node 4088:7837「用户端非阻断性浮窗」）── */
+  --module-float-width: 360px;                  /* 浮窗固定宽度 */
+  --module-float-padding: 12px;                 /* 容器内边距 */
+  --module-float-radius: 4px;                   /* 容器圆角，等同 --radius-lg */
+  --module-float-bg: #FFFFFF; /* 用户端浮窗底色（纯白） */
+  --module-float-border: var(--border);         /* 描边，等同全局 --border (#EAEEF4) */
+  --module-float-shadow: 0px 8px 48px -12px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
+  --module-float-subtitle: rgba(0, 0, 0, 0.5); /* 副标题文字色（12px Regular） */
+  --module-float-title: #000000;                /* 主标题文字色（14px Medium） */
+  --module-float-desc: rgba(0, 0, 0, 0.7);     /* 描述文字色（12px Regular lh-20px） */
+  --module-float-link: var(--text-brand);       /* 行动链接色 #1447E6 */
+  --module-float-close: rgba(0, 0, 0, 0.7);    /* 关闭图标色 */
+  --module-float-close-size: 20px;              /* 关闭按钮尺寸 */
+  --module-float-image-radius: 4px;             /* 配图区域圆角 */
+  --module-float-step-text: rgba(0, 0, 0, 0.7); /* 步骤计数/跳过文字色 */
+  --module-float-nav-size: 38px;                /* 翻页箭头按钮宽 */
+  --module-float-nav-height: 28px;              /* 翻页箭头按钮高 */
+  --module-float-nav-radius: 24px;              /* 翻页箭头按钮圆角 */
+  --module-float-nav-border: rgba(0, 0, 0, 0.2); /* 翻页按钮描边 */
+  --module-float-nav-border-disabled: rgba(0, 0, 0, 0.08); /* 翻页按钮禁用描边 */
+  --module-float-nav-icon: #020617;             /* 翻页箭头图标色 */
+  --module-float-nav-icon-disabled: rgba(0, 0, 0, 0.2); /* 翻页箭头禁用色 */
+  --module-float-done-width: 81px;              /* "我知道了"按钮宽 */
+  --module-float-done-text: #020617;            /* "我知道了"文字色 */
+  --module-float-cta-bg: #000000;              /* 单条模式 CTA 按钮背景 */
+  --module-float-cta-text: #FFFFFF;            /* 单条模式 CTA 按钮文字 */
+  --module-float-cta-radius: 24px;             /* CTA 按钮圆角 */
+
+  /* ── 管控端非阻断通知卡片 GuideAdminNotify 专用语义 token ── */
+  --admin-notify-subtitle: rgba(0, 0, 0, 0.5); /* 头部「产品动态」副标题色 */
+  --admin-notify-title: rgb(0, 0, 0);          /* 卡片主标题色 */
+  --admin-notify-desc: rgba(0, 0, 0, 0.7);     /* 卡片正文/描述色（70% 黑） */
+
+  /* Background Interaction Tokens */
+  --bg-white: #ffffff;
+  --bg-grey-normal: #fafbfd;
+  --bg-grey-hover: #f5f6fa;
+  --bg-grey-hover-subtle: #fafbfd;
+  --bg-segment-track: #dbdde432;
+
+  /* Background Interaction Tokens */
+  --bg-white: #ffffff;
+  --bg-grey-normal: #fafbfd;
+  --bg-grey-hover: #f5f6fa;
+  --bg-grey-hover-subtle: #fafbfd;
+
+  /* Primary */
+  --primary: oklch(0.546 0.245 262.881); /* #1447E6 */
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* Radius（v2：12px → 4px，作为各档的基准） */
+  --radius: 4px;
+
+  /* v2 显式色值：让 shadcn 语义 token 直接落到 Figma 设计系统 */
+  --background: #ffffff; /* 页面底色（用户端会被 .tenant-bg 覆盖为白→灰渐变） */
+  --foreground: #0a0a0a; /* 主文字 */
+  --card: #ffffff; /* 卡片底 */
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff; /* Popover/Dropdown/Tooltip 底 */
+  --popover-foreground: #0a0a0a;
+  --secondary: #f5f5f5; /* 次级背景 */
+  --secondary-foreground: #404040;
+  --muted: #f5f5f5; /* Tab 容器、Disabled 背景 */
+  --muted-foreground: #737373; /* 辅助文字（v2 §1） */
+  --general-foreground: #020617;
+  --admin-page-description-foreground: #596980;
+  --heading-3-letter-spacing: -1px;
+  --accent: #f5f5f5; /* hover 浅灰 */
+  --accent-foreground: #0a0a0a;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: #EAEEF4;              /* 描边、分割线（全局统一 token） */
+  --border-control: #C8CFDA;      /* 可勾选控件未选中边框：Checkbox / Radio */
+  --input: #EAEEF4;               /* Input 描边 */
+  --ring: #1447E6;                /* focus 外环 */
+
+  /* Alert：基础 token（对齐全局 4px 圆角，供 shadcn Alert 使用） */
+  --alert-radius: var(--radius);
+
+  /* Alert：Info 类型（对齐 Figma，供 shadcn Alert variant="info" 使用） */
+  --alert-info-bg: #f0f3fc;
+  --alert-info-border: #bfcffe;
+  --alert-info-foreground: #0a0a0a;
+  --alert-info-icon: #1447e6;
+
+  /* Alert：操作 Info 类型（对齐 Figma，供 shadcn Alert variant="operation-info" 使用） */
+  --alert-operation-info-bg: #FFFFFF;
+  --alert-operation-info-border: #EAEEF4;
+  --alert-operation-info-foreground: var(--alert-info-foreground);
+  --alert-operation-info-icon: var(--text-muted);
+
+  /* Alert：Warning 类型（对齐 Figma，供 shadcn Alert variant="warning" 使用） */
+  --alert-warning-bg: #fff7ed;
+  --alert-warning-border: #fed7aa;
+  --alert-warning-foreground: #0a0a0a;
+  --alert-warning-icon: #ff6900;
+
+  /* Alert：产品动态类型（颜色对齐 Info，供 shadcn Alert variant="product-news" 使用） */
+  --alert-product-news-bg: var(--alert-info-bg);
+  --alert-product-news-border: var(--alert-info-border);
+  --alert-product-news-foreground: var(--alert-info-foreground);
+  --alert-product-news-icon: var(--alert-info-icon);
+
+  /* Alert：Success 类型（柔和绿色，不扎眼） */
+  --alert-success-bg: #ECFDF5;
+  --alert-success-border: #A7F3D0;
+  --alert-success-foreground: #0A0A0A;
+  --alert-success-icon: #059669;
+
+  /* Alert：Error 类型（柔和红色，不扎眼） */
+  --alert-error-bg: #FEF2F2;
+  --alert-error-border: #FECACA;
+  --alert-error-foreground: #0A0A0A;
+  --alert-error-icon: #DC2626;
+
+  /* Charts */
+  --chart-1: oklch(0.546 0.245 262.881);
+  --chart-2: oklch(0.48 0.22 280);
+  --chart-3: oklch(0.65 0.18 200);
+  --chart-4: oklch(0.72 0.15 160);
+  --chart-5: oklch(0.78 0.12 120);
+
+  /* Sidebar（v2：白底 + #EAEEF4 分割线 + #1447E6 活跃） */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #0A0A0A;
+  --sidebar-primary: #1447E6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F5F5;
+  --sidebar-accent-foreground: #0A0A0A;
+  --sidebar-border: #EAEEF4;
+  --sidebar-ring: #1447E6;
+
+  /* Admin Sidebar */
+  --admin-sidebar-width: 240px;
+  --admin-sidebar-width-collapsed: 64px;
+  --admin-sidebar-header-height: 104px;
+  --admin-sidebar-footer-height: 72px;
+  --admin-sidebar-bg: #ffffff;
+  --admin-sidebar-border: #EAEEF4;
+  --admin-sidebar-foreground: #0a0a0a;
+  --admin-sidebar-muted: #737373;
+  --admin-sidebar-item-height: 34px;
+  --admin-sidebar-item-radius: 4px;
+  --admin-sidebar-item-hover-bg: rgba(180, 191, 225, 0.14);
+
+  --admin-sidebar-item-active-bg: linear-gradient(
+    90deg,
+    #e9f3ff 0%,
+    #e3eaff 100%
+  );
+  --admin-sidebar-badge-brand-bg: color-mix(
+    in srgb,
+    var(--brand-blue) 10%,
+    var(--admin-sidebar-bg)
+  );
+  --admin-sidebar-badge-brand-border: color-mix(
+    in srgb,
+    var(--brand-blue) 24%,
+    var(--admin-sidebar-bg)
+  );
+  --admin-sidebar-action-bg: #ffffff;
+  --admin-sidebar-action-border: var(--admin-sidebar-border);
+  --admin-sidebar-action-hover-bg: var(--admin-sidebar-item-hover-bg);
+  --admin-sidebar-action-hover-border: #D6DDEA;
+  --admin-sidebar-logo-shadow: 0px 1px 4px rgba(176, 182, 195, 0.3);
+  --admin-sidebar-badge-bg: #f5f5f5;
+  --admin-sidebar-avatar-bg: color-mix(
+    in srgb,
+    var(--brand-blue) 32%,
+    var(--admin-sidebar-bg)
+  );
+  --admin-sidebar-avatar-foreground: #020617;
+}
+
+/* Admin theme - v2：纯白背景（覆盖 :root） */
+.admin-theme {
+  --background: #ffffff;
+  --card: #ffffff;
+  --sidebar: #ffffff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    overflow-y: scroll; /* 强制滚动条始终占位，防止 Tab 切换时页面宽度抖动 */
+    scrollbar-gutter: stable; /* 为滚动条预留空间，防止内容跳动 */
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family:
+      "PingFang SC",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Helvetica Neue",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* ─── 全站字体统一：默认强制 PingFang SC ─────────────────────
+   * 默认所有非 SVG 元素强制 PingFang SC，避免业务侧 inline fontFamily
+   * 或第三方组件污染。
+   * 白名单豁免：显式带 .font-din / .font-din-stat / .font-mono / .font-en
+   * 这 4 个字体 utility 的元素不受此规则压制，可正常渲染对应字体栈
+   *   - font-din / font-din-stat：StatNumber、统计数字（DIN Alternate）
+   *   - font-mono：CodeText、ID/Token/路径（Menlo）
+   *   - font-en：英文标签 / Badge（Open Sans）
+   * 仅 SVG <text> 等极少数标签同样保留自身定义。
+   * ──────────────────────────────────────────────────────────── */
+  *:not(svg):not(svg *):not(.font-din):not(.font-din-stat):not(.font-mono):not(.font-en) {
+    font-family:
+      "PingFang SC",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Helvetica Neue",
+      sans-serif !important;
+  }
+  .font-din,
+  .font-din * {
+    font-family: var(--font-din) !important;
+  }
+  /* 防止弹窗打开时页面晃动：确保 body 被锁定滚动时保持滚动条占位 */
+  body[data-scroll-locked] {
+    overflow: hidden !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  [data-slot="admin-sidebar-menu-button"] {
+    border-radius: var(--admin-sidebar-item-radius);
+  }
+
+  [data-slot="admin-sidebar-menu-button"]:hover {
+    background: var(--admin-sidebar-item-hover-bg) !important;
+    border-radius: var(--admin-sidebar-item-radius) !important;
+  }
+
+  [data-slot="admin-sidebar-menu-button"][data-active="true"],
+  [data-slot="admin-sidebar-menu-button"][data-active="true"]:hover,
+  .admin-sidebar-collapsed-subgroup-active,
+  .admin-sidebar-collapsed-subgroup-active:hover {
+    background: var(--admin-sidebar-item-active-bg) !important;
+    border-radius: var(--admin-sidebar-item-radius) !important;
+  }
+
+  [data-slot="admin-sidebar-header-action"] {
+    background: var(--admin-sidebar-action-bg) !important;
+    border-color: var(--admin-sidebar-action-border) !important;
+    border-radius: 4px !important;
+    color: var(--admin-sidebar-foreground) !important;
+  }
+
+  /* HeaderAction hover：bg / border 完全不变（白底 + base border）。
+     反馈来源：展开态 → arrow 滑入 + 文本 transform；收起态 Tooltip。
+     旧 hover bg/border 规则已删除，详见 references/conflict-log.md C-015 / C-017。 */
+
+  .admin-sidebar-subitem-button {
+    position: relative;
+    padding-left: 32px !important;
+  }
+
+  .admin-sidebar-subitem-button::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: -8px;
+    bottom: -8px;
+    z-index: 0;
+    width: 1px;
+    background: var(--admin-sidebar-border);
+  }
+
+  .admin-sidebar-subitem-button::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 8px;
+    z-index: 1;
+    width: 1px;
+    height: 18px;
+    background: var(--admin-sidebar-foreground);
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+
+  .admin-sidebar-subitem-button:hover::after,
+  .admin-sidebar-subitem-button[data-active="true"]::after {
+    opacity: 1;
+  }
+
+  [data-slot="admin-sidebar-badge"] {
+    background: var(--admin-sidebar-badge-bg);
+    color: var(--admin-sidebar-muted);
+  }
+
+  [data-slot="admin-sidebar-badge"][data-variant="new"] {
+    background: var(--admin-sidebar-badge-brand-bg);
+    color: var(--brand-blue);
+  }
+
+  [data-slot="admin-sidebar-badge"][data-variant="custom"],
+  [data-slot="admin-sidebar-badge"][data-variant="coming-soon"] {
+    background: var(--admin-sidebar-badge-bg);
+    color: var(--admin-sidebar-muted);
+  }
+
+  [data-slot="admin-sidebar-menu-button"][data-active="true"]
+    [data-slot="admin-sidebar-badge"][data-variant="custom"] {
+    background: var(--admin-sidebar-badge-brand-bg);
+    color: var(--brand-blue);
+  }
+
+  /* 选中态：左侧导航 SVG 图标渲染为纯黑（覆盖图标自带渐变色） */
+  [data-slot="admin-sidebar-menu-button"][data-active="true"] > img,
+  .admin-sidebar-collapsed-subgroup-active > img {
+    filter: brightness(0) saturate(100%);
+  }
+
+  [data-admin-menu-page-shell="true"] [data-slot="admin-page-header"] {
+    margin-bottom: 24px !important;
+  }
+
+  [data-admin-menu-page-shell="true"] [data-slot="admin-page-header"] + * {
+    margin-top: 0 !important;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+
+  /* ─── Admin 端自适应规则（对齐用户端策略）─────────────────────────
+   * 面向桌面端，不做小屏响应式：
+   * - 内容区 min-w-[960px]，低于此宽度出横滚（同用户端 min-w-[1200px] 理念）
+   * - 内容区 max-w-[1600px] mx-auto，超宽屏居中
+   * - 表格保护：设 min-width 防止列被挤碎，容器 overflow-x 横滚兜底
+   * ──────────────────────────────────────────────────────────── */
+  [data-slot="admin-sidebar-inset"] table {
+    min-width: 720px;
+  }
+
+  [data-slot="admin-sidebar-inset"] .table-wrapper,
+  [data-slot="admin-sidebar-inset"] [data-table-container] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ─── 卡片三态规则（对齐 Figma card 规范） ────────────────────────
+   * 所有 [data-surface="card"] 的 hover 和 selected 态统一控制：
+   *   - hover: 描边变蓝灰 #C9D5FC + 微阴影
+   *   - selected (data-state="selected"): 描边变品牌蓝 #1447E6 + 微阴影
+   * ──────────────────────────────────────────────────────────── */
+  [data-surface="card"][data-interactive]:hover {
+    border-color: #C9D5FC;
+    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.05);
+  }
+  [data-surface="card"][data-state="selected"] {
+    border-color: #1447E6;
+    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.05);
+  }
+
+  /* ─── 表格字号一致性规则 ───────────────────────────────────────
+   * 表格相关所有元素字号统一 12px（最小字号保障）：
+   *   - Table 单元格 / 表头 / 表尾
+   *   - 表格内任意后代元素（按钮/Input/Select/Switch/Label/code/pre/div 等）
+   *   - 分页器（[data-slot="pagination"]）及其内部所有元素
+   *   - 数量统计 / 摘要文字（位于 SurfaceCard 内、与 table-container 同级的兄弟元素）
+   * Badge 字号不变（始终保持自身尺寸），通过 [data-slot="badge"] 豁免。
+   *
+   * ⚠️ 最小字号规则：表格内字号有且只有 12px，不会随页面缩放或响应式断点缩小。
+   *    已通过 !important 固定为 0.75rem（= 12px），任何外部覆盖均无效。
+   * ──────────────────────────────────────────────────────────── */
+
+  /* 1) 表格单元格自身字号（强制覆盖业务侧 className 中的 text-sm 等） */
+  [data-slot="table"],
+  [data-slot="table-head"],
+  [data-slot="table-cell"],
+  [data-slot="table-action-cell"],
+  [data-slot="table-footer"] {
+    font-size: 0.75rem !important; /* 12px — 最小字号，不随页面缩放 */
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  /* 2) 表格内部所有后代元素：统一 12px（强制覆盖业务侧 text-sm/text-base 等）
+   *    最小字号保障：不会因响应式/缩放/外部继承而缩小到 12px 以下 */
+  table[data-density="default"] *:not([data-slot="badge"]):not([data-slot="badge"] *),
+  table[data-density="compact"] *:not([data-slot="badge"]):not([data-slot="badge"] *) {
+    font-size: 0.75rem !important; /* 12px min */
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  /* 3) 分页器：所有内部元素强制 12px（无论 size="default" 还是 "small"） */
+  [data-slot="pagination"],
+  [data-slot="pagination"]
+    *:not([data-slot="badge"]):not([data-slot="badge"] *) {
+    font-size: 0.75rem !important; /* 12px */
+  }
+
+  /* 4) 数量统计 / 摘要文字：与表格 shell 同级的兄弟元素全部 12px
+   *    只匹配直接包含 Table 组件的 SurfaceCard，避免展示台这类大容器因深层表格被误伤。 */
+  [data-surface="card"]:has(> [data-slot="table-shell"])
+    > :not([data-slot="table-shell"])
+    *:not([data-slot="badge"]):not([data-slot="badge"] *) {
+    font-size: 0.75rem !important; /* 12px */
+  }
+
+  /* ─── 表格自动固定列规则（v2026.05） ───────────────────────────
+   * Table 组件默认开启 autoFixedColumns，给 <table data-auto-fixed="true">：
+   *   - 自动 sticky 每行第一个 TableHead / TableCell（首列）
+   *   - 自动 sticky 每行的 TableActionCell（操作列）
+   * 仅作用于"未显式声明 [data-fixed]"的单元格；业务侧已写 fixed="left"/"right" 的列优先级更高，不被覆盖。
+   * 当窄屏 / 大表格触发横向滚动时，首列与操作列保持可见，避免列被挤碎。
+   *
+   * z-index：
+   *   - 表头自动固定列 z-50（高于业务表头 popover z-40）
+   *   - 表体自动固定列 z-20
+   * ──────────────────────────────────────────────────────────── */
+
+  /* 表头：第一个 th + 所有 action-cell，仅当未显式 fixed 时
+   *   背景色读取 thead 上的 --table-head-bg 变量（由 TableHeader 按 variant 注入），
+   *   default / gray-header → var(--bg-grey-normal)；elevated-white / collapsible → var(--bg-white)。
+   *   不再硬编码白色 —— 否则会盖掉 thead 自身的灰底，出现"首列白、其余灰"色块割裂。
+   *   fallback 用 var(--bg-grey-normal)（默认表头灰），与普通列 TableHead 背景表达式一致。 */
+  table[data-auto-fixed="true"]
+    > thead
+    > tr
+    > th:first-child:not([data-fixed]) {
+    position: sticky;
+    left: 0;
+    z-index: 50;
+    background-color: var(--table-head-bg, var(--bg-grey-normal));
+  }
+  /* 表头右固定列：业务表头通常用 <TableHead>操作</TableHead>，渲染为
+   *   <th data-slot="table-head">，并不会出现 [data-slot="table-action-cell"]
+   *   （TableActionCell 是 <td>，仅用于 body）。所以表头侧不能用 action-cell 选择器，
+   *   必须按"最后一个 th"匹配，与 body 的 td:last-child(action-cell) 对称。
+   *
+   *   仅当 body 的最后一列也是 action-cell（说明这是带操作列的表格）时才钉表头，
+   *   通过 :has() 选择器约束，避免误伤"末列不是操作列"的表格（如汇总表）。 */
+  table[data-auto-fixed="true"]:has(> tbody > tr > td:last-child[data-slot="table-action-cell"])
+    > thead
+    > tr
+    > th:last-child:not([data-fixed]) {
+    position: sticky;
+    right: 0;
+    z-index: 50;
+    background-color: var(--table-head-bg, var(--bg-grey-normal));
+  }
+
+  /* 表体：第一个 td + action-cell，仅当未显式 fixed 时 */
+  table[data-auto-fixed="true"]
+    > tbody
+    > tr
+    > td:first-child:not([data-fixed]) {
+    position: sticky;
+    left: 0;
+    z-index: 20;
+    background-color: var(--bg-white);
+    transition: background-color 0.15s ease;
+  }
+  table[data-auto-fixed="true"]
+    > tbody
+    > tr
+    > [data-slot="table-action-cell"]:not([data-fixed]) {
+    position: sticky;
+    right: 0;
+    z-index: 20;
+    background-color: var(--bg-white);
+    transition: background-color 0.15s ease;
+  }
+
+  /* 行 hover / selected 时同步固定列底色 */
+  table[data-auto-fixed="true"]
+    > tbody
+    > tr:hover
+    > td:first-child:not([data-fixed]),
+  table[data-auto-fixed="true"]
+    > tbody
+    > tr:hover
+    > [data-slot="table-action-cell"]:not([data-fixed]) {
+    background-color: var(--bg-grey-hover-subtle) !important;
+  }
+
+  /* ─── 显式固定列规则（对称于自动固定列） ───────────────────────
+   * 业务通过 <TableHead fixed="left"> / <TableCell fixed="right"> 等显式声明时，
+   * 渲染出的 cell 带 [data-fixed="left"] / [data-fixed="right"] 属性。
+   * sticky 的位移（left/right）由 Table 组件 measure useEffect 在挂载/resize 时
+   * 自动注入到 inline style.left / .right（支持多列同侧固定按声明顺序累加偏移）。
+   *
+   * 这里负责的是"被 sticky 的 cell 必须有不透明背景"——否则横滚时会让被覆盖的
+   * 流动列内容透出来（曾出现"操作列下显示出额度使用列残段"的视觉穿透 bug）。
+   * 表头底色读 --table-head-bg（跟随 variant），body 默认白底，
+   * 行 hover / selected 时同步切换。
+   *
+   * !important 用于强制压过 TableCell className 里的 transition-colors /
+   * group-hover:bg-... 等 Tailwind utility（这些类通过 cn() 拼接后顺序不稳定，
+   * 且 @layer utilities 优先级高于 @layer components，曾出现 sticky cell 透明 bug）。 */
+  table > thead > tr > th[data-fixed] {
+    background-color: var(--table-head-bg, var(--bg-grey-normal)) !important;
+  }
+  table > tbody > tr > td[data-fixed],
+  table > tfoot > tr > td[data-fixed] {
+    background-color: var(--bg-white) !important;
+    transition: background-color 0.15s ease;
+  }
+  table > tbody > tr:hover > td[data-fixed] {
+    background-color: var(--bg-grey-hover-subtle) !important;
+  }
+
+  /* ─── 固定前两列（复选框 + 名称列）───────────────────────────────
+   * 业务表格可通过 className="fixed-two-left-cols" 启用。
+   * 第一列 left:0，第二列 left:56px（复选框列宽 w-14 = 56px）。
+   * ────────────────────────────────────────────────────────────── */
+  table.fixed-two-left-cols > thead > tr > th:nth-child(2) {
+    position: sticky;
+    left: 56px;
+    z-index: 50;
+    background-color: inherit;
+  }
+  table.fixed-two-left-cols > tbody > tr > td:nth-child(2) {
+    position: sticky !important;
+    left: 56px !important;
+    z-index: 30 !important;
+    background-color: #ffffff !important;
+    transition: background-color 0.15s ease;
+  }
+  table.fixed-two-left-cols > tbody > tr:hover > td:nth-child(2) {
+    background-color: var(--bg-grey-hover-subtle) !important;
+  }
+  /* 第二列右边界分隔线（有滚动时显示） */
+  [data-slot="table-container"][data-scroll-left="true"] table.fixed-two-left-cols > thead > tr > th:nth-child(2)::after,
+  [data-slot="table-container"][data-scroll-left="true"] table.fixed-two-left-cols > tbody > tr > td:nth-child(2)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    background-color: #EAEEF4;
+    pointer-events: none;
+  }
+  /* 第一列不显示分隔线（让第二列的显示即可） */
+  table.fixed-two-left-cols > thead > tr > th:first-child::after,
+  table.fixed-two-left-cols > tbody > tr > td:first-child::after {
+    display: none !important;
+  }
+
+  /* 自动固定列的 1px 硬分隔线已移除（v2026.06）：
+   * 固定列边界只保留下方 ::before 柔和渐变阴影，不再画硬线，
+   * 避免在「列间无竖线」的表格里突兀地多出一条边线（与显式固定列 table.tsx 行为一致）。 */
+
+  /* ─── 固定列柔和阴影（v2026.06）───────────────────────────────────
+   * 用 ::before 伪元素 + 横向 linear-gradient 实现，关键点：
+   *   - 伪元素 top:0 / bottom:-1px 满高且跨过行边框，逐行首尾相连 →
+   *     阴影纵向连续、整列首尾无空白（不用 inset box-shadow，避免其 spread 造成的上下内缩留白）；
+   *   - 渐变锚定在固定单元格边缘，与 ::after 1px 分隔线同处一处、天然贴合，
+   *     不会像游离的容器 overlay 那样错位留缝（④/⑩ 旧 bug）或叠成粗线变重（⑤ 旧 bug）；
+   *   - 仅在对应方向横向滚动时出现（与分隔线显隐同步）。
+   * 同时覆盖显式固定（[data-fixed-shadow]）与自动固定（首列 / 操作列）。
+   * ──────────────────────────────────────────────────────────── */
+  /* 左固定边界列 → 向右投影 */
+  [data-slot="table-container"][data-scroll-left="true"] table [data-fixed-shadow="left"]::before,
+  [data-slot="table-container"][data-scroll-left="true"]
+    table[data-auto-fixed="true"] > thead > tr > th:first-child:not([data-fixed])::before,
+  [data-slot="table-container"][data-scroll-left="true"]
+    table[data-auto-fixed="true"] > tbody > tr > td:first-child:not([data-fixed])::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: -1px;
+    right: 0;
+    width: 6px;
+    transform: translateX(100%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0));
+    pointer-events: none;
+    z-index: 5;
+  }
+  /* 右固定边界列 → 向左投影 */
+  [data-slot="table-container"][data-scroll-right="true"] table [data-fixed-shadow="right"]::before,
+  [data-slot="table-container"][data-scroll-right="true"]
+    table[data-auto-fixed="true"]:has(> tbody > tr > td:last-child[data-slot="table-action-cell"])
+    > thead > tr > th:last-child:not([data-fixed])::before,
+  [data-slot="table-container"][data-scroll-right="true"]
+    table[data-auto-fixed="true"] > tbody > tr > [data-slot="table-action-cell"]:not([data-fixed])::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: -1px;
+    left: 0;
+    width: 6px;
+    transform: translateX(-100%);
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0));
+    pointer-events: none;
+    z-index: 5;
+  }
+  [data-slot="admin-sidebar"][data-state="collapsed"]
+    [data-slot="admin-sidebar-content"] {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  [data-slot="admin-sidebar"][data-state="collapsed"]
+    [data-slot="admin-sidebar-footer"] {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.06),
+      0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Gradient orb decoration */
+  .orb-blue {
+    background: radial-gradient(
+      circle,
+      rgba(20, 71, 230, 0.18) 0%,
+      rgba(20, 71, 230, 0) 70%
+    );
+    filter: blur(40px);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .orb-purple {
+    background: radial-gradient(
+      circle,
+      rgba(88, 86, 214, 0.15) 0%,
+      rgba(88, 86, 214, 0) 70%
+    );
+    filter: blur(40px);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Status badges (v2: 2px 圆角 + 紧凑 padding) */
+  .badge-running {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium whitespace-nowrap;
+    background: rgba(52, 199, 89, 0.12);
+    color: #1a8c3a;
+    border-radius: 2px;
+  }
+  .badge-loading {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium whitespace-nowrap;
+    background: rgba(20, 71, 230, 0.1);
+    color: #1447e6;
+    border-radius: 2px;
+  }
+  .badge-stopped {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium whitespace-nowrap;
+    background: rgba(255, 59, 48, 0.1);
+    color: #c0392b;
+    border-radius: 2px;
+  }
+  .badge-pending {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium whitespace-nowrap;
+    background: rgba(255, 149, 0, 0.1);
+    color: #b8640a;
+    border-radius: 2px;
+  }
+  .badge-shutdown {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium whitespace-nowrap;
+    background: rgba(142, 142, 147, 0.12);
+    color: #6b7280;
+    border-radius: 2px;
+  }
+  .badge-purple {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium whitespace-nowrap;
+    background: rgba(147, 51, 234, 0.1);
+    color: #7c3aed;
+    border-radius: 2px;
+  }
+  .badge-new {
+    @apply inline-flex items-center px-1.5 text-[10px] font-medium whitespace-nowrap;
+    font-family: var(--font-en);
+    background: #1447e6;
+    color: #ffffff;
+    border-radius: 2px;
+    padding-block: 1px;
+  }
+
+  /* 用户端全局背景（白→灰渐变） */
+  .tenant-bg {
+    background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+    min-height: 100vh;
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-2.5 px-3 py-2 rounded-[4px] text-sm font-medium transition-all duration-150;
+    color: oklch(0.45 0.01 240);
+  }
+  .nav-item:hover {
+    background: oklch(0.94 0.01 240);
+    color: oklch(0.15 0.01 240);
+  }
+  .nav-item.active {
+    background: rgba(20, 71, 230, 0.1);
+    color: #1447e6;
+    border-left: 2px solid #1447e6;
+    padding-left: calc(0.75rem - 2px);
+  }
+
+  /* Page fade-in animation */
+  .page-enter {
+    animation: pageEnter 0.25s ease-out;
+  }
+
+  /* Hide scrollbar but keep scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Anchor highlight pulse */
+  .anchor-highlight {
+    animation: anchorPulse 1.5s ease-out;
+    outline: 2px solid rgba(20, 71, 230, 0.25);
+    outline-offset: -1px;
+    border-radius: 8px;
+  }
+  @keyframes anchorPulse {
+    0% { outline-color: rgba(20, 71, 230, 0.3); }
+    20% { outline-color: rgba(20, 71, 230, 0.25); }
+    100% { outline-color: rgba(20, 71, 230, 0); }
+  }
+  @keyframes pageEnter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Primary button glow */
+  .btn-primary-glow {
+    box-shadow: 0 0 0 0 rgba(20, 71, 230, 0);
+    transition: box-shadow 0.2s ease;
+  }
+  .btn-primary-glow:hover {
+    box-shadow: 0 4px 14px rgba(20, 71, 230, 0.3);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.85 0.005 240);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.75 0.01 240);
+  }
+
+  /* 滚动条默认隐藏，鼠标移入 / 滚动交互中显示，离开后恢复隐藏 */
+  .scrollbar-on-hover {
+    scrollbar-color: transparent transparent;
+  }
+  .scrollbar-on-hover:hover,
+  .scrollbar-on-hover[data-scrolling="true"],
+  .scrollbar-on-hover:active {
+    scrollbar-color: oklch(0.85 0.005 240) transparent;
+  }
+  .scrollbar-on-hover::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+    transition: background 0.2s;
+  }
+  .scrollbar-on-hover:hover::-webkit-scrollbar-thumb,
+  .scrollbar-on-hover[data-scrolling="true"]::-webkit-scrollbar-thumb,
+  .scrollbar-on-hover:active::-webkit-scrollbar-thumb {
+    background: oklch(0.85 0.005 240);
+  }
+  .scrollbar-on-hover:hover::-webkit-scrollbar-thumb:hover,
+  .scrollbar-on-hover[data-scrolling="true"]::-webkit-scrollbar-thumb:hover,
+  .scrollbar-on-hover:active::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.75 0.01 240);
+  }
+}
+
+/* ─── MD 预览模式标题层级样式 ─────────────────────────────────────────────────── */
+.md-preview h1,
+.md-preview h2,
+.md-preview h3,
+.md-preview h4,
+.md-preview h5,
+.md-preview h6 {
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  line-height: 1.4;
+  color: #111827;
+}
+
+/* 第一个标题不需要顶部 margin，避免与容器 padding 叠加产生过大空隙 */
+.md-preview > h1:first-child,
+.md-preview > h2:first-child,
+.md-preview > h3:first-child {
+  margin-top: 0;
+}
+
+.md-preview h1 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.md-preview h2 {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.md-preview h3 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.md-preview h4,
+.md-preview h5,
+.md-preview h6 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.md-preview p,
+.md-preview li,
+.md-preview td,
+.md-preview th {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.md-preview ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 0.4em 0;
+}
+
+.md-preview ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.4em 0;
+}
+
+.md-preview li {
+  margin: 0.15em 0;
+  display: list-item;
+}
+
+.md-preview code:not(pre code) {
+  font-size: 12px;
+  background: #fdf2f2;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: #c0392b;
+  font-weight: 500;
+}
+
+.md-preview pre {
+  margin: 0.6em 0;
+  border-radius: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: pre;
+  max-width: 100%;
+}
+
+.md-preview pre code {
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  display: block;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* 覆盖 hljs 主题的字号，代码块比正文小一档 */
+.md-preview pre.hljs {
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 10px 14px;
+  background: #f6f8fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.md-preview pre.hljs code {
+  font-size: 12px;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* 树状结构代码块：连接符、文件名、注释分层着色 */
+.md-preview pre.hljs.tree-block {
+  background: #f6f8fa;
+  border: 1px solid #e5e7eb;
+}
+
+.md-preview pre.hljs.tree-block .tree-connector {
+  color: #6b7280;
+}
+
+.md-preview pre.hljs.tree-block .tree-name {
+  color: #111827;
+  font-weight: 500;
+}
+
+.md-preview pre.hljs.tree-block .tree-comment {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.md-preview blockquote {
+  border-left: 3px solid #e5e7eb;
+  background: #f9fafb;
+  padding: 0.5em 0.75em;
+  margin: 0.5em 0;
+  border-radius: 0 4px 4px 0;
+  color: #6b7280;
+}
+
+.md-preview hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 0.75em 0;
+}
+
+.md-preview a {
+  color: #1447e6;
+  text-decoration: none;
+}
+
+.md-preview a:hover {
+  text-decoration: underline;
+}
+
+/* MD 预览 - 表格样式 */
+.md-preview table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8em 0;
+  font-size: 14px;
+}
+.md-preview th {
+  font-weight: 600;
+  color: #111827;
+  text-align: left;
+  padding: 0 16px 0 0;
+}
+.md-preview td {
+  padding: 0 16px 0 0;
+  color: #374151;
+  vertical-align: middle;
+}
+.md-preview tr:last-child td {
+  border-bottom: none;
+}
+
+/* 消除 SyntaxHighlighter 每行代码的行背景色，与代码块背景融为一体 */
+.token-line {
+  background: transparent !important;
+}
+
+/* Task list (remark-gfm) 样式对齐正文 */
+.contains-task-list {
+  font-size: 0.875rem; /* 14px，与正文一致 */
+  color: rgb(55, 65, 81); /* text-gray-700 */
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+.task-list-item {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: rgb(55, 65, 81);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+}
+.task-list-item input[type="checkbox"] {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  accent-color: #3b82f6;
+  cursor: default;
+}
+
+/* Fix: ensure sonner toast section appears above Radix UI Dialog overlays */
+section[aria-label="Notifications alt+T"] {
+  position: fixed !important;
+  z-index: 99999 !important;
+  inset: 0;
+  pointer-events: none;
+}
+section[aria-label="Notifications alt+T"] > ol {
+  pointer-events: auto;
+}
+
+/* ─── Toast / Sonner：内置 closeButton 始终显示并定位到右上角 ───
+ * 注意：sonner 默认 closeButton 仅在 hover 时显示，且默认在左上角；
+ * 这里覆盖为「始终可见 + 右上角悬浮」，与设计规范一致。
+ */
+[data-sonner-toast] > [data-close-button] {
+  opacity: 1 !important;
+  transform: none !important;
+  left: auto !important;
+  right: 0 !important;
+  top: 0 !important;
+  translate: 50% -50% !important;
+  background: #ffffff !important;
+  border: 1px solid #EAEEF4 !important;
+  color: #7b818f !important;
+  border-radius: 9999px !important;
+  width: 20px !important;
+  height: 20px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+}
+[data-sonner-toast] > [data-close-button]:hover {
+  background: #f4f4f5 !important;
+  color: #09090b !important;
+  border-color: #EAEEF4 !important;
+}
+
+/* ─── 导航栏按钮文字：固定展示不缩略 ─── */
+.nav-btn-label {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   STATUS BADGE ANIMATIONS - Agent 卡片状态图标动画（用户端）
+   引入自 brennali；StatusBadge.tsx 直接依赖
+   ============================================================ */
+
+/* 通用图标容器 */
+.status-creating-icon,
+.status-fail-icon,
+.status-running-icon,
+.status-shutdown-icon,
+.status-loading-icon,
+.status-loadfail-icon,
+.status-maintain-icon,
+.status-pending-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+/* 创建中：雷达圈扩散 */
+.status-creating-icon svg { overflow: visible; }
+.status-ring1 { animation: status-radar 2.8s ease-out infinite; }
+.status-ring2 { animation: status-radar 2.8s ease-out 0.9s infinite; }
+.status-ring3 { animation: status-radar 2.8s ease-out 1.8s infinite; }
+@keyframes status-radar {
+  0% { r: 0; opacity: 0.9; stroke-width: 2.5; }
+  50% { r: 5.5; opacity: 0.35; stroke-width: 1.2; }
+  100% { r: 7; opacity: 0; stroke-width: 0.5; }
+}
+
+/* 创建失败：感叹号摇摆 */
+.status-excl {
+  animation: status-shake 3s ease-in-out infinite;
+  transform-origin: 8px 8px;
+}
+@keyframes status-shake {
+  0%, 20%, 100% { transform: rotate(0); }
+  4% { transform: rotate(-12deg); }
+  8% { transform: rotate(10deg); }
+  12% { transform: rotate(-8deg); }
+  16% { transform: rotate(4deg); }
+}
+
+/* 运行中：水波动画 */
+.status-wave {
+  animation: status-wave-move 2.4s ease-in-out infinite;
+}
+@keyframes status-wave-move {
+  0% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  100% { transform: translateX(-3px); }
+}
+
+/* 加载中：箭头自旋 */
+.status-loading-icon svg {
+  animation: status-spin 1.2s linear infinite;
+}
+@keyframes status-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 加载失败：感叹号摇摆变叉号 */
+.status-lf-excl {
+  animation: status-lf-excl-anim 4s ease-in-out infinite;
+  transform-origin: 8px 8px;
+}
+.status-lf-cross {
+  animation: status-lf-cross-anim 4s ease-in-out infinite;
+  transform-origin: 8px 8px;
+}
+@keyframes status-lf-excl-anim {
+  0%, 5% { opacity: 1; transform: rotate(0); }
+  3% { transform: rotate(-12deg); }
+  6% { transform: rotate(10deg); }
+  9% { transform: rotate(-6deg); }
+  12% { transform: rotate(0); }
+  40% { opacity: 1; }
+  50% { opacity: 0; }
+  90% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes status-lf-cross-anim {
+  0%, 40% { opacity: 0; }
+  50% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* 维护中：齿轮旋转 */
+.status-maintain-icon svg {
+  animation: status-spin 4s linear infinite;
+}
+
+/* 待处理：三点依次闪烁 */
+.status-dot1 { animation: status-blink 1.4s ease-in-out infinite; }
+.status-dot2 { animation: status-blink 1.4s ease-in-out 0.2s infinite; }
+.status-dot3 { animation: status-blink 1.4s ease-in-out 0.4s infinite; }
+@keyframes status-blink {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* ─── 铃铛摇摆动画（用户端 NotificationPanel）───────────────────── */
+.bell-shake {
+  transform-origin: top center;
+  animation: bellShake 3s ease-in-out infinite;
+}
+
+@keyframes bellShake {
+  0% { transform: rotate(0); }
+  3% { transform: rotate(12deg); }
+  6% { transform: rotate(-12deg); }
+  9% { transform: rotate(8deg); }
+  12% { transform: rotate(-8deg); }
+  15% { transform: rotate(0); }
+  100% { transform: rotate(0); }
+}
+
+/* ─── 产品动态抽屉：从卡片「查看详情」进入时高亮提到的动态（3秒后消失，无底色） ─── */
+.animate-product-update-highlight {
+  animation: productUpdateHighlight 3s ease-in-out forwards;
+}
+
+@keyframes productUpdateHighlight {
+  0% {
+    box-shadow: 0 0 0 0 rgba(20, 71, 230, 0);
+  }
+  10% {
+    box-shadow: 0 0 0 2px rgba(20, 71, 230, 0.25);
+  }
+  70% {
+    box-shadow: 0 0 0 2px rgba(20, 71, 230, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(20, 71, 230, 0);
+  }
+}
+
+/* ─── Agent 列表页表格样式覆盖（用户端 MyOpenClaw 等）──────────── */
+.agent-list-page [data-slot="table-header"] th {
+  background-color: white !important;
+  height: 44px !important;
+  font-size: 12px !important;
+}
+.agent-list-page [data-slot="surface-card"] {
+  border: none !important;
+  box-shadow: none !important;
+}
+.agent-list-page [data-slot="table-header"] tr {
+  border-color: #E6E9EF !important;
+}
+.agent-list-page [data-slot="table-body"] tr {
+  border-color: #E6E9EF !important;
+}
+.agent-list-page [data-slot="table-body"] td {
+  font-size: 12px !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+.agent-list-page [data-slot="table-body"] td * {
+  font-size: 12px !important;
+}
+.agent-list-page [data-slot="pagination"] {
+  font-size: 12px !important;
+}
+.agent-list-page [data-slot="pagination"] button,
+.agent-list-page [data-slot="pagination"] a {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  font-size: 12px !important;
+}
+.agent-list-page .agent-date-toolbar button {
+  border-radius: 4px !important;
+  border-color: transparent !important;
+}
+.agent-list-page .agent-toolbar button {
+  height: 32px !important;
+  font-size: 12px !important;
+}
+.agent-list-page .agent-toolbar button svg {
+  width: 16px !important;
+  height: 16px !important;
+}

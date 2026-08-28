@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管控端弹窗规范违规审计报告</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; padding: 40px 24px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .subtitle { color: #64748b; font-size: 14px; margin-bottom: 32px; }
+  .summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 40px; }
+  .summary-card { background: #fff; border-radius: 8px; padding: 20px; border: 1px solid #e2e8f0; }
+  .summary-card .number { font-size: 32px; font-weight: 700; color: #dc2626; }
+  .summary-card .label { font-size: 12px; color: #64748b; margin-top: 4px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title .badge { font-size: 11px; background: #fee2e2; color: #dc2626; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+  .file-group { background: #fff; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 12px; overflow: hidden; }
+  .file-header { padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: between; gap: 8px; }
+  .file-path { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: #475569; flex: 1; }
+  .violation-count { font-size: 11px; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 10px; }
+  .violations { padding: 0; }
+  .violation-item { padding: 10px 16px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: flex-start; gap: 12px; font-size: 13px; }
+  .violation-item:last-child { border-bottom: none; }
+  .line-num { font-family: monospace; font-size: 11px; color: #94a3b8; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; white-space: nowrap; min-width: 52px; text-align: center; }
+  .violation-desc { color: #334155; flex: 1; }
+  .violation-desc code { background: #fee2e2; color: #991b1b; padding: 1px 4px; border-radius: 3px; font-size: 12px; font-family: monospace; }
+  .severity-high { border-left: 3px solid #dc2626; }
+  .severity-medium { border-left: 3px solid #f59e0b; }
+  .severity-low { border-left: 3px solid #6366f1; }
+  @media (max-width: 768px) { .summary { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>管控端弹窗/对话框规范违规审计报告</h1>
+  <p class="subtitle">审计时间：2026-06-05 · 规范依据：SKILL-GLOBAL-COMPONENTS.md §7.3（19 条强制规范）</p>
+
+  <div class="summary">
+    <div class="summary-card"><div class="number">~20</div><div class="label">硬编码文本样式</div></div>
+    <div class="summary-card"><div class="number">3</div><div class="label">Button 缺少 variant</div></div>
+    <div class="summary-card"><div class="number">4</div><div class="label">Inline style 违规</div></div>
+    <div class="summary-card"><div class="number">~20</div><div class="label">非标准间距 (5/6)</div></div>
+    <div class="summary-card"><div class="number">~40</div><div class="label">Label 未用 MetaMedium</div></div>
+  </div>
+
+  <!-- ═══ 违规类型 1：硬编码文本样式 ═══ -->
+  <div class="section">
+    <h2 class="section-title">1. 硬编码文本样式 <span class="badge">违反规范 §7/§18</span></h2>
+
+    <div class="file-group severity-high">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/OpenClawMonitor.tsx</span>
+        <span class="violation-count">6 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L2426</span><span class="violation-desc">关机弹窗：<code>&lt;p className="text-sm text-[#525252]"&gt;</code> → 应用 <code>BodyText tone="secondary"</code></span></div>
+        <div class="violation-item"><span class="line-num">L2451</span><span class="violation-desc">开机弹窗：<code>&lt;p className="text-sm text-[var(--text-muted)]"&gt;</code> → 应用 <code>BodyText tone="muted"</code></span></div>
+        <div class="violation-item"><span class="line-num">L2478</span><span class="violation-desc">重装弹窗：<code>&lt;p className="text-sm text-[#525252]"&gt;</code> → 应用 <code>BodyText tone="secondary"</code></span></div>
+        <div class="violation-item"><span class="line-num">L2527</span><span class="violation-desc">删除弹窗（普通态）：<code>&lt;p className="text-sm text-[#525252]"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L2531</span><span class="violation-desc">删除弹窗（运行态）：<code>&lt;p className="text-sm text-[#525252]"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L2789</span><span class="violation-desc">升级失败弹窗：<code>&lt;p className="text-sm text-[var(--text-muted)]"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-high">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/MemberManagement/SyncResultDialog.tsx</span>
+        <span class="violation-count">5 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L54</span><span class="violation-desc">组织异常标题：<code>&lt;h4 className="text-sm font-semibold text-[#0A0A0A]"&gt;</code> → 应用 <code>BodyMedium</code></span></div>
+        <div class="violation-item"><span class="line-num">L57-58</span><span class="violation-desc">计数：<code>&lt;span className="text-xs text-[#A3A3A3]"&gt;</code> → 应用 <code>HelperText as="span"</code></span></div>
+        <div class="violation-item"><span class="line-num">L63</span><span class="violation-desc">组织警告文案：<code>&lt;p className="text-xs text-red-700"&gt;</code> → 应放在 Alert 组件内</span></div>
+        <div class="violation-item"><span class="line-num">L121-124</span><span class="violation-desc">用户异常标题/计数：同上模式</span></div>
+        <div class="violation-item"><span class="line-num">L130</span><span class="violation-desc">用户警告文案：<code>&lt;p className="text-xs text-amber-700"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/MemberManagement/GroupView.tsx</span>
+        <span class="violation-count">4 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L819</span><span class="violation-desc"><code>&lt;p className="text-sm text-[#334155]"&gt;</code> → 应用 <code>BodyText tone="secondary"</code></span></div>
+        <div class="violation-item"><span class="line-num">L846</span><span class="violation-desc"><code>&lt;p className="text-xs font-medium text-[#334155]"&gt;</code> → 应用 <code>MetaMedium tone="secondary"</code></span></div>
+        <div class="violation-item"><span class="line-num">L860</span><span class="violation-desc"><code>&lt;p className="text-sm font-medium text-[#0A0A0A]"&gt;</code> → 应用 <code>BodyMedium</code></span></div>
+        <div class="violation-item"><span class="line-num">L861</span><span class="violation-desc"><code>&lt;p className="text-xs text-[#737373]"&gt;</code> → 应用 <code>HelperText</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/MemberManagement/NodeContentPanel.tsx</span>
+        <span class="violation-count">4 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L1075</span><span class="violation-desc"><code>&lt;p className="text-sm text-gray-700"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L1100</span><span class="violation-desc"><code>&lt;p className="text-xs font-medium text-gray-700"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L1114</span><span class="violation-desc"><code>&lt;p className="text-sm font-medium text-gray-900"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L1115</span><span class="violation-desc"><code>&lt;p className="text-xs text-gray-500"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/OpsObservation.tsx</span>
+        <span class="violation-count">2 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L1047</span><span class="violation-desc"><code>&lt;p className="text-sm text-[var(--text-title)]"&gt;</code> → 应用 <code>BodyText tone="primary"</code></span></div>
+        <div class="violation-item"><span class="line-num">L1089</span><span class="violation-desc"><code>&lt;p className="text-sm text-[#525252]"&gt;</code></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 违规类型 2：Button 缺少 variant ═══ -->
+  <div class="section">
+    <h2 class="section-title">2. DialogFooter Button 缺少 variant <span class="badge">违反规范 §13</span></h2>
+
+    <div class="file-group severity-high">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/OpenClawMonitor.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L2825</span><span class="violation-desc">升级结果弹窗：<code>&lt;Button onClick={...}&gt;我知道了&lt;/Button&gt;</code> — 无 variant，会渲染为蓝黑渐变</span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-high">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/FileManagement.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L1751</span><span class="violation-desc">购买弹窗：<code>&lt;Button onClick={handleConfirmPurchase} className="gap-2"&gt;确认购买&lt;/Button&gt;</code> — 无 variant</span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-high">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/ModelConfig.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L897-901</span><span class="violation-desc">连通性失败弹窗：<code>&lt;Button style={{ background: "linear-gradient(...)" }} className="text-white"&gt;</code> — 用 inline style 代替 variant</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 违规类型 3：Inline style ═══ -->
+  <div class="section">
+    <h2 class="section-title">3. Dialog 内容区使用 inline style <span class="badge">违反规范 §18</span></h2>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/OpenClawMonitor.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L2805</span><span class="violation-desc"><code>style={{ fontSize: '10px' }}</code> — 应使用 Tailwind <code>text-[10px]</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-high">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/ModelConfig.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L898</span><span class="violation-desc"><code>style={{ background: "linear-gradient(135deg, #007AFF, #5856D6)" }}</code> — 严禁自编按钮样式，应用 <code>variant="dialog-confirm"</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-low">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SkillRolesTab.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L1251</span><span class="violation-desc"><code>style={{ minHeight: '48px' }}</code> — 应使用 <code>min-h-12</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-low">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/VersionManagement/components/CreateCommandDialog.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L358</span><span class="violation-desc"><code>style={{ resize: "vertical" }}</code> — 应使用 <code>resize-y</code></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 违规类型 4：非标准间距 ═══ -->
+  <div class="section">
+    <h2 class="section-title">4. 非标准间距（space-y-5 / space-y-6） <span class="badge">违反规范 §11</span></h2>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/OpenClawMonitor.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L2596</span><span class="violation-desc">批量删除弹窗：<code>space-y-5</code> → 应改为 <code>space-y-4</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/MemberManagement/SyncResultDialog.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L48</span><span class="violation-desc"><code>space-y-5</code> → 应改为 <code>space-y-4</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SkillRolesTab.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L1176</span><span class="violation-desc">编辑角色弹窗 body：<code>space-y-5</code> → 应改为 <code>space-y-4</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/AuthSourceImportDialog.tsx</span>
+        <span class="violation-count">2 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L643</span><span class="violation-desc">步骤2 表单：<code>space-y-5</code> → 应改为 <code>space-y-4</code></span></div>
+        <div class="violation-item"><span class="line-num">L729</span><span class="violation-desc">步骤3 映射：<code>space-y-6</code> → 应改为 <code>space-y-4</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/PlatformPolicy.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L2758</span><span class="violation-desc">龙虾医生弹窗：<code>DialogBody className="space-y-5"</code> → 应改为 <code>space-y-4</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx</span>
+        <span class="violation-count">2 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L473</span><span class="violation-desc"><code>space-y-5</code></span></div>
+        <div class="violation-item"><span class="line-num">L524</span><span class="violation-desc"><code>space-y-5</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SkillLibrary/PluginUpdateDialog.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L382</span><span class="violation-desc"><code>space-y-5</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SkillLibrary/PluginUploadDialog.tsx</span>
+        <span class="violation-count">2 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L255</span><span class="violation-desc"><code>space-y-5</code></span></div>
+        <div class="violation-item"><span class="line-num">L298</span><span class="violation-desc"><code>space-y-5</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L338</span><span class="violation-desc"><code>space-y-5</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SkillLibrary/EnableCOSDialog.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L34</span><span class="violation-desc"><code>space-y-6</code> → 应改为 <code>space-y-4</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/MemoryManagement/components/ProActivationDialog.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L81</span><span class="violation-desc"><code>space-y-5</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/ImageManagement/PublicImageHistoryDialog.tsx</span>
+        <span class="violation-count">1 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L70</span><span class="violation-desc"><code>space-y-5</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/FileManagement.tsx</span>
+        <span class="violation-count">3 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L1679</span><span class="violation-desc">关闭弹窗：<code>space-y-5</code></span></div>
+        <div class="violation-item"><span class="line-num">L1771</span><span class="violation-desc">续费弹窗：<code>space-y-5</code></span></div>
+        <div class="violation-item"><span class="line-num">L1842</span><span class="violation-desc">扩容弹窗：<code>space-y-5</code></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 违规类型 5：Label 未使用 MetaMedium ═══ -->
+  <div class="section">
+    <h2 class="section-title">5. Label 未使用 MetaMedium <span class="badge">违反规范 §14</span></h2>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/VersionManagement/components/DispatchCommandDialog.tsx</span>
+        <span class="violation-count">9 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L557</span><span class="violation-desc"><code>&lt;Label className="text-xs font-medium text-[#525252] block"&gt;执行结果&lt;/Label&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L566</span><span class="violation-desc"><code>&lt;Label className="text-xs font-medium text-red-600 block"&gt;错误输出&lt;/Label&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L680</span><span class="violation-desc"><code>&lt;Label className="text-sm font-medium text-[#0A0A0A]"&gt;选择命令模板&lt;/Label&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L855</span><span class="violation-desc"><code>&lt;Label className="text-sm font-medium text-[#0A0A0A]"&gt;输入命令参数&lt;/Label&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L934</span><span class="violation-desc"><code>&lt;Label className="text-xs font-medium text-gray-500"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L978</span><span class="violation-desc"><code>&lt;Label className="text-sm font-medium text-gray-700"&gt;选择目标实例&lt;/Label&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L1150</span><span class="violation-desc"><code>&lt;Label className="text-sm font-medium text-[#0A0A0A]"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L1163</span><span class="violation-desc"><code>&lt;label className="flex items-start gap-2"&gt;</code> — 原生 label</span></div>
+        <div class="violation-item"><span class="line-num">L1240</span><span class="violation-desc"><code>&lt;Label className="text-xs text-gray-600"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/VersionManagement/components/CreateCommandDialog.tsx</span>
+        <span class="violation-count">8 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L275, 289, 298, 307, 319, 346, 366, 495</span><span class="violation-desc">所有 <code>&lt;Label className="mb-1.5"&gt;</code> → 应改为 <code>&lt;MetaMedium as="label" tone="secondary"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SkillRolesTab.tsx</span>
+        <span class="violation-count">6 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L1179, 1198, 1210, 1225, 1246, 1373</span><span class="violation-desc">编辑角色弹窗中所有 <code>&lt;Label&gt;</code> → 应改为 <code>&lt;MetaMedium as="label" tone="secondary"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/MemberManagement/GroupDialog.tsx</span>
+        <span class="violation-count">6 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L390, 411</span><span class="violation-desc">新建组织弹窗：<code>&lt;Label className="text-xs font-medium text-[#525252]"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L591, 597, 603, 629</span><span class="violation-desc">删除弹窗详情行：<code>&lt;Label className="text-xs font-medium text-[#525252]"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/AuthSourceImportDialog.tsx</span>
+        <span class="violation-count">4 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L575</span><span class="violation-desc">Radio 选项：<code>&lt;label className="flex items-center"&gt;</code> — 原生 label</span></div>
+        <div class="violation-item"><span class="line-num">L649</span><span class="violation-desc"><code>&lt;Label className="flex items-center gap-1"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L732, 783</span><span class="violation-desc">映射步骤：<code>&lt;Label className="flex items-center gap-1.5"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/OpenClawMonitor.tsx</span>
+        <span class="violation-count">2 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L2487</span><span class="violation-desc"><code>&lt;label className="block text-[14px] font-medium text-[var(--text-title)]"&gt;请输入「重装」以确认&lt;/label&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L2542</span><span class="violation-desc"><code>&lt;label className="block text-[14px] font-medium text-[var(--text-title)]"&gt;请输入「删除」以确认&lt;/label&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/SessionManagement.tsx</span>
+        <span class="violation-count">3 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L633</span><span class="violation-desc"><code>&lt;label className="text-xs font-medium text-[#525252] block"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L850</span><span class="violation-desc"><code>&lt;label className="flex items-center gap-2"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L856</span><span class="violation-desc"><code>&lt;Label className="text-sm text-[#525252]"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/OpsObservation.tsx</span>
+        <span class="violation-count">3 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L510</span><span class="violation-desc"><code>&lt;Label className="text-sm text-[#525252]"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L1007</span><span class="violation-desc"><code>&lt;label className="flex items-center gap-2"&gt;</code></span></div>
+        <div class="violation-item"><span class="line-num">L1013</span><span class="violation-desc"><code>&lt;Label className="text-sm text-[#525252]"&gt;</code></span></div>
+      </div>
+    </div>
+
+    <div class="file-group severity-medium">
+      <div class="file-header">
+        <span class="file-path">client/src/pages/admin/VersionManagement/HistoryTab.tsx</span>
+        <span class="violation-count">3 处</span>
+      </div>
+      <div class="violations">
+        <div class="violation-item"><span class="line-num">L414, 423, 571</span><span class="violation-desc"><code>&lt;Label className="mb-1.5"&gt;</code></span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

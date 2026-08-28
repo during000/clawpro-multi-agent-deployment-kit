@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>管理端三类图标预览</title>
+  <style>
+    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #1f2937; background: #f6f8fb; }
+    body { margin: 0; padding: 32px; }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    h2 { margin: 36px 0 16px; font-size: 20px; }
+    p { color: #64748b; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+    .status-stack { display: flex; flex-direction: column; gap: 16px; max-width: 860px; }
+    .card { scroll-margin-top: 24px; background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(15, 23, 42, .04); }
+    .card:target { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, .14); }
+    .preview { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; color: #2563eb; margin-bottom: 12px; overflow: hidden; }
+    .preview.dark { color: #fff; background: linear-gradient(135deg, #2563eb, #1447e6); }
+    .preview.green { background: #1eb955; color: #fff; }
+    .preview.blue { background: #1677ff; color: #fff; }
+    .preview.cyan { background: #12b7f5; color: #fff; }
+    .preview.purple { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: #fff; }
+    .preview.warning { color: #d97706; background: #fffbeb; }
+    .preview.danger { color: #dc2626; background: #fef2f2; }
+    .preview.success { color: #16a34a; background: #f0fdf4; }
+    .preview.neutral { color: #64748b; background: #f8fafc; }
+    .preview img { max-width: 38px; max-height: 38px; object-fit: contain; }
+    .module-preview { margin-top: 12px; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; }
+    .module-row { display: flex; align-items: flex-start; gap: 10px; }
+    .module-row.center { align-items: center; }
+    .module-icon { width: 22px; height: 22px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+    .module-preview svg { width: 14px !important; height: 14px !important; stroke-width: 2; }
+    .module-preview svg.icon-xs { width: 12px !important; height: 12px !important; }
+    .module-preview svg.icon-sm { width: 14px !important; height: 14px !important; }
+    .module-preview svg.icon-md { width: 16px !important; height: 16px !important; }
+    .module-preview svg.icon-lg { width: 24px !important; height: 24px !important; }
+    .module-preview svg.icon-xl { width: 40px !important; height: 40px !important; }
+    .module-empty { text-align: center; padding: 28px 12px; color: #94a3b8; }
+    .module-empty .module-title { color: #64748b; font-weight: 500; }
+    .module-title { font-size: 14px; font-weight: 650; color: #0f172a; }
+    .module-desc { margin-top: 2px; font-size: 12px; color: #64748b; line-height: 1.5; }
+    .module-pill { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+    .module-button { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; color: #334155; font-size: 12px; }
+    .module-table { width: 100%; border-collapse: collapse; font-size: 12px; color: #475569; }
+    .module-table td { padding: 8px 10px; border-top: 1px solid #e2e8f0; }
+    .module-table tr:first-child td { border-top: 0; }
+    .name { font-weight: 650; margin-bottom: 4px; }
+    .meta { font-size: 12px; color: #64748b; line-height: 1.5; }
+    .tag { display: inline-flex; align-items: center; height: 20px; padding: 0 8px; border-radius: 999px; background: #eef2ff; color: #3730a3; font-size: 12px; margin-bottom: 8px; }
+    .card-nav { margin-top: 10px; padding: 7px 9px; border-radius: 10px; background: #f8fafc; color: #0f766e; font-size: 12px; line-height: 1.45; border: 1px solid #e2e8f0; }
+    .card-nav strong { color: #0f172a; font-weight: 650; }
+    .usage-link { display: inline-flex; margin-top: 12px; font-size: 12px; color: #1447e6; text-decoration: none; font-weight: 600; }
+    .usage-link:hover { text-decoration: underline; }
+    .usage-section { margin-top: 42px; }
+    .usage-card { scroll-margin-top: 24px; background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; }
+    .usage-card:target { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, .14); }
+    .usage-title { font-weight: 700; margin-bottom: 8px; }
+    .nav-badge { display: inline-flex; align-items: center; margin: 4px 0 8px; padding: 4px 10px; border-radius: 999px; background: #ecfdf5; color: #047857; font-size: 12px; font-weight: 650; }
+    .usage-list { margin: 8px 0 0; padding-left: 18px; color: #475569; font-size: 13px; line-height: 1.7; }
+    svg { display: block; }
+  </style>
+</head>
+<body>
+  <h1>管理端三类图标预览</h1>
+  <p>用于 `admin-icon-audit.md` 中“装饰 / 空态 / 引导”“品牌 / 渠道 / 身份源”“状态 / 反馈提示”三类图标的可点击预览。</p>
+
+  <h2>装饰 / 空态 / 引导图标</h2>
+  <p>以下同样模拟“所在组件 / 模块元素”的完整呈现，按竖向排列，并保持接近原页面的小尺寸。</p>
+  <section class="status-stack">
+    <div class="card" id="decor-file-plus">
+      <div class="tag">引导</div><div class="name">新启用网盘</div><div class="meta">FileManagement.tsx · 启用网盘弹窗卡片左侧</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff"><i data-lucide="plus" class="icon-lg"></i></span><div><div class="module-title">新启用网盘</div><div class="module-desc">为该实例创建新的网盘空间</div></div></div></div>
+    </div>
+    <div class="card" id="decor-agent-sparkles">
+      <div class="tag">强调</div><div class="name">企业工具库提示</div><div class="meta">AgentToolLibrary.tsx · 蓝色提示胶囊</div>
+      <div class="module-preview" style="background:#fff"><span class="module-pill" style="height:26px;background:#eff6ff;border:1px solid #dbeafe;color:#2563eb"><i data-lucide="sparkles" class="icon-xs"></i> 企业工具库能力说明</span></div>
+    </div>
+    <div class="card" id="decor-model-info">
+      <div class="tag">说明</div><div class="name">模型配置说明</div><div class="meta">ModelConfig.tsx · 标题下说明条</div>
+      <div class="module-preview" style="background:#eff6ff;border-color:#dbeafe;color:#2563eb"><div class="module-row"><i data-lucide="info" class="icon-sm" style="margin-top:2px;flex:0 0 auto"></i><div><div class="module-desc"><strong>用户可见：</strong>开启后，该模型会展示在用户端的模型选项列表中。</div><div class="module-desc"><strong>默认配置：</strong>用户在创建新实例时，该模型将被自动预添加。</div></div></div></div>
+    </div>
+    <div class="card" id="decor-skillroles-package-empty">
+      <div class="tag">空态</div><div class="name">角色无技能</div><div class="meta">SkillRolesTab.tsx · 空态居中图标</div>
+      <div class="module-preview module-empty"><i data-lucide="package" class="icon-xl" style="opacity:.3;margin:0 auto 12px"></i><div class="module-title">该角色还没有技能</div><div class="module-desc">可从公共技能库或企业技能库添加</div></div>
+    </div>
+    <div class="card" id="decor-add-package">
+      <div class="tag">弹窗标题</div><div class="name">选择初始技能包</div><div class="meta">AddToPackageDialog.tsx · DialogTitle 左侧</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center"><i data-lucide="package" class="icon-md" style="color:#2563eb"></i><div class="module-title">选择初始技能包</div></div></div>
+    </div>
+    <div class="card" id="decor-package-scope-globe">
+      <div class="tag">辅助信息</div><div class="name">技能包适用范围</div><div class="meta">SkillInitialPackageTab.tsx · 范围信息左侧</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center" style="gap:6px;color:#94a3b8"><i data-lucide="globe" class="icon-xs"></i><span style="font-size:12px">全部用户</span></div></div>
+    </div>
+    <div class="card" id="decor-package-empty">
+      <div class="tag">空态</div><div class="name">技能包无技能</div><div class="meta">SkillInitialPackageTab.tsx · 空态居中图标</div>
+      <div class="module-preview module-empty"><i data-lucide="package" class="icon-xl" style="opacity:.3;margin:0 auto 12px"></i><div class="module-title">该技能包还没有技能</div><div class="module-desc">可从公共技能库或企业技能库添加</div></div>
+    </div>
+    <div class="card" id="decor-public-star">
+      <div class="tag">弱装饰</div><div class="name">公共技能收藏数</div><div class="meta">PublicSkillLibraryTab.tsx · 收藏数量左侧</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center" style="gap:16px;color:#94a3b8;font-size:12px"><span class="module-row center" style="gap:6px"><i data-lucide="download" class="icon-md"></i> 1,234 次下载</span><span class="module-row center" style="gap:6px"><i data-lucide="star" class="icon-md"></i> 256 收藏</span></div></div>
+    </div>
+  </section>
+
+  <h2>品牌 / 渠道 / 身份源图标</h2>
+  <p>以下同样模拟“所在组件 / 模块元素”的完整呈现，按竖向排列，并保持接近原页面的品牌图标尺寸。</p>
+  <section class="status-stack">
+    <div class="card" id="brand-admin-logo">
+      <div class="tag">品牌</div><div class="name">ClawPro Admin Logo</div><div class="meta">AdminLayout.tsx · 侧边栏顶部品牌区</div>
+      <div class="module-preview" style="background:#020817;color:#fff"><div class="module-row center"><span style="width:36px;height:28px;border-radius:8px;background:linear-gradient(135deg,#1447e6,#38bdf8);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">CP</span><div><div class="module-title" style="color:#fff">管控端</div><div class="module-desc" style="color:#94a3b8">ClawPro Admin</div></div></div></div>
+    </div>
+    <div class="card" id="brand-channel-wework">
+      <div class="tag">通道</div><div class="name">企业微信</div><div class="meta">ChannelConfig.tsx · 内置通道列表</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center"><span class="module-icon" style="width:40px;height:40px;border-radius:4px;background:#1EB955;color:#fff"><svg viewBox="0 0 24 24" class="icon-lg" fill="currentColor"><path d="M8.5 10.5c-.83 0-1.5-.67-1.5-1.5S7.67 7.5 8.5 7.5 10 8.17 10 9s-.67 1.5-1.5 1.5zm7 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.37 5.07L2 22l5.07-1.36C8.44 21.51 10.18 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg></span><div><div class="module-title">企业微信</div><div class="module-desc">同步企业微信内的通讯录数据</div></div></div></div>
+    </div>
+    <div class="card" id="brand-channel-wework-app">
+      <div class="tag">通道</div><div class="name">企微应用</div><div class="meta">ChannelConfig.tsx · 内置通道列表</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center"><span class="module-icon" style="width:40px;height:40px;border-radius:4px;background:#1EB955;color:#fff"><svg viewBox="0 0 24 24" class="icon-lg" fill="currentColor"><path d="M12 1C5.93 1 1 5.93 1 12c0 2.05.55 3.97 1.52 5.62L1 23l5.52-1.5A10.94 10.94 0 0 0 12 23c6.07 0 11-4.93 11-11S18.07 1 12 1zm4.5 13.5H16v-1h.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5H16v-1h.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5zM8 10.5h-.5C6.12 10.5 5 11.62 5 13s1.12 2.5 2.5 2.5H8v-1h-.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5H8v-1z"/></svg></span><div><div class="module-title">企微应用</div><div class="module-desc">企业微信应用通道配置</div></div></div></div>
+    </div>
+    <div class="card" id="brand-channel-qq">
+      <div class="tag">通道</div><div class="name">QQ</div><div class="meta">ChannelConfig.tsx · 内置通道列表</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center"><span class="module-icon" style="width:40px;height:40px;border-radius:4px;background:#12B7F5;color:#fff"><svg viewBox="0 0 24 24" class="icon-lg" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></span><div><div class="module-title">QQ</div><div class="module-desc">QQ 通道配置</div></div></div></div>
+    </div>
+    <div class="card" id="brand-channel-feishu">
+      <div class="tag">通道</div><div class="name">飞书</div><div class="meta">ChannelConfig.tsx · 内置通道列表</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center"><span class="module-icon" style="width:40px;height:40px;border-radius:4px;background:#3370FF;color:#fff"><svg viewBox="0 0 24 24" class="icon-lg" fill="currentColor"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.18L18 8v8l-6 3.75L6 16V8l6-3.82z"/><path d="M12 7l-4 2.5v5L12 17l4-2.5v-5L12 7zm0 2.18l2 1.25v2.5L12 14.32l-2-1.25v-2.5L12 9.18z"/></svg></span><div><div class="module-title">飞书</div><div class="module-desc">飞书通道配置</div></div></div></div>
+    </div>
+    <div class="card" id="brand-channel-dingtalk">
+      <div class="tag">通道</div><div class="name">钉钉</div><div class="meta">ChannelConfig.tsx · 内置通道列表</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center"><span class="module-icon" style="width:40px;height:40px;border-radius:4px;background:#1677FF;color:#fff"><svg viewBox="0 0 24 24" class="icon-lg" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 14H7.5c-.83 0-1.5-.67-1.5-1.5v-5C6 8.67 6.67 8 7.5 8h9c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/></svg></span><div><div class="module-title">钉钉</div><div class="module-desc">钉钉通道配置</div></div></div></div>
+    </div>
+    <div class="card" id="brand-channel-wechat">
+      <div class="tag">通道</div><div class="name">微信</div><div class="meta">ChannelConfig.tsx · 内置通道列表</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row center"><span class="module-icon" style="width:40px;height:40px;border-radius:4px;background:#07C160;padding:6px"><img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663415970324/bygiZj33T3TUvGMBPvApKE/wechat_logo_transparent_11985bb7.png" alt="微信" style="width:100%;height:100%;object-fit:contain" /></span><div><div class="module-title">微信</div><div class="module-desc">微信通道配置</div></div></div></div>
+    </div>
+    <div class="card" id="brand-auth-wecom">
+      <div class="tag">身份源</div><div class="name">企业微信</div><div class="meta">AuthSourceImportDialog.tsx · 数据源卡片</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:48px;height:48px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/wework-v2-logo.png" alt="企业微信" style="width:32px;height:32px;object-fit:contain" /></span><div><div class="module-title">企业微信</div><div class="module-desc">同步企业微信内的通讯录数据</div></div></div></div>
+    </div>
+    <div class="card" id="brand-auth-private-wecom">
+      <div class="tag">身份源</div><div class="name">私有化企微</div><div class="meta">AuthSourceImportDialog.tsx · 数据源卡片</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:48px;height:48px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/wework-v2-logo.png" alt="私有化企微" style="width:32px;height:32px;object-fit:contain" /></span><div><div class="module-title">私有化企微</div><div class="module-desc">同步私有化企微内的通讯录数据</div></div></div></div>
+    </div>
+    <div class="card" id="brand-auth-feishu">
+      <div class="tag">身份源</div><div class="name">飞书</div><div class="meta">AuthSourceImportDialog.tsx · 数据源卡片</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:48px;height:48px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/lark-v2-logo.png" alt="飞书" style="width:32px;height:32px;object-fit:contain" /></span><div><div class="module-title">飞书</div><div class="module-desc">同步飞书内的通讯录数据</div></div></div></div>
+    </div>
+    <div class="card" id="brand-auth-dingtalk">
+      <div class="tag">身份源</div><div class="name">钉钉</div><div class="meta">AuthSourceImportDialog.tsx · 数据源卡片</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:48px;height:48px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/dd-v2-logo.png" alt="钉钉" style="width:32px;height:32px;object-fit:contain" /></span><div><div class="module-title">钉钉</div><div class="module-desc">同步钉钉内的通讯录数据</div></div></div></div>
+    </div>
+    <div class="card" id="brand-auth-windows-ad">
+      <div class="tag">身份源</div><div class="name">Windows AD</div><div class="meta">AuthSourceImportDialog.tsx · 数据源卡片</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:48px;height:48px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/ad-v2-logo.png" alt="Windows AD" style="width:32px;height:32px;object-fit:contain" /></span><div><div class="module-title">Windows AD</div><div class="module-desc">同步本地用户目录数据</div></div></div></div>
+    </div>
+    <div class="card" id="brand-auth-openldap">
+      <div class="tag">身份源</div><div class="name">OpenLDAP</div><div class="meta">AuthSourceImportDialog.tsx · 数据源卡片</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:48px;height:48px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/openldap-v2-logo.png" alt="OpenLDAP" style="width:32px;height:32px;object-fit:contain" /></span><div><div class="module-title">OpenLDAP</div><div class="module-desc">通过 LDAP 访问用户目录数据</div></div></div></div>
+    </div>
+    <div class="card" id="brand-auth-entra">
+      <div class="tag">身份源</div><div class="name">微软 Entra ID</div><div class="meta">AuthSourceImportDialog.tsx · 数据源卡片</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:48px;height:48px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/aad-v2-logo.png" alt="Entra ID" style="width:32px;height:32px;object-fit:contain" /></span><div><div class="module-title">微软 Entra ID</div><div class="module-desc">同步微软 Entra ID 内的通讯录数据</div></div></div></div>
+    </div>
+    <div class="card" id="brand-member-source-card">
+      <div class="tag">动态展示位</div><div class="name">我的数据源 Logo</div><div class="meta">MemberManagement.tsx · 我的数据源卡片</div>
+      <div class="module-preview" style="background:#fff"><div class="module-row"><span class="module-icon" style="width:40px;height:40px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/wework-v2-logo.png" alt="动态数据源" style="width:28px;height:28px;object-fit:contain" /></span><div><div class="module-title">我的数据源</div><div class="module-desc">通过企业微信数据源进行数据同步和登录</div></div></div></div>
+    </div>
+    <div class="card" id="brand-member-delete-dialog">
+      <div class="tag">动态展示位</div><div class="name">删除数据源确认 Logo</div><div class="meta">MemberManagement.tsx · 删除确认弹窗</div>
+      <div class="module-preview" style="background:#f8fafc"><div class="module-row"><span class="module-icon" style="width:32px;height:32px;border-radius:4px;background:#fff;border:1px solid #f1f5f9"><img src="https://identity.tencent.com/public/images/wework-v2-logo.png" alt="动态数据源" style="width:20px;height:20px;object-fit:contain" /></span><div><div class="module-title">删除数据源</div><div class="module-desc">确定要删除该数据源吗？</div></div></div></div>
+    </div>
+  </section>
+
+  <h2>状态 / 反馈提示图标</h2>
+  <p>以下改为模拟“所在组件 / 模块元素”的完整呈现，包含图标、文案、容器样式，并按竖向排列。</p>
+  <section class="status-stack">
+    <div class="card" id="status-info">
+      <div class="tag">信息说明</div><div class="name">Info</div><div class="meta">字段说明、指标说明、配置说明、帮助提示</div>
+      <div class="module-preview" style="background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8"><div class="module-row"><span class="module-icon" style="background:#dbeafe"><i data-lucide="info"></i></span><div><div class="module-title">模型配置说明</div><div class="module-desc">用户可见：开启后，该模型会展示在用户端的模型选项列表中。</div></div></div></div>
+    </div>
+    <div class="card" id="status-alert-circle">
+      <div class="tag">提醒</div><div class="name">AlertCircle</div><div class="meta">异常说明、注意事项、升级影响说明</div>
+      <div class="module-preview" style="background:#fff7ed;border-color:#fed7aa;color:#c2410c"><div class="module-row"><span class="module-icon" style="background:#ffedd5"><i data-lucide="circle-alert"></i></span><div><div class="module-title">升级影响说明</div><div class="module-desc">升级过程中，对应 Agent 的 Gateway 服务会有短暂中断，请确认后继续。</div></div></div></div>
+    </div>
+    <div class="card" id="status-alert-triangle">
+      <div class="tag">危险警告</div><div class="name">AlertTriangle</div><div class="meta">删除确认、高危操作、风险提示</div>
+      <div class="module-preview" style="background:#fef2f2;border-color:#fecaca;color:#dc2626"><div class="module-row"><span class="module-icon" style="background:#fee2e2"><i data-lucide="triangle-alert"></i></span><div><div class="module-title">此操作不可恢复</div><div class="module-desc">网盘中所有文件和数据将被永久删除，删除后无法恢复，请谨慎操作。</div></div></div></div>
+    </div>
+    <div class="card" id="status-check-circle">
+      <div class="tag">成功</div><div class="name">CheckCircle</div><div class="meta">审计成功、上传成功、配置完成</div>
+      <div class="module-preview"><table class="module-table"><tr><td>操作结果</td><td><span class="module-pill" style="background:#dcfce7;color:#15803d"><i data-lucide="circle-check"></i> 成功</span></td></tr><tr><td>操作对象</td><td>用户管理配置</td></tr></table></div>
+    </div>
+    <div class="card" id="status-check-circle2">
+      <div class="tag">已完成</div><div class="name">CheckCircle2</div><div class="meta">授权检测、任务完成、迁移步骤完成</div>
+      <div class="module-preview" style="background:#f0fdf4;border-color:#bbf7d0"><div class="module-row center"><span class="module-icon" style="background:#dcfce7;color:#16a34a"><i data-lucide="badge-check"></i></span><div><div class="module-title">检测到已授权</div><div class="module-desc">当前日志服务授权状态正常，可继续进行 Tokens 监控配置。</div></div></div></div>
+    </div>
+    <div class="card" id="status-x-circle">
+      <div class="tag">失败</div><div class="name">XCircle</div><div class="meta">审计失败、任务失败、命令执行失败</div>
+      <div class="module-preview"><table class="module-table"><tr><td>执行状态</td><td><span class="module-pill" style="background:#fee2e2;color:#dc2626"><i data-lucide="circle-x"></i> 失败</span></td></tr><tr><td>失败原因</td><td>目标实例连接超时</td></tr></table></div>
+    </div>
+    <div class="card" id="status-loader">
+      <div class="tag">加载</div><div class="name">Loader</div><div class="meta">技能 / 插件 / MCP 列表或详情加载</div>
+      <div class="module-preview"><button class="module-button"><i data-lucide="loader"></i> 正在加载技能详情...</button></div>
+    </div>
+    <div class="card" id="status-loader2">
+      <div class="tag">进行中</div><div class="name">Loader2</div><div class="meta">提交、同步、升级、命令执行中</div>
+      <div class="module-preview"><div class="module-row center"><span class="module-icon" style="background:#fef3c7;color:#d97706"><i data-lucide="loader-circle"></i></span><div><div class="module-title">命令执行中</div><div class="module-desc">系统正在下发命令，请稍候。</div></div></div></div>
+    </div>
+    <div class="card" id="status-clock">
+      <div class="tag">时间提示</div><div class="name">Clock</div><div class="meta">临时密钥有效期、临时数据保留时间</div>
+      <div class="module-preview" style="background:#f8fafc"><div class="module-row center"><span class="module-icon" style="background:#e2e8f0;color:#475569"><i data-lucide="clock"></i></span><div><div class="module-title">临时密钥有效 4 小时</div><div class="module-desc">COS 中转桶临时数据将在 24 小时后自动清理。</div></div></div></div>
+    </div>
+    <div class="card" id="status-lock">
+      <div class="tag">锁定</div><div class="name">Lock</div><div class="meta">权限限制、Pro 激活限制</div>
+      <div class="module-preview"><div class="module-row center"><span class="module-icon" style="background:#e2e8f0;color:#475569"><i data-lucide="lock"></i></span><div><div class="module-title">当前能力未解锁</div><div class="module-desc">升级到 Pro 版本后可使用企业级记忆能力。</div></div></div></div>
+    </div>
+    <div class="card" id="status-shield">
+      <div class="tag">安全</div><div class="name">Shield</div><div class="meta">安全组、防护能力、安全状态</div>
+      <div class="module-preview" style="background:#ecfeff;border-color:#a5f3fc"><div class="module-row center"><span class="module-icon" style="background:#cffafe;color:#0891b2"><i data-lucide="shield"></i></span><div><div class="module-title">安全组策略已生效</div><div class="module-desc">当前实例仅允许受控网络访问。</div></div></div></div>
+    </div>
+    <div class="card" id="status-crown">
+      <div class="tag">Pro 权益</div><div class="name">Crown</div><div class="meta">记忆管理 Free / Pro 对比、权益提示</div>
+      <div class="module-preview"><span class="module-pill" style="background:#fef3c7;color:#b45309"><i data-lucide="crown"></i> Pro 专属能力</span></div>
+    </div>
+    <div class="card" id="status-gem">
+      <div class="tag">高级权益</div><div class="name">Gem</div><div class="meta">Pro 服务卡片、权益标识</div>
+      <div class="module-preview" style="background:#f5f3ff;border-color:#ddd6fe"><div class="module-row center"><span class="module-icon" style="background:#ede9fe;color:#7c3aed"><i data-lucide="gem"></i></span><div><div class="module-title">高级记忆服务</div><div class="module-desc">支持更高容量、更强检索和企业级安全能力。</div></div></div></div>
+    </div>
+    <div class="card" id="status-sparkles">
+      <div class="tag">引导 / 亮点</div><div class="name">Sparkles</div><div class="meta">推荐能力、亮点提示、空态引导</div>
+      <div class="module-preview" style="background:#eff6ff;border-color:#bfdbfe"><div class="module-row center"><span class="module-icon" style="background:#dbeafe;color:#2563eb"><i data-lucide="sparkles"></i></span><div><div class="module-title">推荐开启企业级能力</div><div class="module-desc">开启后可统一管控实例配置，降低团队运维成本。</div></div></div></div>
+    </div>
+    <div class="card" id="status-circle-off">
+      <div class="tag">禁用</div><div class="name">CircleOff</div><div class="meta">功能关闭、不可用状态</div>
+      <div class="module-preview"><div class="module-row center"><span class="module-icon" style="background:#f1f5f9;color:#64748b"><i data-lucide="circle-off"></i></span><div><div class="module-title">记忆服务未启用</div><div class="module-desc">当前 Agent 暂未开启记忆服务。</div></div></div></div>
+    </div>
+  </section>
+
+  <section class="usage-section" id="usage-details">
+    <h2>使用场景详情</h2>
+    <p>点击上方任意图标卡片的“查看使用场景”，会跳转到这里对应的场景说明。</p>
+    <div class="grid" id="usage-grid"></div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>
+    const navMap = {
+      "decor-file-plus": "Agent 配置 > 网盘管理",
+      "decor-agent-sparkles": "Agent 配置 > Agent 工具库",
+      "decor-model-info": "Agent 配置 > 模型配置",
+      "decor-skillroles-package-empty": "Agent 配置 > 技能配置",
+      "decor-add-package": "Agent 配置 > 技能配置",
+      "decor-package-scope-globe": "Agent 配置 > 技能配置",
+      "decor-package-empty": "Agent 配置 > 技能配置",
+      "decor-public-star": "Agent 配置 > 技能配置",
+
+      "brand-admin-logo": "全局框架 > 左侧侧边栏顶部（非菜单项）",
+      "brand-channel-wework": "Agent 配置 > 通道配置",
+      "brand-channel-wework-app": "Agent 配置 > 通道配置",
+      "brand-channel-qq": "Agent 配置 > 通道配置",
+      "brand-channel-feishu": "Agent 配置 > 通道配置",
+      "brand-channel-dingtalk": "Agent 配置 > 通道配置",
+      "brand-channel-wechat": "Agent 配置 > 通道配置",
+      "brand-auth-wecom": "基础信息 > 用户管理",
+      "brand-auth-private-wecom": "基础信息 > 用户管理",
+      "brand-auth-feishu": "基础信息 > 用户管理",
+      "brand-auth-dingtalk": "基础信息 > 用户管理",
+      "brand-auth-windows-ad": "基础信息 > 用户管理",
+      "brand-auth-openldap": "基础信息 > 用户管理",
+      "brand-auth-entra": "基础信息 > 用户管理",
+      "brand-member-source-card": "基础信息 > 用户管理",
+      "brand-member-delete-dialog": "基础信息 > 用户管理",
+
+      "status-info": "多菜单项复用：基础信息配置 / 用户管理 / 模型配置 / 网盘管理 / 网络管理 / Tokens 监控等",
+      "status-alert-circle": "多菜单项复用：基础信息配置 / 模型配置 / Agent 列表 / 记忆管理等",
+      "status-alert-triangle": "多菜单项复用：镜像管理 / 网盘管理 / 网络管理 / 技能配置 / 会话管理等",
+      "status-check-circle": "多菜单项复用：操作记录 / 用户管理 / 技能配置等",
+      "status-check-circle2": "多菜单项复用：Tokens 监控 / 会话管理 / 记忆管理 / Agent 列表等",
+      "status-x-circle": "多菜单项复用：操作记录 / 会话管理 / Agent 列表相关流程等",
+      "status-loader": "多菜单项复用：技能配置及其子页面/弹窗",
+      "status-loader2": "多菜单项复用：网络管理 / 用户管理 / 记忆管理 / Agent 列表相关流程等",
+      "status-clock": "运营监控 > Agent 列表（迁移流程关联入口，非左侧菜单直达）",
+      "status-lock": "Agent 配置 > 记忆管理",
+      "status-shield": "云设备配置 > 网络管理 / Agent 配置 > 记忆管理",
+      "status-crown": "Agent 配置 > 记忆管理",
+      "status-gem": "Agent 配置 > 记忆管理",
+      "status-sparkles": "多菜单项复用：基础信息配置 / 技能配置 / 记忆管理 / 顶部通知等",
+      "status-circle-off": "Agent 配置 > 记忆管理"
+    };
+
+    const usageMap = {
+      "decor-file-plus": ["FileManagement.tsx：启用网盘选择弹窗中，“新启用网盘”卡片左侧。", "用于引导用户创建新的网盘空间。"],
+      "decor-agent-sparkles": ["AgentToolLibrary.tsx：企业工具库 Tab 描述下方的蓝色提示胶囊。", "用于强调企业工具库说明，属于弱引导/强调视觉。"],
+      "decor-model-info": ["ModelConfig.tsx：页面标题下方蓝色说明条左侧。", "用于说明“用户可见”“默认配置”等规则。"],
+      "decor-skillroles-package-empty": ["SkillRolesTab.tsx：角色技能列表为空时的居中空态。", "用于提示“该角色还没有技能”。"],
+      "decor-add-package": ["AddToPackageDialog.tsx：“选择初始技能包”弹窗标题左侧。", "用于辅助识别当前弹窗与技能包相关。"],
+      "decor-package-scope-globe": ["SkillInitialPackageTab.tsx：技能包卡片范围信息左侧。", "用于表示适用范围，如全部用户或指定用户组。"],
+      "decor-package-empty": ["SkillInitialPackageTab.tsx：技能包内技能列表为空时的居中空态。", "用于提示“该技能包还没有技能”。"],
+      "decor-public-star": ["PublicSkillLibraryTab.tsx：公共技能卡片底部收藏数量左侧。", "用于配合收藏数展示，偏内容辅助。"],
+
+      "brand-admin-logo": ["AdminLayout.tsx / admin-sidebar.tsx：管理端左侧侧边栏顶部品牌区。", "用于 ClawPro Admin / 管控端品牌识别。"],
+      "brand-channel-wework": ["ChannelConfig.tsx：内置通道列表每行左侧。", "用于标识企业微信通道。"],
+      "brand-channel-wework-app": ["ChannelConfig.tsx：内置通道列表每行左侧。", "用于标识企微应用通道。"],
+      "brand-channel-qq": ["ChannelConfig.tsx：内置通道列表每行左侧。", "用于标识 QQ 通道。"],
+      "brand-channel-feishu": ["ChannelConfig.tsx：内置通道列表每行左侧。", "用于标识飞书通道。"],
+      "brand-channel-dingtalk": ["ChannelConfig.tsx：内置通道列表每行左侧。", "用于标识钉钉通道。"],
+      "brand-channel-wechat": ["ChannelConfig.tsx：内置通道列表每行左侧。", "用于标识微信通道。"],
+      "brand-auth-wecom": ["AuthSourceImportDialog.tsx：导入身份源弹窗的数据源卡片图标位。", "用于标识企业微信身份源/数据源。"],
+      "brand-auth-private-wecom": ["AuthSourceImportDialog.tsx：导入身份源弹窗的数据源卡片图标位。", "用于标识私有化企微身份源/数据源。"],
+      "brand-auth-feishu": ["AuthSourceImportDialog.tsx：导入身份源弹窗的数据源卡片图标位。", "用于标识飞书身份源/数据源。"],
+      "brand-auth-dingtalk": ["AuthSourceImportDialog.tsx：导入身份源弹窗的数据源卡片图标位。", "用于标识钉钉身份源/数据源。"],
+      "brand-auth-windows-ad": ["AuthSourceImportDialog.tsx：导入身份源弹窗的数据源卡片图标位。", "用于标识 Windows AD 身份源/数据源。"],
+      "brand-auth-openldap": ["AuthSourceImportDialog.tsx：导入身份源弹窗的数据源卡片图标位。", "用于标识 OpenLDAP 身份源/数据源。"],
+      "brand-auth-entra": ["AuthSourceImportDialog.tsx：导入身份源弹窗的数据源卡片图标位。", "用于标识微软 Entra ID 身份源/数据源。"],
+      "brand-member-source-card": ["MemberManagement.tsx：“我的数据源”卡片左侧。", "使用 source.iconUrl 动态展示已配置数据源 Logo。"],
+      "brand-member-delete-dialog": ["MemberManagement.tsx：删除数据源确认弹窗左侧。", "使用 deleteAuthSourceConfirm.source.iconUrl 展示待删除数据源 Logo。"],
+
+      "status-info": ["TokensMonitor、ImageManagement、FileManagement、SecurityGroupManagement、MemberManagement 等页面。", "用于字段说明、指标说明、配置说明、帮助提示。"],
+      "status-alert-circle": ["BasicInfo、ModelConfig、OpenClawMonitor、MemoryManagement、CreateCommandDialog 等页面。", "用于异常说明、注意事项、升级影响说明。"],
+      "status-alert-triangle": ["ImageManagement、FileManagement、SecurityGroupManagement、SkillLibrary 删除/批量操作弹窗、VersionManagement 命令下发等页面。", "用于删除确认、风险提示、高危命令、不可恢复操作提醒。"],
+      "status-check-circle": ["AuditLog、AuthSourceImportDialog、SkillUploadDialog、PluginUploadDialog、SkillUpdateDialog 等页面。", "用于审计成功、上传成功、配置完成。"],
+      "status-check-circle2": ["TokensMonitor、SessionManagement、AgentMigration、MemoryManagement、VersionManagement 等页面。", "用于授权检测、任务完成、迁移步骤完成。"],
+      "status-x-circle": ["AuditLog、AgentMigration、VersionManagement History/RecentHistory/DispatchCommandDialog 等页面。", "用于任务失败、审计失败、命令执行失败。"],
+      "status-loader": ["SkillListTab、PluginListTab、MCPListTab、SkillDetail、SkillUploadDialog 等页面。", "用于技能/插件/MCP 列表或详情加载。"],
+      "status-loader2": ["SecurityGroupManagement、MemberManagement、MemoryManagement、AgentMigration、VersionManagement 等页面。", "用于提交、同步、升级、命令执行中。"],
+      "status-clock": ["AgentMigration.tsx：迁移流程提示区域。", "用于临时密钥有效期、临时数据保留时间。"],
+      "status-lock": ["MemoryManagement ComparisonTable、ProActivationDialog 等页面。", "用于 Pro 激活限制、权限锁定说明。"],
+      "status-shield": ["SecurityGroupManagement、ServerManagement、MemoryManagement ComparisonTable 等页面。", "用于安全组、防护能力、安全状态。"],
+      "status-crown": ["MemoryManagement、ComparisonTable 等页面。", "用于 Pro 版本权益提示。"],
+      "status-gem": ["MemoryManagement ProServiceCard、ProDashboard、ProVersionCard 等页面。", "用于 Pro 服务卡片和高级权益标识。"],
+      "status-sparkles": ["AdminNoticeBar、BasicInfo、SkillLibrary、VersionManagement、MemoryManagement 等页面。", "用于推荐能力、亮点提示、空态引导。"],
+      "status-circle-off": ["MemoryManagement.tsx：记忆服务状态区域。", "用于功能关闭或不可用状态。"]
+    };
+
+    const usageGrid = document.getElementById("usage-grid");
+
+    document.querySelectorAll(".card[id]").forEach((card) => {
+      const id = card.id;
+      const title = card.querySelector(".name")?.textContent?.trim() || id;
+      const meta = card.querySelector(".meta")?.textContent?.trim();
+      const scenarios = usageMap[id] || [meta || "暂无补充说明"];
+      const nav = navMap[id] || "未对应到左侧导航菜单项";
+
+      const navNode = document.createElement("div");
+      navNode.className = "card-nav";
+      navNode.innerHTML = `<strong>左侧导航：</strong>${nav}`;
+      card.appendChild(navNode);
+
+      const link = document.createElement("a");
+      link.className = "usage-link";
+      link.href = `#usage-${id}`;
+      link.textContent = "查看使用场景 →";
+      card.appendChild(link);
+
+      const detail = document.createElement("article");
+      detail.className = "usage-card";
+      detail.id = `usage-${id}`;
+      detail.innerHTML = `<div class="usage-title">${title}</div><div class="nav-badge">左侧导航：${nav}</div><div class="meta">来源：${meta || "见上方卡片"}</div><ul class="usage-list">${scenarios.map((item) => `<li>${item}</li>`).join("")}</ul><a class="usage-link" href="#${id}">返回图标 ↑</a>`;
+      usageGrid.appendChild(detail);
+    });
+
+    if (window.lucide) {
+      window.lucide.createIcons({ attrs: { width: 32, height: 32, strokeWidth: 1.8 } });
+    }
+  </script>
+</body>
+</html>

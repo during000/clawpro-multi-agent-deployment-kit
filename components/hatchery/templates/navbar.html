@@ -1,0 +1,35 @@
+{{define "navbar"}}
+<nav class="bg-[#0d1a26] shadow z-10">
+    <div class="px-5 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <button class="text-gray-400 hover:text-white transition-colors" onclick="toggleSidebar()">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            {{if .HasLogo}}<a href="/"><img src="/logo" alt="Logo" class="h-8"></a>{{end}}
+            <a href="/" class="text-lg font-semibold text-white hover:text-gray-200 transition-colors">{{.SiteName}}</a>
+            {{if .PageTitle}}
+            <span class="text-gray-500">|</span>
+            <span class="text-[14px] font-medium text-gray-300">{{.PageTitle}}</span>
+            {{end}}
+        </div>
+        <div class="relative group">
+            <button class="flex items-center space-x-2 text-[14px] text-gray-300 hover:text-white px-3 py-2 rounded hover:bg-white/10 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                <span class="font-medium">{{.DisplayName}}</span>
+                {{if eq .Role "admin"}}<span class="text-xs bg-[#0052d9] text-white px-1.5 py-0.5 rounded font-medium">管理员</span>{{end}}
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="absolute right-0 top-full min-w-48 max-w-xs bg-white rounded shadow-lg border border-gray-100 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+                <div class="px-5 py-2.5 text-[13px] text-gray-400 whitespace-nowrap">{{.Username}}</div>
+                <div class="border-t border-gray-100 my-1"></div>
+                {{if eq .Role "admin"}}
+                <a href="/admin" class="block px-5 py-2.5 text-[14px] text-gray-700 hover:bg-[#f2f6fc] hover:text-[#0052d9]">管理后台</a>
+                {{end}}
+                <a href="/change-password" class="block px-5 py-2.5 text-[14px] text-gray-700 hover:bg-[#f2f6fc] hover:text-[#0052d9]">修改密码</a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <a href="/logout" class="block px-5 py-2.5 text-[14px] text-red-500 hover:bg-red-50">退出登录</a>
+            </div>
+        </div>
+    </div>
+</nav>
+{{end}}

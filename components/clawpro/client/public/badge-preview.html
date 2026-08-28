@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>Badge Preview · ClawPro Portable Skill</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --cp-bg: #FAFAFA;
+    --cp-surface: #FFFFFF;
+    --cp-surface-muted: #F5F5F5;
+    --cp-border: #E5E5E5;
+    --cp-border-strong: #D4D4D4;
+    --cp-text-title: #0A0A0A;
+    --cp-text-body: #404040;
+    --cp-text-muted: #737373;
+    --cp-brand-blue: #1447E6;
+    --cp-status-danger: #DC2626;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--cp-bg);color:var(--cp-text-title);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    font-size:14px;line-height:1.5;}
+  .wrap{max-width:1200px;margin:0 auto;padding:32px 24px 96px}
+  h1{font-size:22px;font-weight:600;margin:0 0 4px}
+  .sub{color:var(--cp-text-muted);font-size:13px;margin-bottom:24px}
+  .src{color:var(--cp-text-muted);font-size:12px;margin-bottom:32px}
+  .src code{background:#F5F5F5;padding:2px 6px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+  section{background:var(--cp-surface);border:1px solid var(--cp-border);border-radius:4px;padding:20px 24px;margin-bottom:20px}
+  section h2{font-size:16px;font-weight:600;margin:0 0 4px}
+  section .desc{color:var(--cp-text-muted);font-size:12px;margin-bottom:16px}
+  .grid{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
+  .row{display:flex;flex-direction:column;gap:6px}
+  .row .label{font-size:11px;color:var(--cp-text-muted);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+  .row .demo{display:flex;align-items:center;gap:8px;min-height:24px}
+
+  /* ===== Badge core: spec §3.1 ===== */
+  .cp-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    border-radius:9999px;border:1px solid transparent;
+    padding:2px 10px;font-size:12px;font-weight:400;line-height:1;
+    width:fit-content;white-space:nowrap;flex-shrink:0;gap:4px;
+    transition:color .15s,box-shadow .15s,background-color .15s;
+  }
+  .cp-badge svg{width:12px;height:12px;flex-shrink:0}
+
+  /* Variants §3.2 */
+  .cp-badge-default     { background:#0A0A0A; color:#FFFFFF; }
+  .cp-badge-secondary   { background:#F5F5F5; color:#0A0A0A; }
+  .cp-badge-outline     { background:#FFFFFF; color:#0A0A0A; border-color:#E5E5E5; }
+  .cp-badge-destructive { background:rgba(254,226,226,.6); color:#DC2626; }
+
+  /* Custom colors §3.3 */
+  .cp-badge-color-blue   { background:#E8ECFE; color:#1447E6; }
+  .cp-badge-color-green  { background:#F0FDF4; color:#15803D; }
+  .cp-badge-color-purple { background:#FAF5FF; color:#7E22CE; }
+  .cp-badge-color-red    { background:#FEF2F2; color:#B91C1C; }
+
+  /* asChild link variant: hover + focus-visible */
+  a.cp-badge{text-decoration:none;cursor:pointer}
+  a.cp-badge.cp-badge-default:hover     { background:rgba(10,10,10,.9); }
+  a.cp-badge.cp-badge-secondary:hover   { background:#EAEAEA; }
+  a.cp-badge.cp-badge-outline:hover     { background:#FAFAFA; }
+  a.cp-badge.cp-badge-destructive:hover { background:rgba(254,226,226,.85); }
+  a.cp-badge:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(20,71,230,.5)}
+
+  /* aria-invalid §5 */
+  .cp-badge[aria-invalid="true"]{border-color:#DC2626}
+
+  /* failure/contrast utilities for §6 */
+  .cp-badge-bad{
+    border-radius:4px !important; /* 错误：方角 */
+  }
+  .stack{display:flex;align-items:center;gap:8px}
+  .stack-divider{height:14px;border-left:1px dashed var(--cp-border);margin:0 4px}
+
+  /* numeric indicator (NOT a Badge — to show the boundary case in §6) */
+  .cp-num-indicator{
+    display:inline-flex;min-width:16px;height:16px;align-items:center;justify-content:center;
+    border-radius:9999px;background:var(--cp-status-danger);color:#fff;
+    padding:0 4px;font-size:10px;font-weight:500;line-height:1;
+  }
+
+  /* anchored card sample */
+  .card-sample{
+    position:relative;width:240px;height:88px;background:#FFF;border:1px solid var(--cp-border);
+    border-radius:4px;padding:12px;
+  }
+  .card-sample h3{margin:0 0 4px;font-size:14px;font-weight:500}
+  .card-sample p{margin:0;font-size:12px;color:var(--cp-text-muted)}
+  .card-sample .cp-badge{position:absolute;top:8px;right:8px}
+
+  table.spec{
+    width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;
+    background:#FFF;border:1px solid var(--cp-border);border-radius:4px;overflow:hidden;
+  }
+  table.spec th,table.spec td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--cp-border)}
+  table.spec th{background:#FAFAFA;font-weight:500;color:var(--cp-text-body)}
+  table.spec tr:last-child td{border-bottom:0}
+  table.spec td code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:11px;background:#F5F5F5;padding:1px 5px;border-radius:3px}
+
+  .footer{color:var(--cp-text-muted);font-size:12px;margin-top:24px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Badge · 全状态预览</h1>
+  <div class="sub">非交互的轻量分类胶囊：版本号 / 范围 / 类别 / new 角标。与 StatusTag 严格分工——不承担状态语义。</div>
+  <div class="src">数据来源：<code>.codebuddy/skills/clawpro-portable-design-skill/component-specs/badge.md</code> · 严格按 §3 几何与色板渲染</div>
+
+  <!-- 1. Variants -->
+  <section>
+    <h2>1. 4 个 Variant（spec §3.2）</h2>
+    <div class="desc">圆角 9999px / padding 2px 10px / font-size 12px / line-height 1 → 高度 ~20px。</div>
+
+    <div class="grid">
+      <div class="row">
+        <div class="label">default · 黑底白字（少用）</div>
+        <div class="demo"><span class="cp-badge cp-badge-default">默认</span></div>
+      </div>
+      <div class="row">
+        <div class="label">secondary · 中性默认（最常用）</div>
+        <div class="demo"><span class="cp-badge cp-badge-secondary">企业版</span></div>
+      </div>
+      <div class="row">
+        <div class="label">outline · 版本号 / 卡片外</div>
+        <div class="demo"><span class="cp-badge cp-badge-outline">v2.1.0</span></div>
+      </div>
+      <div class="row">
+        <div class="label">destructive · 风险类分类</div>
+        <div class="demo"><span class="cp-badge cp-badge-destructive">已废弃</span></div>
+      </div>
+    </div>
+
+    <table class="spec" style="margin-top:20px">
+      <thead><tr><th>Variant</th><th>bg</th><th>text</th><th>border</th><th>典型用途</th></tr></thead>
+      <tbody>
+        <tr><td><code>default</code></td><td>#0A0A0A</td><td>#FFFFFF</td><td>transparent</td><td>强调分类 / 高对比</td></tr>
+        <tr><td><code>secondary</code></td><td>#F5F5F5</td><td>#0A0A0A</td><td>transparent</td><td>中性默认</td></tr>
+        <tr><td><code>outline</code></td><td>#FFFFFF</td><td>#0A0A0A</td><td>#E5E5E5</td><td>版本号、卡片外轻分类</td></tr>
+        <tr><td><code>destructive</code></td><td>red-100/60</td><td>#DC2626</td><td>transparent</td><td>deprecated / 风险</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 2. Custom Colors -->
+  <section>
+    <h2>2. 4 个 Custom Color（spec §3.3 — 轻分类，不传递状态）</h2>
+    <div class="desc">设置 <code>color</code> 后会覆盖 variant 视觉。<b>禁止扩展</b>，禁止承担运行状态语义。</div>
+
+    <div class="grid">
+      <div class="row">
+        <div class="label">color="blue" · brand 同色系</div>
+        <div class="demo"><span class="cp-badge cp-badge-color-blue">AI</span></div>
+      </div>
+      <div class="row">
+        <div class="label">color="green"</div>
+        <div class="demo"><span class="cp-badge cp-badge-color-green">Pro</span></div>
+      </div>
+      <div class="row">
+        <div class="label">color="purple"</div>
+        <div class="demo"><span class="cp-badge cp-badge-color-purple">Beta</span></div>
+      </div>
+      <div class="row">
+        <div class="label">color="red"</div>
+        <div class="demo"><span class="cp-badge cp-badge-color-red">实验</span></div>
+      </div>
+    </div>
+
+    <table class="spec" style="margin-top:20px">
+      <thead><tr><th>Color</th><th>bg</th><th>text</th></tr></thead>
+      <tbody>
+        <tr><td><code>blue</code></td><td>#E8ECFE</td><td>#1447E6</td></tr>
+        <tr><td><code>green</code></td><td>#F0FDF4 (green-50)</td><td>#15803D (green-700)</td></tr>
+        <tr><td><code>purple</code></td><td>#FAF5FF (purple-50)</td><td>#7E22CE (purple-700)</td></tr>
+        <tr><td><code>red</code></td><td>#FEF2F2 (red-50)</td><td>#B91C1C (red-700)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3. With Icon -->
+  <section>
+    <h2>3. 带 Icon（spec §3.1：12×12 / gap-1）</h2>
+    <div class="desc">Icon 使用 currentColor，与文字间距 4px。装饰类 icon 必须 <code>aria-hidden="true"</code>。</div>
+
+    <div class="grid">
+      <div class="row">
+        <div class="label">secondary + Sparkles · New 角标</div>
+        <div class="demo">
+          <span class="cp-badge cp-badge-secondary">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
+            New
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">outline + check · 版本号已发布</div>
+        <div class="demo">
+          <span class="cp-badge cp-badge-outline">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            v2.1.0
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">color=blue + zap · AI 标</div>
+        <div class="demo">
+          <span class="cp-badge cp-badge-color-blue">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+            AI
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">destructive + alert · 已废弃</div>
+        <div class="demo">
+          <span class="cp-badge cp-badge-destructive">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            已废弃
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. asChild Link -->
+  <section>
+    <h2>4. asChild 包链接（spec §5 — 唯一进入交互态的场景）</h2>
+    <div class="desc">用 <code>&lt;a&gt;</code> 渲染，hover 轻微变深，focus-visible 出 ring。其他场景下 Badge 默认非交互。</div>
+
+    <div class="grid">
+      <div class="row">
+        <div class="label">asChild · outline · hover 我看看</div>
+        <div class="demo"><a class="cp-badge cp-badge-outline" href="javascript:void(0)">v2.1.0 → 改动日志</a></div>
+      </div>
+      <div class="row">
+        <div class="label">asChild · secondary</div>
+        <div class="demo"><a class="cp-badge cp-badge-secondary" href="javascript:void(0)">企业版</a></div>
+      </div>
+      <div class="row">
+        <div class="label">asChild · destructive · 风险链接</div>
+        <div class="demo"><a class="cp-badge cp-badge-destructive" href="javascript:void(0)">已废弃 → 迁移指南</a></div>
+      </div>
+      <div class="row">
+        <div class="label">aria-invalid · 表单校验失败标签（极少）</div>
+        <div class="demo"><span class="cp-badge cp-badge-outline" aria-invalid="true">无效范围</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Real-world placements -->
+  <section>
+    <h2>5. 真实位置示例（spec §8 Demo Repo Usage）</h2>
+    <div class="desc">三种最高频的使用位置：行内文字旁、卡片右上角、列表内的范围 / 版本列。</div>
+
+    <div class="grid" style="gap:16px 32px">
+      <div class="row">
+        <div class="label">行内文字旁（标题后小角标）</div>
+        <div class="demo">
+          <span style="font-size:14px;font-weight:500">高级模型路由</span>
+          <span class="cp-badge cp-badge-color-purple">Beta</span>
+          <span class="cp-badge cp-badge-color-blue">AI</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">卡片右上角分类标</div>
+        <div class="demo">
+          <div class="card-sample">
+            <span class="cp-badge cp-badge-secondary">企业版</span>
+            <h3>团队协作</h3>
+            <p>支持成员管理、配额分配、审计日志。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">列表行 · 范围 + 版本组合</div>
+        <div class="demo stack">
+          <span style="font-size:14px">openclaw-pro</span>
+          <span class="stack-divider"></span>
+          <span class="cp-badge cp-badge-secondary">公共</span>
+          <span class="cp-badge cp-badge-outline">v2.1.0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Don't / boundary -->
+  <section>
+    <h2>6. 禁止用法对照（spec §11 / §14）</h2>
+    <div class="desc">这些视觉<b>不应该</b>出现，列在这里只为帮你识别走查时的报错点。</div>
+
+    <table class="spec">
+      <thead><tr><th style="width:40%">错误用法</th><th>看起来像</th><th>正确出口</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>&lt;Badge&gt;运行中&lt;/Badge&gt;</code> — 用 Badge 表达运行状态</td>
+          <td><span class="cp-badge cp-badge-color-green">运行中</span></td>
+          <td>→ 改用 <code>StatusTag mode="text" variant="green"</code></td>
+        </tr>
+        <tr>
+          <td><code>className="rounded-[4px]"</code> — Badge 做成方角</td>
+          <td><span class="cp-badge cp-badge-secondary cp-badge-bad">企业版</span></td>
+          <td>→ Badge 永远 rounded-full；方角是 Tag / StatusTag soft 的形态</td>
+        </tr>
+        <tr>
+          <td>自由扩 fuchsia / amber / sky 一类色</td>
+          <td><span class="cp-badge" style="background:#FDF4FF;color:#A21CAF">实验</span> <span class="cp-badge" style="background:#FFFBEB;color:#B45309">Beta</span></td>
+          <td>→ 只用 4 色（blue/green/purple/red），没合适色就退到 secondary</td>
+        </tr>
+        <tr>
+          <td>用 Badge 当通知红点 / 数字气泡</td>
+          <td><span class="cp-badge cp-badge-destructive">99+</span></td>
+          <td>→ 走 NumberIndicator（如下方）</td>
+        </tr>
+        <tr>
+          <td>NumberIndicator 容器（参考形态，<b>非</b> Badge）</td>
+          <td><span class="cp-num-indicator">99+</span> <span class="cp-num-indicator">3</span></td>
+          <td>min-width 16 / height 16 / 10px 字号 — 和 Badge padding 完全不同</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 7. Geometry ruler -->
+  <section>
+    <h2>7. 几何参考尺（spec §3.1）</h2>
+    <div class="desc">用一把虚线尺帮你目测高度 ~20px / 圆角 full。</div>
+    <div class="grid" style="align-items:flex-end">
+      <div style="position:relative">
+        <div style="position:absolute;left:-26px;top:0;bottom:0;width:18px;border-left:1px dashed #999;border-top:1px dashed #999;border-bottom:1px dashed #999"></div>
+        <div style="position:absolute;left:-50px;top:50%;transform:translateY(-50%);font-size:11px;color:#737373">~20px</div>
+        <span class="cp-badge cp-badge-secondary">企业版</span>
+      </div>
+      <div style="position:relative">
+        <span class="cp-badge cp-badge-outline">v2.1.0</span>
+        <div style="position:absolute;left:0;right:0;bottom:-18px;border-bottom:1px dashed #999"></div>
+        <div style="position:absolute;left:50%;bottom:-32px;transform:translateX(-50%);font-size:11px;color:#737373">px-2.5 (10) / py-0.5 (2) / 圆角 full</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">渲染口径：spec §3.1 / §3.2 / §3.3 / §5 / §11 / §14 全覆盖 — 如有偏差请指出具体段落。</div>
+</div>
+</body>
+</html>

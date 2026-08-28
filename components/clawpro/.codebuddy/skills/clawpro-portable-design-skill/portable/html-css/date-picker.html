@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Date Picker</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      body { margin: 0; padding: 24px; background: var(--cp-page-bg); font-family: var(--cp-font-sans); }
+      .cp-date-picker { position: relative; display: inline-flex; flex-direction: column; }
+      .cp-date-trigger { display: inline-flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 140px; height: 36px; padding: 0 12px; border: 1px solid var(--cp-border); border-radius: 4px; background: var(--cp-surface); font-size: 14px; }
+      .cp-date-placeholder { color: var(--cp-text-weak); }
+      .cp-date-icon { color: var(--cp-text-weak); }
+      .cp-date-panel { position: absolute; top: 44px; left: 0; z-index: 10; width: 280px; border: 1px solid var(--cp-border); border-radius: 4px; background: var(--cp-surface); padding: 12px; box-shadow: var(--cp-shadow-overlay); }
+      .cp-date-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: var(--cp-text-title); }
+      .cp-date-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; text-align: center; }
+      .cp-date-weekdays { font-size: 12px; color: var(--cp-text-muted); }
+      .cp-date-days button { margin-top: 4px; height: 32px; border: 0; border-radius: 4px; background: var(--cp-surface); font-size: 14px; color: var(--cp-text-body); }
+      .cp-date-days button:hover { background: var(--cp-brand-tint); }
+      .cp-date-days button.active { background: var(--cp-brand-blue); color: white; }
+    </style>
+  </head>
+  <body>
+    <div class="cp-date-picker">
+      <button class="cp-date-trigger" type="button">
+        <span class="cp-date-placeholder">开始日期</span>
+        <span class="cp-date-icon" aria-hidden="true">Cal</span>
+      </button>
+      <div class="cp-date-panel">
+        <div class="cp-date-header">
+          <button type="button">‹</button>
+          <span>2026 年 6 月</span>
+          <button type="button">›</button>
+        </div>
+        <div class="cp-date-grid cp-date-weekdays">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+        </div>
+        <div class="cp-date-grid cp-date-days">
+          <button type="button">1</button>
+          <button type="button">2</button>
+          <button type="button">3</button>
+          <button type="button">4</button>
+          <button type="button">5</button>
+          <button type="button" class="active">6</button>
+          <button type="button">7</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

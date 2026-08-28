@@ -1,0 +1,130 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Globals — ClawPro
+ * 基础 CSS 重置 + 字体 + 滚动条工具类。
+ * 必须在 tokens.css 之后引入，让 :root 中的 --cp-font-sans 生效。
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ─── Box-Sizing 统一 ─── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ─── 字体强制 PingFang SC（跟随 demo 仓 index.css 设定） ───
+ * SVG 内部不强制（图标可能依赖 Open Sans / DIN）
+ */
+*:not(svg):not(svg *) {
+  font-family: var(--cp-font-sans, "PingFang SC", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", "Microsoft YaHei", sans-serif);
+}
+
+/* ─── 防止 iOS / Safari 在窄屏自动放大字体 ─── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ─── 默认 body 样式（页面壳子） ─── */
+body {
+  margin: 0;
+  background-color: var(--cp-page-bg, #F7F9FC);
+  color: var(--cp-text-body, #1E293B);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── 链接默认色 ─── */
+a {
+  color: var(--cp-text-brand, #1447E6);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ─── 按钮重置 ─── */
+button {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* ─── 输入元素重置 ─── */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+/* ─── 表格字号一致性铁律：12px 全局强制（ClawPro Table §2） ───
+ * 所有处于 [data-slot="table"] 内的元素一律 12px，不被 Tailwind 的 text-sm / text-base 覆盖。
+ * 唯一豁免：Badge 维持自身尺寸。
+ */
+[data-slot="table"],
+[data-slot="table"] * {
+  font-size: 12px !important;
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+}
+[data-slot="table"] [data-slot="badge"],
+[data-slot="table"] [data-slot="badge"] * {
+  font-size: inherit !important;
+}
+
+/* ─── scrollbar-on-hover：表格 / 浮层默认隐藏滚动条，hover 显示 ─── */
+.scrollbar-on-hover {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.scrollbar-on-hover:hover,
+.scrollbar-on-hover:focus-within {
+  scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
+}
+.scrollbar-on-hover::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.scrollbar-on-hover::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 4px;
+}
+.scrollbar-on-hover:hover::-webkit-scrollbar-thumb,
+.scrollbar-on-hover:focus-within::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.2);
+}
+
+/* ─── 通用：tabular-nums（数字列等宽对齐） ─── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── 通用：DIN 数字字体 ─── */
+.font-din {
+  font-family: var(--cp-font-din, "DIN Alternate", "DIN", "Helvetica Neue", sans-serif);
+}
+
+/* ─── PageEnter 简单淡入（admin 列表页 / 表单页常用） ─── */
+@keyframes cp-page-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page-enter {
+  animation: cp-page-enter 200ms ease-out;
+}

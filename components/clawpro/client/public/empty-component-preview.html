@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empty 组件预览</title>
+  <style>
+    :root {
+      --page-bg: #f6f8fc;
+      --cp-surface: #ffffff;
+      --cp-surface-subtle: #f8fafc;
+      --cp-border: #e5e7eb;
+      --cp-border-strong: #d1d5db;
+      --cp-text-title: #0f172a;
+      --cp-text-body: #334155;
+      --cp-text-weak: #64748b;
+      --cp-text-faint: #94a3b8;
+      --cp-brand-blue: #1447e6;
+      --cp-brand-blue-weak: #eef4ff;
+      --cp-warning-bg: #fff7ed;
+      --cp-warning-border: #fed7aa;
+      --cp-warning-text: #9a3412;
+      --radius-lg: 4px;
+      --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(20, 71, 230, 0.08), transparent 28%),
+        var(--page-bg);
+      color: var(--cp-text-body);
+      font: 14px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { max-width: 1180px; margin: 0 auto; padding: 40px 32px 80px; }
+    .hero {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+      padding: 28px 32px;
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-lg);
+      background: var(--cp-surface);
+      box-shadow: var(--shadow-card);
+    }
+    .hero h1 { margin: 0 0 8px; color: var(--cp-text-title); font-size: 24px; line-height: 1.3; font-weight: 650; letter-spacing: -0.02em; }
+    .hero p { margin: 0; color: var(--cp-text-weak); font-size: 13px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 10px;
+      border: 1px solid var(--cp-border);
+      border-radius: 999px;
+      background: var(--cp-surface-subtle);
+      color: var(--cp-text-body);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .pill.primary { border-color: rgba(20, 71, 230, 0.18); background: var(--cp-brand-blue-weak); color: var(--cp-brand-blue); }
+    .pill.warn { border-color: var(--cp-warning-border); background: var(--cp-warning-bg); color: var(--cp-warning-text); }
+
+    .section { margin-top: 28px; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .section h2 { margin: 0; color: var(--cp-text-title); font-size: 16px; font-weight: 650; }
+    .section .sub { margin: 4px 0 0; color: var(--cp-text-weak); font-size: 12px; }
+
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-lg);
+      background: var(--cp-surface);
+      box-shadow: var(--shadow-card);
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 48px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--cp-border);
+      background: var(--cp-surface-subtle);
+    }
+    .card-title { color: var(--cp-text-title); font-size: 13px; font-weight: 600; }
+    .card-desc { margin-top: 2px; color: var(--cp-text-weak); font-size: 12px; }
+    code {
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-lg);
+      background: var(--cp-surface);
+      color: var(--cp-text-body);
+      padding: 2px 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+    }
+    .card-body { padding: 22px; }
+
+    .empty {
+      display: flex;
+      min-width: 0;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      border: 1px dashed var(--cp-border);
+      border-radius: var(--radius-lg);
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .empty.borderless { border-color: transparent; }
+    .empty.compact { padding: 40px 16px; }
+    .empty-header { display: flex; max-width: 360px; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+    .empty-media {
+      display: flex;
+      width: 100px;
+      height: 80px;
+      max-width: 100px;
+      max-height: 80px;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      overflow: hidden;
+      user-select: none;
+    }
+    .empty-media img {
+      display: block;
+      width: 100px !important;
+      height: 80px !important;
+      max-width: 100px !important;
+      max-height: 80px !important;
+      object-fit: contain;
+      user-select: none;
+    }
+    .empty-title { color: var(--cp-text-title); font-size: 14px; font-weight: 600; line-height: 1.45; }
+    .empty-desc { color: var(--cp-text-weak); font-size: 12px; line-height: 1.6; }
+    .empty-content { display: flex; width: 100%; max-width: 360px; flex-direction: column; align-items: center; justify-content: center; gap: 16px; font-size: 13px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      border: 1px solid var(--cp-brand-blue);
+      border-radius: var(--radius-lg);
+      background: var(--cp-brand-blue);
+      color: #fff;
+      padding: 0 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .btn.outline { background: var(--cp-surface); color: var(--cp-brand-blue); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { border-bottom: 1px solid var(--cp-border); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: var(--cp-surface-subtle); color: var(--cp-text-title); font-weight: 600; }
+    td { color: var(--cp-text-body); }
+    tr:last-child td { border-bottom: 0; }
+    .table-empty { padding: 40px 16px; text-align: center; }
+    .table-empty p { margin: 0; color: var(--cp-text-weak); font-size: 12px; }
+    .table-empty p + p { margin-top: 4px; }
+
+    .panel-demo { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .trigger {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      border: 1px solid var(--cp-border-strong);
+      border-radius: var(--radius-lg);
+      background: var(--cp-surface);
+      color: var(--cp-text-title);
+      padding: 0 12px;
+      font-size: 12px;
+    }
+    .floating-panel {
+      width: 240px;
+      border: 1px solid var(--cp-border);
+      border-radius: var(--radius-lg);
+      background: var(--cp-surface);
+      box-shadow: 0 0 2px rgba(15, 23, 42, 0.1), 0 8px 20px rgba(15, 23, 42, 0.12);
+      padding: 8px;
+    }
+    .overlay-empty { padding: 24px 12px; text-align: center; color: var(--cp-text-weak); font-size: 12px; }
+    .dialog-box { border: 1px solid var(--cp-border); border-radius: var(--radius-lg); background: var(--cp-surface); padding: 18px; }
+    .dialog-title { margin-bottom: 12px; color: var(--cp-text-title); font-size: 13px; font-weight: 600; }
+    .inline-row { display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 8px 0; font-size: 13px; }
+    .inline-row dt { color: var(--cp-text-body); font-weight: 500; }
+    .inline-row dd { margin: 0; color: var(--cp-text-weak); }
+
+    .note {
+      margin-top: 16px;
+      border: 1px solid var(--cp-warning-border);
+      border-radius: var(--radius-lg);
+      background: var(--cp-warning-bg);
+      color: var(--cp-warning-text);
+      padding: 12px 14px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 860px) {
+      .page { padding: 24px 16px 56px; }
+      .hero { flex-direction: column; padding: 22px; }
+      .grid, .grid.three { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <h1>Empty 组件预览</h1>
+        <p>基于当前 <code>client/src/components/ui/empty.tsx</code> 和 Empty State 规范整理。</p>
+        <div class="hero-meta">
+          <span class="pill primary">EmptyMedia variant：4 种</span>
+          <span class="pill">导出子组件：6 个</span>
+          <span class="pill">规范容器场景：11 类</span>
+          <span class="pill warn">表格 / 弹窗 / 下拉不使用插画</span>
+        </div>
+      </div>
+      <code>client/public/empty-component-preview.html</code>
+    </header>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>1. 当前代码里的 EmptyMedia variant（4 种）</h2>
+          <p class="sub">其中 <code>empty-data</code> 是 <code>default</code> 的兼容别名；当前 <code>empty-logs</code> 也映射到同一张默认图。</p>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="card-head">
+            <div><div class="card-title">default</div><div class="card-desc">推荐默认：暂无数据</div></div>
+            <code>&lt;EmptyMedia /&gt;</code>
+          </div>
+          <div class="card-body">
+            <div class="empty borderless">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent.png" alt="暂无数据" draggable="false" /></div>
+                <div class="empty-title">暂无数据</div>
+                <div class="empty-desc">当前没有可显示的内容</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div><div class="card-title">hint</div><div class="card-desc">提示类：未开通 / 已关闭 / 需管理员处理</div></div>
+            <code>variant="hint"</code>
+          </div>
+          <div class="card-body">
+            <div class="empty borderless">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent-hint.png" alt="提示" draggable="false" /></div>
+                <div class="empty-title">为 Agent 开启服务能力</div>
+                <div class="empty-desc">当前实例暂未开通，请联系管理员开启</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div><div class="card-title">empty-data</div><div class="card-desc">兼容旧调用：等同 default</div></div>
+            <code>variant="empty-data"</code>
+          </div>
+          <div class="card-body">
+            <div class="empty borderless">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent.png" alt="暂无数据" draggable="false" /></div>
+                <div class="empty-title">暂无记录</div>
+                <div class="empty-desc">兼容历史调用，视觉与 default 一致</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div><div class="card-title">empty-logs</div><div class="card-desc">暂无日志：当前代码仍使用默认图</div></div>
+            <code>variant="empty-logs"</code>
+          </div>
+          <div class="card-body">
+            <div class="empty borderless">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent.png" alt="暂无日志" draggable="false" /></div>
+                <div class="empty-title">暂无日志</div>
+                <div class="empty-desc">当前没有日志记录可查看</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="note">备注：目录里存在 <code>assets/admin-sidebar/empty-aiagent-logs.png</code>，但当前 <code>EMPTY_MEDIA_ASSETS</code> 没有引用它。</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>2. Empty 组件家族（6 个导出）</h2>
+          <p class="sub">真实组合结构：<code>Empty</code> / <code>EmptyHeader</code> / <code>EmptyMedia</code> / <code>EmptyTitle</code> / <code>EmptyDescription</code> / <code>EmptyContent</code>。</p>
+        </div>
+      </div>
+      <div class="grid three">
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">双行基础</div><div class="card-desc">标题 + 描述</div></div></div>
+          <div class="card-body">
+            <div class="empty borderless compact">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent.png" alt="暂无数据" /></div>
+                <div class="empty-title">没有匹配的结果</div>
+                <div class="empty-desc">尝试更换关键词或调整筛选条件</div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">单行轻量</div><div class="card-desc">只用描述，不用粗黑标题</div></div></div>
+          <div class="card-body">
+            <div class="empty borderless compact">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent.png" alt="暂无记录" /></div>
+                <div class="empty-desc">暂无记录</div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">带操作引导</div><div class="card-desc">EmptyContent，按钮不超过 2 个</div></div></div>
+          <div class="card-body">
+            <div class="empty borderless compact">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent.png" alt="暂无 Agent" /></div>
+                <div class="empty-title">还没有创建任何 Agent</div>
+                <div class="empty-desc">创建你的第一个 Agent，开始自动化工作流</div>
+              </div>
+              <div class="empty-content"><span class="btn">新建 Agent</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>3. 按规范口径的空态场景（11 类）</h2>
+          <p class="sub">先判断容器类型，再决定是否使用插画；不是所有空态都应该套完整 Empty 插画。</p>
+        </div>
+      </div>
+      <article class="card">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%">容器类型</th>
+              <th style="width: 36%">推荐写法</th>
+              <th>关键约束</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>页面 / 大区域</td><td>插画 + 标题 + 描述（可加按钮）</td><td><code>border-0</code> + <code>py-12 ~ py-20</code></td></tr>
+            <tr><td>卡片容器</td><td>同页面级</td><td>去掉 Empty 默认虚线边框，避免双重边框</td></tr>
+            <tr><td>表格</td><td><code>td colspan</code> 内纯文字</td><td>不用插画，不另包大卡片</td></tr>
+            <tr><td>Drawer 主内容区</td><td>插画 + 标题 + 描述</td><td>仅第一层内容为列表 / 卡片时</td></tr>
+            <tr><td>Drawer 嵌套子模块</td><td>纯文字单行 / 双行</td><td>层级 ≥ 2 降级，避免插画过重</td></tr>
+            <tr><td>Dialog / 弹窗内嵌区块</td><td>纯文字双行 + <code>space-y-1</code></td><td>禁用装饰图标 / 插画</td></tr>
+            <tr><td>Dropdown / Select 下拉</td><td>纯文字单行</td><td>面板内居中，紧凑 padding</td></tr>
+            <tr><td>SearchableSelect / 搜索下拉</td><td>纯文字单行 + 可选品牌色链接</td><td>可作为「+ 新建」入口</td></tr>
+            <tr><td>Popover 内容</td><td>纯文字单行</td><td>面板宽度自适应</td></tr>
+            <tr><td>侧栏 / 树筛选无结果</td><td>插画 + 描述</td><td><code>border-0</code> + 紧凑 padding</td></tr>
+            <tr><td>字段值 / 行内缺值</td><td>弱文字 <code>—</code> / <code>暂无</code></td><td>不另起行、不加图</td></tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>4. 小容器降级示例</h2>
+          <p class="sub">这些场景不要使用 <code>EmptyMedia</code> 插画。</p>
+        </div>
+      </div>
+      <div class="grid three">
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">表格空态</div><div class="card-desc">td 内纯文字双行</div></div></div>
+          <div class="card-body">
+            <table>
+              <thead><tr><th>名称</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr><td colspan="2"><div class="table-empty"><p>暂无记录</p><p>尝试调整筛选条件，或新建一条记录</p></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">Dropdown / Popover</div><div class="card-desc">面板内纯文字</div></div></div>
+          <div class="card-body">
+            <div class="panel-demo">
+              <span class="trigger">选择成员</span>
+              <div class="floating-panel"><div class="overlay-empty">暂无可选项</div></div>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">Dialog 内嵌区块</div><div class="card-desc">纯文字双行</div></div></div>
+          <div class="card-body">
+            <div class="dialog-box">
+              <div class="dialog-title">技能列表</div>
+              <div class="table-empty"><p>该角色还没有技能</p><p>可从公共技能库或企业技能库添加</p></div>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">行内缺值</div><div class="card-desc">弱文字，不另起空态</div></div></div>
+          <div class="card-body">
+            <dl>
+              <div class="inline-row"><dt>建议方案</dt><dd>暂无</dd></div>
+              <div class="inline-row"><dt>解决方案</dt><dd>—</dd></div>
+            </dl>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">侧栏 / 树筛选</div><div class="card-desc">可用插画但更紧凑</div></div></div>
+          <div class="card-body">
+            <div class="empty borderless compact">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent.png" alt="暂无分组" /></div>
+                <div class="empty-desc">暂无符合筛选条件的分组</div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><div class="card-title">权限 / 未开通</div><div class="card-desc">使用 hint 插画</div></div></div>
+          <div class="card-body">
+            <div class="empty borderless compact">
+              <div class="empty-header">
+                <div class="empty-media"><img src="assets/admin-sidebar/empty-aiagent-hint.png" alt="提示" /></div>
+                <div class="empty-title">暂未开通此能力</div>
+                <div class="empty-desc">请联系管理员完成配置后再使用</div>
+              </div>
+              <div class="empty-content"><span class="btn outline">查看配置说明</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

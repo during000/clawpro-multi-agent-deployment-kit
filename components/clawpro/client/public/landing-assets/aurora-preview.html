@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aurora 动效预览 · 5 套方案</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #f5f6f8; font-family: "Noto Sans SC", "PingFang SC", system-ui, sans-serif; color: #111; }
+    .page { max-width: 1280px; margin: 0 auto; padding: 32px 20px 80px; }
+    .page-title { font-size: 28px; font-weight: 600; margin: 0 0 8px; }
+    .page-sub { color: #666; font-size: 14px; margin: 0 0 28px; }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      height: 360px;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      margin-bottom: 12px;
+    }
+    .stage-content {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      pointer-events: none;
+      color: #1f1f1f;
+    }
+    .stage-content .badge {
+      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,.7);
+      background: rgba(255,255,255,.5);
+      backdrop-filter: blur(2px);
+      border-radius: 60px;
+      font-family: "Menlo", monospace;
+      font-size: 12px;
+      color: #163E9C;
+    }
+    .stage-content h2 {
+      font-size: 36px;
+      font-weight: 500;
+      margin: 8px 0 0;
+      background: linear-gradient(91deg, #000 52%, #1F3E9C 99%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stage-content p { color: #5D6576; font-size: 14px; margin: 0; }
+
+    .card-title {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 32px 0 6px;
+    }
+    .card-title small { color: #999; font-size: 12px; font-weight: 400; }
+    .card-desc { color: #555; font-size: 13px; margin: 0 0 12px; line-height: 1.6; }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 28px;
+    }
+    .nav a {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #e4e6eb;
+      color: #1F3E9C;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .nav a:hover { background: #f0f4ff; }
+
+    /* ==========================================================
+       方案 1: 康定斯基式光环旋转
+       两到三圈不同颜色的同心圆环以不同速度旋转 + 呼吸
+       ========================================================== */
+    .a1 { background: #fff; }
+    .a1 .ring {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      border-radius: 50%;
+      filter: blur(40px);
+      transform-origin: center;
+    }
+    .a1 .ring-1 {
+      width: 500px; height: 500px;
+      margin: -250px 0 0 -250px;
+      background: conic-gradient(from 0deg, #b8e0ff, #d4c8ff, #b8fffb, #83b3ff, #b8e0ff);
+      opacity: .55;
+      animation: a1Spin1 18s linear infinite, a1Breath 7s ease-in-out infinite;
+    }
+    .a1 .ring-2 {
+      width: 360px; height: 360px;
+      margin: -180px 0 0 -180px;
+      background: conic-gradient(from 90deg, #d4c8ff, #b8fffb, #83b3ff, #d4c8ff);
+      opacity: .5;
+      animation: a1Spin2 12s linear infinite reverse, a1Breath 9s ease-in-out infinite -2s;
+    }
+    .a1 .ring-3 {
+      width: 220px; height: 220px;
+      margin: -110px 0 0 -110px;
+      background: radial-gradient(circle, #fff 0%, #b8e0ff 70%, transparent 80%);
+      opacity: .8;
+      animation: a1Breath 4s ease-in-out infinite;
+    }
+    @keyframes a1Spin1 { to { transform: rotate(360deg); } }
+    @keyframes a1Spin2 { to { transform: rotate(360deg); } }
+    @keyframes a1Breath {
+      0%, 100% { filter: blur(40px) brightness(1); }
+      50% { filter: blur(60px) brightness(1.15); }
+    }
+
+    /* ==========================================================
+       方案 2: Mesh 流体网格（基于 SVG turbulence）
+       多色 mesh 渐变 + SVG 噪声 displacement，模拟墨水扩散
+       ========================================================== */
+    .a2 {
+      background:
+        radial-gradient(ellipse 60% 50% at 25% 30%, #b8e0ff, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 75% 35%, #d4c8ff, transparent 60%),
+        radial-gradient(ellipse 70% 40% at 50% 80%, #b8fffb, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, #83b3ff66, transparent 60%),
+        #fff;
+      background-size: 200% 200%;
+      filter: url(#a2-noise);
+      animation: a2Flow 18s ease-in-out infinite;
+    }
+    @keyframes a2Flow {
+      0%, 100% { background-position: 0% 50%, 100% 50%, 50% 100%, 50% 50%, 0 0; }
+      33%      { background-position: 30% 30%, 70% 70%, 60% 80%, 40% 50%, 0 0; }
+      66%      { background-position: 60% 70%, 40% 30%, 40% 60%, 60% 50%, 0 0; }
+    }
+
+    /* ==========================================================
+       方案 3: 呼吸辐射波（涟漪 / 雷达）
+       中央核心 + 多层同心圆光环向外扩散
+       ========================================================== */
+    .a3 {
+      background:
+        radial-gradient(circle at 50% 50%, #eef4ff 0%, #fff 60%);
+    }
+    .a3 .core {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 120px; height: 120px;
+      margin: -60px 0 0 -60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #83b3ff 0%, #b8e0ff 60%, transparent 80%);
+      filter: blur(20px);
+      animation: a3Pulse 3s ease-in-out infinite;
+    }
+    .a3 .wave {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 120px; height: 120px;
+      margin: -60px 0 0 -60px;
+      border-radius: 50%;
+      border: 2px solid #83b3ff;
+      animation: a3Wave 4s ease-out infinite;
+      opacity: 0;
+    }
+    .a3 .wave-2 { animation-delay: 1.3s; }
+    .a3 .wave-3 { animation-delay: 2.6s; }
+    @keyframes a3Pulse {
+      0%, 100% { transform: scale(1); opacity: .9; }
+      50%      { transform: scale(1.2); opacity: 1; }
+    }
+    @keyframes a3Wave {
+      0%   { transform: scale(1);   opacity: .55; border-width: 2px; }
+      100% { transform: scale(4.5); opacity: 0;   border-width: 0.5px; }
+    }
+
+    /* ==========================================================
+       方案 4: 线性扫光（Sweeping Beam）
+       静态彩色软底 + 一束斜向高光从左上扫到右下
+       ========================================================== */
+    .a4 {
+      background:
+        linear-gradient(135deg, #eaf3ff 0%, #f5edff 50%, #eaf9ff 100%);
+      overflow: hidden;
+    }
+    .a4 .beam {
+      position: absolute;
+      top: -20%;
+      left: -30%;
+      width: 50%;
+      height: 140%;
+      background: linear-gradient(
+        100deg,
+        transparent 0%,
+        rgba(255,255,255,0) 35%,
+        rgba(255,255,255,0.85) 50%,
+        rgba(255,255,255,0) 65%,
+        transparent 100%
+      );
+      transform: rotate(15deg);
+      animation: a4Sweep 6s ease-in-out infinite;
+      filter: blur(8px);
+    }
+    @keyframes a4Sweep {
+      0%   { left: -50%; }
+      100% { left: 110%; }
+    }
+
+    /* ==========================================================
+       方案 5: 粒子星河
+       60 个 div 漂浮，配合柔色底
+       ========================================================== */
+    .a5 {
+      background:
+        radial-gradient(ellipse at 30% 20%, #d8e6ff 0%, transparent 40%),
+        radial-gradient(ellipse at 70% 70%, #e6dcff 0%, transparent 40%),
+        #fff;
+      overflow: hidden;
+    }
+    .a5 .dot {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #83b3ff;
+      opacity: .7;
+      box-shadow: 0 0 8px #83b3ff;
+      animation: a5Drift linear infinite;
+    }
+    @keyframes a5Drift {
+      0%   { transform: translate3d(0,0,0); opacity: 0; }
+      10%  { opacity: .7; }
+      90%  { opacity: .7; }
+      100% { transform: translate3d(var(--dx), var(--dy), 0); opacity: 0; }
+    }
+
+    /* ==========================================================
+       方案 6 (奖励): 当前页面用的方案 (4团彩色光晕漂浮)
+       ========================================================== */
+    .a6 { background: #fff; }
+    .a6 .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+    }
+    .a6 .blob-1 { width: 600px; height: 600px; top: 35%; left: 25%; margin-top: -300px; margin-left: -300px;
+      background: radial-gradient(circle, #b8e0ff 0%, rgba(184,224,255,0) 65%);
+      animation: a6f1 14s ease-in-out infinite;
+    }
+    .a6 .blob-2 { width: 540px; height: 540px; top: 30%; left: 75%; margin-top: -270px; margin-left: -270px;
+      background: radial-gradient(circle, #d4c8ff 0%, rgba(212,200,255,0) 65%);
+      animation: a6f2 16s ease-in-out infinite;
+    }
+    .a6 .blob-3 { width: 720px; height: 420px; top: 55%; left: 50%; margin-top: -210px; margin-left: -360px;
+      background: radial-gradient(ellipse, #b8fffb 0%, rgba(184,255,251,0) 60%);
+      animation: a6f3 15s ease-in-out infinite;
+    }
+    .a6 .blob-4 { width: 420px; height: 420px; top: 45%; left: 50%; margin-top: -210px; margin-left: -210px;
+      background: radial-gradient(circle, #83b3ff 0%, rgba(131,179,255,0) 60%);
+      opacity: .55;
+      animation: a6f4 18s ease-in-out infinite;
+    }
+    @keyframes a6f1 { 0%,100%{transform:translate3d(0,0,0) scale(1)} 33%{transform:translate3d(120px,60px,0) scale(1.18)} 66%{transform:translate3d(-100px,100px,0) scale(.88)} }
+    @keyframes a6f2 { 0%,100%{transform:translate3d(0,0,0) scale(1)} 35%{transform:translate3d(-130px,80px,0) scale(1.2)} 70%{transform:translate3d(80px,-60px,0) scale(.9)} }
+    @keyframes a6f3 { 0%,100%{transform:translate3d(0,0,0) scale(1)} 40%{transform:translate3d(-140px,-50px,0) scale(1.15)} 75%{transform:translate3d(120px,-90px,0) scale(.85)} }
+    @keyframes a6f4 { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(120px,-70px,0) scale(1.22)} }
+
+  </style>
+</head>
+<body>
+  <!-- SVG filters -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <filter id="a2-noise">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="3">
+          <animate attributeName="baseFrequency" dur="20s" values="0.012;0.018;0.012" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="70" />
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="page">
+    <h1 class="page-title">Banner 动效预览 · 5 套方案 + 当前版</h1>
+    <p class="page-sub">每张卡片就是 banner 区域（缩到 360px 高），鼠标悬停查看流畅度。颜色统一用你已经选好的 4 色：#b8e0ff / #d4c8ff / #b8fffb / #83b3ff。</p>
+
+    <div class="nav">
+      <a href="#a1">① 光环旋转</a>
+      <a href="#a2">② Mesh 流体</a>
+      <a href="#a3">③ 呼吸辐射波</a>
+      <a href="#a4">④ 线性扫光</a>
+      <a href="#a5">⑤ 粒子星河</a>
+      <a href="#a6">⑥ 当前版（彩色漂浮）</a>
+    </div>
+
+    <!-- 方案 1 -->
+    <h2 id="a1" class="card-title">① 光环旋转 <small>"AI 在思考" / Apple Vision Pro 启动感</small></h2>
+    <p class="card-desc">两圈不同色的 conic 渐变光环以不同速度旋转，中心一颗呼吸高光。优雅、有秩序、企业感强。</p>
+    <div class="stage a1">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="stage-content">
+        <span class="badge">+ ClawPro Enterprise</span>
+        <h2>永辉 AI Agent 管控平台</h2>
+        <p>快速创建属于你的 24 小时 AI 私人助理</p>
+      </div>
+    </div>
+
+    <!-- 方案 2 -->
+    <h2 id="a2" class="card-title">② Mesh 流体 <small>墨水扩散 / Stripe / 火山引擎首屏感</small></h2>
+    <p class="card-desc">多色径向渐变 + SVG turbulence 位移噪声，色彩像在水里慢慢搅。最像截图里 KiKi 那种感觉。</p>
+    <div class="stage a2">
+      <div class="stage-content">
+        <span class="badge">+ ClawPro Enterprise</span>
+        <h2>永辉 AI Agent 管控平台</h2>
+        <p>快速创建属于你的 24 小时 AI 私人助理</p>
+      </div>
+    </div>
+
+    <!-- 方案 3 -->
+    <h2 id="a3" class="card-title">③ 呼吸辐射波 <small>Siri 唤醒 / 心跳 / 雷达感</small></h2>
+    <p class="card-desc">中央核心呼吸 + 多层同心圆光环向外涟漪扩散，节奏稳定、有"AI 待命"的隐喻。</p>
+    <div class="stage a3">
+      <div class="wave"></div>
+      <div class="wave wave-2"></div>
+      <div class="wave wave-3"></div>
+      <div class="core"></div>
+      <div class="stage-content">
+        <span class="badge">+ ClawPro Enterprise</span>
+        <h2>永辉 AI Agent 管控平台</h2>
+        <p>快速创建属于你的 24 小时 AI 私人助理</p>
+      </div>
+    </div>
+
+    <!-- 方案 4 -->
+    <h2 id="a4" class="card-title">④ 线性扫光 <small>苹果产品页 / Notion AI 输入框</small></h2>
+    <p class="card-desc">静态柔色底 + 一束斜向高光每 6 秒从左到右扫过。极致克制、商务、高级。</p>
+    <div class="stage a4">
+      <div class="beam"></div>
+      <div class="stage-content">
+        <span class="badge">+ ClawPro Enterprise</span>
+        <h2>永辉 AI Agent 管控平台</h2>
+        <p>快速创建属于你的 24 小时 AI 私人助理</p>
+      </div>
+    </div>
+
+    <!-- 方案 5 -->
+    <h2 id="a5" class="card-title">⑤ 粒子星河 <small>Vercel / AI 数据流感</small></h2>
+    <p class="card-desc">柔色底 + 60 个微光粒子从下往上漂浮。科幻、灵动，适合 AI 主题。</p>
+    <div class="stage a5" id="a5-stage">
+      <div class="stage-content">
+        <span class="badge">+ ClawPro Enterprise</span>
+        <h2>永辉 AI Agent 管控平台</h2>
+        <p>快速创建属于你的 24 小时 AI 私人助理</p>
+      </div>
+    </div>
+
+    <!-- 方案 6 -->
+    <h2 id="a6" class="card-title">⑥ 当前线上版 <small>4 团彩色光晕漂浮</small></h2>
+    <p class="card-desc">作为对比参考。当前线上版本用的就是这个。</p>
+    <div class="stage a6">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="blob blob-4"></div>
+      <div class="stage-content">
+        <span class="badge">+ ClawPro Enterprise</span>
+        <h2>永辉 AI Agent 管控平台</h2>
+        <p>快速创建属于你的 24 小时 AI 私人助理</p>
+      </div>
+    </div>
+
+    <p style="margin-top:48px;color:#888;font-size:13px;">
+      看完想用哪个，告诉我"做方案 X"或"做方案 X，但是 ××"，我立刻替换到 banner 上。
+    </p>
+  </div>
+
+  <script>
+    // 方案 5 的粒子由 JS 生成 60 个，每个有自己的随机起点和漂移路径
+    (function () {
+      var stage = document.getElementById('a5-stage');
+      if (!stage) return;
+      for (var i = 0; i < 60; i++) {
+        var d = document.createElement('div');
+        d.className = 'dot';
+        var x = Math.random() * 100;
+        var y = 100 + Math.random() * 20;
+        var dx = (Math.random() - 0.5) * 80; // 横向漂移
+        var dy = -(120 + Math.random() * 80); // 向上飘
+        var dur = 6 + Math.random() * 8;
+        var delay = -Math.random() * dur;
+        var size = 2 + Math.random() * 3;
+        d.style.left = x + '%';
+        d.style.top = y + '%';
+        d.style.width = size + 'px';
+        d.style.height = size + 'px';
+        d.style.animationDuration = dur + 's';
+        d.style.animationDelay = delay + 's';
+        d.style.setProperty('--dx', dx + 'vw');
+        d.style.setProperty('--dy', dy + '%');
+        // 随机色
+        var palette = ['#83b3ff', '#b8e0ff', '#d4c8ff', '#b8fffb'];
+        var c = palette[Math.floor(Math.random() * palette.length)];
+        d.style.background = c;
+        d.style.boxShadow = '0 0 8px ' + c;
+        stage.appendChild(d);
+      }
+    })();
+  </script>
+</body>
+</html>

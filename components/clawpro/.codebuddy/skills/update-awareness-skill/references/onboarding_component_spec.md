@@ -1,0 +1,327 @@
+# ClawPro 引导组件规范汇总
+
+> **源码路径**: `client/src/components/onboarding/`
+> **统一入口**: `import { ... } from "@/components/onboarding"`（见 `index.ts`）
+> **预览页**: `/preview/onboarding-guide`（由 `OnboardingDemoPanel` 渲染，右下角浮窗可逐个开启体验）
+> **配套 Skill**: `update-awareness-skill/`（版本更新感知工作流）
+> **设计参考**: Figma「版本更新感知 / 新手引导体系」
+> **定位**: 一套全局浮层级引导组件，叠加在真实管控端 / 用户端页面之上，用于「版本更新感知」「新功能引导」。浮层组件通常由 `open` 控制；`GuideUpdateBar` 没有 `onClose`，`GuideNewTag` 没有 `open/onClose`。禁止业务侧手写同类浮层。
+
+---
+
+## 一、组件总览
+
+| # | 组件 | 类型 id | 适用端 | 阻断性 | 对应场景 | 一句话 |
+|---|------|---------|--------|--------|----------|--------|
+| 1 | `GuideGlobalModal` | `global-modal` | both | **强阻断**（全屏蒙版） | 1.1/1.4/3.x/4.x | 影响面极大的更新：680×512 居中全局弹窗，单条 / 多条轮播 |
+| 2 | `GuideModuleFloat` | `module-float` | tenant | 非阻断但视觉较重 | 高影响跨页面更新 | 用户端全局右下角产品动态浮窗，固定含 16:9 配图区 |
+| 3 | `GuideAdminNotify` | `module-float` | admin | 非阻断 | 1.2/2.6 | 管控端产品动态卡片（浮窗实现），同端自动合并 |
+| 4 | `GuideNavBubble` | `nav-bubble` | admin | 非阻断 | 1.5/1.3 | 依附导航项的新功能预览气泡（带 NEW 标 + 预览图 + 去看看） |
+| 5 | `GuidePointBubble` | `point-bubble` | both | 非阻断 | 2.1~2.3 | 单 UI 点对点提示气泡：纯文本 / 文本+按钮 / 文本+图片 / 推送通知 |
+| 6 | `GuideUpdateBar` | `update-bar` | admin | 非阻断（强提醒） | 2.5/2.6/5.x/6.1 | 导航下方 sticky Banner/公告条；本 skill 只识别并交接 |
+| 7 | `GuideChangelogDrawer` | `changelog-drawer` | admin | 半阻断（右抽屉） | 所有层级汇总 | 右侧滑出的版本更新记录抽屉 |
+| 8 | `GuideHighlightBubble` | `highlight-bubble` | both | **强阻断**（Spotlight 蒙版） | 1.2/2.1~2.3 | 高亮镂空遮罩 + 步骤气泡，多区域串联导航 |
+| 9 | `GuideNewTag` | `new_tag` | both | 标识 | 2.5 | 轻量「新」标识，存续不超过两周 |
+| 10 | `ProductUpdatesDrawer` | — | admin | 半阻断（右抽屉） | 汇总 | 产品动态抽屉，高亮 3 秒无底色自动消失 |
+
+统一入口还导出 `GuideOnboardingModal`，但它用于首次登录/首次访问的新手欢迎流程，不属于版本更新感知组件，本 skill 不选择它。
+`OnboardingSimToggle` 与 `OnboardingDemoPanel` 只用于预览/调试，不得进入生产更新方案。
+
+### 体验面板三级分类（业务侧选型入口）
+
+| 分类 | 说明 | 对应组件 |
+|------|------|----------|
+| 最轻量提示 | 在 UI 附近直接展示提示气泡，打开页面后默认出现 | `GuidePointBubble` |
+| 日常更新提示 | 管控端展示产品动态卡片；用户端仅高影响、必须跨页面触达时展示带图浮窗 | `GuideModuleFloat` / `GuideAdminNotify` |
+| 最重量提示 | 仅在系统性重大变更或需用户明确知情同意时使用，新增请务必联系设计师审核样式 | `GuideGlobalModal` |
+
+---
+
+## 二、通用约束（所有引导组件共享）
+
+1. **渲染控制**：浮层、气泡和抽屉在 `open=false` 时不渲染；`GuideUpdateBar` 只有 `open`；`GuideNewTag` 由业务条件与 TTL 决定是否渲染。
+2. **颜色禁硬编码**：颜色 / 阴影 / 圆角全部走 `index.css` 中 `--guide-bubble-*`、`--module-float-*` 语义 token（除已对齐 Figma 的全局弹窗内部固定像素）。
+3. **端差异只用 `endpoint`**：`"admin"` | `"tenant"` 切换按钮圆角等风格，禁止业务侧改写。
+4. **层级（z-index）已内置分层**，业务侧不要覆盖：
+   `UpdateBar 49` → `NavBubble/PointBubble 9980/9985` → `AdminNotify/HighlightBubble 9990` → `ChangelogDrawer/ProductUpdatesDrawer 9994/9995` → `GlobalModal 9999` → `ModuleFloat 10000` → 控制面板 `99999`。由于 ModuleFloat 当前高于 GlobalModal，编排层必须保证两者不同时打开。
+
+---
+
+## 三、CSS Token（定义于 `client/src/index.css`）
+
+### 气泡类 `--guide-bubble-*`
+
+| Token | 值 | 用途 |
+|---|---|---|
+| `--guide-bubble-bg` | `#FFFFFF` | 浅色气泡底 |
+| `--guide-bubble-border` | `#EAEEF4` | 气泡描边 |
+| `--guide-bubble-arrow-stroke` | `#E5E5E5` | 三角箭头描边 |
+| `--guide-bubble-radius` | `4px` | 气泡圆角 |
+| `--guide-bubble-shadow` | `0 8px 48px -12px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.05)` | 浅色气泡阴影 |
+| `--guide-bubble-title` | `#000000` | 标题纯黑 |
+| `--guide-bubble-desc` | `rgba(0,0,0,.7)` | 描述/正文 |
+| `--guide-bubble-btn-primary-bg` / `-text` | `#202020` / `rgba(255,255,255,.9)` | 主按钮 |
+| `--guide-bubble-btn-secondary-bg` / `-border` / `-text` | `#FFFFFF` / `#E5E5E5` / `#000000` | 次按钮 |
+| `--guide-bubble-push-gradient` | `linear-gradient(180deg,#2C59E9,#5980FF)` | 推送通知/深色气泡渐变 |
+| `--guide-bubble-push-title` / `-desc` / `-arrow` | `#FFFFFF` / `rgba(255,255,255,.7)` / `#2C59E9` | 深色文字/箭头 |
+| 步骤指引纯蓝底 | `#2C59E9` | dark + 多步骤模式背景 |
+
+### 浮窗类 `--module-float-*`
+
+宽 `360px`、padding `12px`、圆角 `4px`、底 `#FFFFFF`、描边 `var(--border)`、副标题 `rgba(0,0,0,.5)`、标题 `#000`、描述 `rgba(0,0,0,.7)`、链接 `#1447E6`、配图圆角 `4px`、翻页箭头 `38×28` 圆角 `24px`、单条 CTA 黑底白字圆角 `24px`。
+
+---
+
+## 四、组件详解
+
+### 4.1 GuideGlobalModal · 全局弹窗（强阻断）
+
+- **结构**: `fixed inset-0` 全屏 → 半透明黑色蒙版（`bg-black/50 backdrop-blur-[1px]`，点击关闭）→ 居中 **680×512 / 圆角 8px** 卡片。
+- **变体**: `single`（单条，用户端样式）/ `carousel`（多条轮播，左右箭头 + 指示器圆点，管控端样式）。
+- **按钮圆角随 `endpoint`**: admin = `4px`，tenant = `60px` 胶囊。主按钮渐变 `linear-gradient(90deg,#020617 70%,#1447E6 100%)`。
+- **指示器**: 激活 `18×4 #000`，非激活 `4×4 #CACFDD`。
+- **素材要求**：媒体区固定存在；无素材会显示带 `1080×608` 标记的占位画面。正式使用必须联系设计提供 1080×608 图片或已确认视频，素材交付前不可上线。
+- **优先级**: 相对常规一级弹窗（Dialog / AlertDialog / Sheet，通常 z-50），GlobalModal（z-9999）优先展示；它并不高于源码为 z-10000 的 ModuleFloat，因此两者必须互斥。
+
+```tsx
+<GuideGlobalModal open onClose variant="single" | "carousel"
+  slides={[{ titleLeft?, titleRight, desc, videoSrc?, imageSrc? }]}
+  confirmText="立即体验" secondaryText? onConfirm? onSecondary?
+  endpoint="admin" | "tenant" />
+```
+
+### 4.2 GuideModuleFloat · 非阻断浮窗
+
+- **挂载范围**：挂在登录后的用户端全局布局，跨页面共享一个实例和未读状态；不是进入某一个功能页才展示。
+- **位置**: 固定右下角 `fixed bottom-6 right-6`，宽 360px。
+- **使用门槛**：固定包含 16:9 媒体区，视觉重量较高，仅用于高影响、必须跨页面触达且轻量提示不足的更新。低/中影响更新使用 New Tag、NavBubble、PointBubble 或不展示。
+- **素材门槛**：图片推荐 672×376。源码会在缺图时显示灰色占位块，正式方案必须提醒用户联系设计团队进行图片设计，素材交付前不可上线。
+- **展示限制**：只在已登录用户端允许页面展示；排除登录页、首次 onboarding、全屏/沉浸任务和 GlobalModal 打开期间；路由切换不重复曝光。
+- **变体**: `single`（底部右对齐黑色胶囊 CTA「立即体验」，描述行内带跳转链接）/ `multi`（底部「n/N 跳过引导」+ 翻页箭头，末页变「我知道了」）。
+- **多来源**：可传 `sources` 自动合并；一个来源为 single，两个及以上来源每个占一页并转为 multi。合并时每个 source 只放一条主要 item；单 source 放多条会因 single 模式缺少翻页而只显示第一条。单个更新需要多页时直接传 `variant="multi" + items`。统一入口未导出 `ModuleFloatSource` 和 `mergeModuleFloats`，不得为使用它们而深链导入。
+
+```tsx
+<GuideModuleFloat open onClose subtitle title
+  items={[{ subtitle?, title, description, image?, actionText?, actionHref? }]}
+  variant="single" | "multi" confirmText="立即体验" onConfirm? />
+```
+
+### 4.3 GuideAdminNotify · 管控端产品动态卡片
+
+- 管控端非阻断浮窗的具体实现，以「产品动态卡片」形式展示。
+- **位置**：固定在管控端左侧导航底部、用户账号上方；不要与用户端右下角 `GuideModuleFloat` 混淆。
+- **卡片数量与合并规则（强制）**：用户端内容最多 1 张，管控端内容最多 1 张，整体最多 2 张；同端多条内容自动合并为一张多条卡片，禁止同端出现 2 张及以上独立卡片。组件不读取日期，顺序由传入 items 决定，不能声称自动按时间排序。
+- 聚合描述会把同端原始标题正文用顿号拼接；业务侧需保证拼接后 `≤30` 字。
+- 卡片始终展示在管控端；`AdminNotifyItem.endpoint` 表示卡片内容所属端。用户端变化告知管理员时使用 `endpoint="tenant"`。
+- 自动合并只在 `variant="stacked"` 且存在多条 `items` 时生效；传原始 items 与 `relatedIds`，不要手写聚合卡。
+- 点击「查看详情 / 立即体验」跳转 `ProductUpdatesDrawer` 并高亮对应条目。
+
+```tsx
+<GuideAdminNotify open onClose variant="stacked" items={notifyItems} onAction={handleAction} />
+```
+
+### 4.4 GuideNavBubble · 导航预览气泡
+
+- 依附 sidebar / 导航项旁，宽 **300px**，圆角 `rounded-xl`，带白色三角箭头（`placement` = right/bottom/left）。
+- 内容：可选预览图 + `NEW` 蓝标 + 标题 + 描述 + 关闭；传 `href` 时底部「去看看 →」+「稍后再说」。
+- 只有传 `image` 的方案需要联系设计出图；不传图片时可以作为纯文案轻量气泡使用。
+
+```tsx
+<GuideNavBubble open onClose title description image?
+  placement="right" | "bottom" | "left" href? actionText="去看看" style? />
+```
+
+### 4.5 GuidePointBubble · 单 UI 提示气泡
+
+- 宽 **280px**，气泡 + 三角箭头 + 可选脉冲热点。
+- **颜色变体**: `light`（白底黑字）/ `dark`（蓝渐变白字）。
+- **内容变体**: `text-only`（纯文本，可带有序列表 ≤3 条）/ `text-button`（文本+按钮）/ `text-image`（文本+图片）/ `push-notice`（重点推送，强制蓝渐变）。
+- `text-image` 必须提供设计图片；`push-notice` 只有传 `noticeImage` 时需要设计图片。组件缺图占位仅供预览，不得上线。
+- 源码默认 `contentVariant="text-button"`；skill 选择纯文本时必须显式传 `contentVariant="text-only"`。
+- **步骤模式**: `showSteps` + `totalSteps>1`，底部步骤导航。
+- **热点 `hotspotShape`**: `circle`（呼吸脉冲圆点）/ `rect`（蓝色圆角矩形标注）。
+
+```tsx
+<GuidePointBubble open onClose title description subtitle?
+  variant="light" | "dark"
+  contentVariant="text-only" | "text-button" | "text-image" | "push-notice"
+  image? noticeImage? imageCaption? listItems? tag?
+  currentStep? totalSteps? showSteps
+  actionText? onAction? secondaryActionText? onSecondaryAction? onNext? onPrev?
+  placement="bottom" showHotspot hotspotShape="circle" | "rect" hotspotSize?
+  endpoint="admin" | "tenant" style? />
+```
+
+### 4.6 GuideUpdateBar · 强提醒公告条
+
+> 流程边界：本节只记录组件能力，供交接负责人参考。`update-awareness` 只识别需求并发起公告文案生成、审核与后续开发决策交接，不开发、植入、修改或登记该组件及其关联详情条目。
+
+- 通过 `createPortal` 插入 `header.sticky` 之后，`position:sticky; top:64px; z-index:49`，撑开页面、随滚动固定、**不可手动关闭**。
+- 若页面没有 `header.sticky`，组件会尝试插到 `main` 前；两者都不存在时 Portal 容器不会进入可见 DOM，执行前必须校验挂载前提。
+- 琥珀告警样式 `bg-[#FEF3C7]` + `border-[#F59E0B]/30` + `AlertTriangle` 图标，右侧「查看详情 ›」。
+
+```tsx
+<GuideUpdateBar open message version? onDetail? detailText="查看详情" />
+```
+
+### 4.7 GuideChangelogDrawer · 更新记录抽屉
+
+- 右侧滑出抽屉，`z-9994` 遮罩 + `z-9995` 面板（宽 `max-w-[420px]`）。
+- 按 `version` 分组（版本标签 sticky），每条 entry：层级标签 + 标题 + 描述 + 可选外链。
+- 层级标签配色：结构=紫 / 元素=蓝 / 逻辑=琥珀 / 系统=红 / 跨端=绿。
+
+```tsx
+<GuideChangelogDrawer open onClose
+  versions={[{ version, date, entries: [{ id, title, description, tag, date, href? }] }]} />
+```
+
+### 4.8 GuideHighlightBubble · 步骤指引气泡（呼吸灯 / 矩形标注）
+
+- `fixed inset-0 z-9990` 覆盖层，按 `hotspotShape` 绘制呼吸灯（`circle`）或矩形标注（`rect`）+ 旁置 280px 步骤气泡。
+- **多区域串联**: `regions` 数组 + 受控 `currentIndex` / `onIndexChange`，底部步骤导航。
+
+#### DOM 读取 / 定位规则（核心，必须遵守）
+
+1. **选择器优先**：`region.selector`（CSS 选择器）+ `getBoundingClientRect()` 实时测量。
+2. **兜底坐标**：仅当 selector 缺失/未命中时回退到手写 `top/left/width/height`。
+3. **双缺失不渲染**：selector 未命中且兜底坐标缺失时直接 `return null`。
+4. **持续跟随**：`requestAnimationFrame` 循环测量，实时跟随滚动；气泡尺寸用 `ResizeObserver` 测量，自动匹配方向 + 视口 clamp。
+5. **自动滚动定位**：切换步骤时 `scrollIntoView({ behavior:"smooth", block:"center" })`。
+6. **矩形外扩 `padding`**：`rect` 模式按 `region.padding`（默认 6px）外扩。
+7. **选择器稳定性**：优先用稳定唯一的 `data-guide="xxx"` 属性，避免依赖易变的 class / nth-child。
+
+```tsx
+<GuideHighlightBubble open onClose
+  regions={[{ id, selector?, top?, left?, width?, height?, padding?, title, description, bubblePlacement?, listItems? }]}
+  currentIndex onIndexChange hotspotShape="circle" | "rect" showList? endpoint="admin" | "tenant" />
+```
+
+### 4.9 GuideNewTag · 新功能标签
+
+- `variant="new"`：显示 `New`。
+- `variant="coming-soon"`：显示 `即将开放`。
+- `variant="custom"`：通过 `children` 提供自定义短文案。
+- 生命周期由业务侧控制，建议 14 天，最长 30 天或首次点击移除。
+
+### 4.10 ProductUpdatesDrawer · 产品动态抽屉
+
+- 条目必填：`id`、更新类型、所属端、标题、描述、日期。
+- 可选：近期状态和“前往体验”链接。
+- 支持按管控端/用户端筛选；从 `GuideAdminNotify` 进入时用 `highlightIds` 高亮关联条目。
+
+---
+
+## 五、场景 → 组件映射（版本更新感知场景清单）
+
+> 详细规则见 `.codebuddy/skills/update-awareness-skill/references/`
+
+| 场景 | 感知要点 | 管控端推荐组件 |
+|------|----------|----------------|
+| 1.1 新增子页面 | 用户不知道新页面存在 | 导航提示条 + New Tag |
+| 1.2 页面重新排布 | 用户找不到原操作位置 | 导航提示条 + 重要操作变更气泡引导 |
+| 1.3 功能位置变动 | 用户按旧路径找不到 | 导航提示条 + 页面入口气泡引导 |
+| 1.4.1 页面整合（多合一） | 用户不知整合后含原功能 | 导航提示条 + 页面入口气泡 |
+| 1.4.2 页面拆分（一拆多） | 用户需找到新入口 | 导航提示条 + 侧边栏说明详情 + 页面入口气泡引导 |
+| 1.5.1 页面入口下线 | 用户以为功能丢失 | 预告期：导航提示条 + 禁用入口说明气泡；告知期：导航提示条 |
+| 1.5.2 页面入口新增 | 用户可能长期不点击 | 非一级导航：导航提示条 + New Tag；一级导航：导航栏旁展示气泡 |
+| 2.1 新增按钮/操作入口 | 用户可能视而不见 | 重要：导航提示条 + 功能入口附近气泡；次级：进入页面时展示气泡 |
+| 2.2 新增表格列/字段 | 用户不理解新列含义 | 重要：导航提示条 + 功能入口附近气泡；次级：进入页面时展示气泡 |
+| 2.3 新增筛选/排序/分组 | 不易被主动发现 | 重要：导航提示条 + 功能入口附近气泡；次级：进入页面时展示气泡 |
+| 2.4 名称/文案变更 | 用户困惑是否同一功能 | 新名称右侧标注原名 或 元素附近解释气泡 |
+| 2.5 新功能 New Tag | 轻量感知，需有下线时间 | New Tag（建议 ≤14 天，最长 30 天） |
+| 2.6 细节优化叠加 | 按影响程度分级 | 纯视觉：不展示；路径大幅调整：导航提示条 + 常驻引导；已知问题修复：导航提示条 + Alert |
+| 3.1 底层逻辑变更 | 行为结果可能不同 | 导航提示条 + 对应页面内 Alert |
+| 3.2 规则/策略变更 | 旧规则操作会被拒绝 | 重点：导航提示条 + 对应页面 Alert；普通：对应组件下方规则说明 |
+| 3.3 计费/配额变更 | 影响成本和使用范围 | 重点：导航提示条 + 对应页面 Alert；普通：对应组件下方规则说明 |
+| 4.1 账号体系变更 | 最高等级变更 | 导航提示条 + 页面 Alert + 必要时强提醒弹窗 |
+| 4.2 权限体系变更 | 用户能力变化 | 导航提示条 + 页面 Alert + 权限影响说明 |
+| 4.3 数据合规/隐私变更 | 需用户明确知情/同意 | 导航提示条 + 页面 Alert + 必要时确认弹窗 |
+| 5.1 C端→管控端 | 管理员需了解用户端变化 | `GuideAdminNotify + ProductUpdatesDrawer`；若另有管控动作，再追加对应页 Alert |
+| 5.2 管控端→C端 | 配置即时生效告知用户 | 管控端导航提示条 + C 端浮窗/气泡 |
+
+**打扰度分级**（默认选择能解决认知问题的最低打扰度组合）：
+- 高：强提醒弹窗、页面 Alert、常驻操作引导
+- 中：导航提示条、侧边栏说明详情、气泡引导
+- 低：New Tag、新名称右侧标注、组件下方规则说明
+
+---
+
+## 六、强制规则
+
+1. **统一来源**：所有引导浮层必须使用 `@/components/onboarding` 导出的组件，禁止业务页面手写 `fixed` + `absolute` 自拼引导弹窗/气泡/公告条。
+2. **渲染控制**：浮层/气泡/抽屉使用 `open + onClose`；`GuideUpdateBar` 只使用 `open`；`GuideNewTag` 由业务条件与 TTL 控制。关闭或失效后直接不渲染，禁止用 CSS 隐藏浮层。
+3. **颜色禁硬编码**：浅色/深色/渐变全部走 `--guide-bubble-*` / `--module-float-*` token。
+4. **端风格只用 `endpoint`**：按钮圆角等差异仅通过 `endpoint` 切换，禁止 `className` 覆盖。
+5. **层级不可改**：z-index 已内置分层，业务侧不得自定义覆盖。
+6. **强阻断需蒙版**：`GuideGlobalModal` 与 `GuideHighlightBubble` 必须保留半透明黑色蒙版，不得改为透明。
+7. **强提醒互斥**：GuideGlobalModal（z-9999）打开时暂停其他业务弹窗与 `GuideModuleFloat`；ModuleFloat 源码为 z-10000，若同时打开会盖过 GlobalModal。
+8. **预览体验**：调试统一在 `/preview/onboarding-guide` 页右下角面板逐个开启，禁止在生产业务页常驻演示面板。
+9. **DOM 实时定位**：`GuideHighlightBubble` 必须通过 `region.selector` 实时读取真实 DOM 测量，优先用 `data-guide` 稳定属性。
+10. **气泡数量与互不遮挡**：
+    - 同一界面最多同时出现 **2 个气泡**，禁止 3 个及以上同屏，超出排队。
+    - **更新内容较多时**（≥3 个标注点）必须改用 `GuideHighlightBubble` 分步骤引导（1/N → 2/N → …）。
+    - 同屏气泡禁止相互重叠、禁止遮挡另一引导组件，定位算法须主动避让或排队。
+11. **GuideAdminNotify 卡片合并**：用户端/管控端各最多 1 张，同端多条内容自动合并为一张多条卡片。
+12. **New Tag 存续时间**：建议不超过两周（14 天），最长不超过 30 天，必须明确下线条件（到期/首次点击/曝光次数移除）。
+13. **流程边界**：`GuideAdminNotify`、`GuideNewTag`、`ProductUpdatesDrawer` 不是 `GuideFlow.steps` 组件；独立接入。`GuideOnboardingModal`、`OnboardingSimToggle`、`OnboardingDemoPanel` 不用于生产版本更新。
+14. **确认能力边界**：GuideGlobalModal 可被关闭，只能承载强提醒或知情；需要不可绕过的明确同意时，使用业务确认组件或先扩展组件。
+15. **带图组件上线门槛**：`GuideModuleFloat`、`GuideGlobalModal` 必须有设计确认的图片/视频；`GuideNavBubble.image`、`GuidePointBubble text-image`、带 `noticeImage` 的 push-notice 在选择带图内容时同样需要设计素材。源码占位图不得上线。
+16. **GuideUpdateBar 流程边界**：方案中命中 `GuideUpdateBar` 时标记 `handoff_required`；本 skill 不生成可开发终稿、不接入、不修改、不登记该组件及其关联详情条目。
+
+---
+
+## 七、规范优化建议（落地状态）
+
+> ✅ = 已落地  🔶 = 部分落地 / 文档约束  ⬜ = 待办
+
+### 7.1 体系一致性
+
+1. ✅ **统一组件计数口径**：组件总览已更新为 10+ 个组件清单（含 `GuideAdminNotify` / `GuideNewTag` / `ProductUpdatesDrawer` 等）。
+2. ✅ **明确 `GuideAdminNotify` 与 `GuideModuleFloat` 关系**：组件总览已标注「管控端用 GuideAdminNotify、用户端用 GuideModuleFloat」，体验面板三级分类表也已对应。
+3. ✅ **场景映射双口径合并**：已补「体验面板三级分类」与「完整场景映射表」并列，三级分类作为选型入口。
+
+### 7.2 可执行性增强（已落地代码基础设施）
+
+4. ✅ **行为参数 token 化**：`onboardingShared.ts` 提供 `BehaviorConfig` / `DEFAULT_BEHAVIOR` / `BEHAVIOR_PRESETS` / `resolveBehavior()`，统一管理 dismissible / showOnce / maxExposures / cooldownDays / startsAt / expiresAt。
+5. ✅ **埋点规范**：`trackOnboarding(event, props)` 统一上报，事件名 `onboarding_impression/click/dismiss`，属性含 `updateId/component/layer/scenario/endpoint`；优先复用 `window.__track`，缺失时降级 console.debug。
+6. ✅ **持久化 key 规范**：`buildPersistenceKey(component, updateId)` → `onboarding.{component}.{updateId}.dismissed`，配套 `isDismissed/markDismissed/markExposure` 读写。
+
+### 7.3 防御性约束
+
+7. ✅ **气泡排队机制代码层兜底**：`onboardingShared.ts` 的 `bubbleQueue`（最多 2 并发，超出自动排队）+ `useBubbleQueue(id, open)` Hook，从代码层强制约束并发数量。
+8. ✅ **强阻断组件无障碍（a11y）**：`useFocusTrap(open, onClose)` Hook 提供焦点陷阱 + Tab 循环 + `Esc` 关闭 + body 滚动锁 + 焦点归还；已接入 `GuideGlobalModal`（`role="dialog"` + `aria-modal`）。
+9. 🔶 **降级策略**：`GuideHighlightBubble` 已实现「selector 全未命中 + 无兜底坐标 → 不渲染」。自动降级为其它组件因耦合风险暂作文档约束：业务侧应在 DOM 不稳定的页面优先配置兜底坐标；若考虑改用 `GuideUpdateBar`，本 skill 仅生成交接项。
+
+### 7.4 内容治理
+
+10. ✅ **文案长度软校验**：`validateCopy(field, text, context)`，开发环境对标题（≤14）/ 正文（≤60）/ CTA（≤6）超长 console.warn。
+11. ✅ **国际化预留**：`I18nText`（`string | { key, default }`）+ `resolveI18n()`，未来接入 i18n 时统一在 `resolveI18n` 内替换为 `t(key)`。
+12. 🔶 **生命周期管理**：`isNewTagExpired(startDate, maxDays)` + `NEW_TAG_RECOMMENDED_DAYS(14)` / `NEW_TAG_MAX_DAYS(30)` 已提供过期判断。建立「更新提示登记表」+ CI 定时清理待后续接入。
+
+### 基础设施使用示例
+
+```tsx
+import {
+  resolveBehavior, trackOnboarding, buildPersistenceKey,
+  isDismissed, markDismissed, validateCopy, resolveI18n,
+  useBubbleQueue, useFocusTrap, useExposure,
+} from "@/components/onboarding";
+
+// 行为参数
+const behavior = resolveBehavior("point-bubble", { maxExposures: 3 });
+
+// 持久化 + 是否展示
+const key = buildPersistenceKey("point-bubble", "u-mcp-2026q2");
+if (isDismissed(key, behavior)) return null;
+
+// 气泡并发队列（业务编排层）
+const canShow = useBubbleQueue("point-bubble:u-mcp", open);
+
+// 曝光埋点
+useExposure(open, { component: "point-bubble", updateId: "u-mcp", layer: "element" }, key);
+
+// 关闭时
+const handleClose = () => { markDismissed(key); trackOnboarding("onboarding_dismiss", { component: "point-bubble", updateId: "u-mcp" }); onClose(); };
+```
+
+> **源码**: `client/src/components/onboarding/onboardingShared.ts`、`onboardingHooks.ts`

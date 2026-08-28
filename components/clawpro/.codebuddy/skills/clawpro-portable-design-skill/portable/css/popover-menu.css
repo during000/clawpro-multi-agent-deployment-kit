@@ -1,0 +1,144 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Popover / DropdownMenu — ClawPro
+ * 轻量浮层：白底、4px 圆角、蓝灰描边、overlay 轻阴影、z-50。
+ *   Trigger 36px(h-9)；Menu Item text-sm 紧凑 padding，hover bg-subtle；
+ *   danger item 走 text-danger；1px 弱分割线；空态单行弱提示。
+ *   列表过长面板内部滚动（max-height + overflow）。
+ * 注：危险操作只作入口，真正执行前需二次确认（用 AlertDialog）。
+ * 配套：portable/react/popover-menu.tsx
+ * 规范：component-specs/popover-dropdown-menu.md §3
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.cp-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  color: var(--cp-text-title);
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.cp-menu__trigger:hover {
+  border-color: var(--cp-brand-blue);
+}
+
+.cp-menu__trigger[data-state="open"] {
+  border-color: var(--cp-brand-blue);
+}
+
+.cp-menu__panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  z-index: 50;
+  min-width: 160px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-overlay);
+}
+
+.cp-menu__panel--end {
+  right: 0;
+}
+
+.cp-menu__panel--start {
+  left: 0;
+}
+
+.cp-menu__item {
+  display: flex;
+  width: 100%;
+  height: 32px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--cp-text-title);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+}
+
+.cp-menu__item:hover,
+.cp-menu__item[data-highlight="true"] {
+  background: var(--cp-bg-subtle);
+}
+
+.cp-menu__item:disabled {
+  color: var(--cp-text-weak);
+  cursor: not-allowed;
+}
+
+.cp-menu__item:disabled:hover {
+  background: transparent;
+}
+
+.cp-menu__item--danger {
+  color: var(--cp-text-danger);
+}
+
+.cp-menu__item-icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-menu__separator {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--cp-border);
+}
+
+.cp-menu__empty {
+  padding: 8px;
+  font-size: 14px;
+  color: var(--cp-text-weak);
+  text-align: center;
+}
+
+/* ─── 通用 Popover（自定义内容浮层） ─── */
+.cp-popover {
+  position: relative;
+  display: inline-flex;
+}
+
+.cp-popover__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 50;
+  min-width: 200px;
+  padding: 16px;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-overlay);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cp-text-body);
+}
+
+.cp-popover__panel--end {
+  left: auto;
+  right: 0;
+}

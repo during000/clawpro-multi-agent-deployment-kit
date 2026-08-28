@@ -1,0 +1,167 @@
+{
+  "categories": [
+    {
+      "type": "builtin",
+      "label": "内置规则",
+      "rule_groups": [
+        {
+          "key": "allow_internet",
+          "name": "允许公网访问",
+          "rules": [
+            {
+              "direction": "egress",
+              "protocol": "ALL",
+              "port": "ALL",
+              "cidr_block": "0.0.0.0/0",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "放通所有出站流量（IPv4）"
+            },
+            {
+              "direction": "egress",
+              "protocol": "ALL",
+              "port": "ALL",
+              "cidr_block": "",
+              "ipv6_cidr": "::/0",
+              "action": "ACCEPT",
+              "description": "放通所有出站流量（IPv6）"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "recommended",
+      "label": "ClawPro 推荐规则",
+      "rule_groups": [
+        {
+          "key": "allow_gateway_ui",
+          "name": "OpenClaw 面板端口",
+          "condition": "gateway_ui_enable",
+          "rules": [
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "{{GATEWAY_UI_PORT}}",
+              "cidr_block": "0.0.0.0/0",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "放通 OpenClaw 面板端口"
+            }
+          ]
+        },
+        {
+          "key": "allow_agent_proxy_teams",
+          "name": "Teams Webhook 端口",
+          "condition": "agent_proxy_teams_enable",
+          "rules": [
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "3978",
+              "cidr_block": "0.0.0.0/0",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "放通 Teams Bot Framework Webhook 端口"
+            }
+          ]
+        },
+        {
+          "key": "allow_agent_proxy_line",
+          "name": "LINE Webhook 端口",
+          "condition": "agent_proxy_line_enable",
+          "rules": [
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "8646",
+              "cidr_block": "0.0.0.0/0",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "放通 LINE Messaging API Webhook 端口"
+            }
+          ]
+        },
+        {
+          "key": "allow_vnc_whitelist",
+          "name": "云端浏览器 VNC 白名单",
+          "condition": "browser_vnc_enable",
+          "rules": [
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "6080",
+              "cidr_block": "118.195.242.145/32",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "云端浏览器VNC(南京)"
+            },
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "6080",
+              "cidr_block": "129.204.9.86/32",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "云端浏览器VNC(广州)"
+            },
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "6080",
+              "cidr_block": "139.199.6.216/32",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "云端浏览器VNC(广州)"
+            },
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "6080",
+              "cidr_block": "162.14.8.234/32",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "云端浏览器VNC(上海)"
+            },
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "6080",
+              "cidr_block": "152.136.134.77/32",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "云端浏览器VNC(北京)"
+            },
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "6080",
+              "cidr_block": "43.132.221.129/32",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "云端浏览器VNC(香港)"
+            },
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "6080",
+              "cidr_block": "43.152.226.52/32",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "云端浏览器VNC(曼谷)"
+            },
+            {
+              "direction": "ingress",
+              "protocol": "TCP",
+              "port": "6080",
+              "cidr_block": "43.131.52.175/32",
+              "ipv6_cidr": "",
+              "action": "ACCEPT",
+              "description": "云端浏览器VNC(法兰克福)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

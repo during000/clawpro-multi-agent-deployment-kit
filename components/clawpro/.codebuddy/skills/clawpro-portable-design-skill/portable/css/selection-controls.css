@@ -1,0 +1,131 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Selection Controls — ClawPro
+ * Switch / Checkbox / Radio 三件套。
+ * ⚠ 选择控件默认描边走 --cp-border-control (#C8CFDA)，不是 --cp-border。
+ * 配套：portable/react/selection-controls.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════ Switch（44×24 / full 圆角） ═══════════════ */
+.cp-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+.cp-switch--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.cp-switch__input {
+  display: none;
+}
+.cp-switch__track {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  border-radius: 9999px;
+  background: var(--cp-border-control);
+  transition: background-color 150ms ease;
+}
+.cp-switch__track--on {
+  background: var(--cp-brand-blue);
+}
+.cp-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  transition: transform 150ms ease;
+}
+.cp-switch__thumb--on {
+  transform: translateX(20px);
+}
+
+/* ═══════════════ Checkbox（20×20 / 4px 圆角） ═══════════════ */
+.cp-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.cp-checkbox--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.cp-checkbox__input {
+  display: none;
+}
+.cp-checkbox__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius);
+  border: 2px solid var(--cp-border-control);
+  background: #FFFFFF;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+.cp-checkbox__box--checked {
+  background: var(--cp-brand-blue);
+  border-color: var(--cp-brand-blue);
+}
+.cp-checkbox__label {
+  font-size: 14px;
+  color: var(--cp-text-title);
+}
+
+/* ═══════════════ Radio（20×20 / 圆形） ═══════════════ */
+.cp-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.cp-radio--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.cp-radio__input {
+  display: none;
+}
+.cp-radio__circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  border: 2px solid var(--cp-border-control);
+  background: #FFFFFF;
+  transition: border-color 150ms ease;
+}
+.cp-radio__circle--checked {
+  border-color: var(--cp-brand-blue);
+}
+.cp-radio__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: var(--cp-brand-blue);
+}
+.cp-radio__label {
+  font-size: 14px;
+  color: var(--cp-text-title);
+}
+
+/* ─── RadioGroup 布局 ─── */
+.cp-radio-group {
+  display: flex;
+}
+.cp-radio-group--vertical {
+  flex-direction: column;
+  gap: 8px;
+}
+.cp-radio-group--horizontal {
+  flex-direction: row;
+  gap: 16px;
+}

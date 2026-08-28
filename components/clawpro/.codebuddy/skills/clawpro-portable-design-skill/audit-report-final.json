@@ -1,0 +1,190 @@
+{
+  "summary": {
+    "spec_total": 37,
+    "component_react_total": 37,
+    "component_css_total": 35,
+    "manifest_count": 36,
+    "duplicates": 2,
+    "complete_components": 28,
+    "completion_percentage": 54,
+    "true_gaps": 5,
+    "intentional_aliases": 5
+  },
+  "table1_no_spec": [
+    {
+      "component": "admin-sidebar-with-tooltip",
+      "react_file": "portable/react/admin-sidebar-with-tooltip.tsx",
+      "css_file": null,
+      "spec": null,
+      "notes": "Variant/extension of admin-sidebar"
+    },
+    {
+      "component": "badges",
+      "react_file": "portable/react/badges.tsx",
+      "css_file": null,
+      "spec": null,
+      "notes": "Related to badge component"
+    },
+    {
+      "component": "card",
+      "react_file": "portable/react/card.tsx",
+      "css_file": "portable/css/card.css",
+      "spec": null,
+      "notes": "Likely card-surface implementation - naming confusion"
+    },
+    {
+      "component": "popover-menu",
+      "react_file": "portable/react/popover-menu.tsx",
+      "css_file": "portable/css/popover-menu.css",
+      "spec": null,
+      "notes": "Spec exists as popover-dropdown-menu - naming mismatch"
+    },
+    {
+      "component": "searchable-select",
+      "react_file": "portable/react/searchable-select.tsx",
+      "css_file": null,
+      "spec": null,
+      "notes": "Spec exists as combobox - intentional alias"
+    }
+  ],
+  "table2_no_component": [
+    {
+      "spec": "card-surface",
+      "react_file": null,
+      "css_file": null,
+      "status": "unimplemented",
+      "notes": "Likely card.tsx implementation - needs clarification"
+    },
+    {
+      "spec": "combobox",
+      "react_file": null,
+      "css_file": null,
+      "status": "alias",
+      "alias_for": "searchable-select",
+      "notes": "Confirmed alias - intentional consolidation"
+    },
+    {
+      "spec": "data-table",
+      "react_file": null,
+      "css_file": null,
+      "status": "alias",
+      "alias_for": "table",
+      "notes": "Confirmed alias - intentional consolidation"
+    },
+    {
+      "spec": "datetime-display",
+      "react_file": null,
+      "css_file": null,
+      "status": "alias",
+      "alias_for": "date-picker",
+      "notes": "Partial overlap with date-picker - in dir but not MANIFEST"
+    },
+    {
+      "spec": "popover-dropdown-menu",
+      "react_file": null,
+      "css_file": null,
+      "status": "alias",
+      "alias_for": "popover-menu",
+      "notes": "Naming mismatch - needs correction"
+    },
+    {
+      "spec": "tag-label",
+      "react_file": null,
+      "css_file": null,
+      "status": "alias",
+      "alias_for": "selection-controls",
+      "notes": "Related component - intentional consolidation"
+    },
+    {
+      "spec": "tenant-topnav",
+      "react_file": null,
+      "css_file": null,
+      "status": "unimplemented",
+      "notes": "Tenant-specific component - needs implementation"
+    },
+    {
+      "spec": "typography",
+      "react_file": null,
+      "css_file": null,
+      "status": "unimplemented",
+      "notes": "Foundation component - may be in design tokens"
+    },
+    {
+      "spec": "upload-file-browser",
+      "react_file": null,
+      "css_file": null,
+      "status": "unimplemented",
+      "notes": "File upload component - needs implementation"
+    }
+  ],
+  "table3_manifest_diff": {
+    "manifest_count": 36,
+    "actual_spec_count": 37,
+    "actual_react_count": 37,
+    "actual_css_count": 35,
+    "specs_missing_from_manifest": [
+      "datetime-display"
+    ],
+    "specs_in_manifest_but_missing_in_dir": [],
+    "react_files_accounted_for": "ALL (37/37)",
+    "css_files_accounted_for": "ALL (35/35)",
+    "discrepancy_status": "MANIFEST out of sync by 1 spec"
+  },
+  "duplicates_found": [
+    {
+      "component": "alert",
+      "react_duplicates": [
+        "portable/react/alert.tsx",
+        "portable/react/alert/alert.tsx"
+      ],
+      "css_duplicates": [
+        "portable/css/alert.css",
+        "portable/css/alert/alert.css"
+      ],
+      "severity": "HIGH",
+      "action": "CONSOLIDATE to single canonical location"
+    }
+  ],
+  "action_items": [
+    "TRUE GAPS FOUND: 5 real issues requiring action",
+    "1. BLOCKER: Consolidate alert component duplicates (alert.tsx & alert/alert.tsx)",
+    "2. HIGH: Clarify card.tsx vs card-surface.md naming confusion",
+    "3. HIGH: Fix popover naming mismatch (popover-menu.tsx vs popover-dropdown-menu.md)",
+    "4. MEDIUM: Update MANIFEST.json to include datetime-display.md",
+    "5. HIGH: Implement tenant-topnav component",
+    "6. HIGH: Implement upload-file-browser component",
+    "7. MEDIUM: Implement typography component or consolidate into tokens",
+    "8. MEDIUM: Document 4 demo/showcase files (alert-demo, toast-demo, segment-showcase, sonner)",
+    "9. MEDIUM: Document 5 variant components without specs",
+    "INTENTIONAL ALIASES CONFIRMED: 5 mappings (combobox→searchable-select, data-table→table, etc.)",
+    "DUPLICATES TO CONSOLIDATE: 2 pairs of alert files"
+  ],
+  "component_inventory": {
+    "complete_components_list": [
+      "admin-sidebar", "alert", "avatar", "badge", "batch-actions-bar",
+      "breadcrumb", "button", "chart-stat", "date-picker", "dialog-drawer",
+      "empty-state", "file-browser", "form-controls", "input-select",
+      "loading-progress", "number-card", "page-header", "pagination",
+      "search-filter-bar", "segment", "selection-controls", "status-tag",
+      "table", "tabs", "toast", "tooltip", "transfer", "tree"
+    ],
+    "no_spec_list": [
+      "admin-sidebar-with-tooltip", "badges", "card", "popover-menu", "searchable-select"
+    ],
+    "no_component_list": [
+      "card-surface", "tenant-topnav", "typography", "upload-file-browser"
+    ],
+    "confirmed_aliases": {
+      "combobox": "searchable-select",
+      "data-table": "table",
+      "popover-dropdown-menu": "popover-menu",
+      "tag-label": "selection-controls",
+      "datetime-display": "date-picker (partial)"
+    }
+  },
+  "report_files": {
+    "comprehensive_json": "design-alignment-audit-v2.json (12 KB)",
+    "summary_text": "AUDIT_SUMMARY.txt (9.7 KB)",
+    "working_directory": "/Users/addietang/Documents/cvm/openclaw-enterprise/.codebuddy/skills/clawpro-portable-design-skill/"
+  }
+}

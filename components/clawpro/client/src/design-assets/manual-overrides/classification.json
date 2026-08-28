@@ -1,0 +1,733 @@
+{
+  "$schema": "clawpro-classification-overrides",
+  "note": "人工分类修正事实源（设计确认）。classify-resources.mjs 消费：visualType 覆盖视觉类型；scenes 覆盖端别；componentSlot 标记组件槽位（自有 SVG 子菜单）；confirmed=true 表示该资源身份/主场景已由设计确认，置为已确认并移出待确认清单；excludeFromLibrary=true 表示该资源属组件私有/不纳入资源库（同样移出待确认清单）。仅在此登记的 id 生效，其余按规则自动判定，绝不臆测。",
+  "updatedAt": "2026-06-13T17:57:01.316Z",
+  "componentSlots": {
+    "admin-sidebar": "AdminSidebar 导航图标",
+    "card-left-icon": "卡片左侧图标",
+    "number-card": "NumberCard 卡片图标",
+    "file-type": "文件类型图标",
+    "run-status": "运行状态图标",
+    "feature-card": "企业特性卡片图标"
+  },
+  "overrides": {
+    "src__empty-state-security-group__595ffbd4": {
+      "visualType": "illustrative-icon",
+      "excludeFromLibrary": true,
+      "note": "item4：安全组空态图，属插画而非块状渐变图标；陈旧资源、无页面静态引用，所在目录被动态批量引用故保留文件，但不纳入资源库"
+    },
+    "public__admin-sidebar-empty-aiagent__5068adc1": {
+      "excludeFromLibrary": true,
+      "note": "item11：Empty 组件统一插画（empty.tsx EMPTY_MEDIA_ASSETS default/empty-data/empty-logs），不纳入资源库"
+    },
+    "public__admin-sidebar-empty-aiagent-hint__9a69d758": {
+      "excludeFromLibrary": true,
+      "note": "item11：Empty 组件统一插画（empty.tsx EMPTY_MEDIA_ASSETS hint），不纳入资源库"
+    },
+    "public__admin-sidebar-empty-aiagent-logs__e3d83447": {
+      "excludeFromLibrary": true,
+      "note": "item11：Empty 组件 empty-aiagent 家族插画（同目录、未被静态引用的变体），不纳入资源库"
+    },
+    "public____3e75d329": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· 威胁告警",
+      "confirmed": true
+    },
+    "public____8c42b0ab": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· 企业公共空间",
+      "confirmed": true
+    },
+    "public____c3676cfa": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· 已开通智能体网盘",
+      "confirmed": true
+    },
+    "public____f17b4ca6": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· 存在风险",
+      "confirmed": true
+    },
+    "public__admin-memory-management-instance-disabled__dc7070e4": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· instance-disabled",
+      "confirmed": true
+    },
+    "public__admin-memory-management-instance-free__d12a41ee": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· instance-free",
+      "confirmed": true
+    },
+    "public__admin-memory-management-instance-pro__28324613": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· instance-pro",
+      "confirmed": true
+    },
+    "public__admin-memory-management-instance-total__7be2a111": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· instance-total",
+      "confirmed": true
+    },
+    "public__ai-agent__2c71b619": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· AI Agent 资产",
+      "confirmed": true
+    },
+    "public__icon__22f7ff43": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· 功能上新icon",
+      "confirmed": true
+    },
+    "public__icon__af5a012e": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· 体验优化-icon",
+      "confirmed": true
+    },
+    "public__icon__c10e8f31": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· 功能上新-icon",
+      "confirmed": true
+    },
+    "public__icon-aiagent-alarm__855fc869": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· icon-aiagent-alarm",
+      "confirmed": true
+    },
+    "public__icon-aiagent-assets__37618435": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· icon-aiagent-assets",
+      "confirmed": true
+    },
+    "public__icon-aiagent-risk__326474aa": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· icon-aiagent-risk",
+      "confirmed": true
+    },
+    "public__memory-personal__be79223b": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· memory-personal",
+      "confirmed": true
+    },
+    "public__monitor-running__8460ec9d": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· OpenClawMonitor 统计卡「运行中」，由页面 inline 抽离为独立 SVG，设计源；适合 NumberCard 槽位，组件源码不变",
+      "confirmed": true
+    },
+    "public__monitor-shutdown__9d6df642": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· OpenClawMonitor 统计卡「已关机」，由页面 inline 抽离为独立 SVG，设计源；适合 NumberCard 槽位，组件源码不变",
+      "confirmed": true
+    },
+    "public__monitor-other__0419c1e3": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· OpenClawMonitor 统计卡「其他」，由页面 inline 抽离为独立 SVG，设计源；适合 NumberCard 槽位，组件源码不变",
+      "confirmed": true
+    },
+    "src__icons-stat-icon-agent__b9c08f7f": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· stat-icon-agent",
+      "confirmed": true
+    },
+    "src__icons-stat-icon-risk__a643caae": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· stat-icon-risk",
+      "confirmed": true
+    },
+    "src__icons-stat-icon-threat__45e6e633": {
+      "componentSlot": "number-card",
+      "note": "NumberCard 卡片图标（设计确认）· stat-icon-threat",
+      "confirmed": true
+    },
+    "src__agent-card-status-create-fail__ca979285": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "run-status",
+      "note": "运行状态图标 · agent-card 属 AgentCard 组件，仅用于 pages/tenant/MyOpenClaw"
+    },
+    "src__agent-card-status-creating__f7348264": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "run-status",
+      "note": "运行状态图标 · agent-card 属 AgentCard 组件，仅用于 pages/tenant/MyOpenClaw"
+    },
+    "src__agent-card-status-load-fail__f2727ef4": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "run-status",
+      "note": "运行状态图标 · agent-card 属 AgentCard 组件，仅用于 pages/tenant/MyOpenClaw"
+    },
+    "src__agent-card-status-loading__0b5c8009": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "run-status",
+      "note": "运行状态图标 · agent-card 属 AgentCard 组件，仅用于 pages/tenant/MyOpenClaw"
+    },
+    "src__agent-card-status-maintaining__d43252a9": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "run-status",
+      "note": "运行状态图标 · agent-card 属 AgentCard 组件，仅用于 pages/tenant/MyOpenClaw"
+    },
+    "src__agent-card-status-pending__dbba33a9": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "run-status",
+      "note": "运行状态图标 · agent-card 属 AgentCard 组件，仅用于 pages/tenant/MyOpenClaw"
+    },
+    "src__agent-card-status-running__f06752c8": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "run-status",
+      "note": "运行状态图标 · agent-card 属 AgentCard 组件，仅用于 pages/tenant/MyOpenClaw"
+    },
+    "src__agent-card-status-shutdown__fb220a3f": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "run-status",
+      "note": "运行状态图标 · agent-card 属 AgentCard 组件，仅用于 pages/tenant/MyOpenClaw"
+    },
+    "src__icons-agent-page-cross-session__e0a8d5d6": {
+      "scenes": [
+        "tenant"
+      ],
+      "note": "客户端图标（设计确认）· MemoryPreview 仅渲染于 pages/tenant/OpenClawDetail*",
+      "confirmed": true
+    },
+    "src__icons-agent-page-deeper-understanding__e93ffd4a": {
+      "scenes": [
+        "tenant"
+      ],
+      "note": "客户端图标（设计确认）· MemoryPreview 仅渲染于 pages/tenant/OpenClawDetail*",
+      "confirmed": true
+    },
+    "src__icons-agent-page-memory-stable__9075b382": {
+      "scenes": [
+        "tenant"
+      ],
+      "note": "客户端图标（设计确认）· MemoryPreview 仅渲染于 pages/tenant/OpenClawDetail*",
+      "confirmed": true
+    },
+    "src__icons-agent-page-precise-retrieval__e4a9264e": {
+      "scenes": [
+        "tenant"
+      ],
+      "note": "客户端图标（设计确认）· MemoryPreview 仅渲染于 pages/tenant/OpenClawDetail*",
+      "confirmed": true
+    },
+    "src__icons-file-space-arrows-clockwise-bold-1__ef84b547": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-arrows-down-up-bold-1__db212fa5": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-clock-bold-1-1__d1cef576": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-dots-three-vertical-bold-1__47a61aed": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-bold-1__c1369343": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-code-bold-1__924fc747": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-doc-bold-1__a9926129": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-jpg-bold-1__a968746e": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-pdf-bold-1__c1f39a30": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-ppt-bold-1__41280562": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-text-bold-1__8359cac6": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-video-bold-1__5c2e1a00": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-file-zip-bold-1__163a6760": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-folder-bold-1__36a2d74d": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-folder-bold-2__67c173fd": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-folder-simple-plus-bold-1__58d9e6d1": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-grid-nine-bold-2__dcc5839c": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-house-bold-1__e7c84d33": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-list-bullets-bold-1__732b0e4b": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-magnifying-glass-bold-1__58f0a95e": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "src__icons-file-space-upload-simple-bold-1__2aa1fd87": {
+      "scenes": [
+        "tenant"
+      ],
+      "componentSlot": "file-type",
+      "note": "文件类型图标 · FileSpace 文件类图标，归用户端",
+      "confirmed": true
+    },
+    "public__admin-memory-management-version-compare-feature-tenant__3b2a6541": {
+      "scenes": [
+        "admin"
+      ],
+      "componentSlot": "feature-card",
+      "note": "企业特性卡片图标 · 租户隔离，用于 admin/MemoryManagement 版本对比 ComparisonTable",
+      "confirmed": true
+    },
+    "public__admin-memory-management-version-compare-feature-encrypt__770e6ee3": {
+      "scenes": [
+        "admin"
+      ],
+      "componentSlot": "feature-card",
+      "note": "企业特性卡片图标 · 全链路加密，用于 admin/MemoryManagement 版本对比 ComparisonTable",
+      "confirmed": true
+    },
+    "public__admin-memory-management-version-compare-feature-backup__31607929": {
+      "scenes": [
+        "admin"
+      ],
+      "componentSlot": "feature-card",
+      "note": "企业特性卡片图标 · 数据备份，用于 admin/MemoryManagement 版本对比 ComparisonTable",
+      "confirmed": true
+    },
+    "public__admin-memory-management-version-compare-feature-token__fc4c8a44": {
+      "scenes": [
+        "admin"
+      ],
+      "componentSlot": "feature-card",
+      "note": "企业特性卡片图标 · Token 节省，用于 admin/MemoryManagement 版本对比 ComparisonTable",
+      "confirmed": true
+    },
+    "public____8baf1881": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· 域名"
+    },
+    "public____9bbf76c5": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· 所在地域"
+    },
+    "public____d413addd": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· 关联腾讯云账号"
+    },
+    "public____d6187d3d": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· 定位箭头"
+    },
+    "public____ff368f79": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· 产品动态"
+    },
+    "public__admin-cloud-dev-cloud-database__d78886e5": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· cloud-database · 核心能力卡片左侧图标（云数据库）"
+    },
+    "public__admin-cloud-dev-cloud-function__22d54e52": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· cloud-function · 核心能力卡片左侧图标（云函数）"
+    },
+    "public__admin-cloud-dev-static-hosting__6dbad70b": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· static-hosting · 核心能力卡片左侧图标（静态网站托管）"
+    },
+    "public__admin-cloud-dev-enterprise-app-deploy__fb96c492": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· enterprise-app-deploy"
+    },
+    "public__admin-cloud-dev-enterprise-security-scalability__7811bc22": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· enterprise-security-scalability"
+    },
+    "public__admin-cloud-dev-mini-program-delivery__bf2b9d7a": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· mini-program-delivery"
+    },
+    "public__admin-cloud-dev-speak-to-deploy__63900c02": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· speak-to-deploy"
+    },
+    "public__admin-disk-management-auto-bind-disk__16c1206b": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· auto-bind-disk"
+    },
+    "public__admin-disk-management-self-enable-disk__f372de9c": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· self-enable-disk"
+    },
+    "public__admin-member-config-overview-agent-tool__d3964386": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· agent-tool"
+    },
+    "public__admin-member-config-overview-ai-agent-security__b5cbc1af": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· ai-agent-security"
+    },
+    "public__admin-member-config-overview-channel__69c49be0": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· channel"
+    },
+    "public__admin-member-config-overview-cls-log__784a324e": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· cls-log"
+    },
+    "public__admin-member-config-overview-file-drive__033e1b79": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· file-drive"
+    },
+    "public__admin-member-config-overview-image__68287a6d": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· image"
+    },
+    "public__admin-member-config-overview-memory__9d20ecb3": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· memory"
+    },
+    "public__admin-member-config-overview-model__0df3f454": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· model"
+    },
+    "public__admin-member-config-overview-network__9680f8d2": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· network"
+    },
+    "public__admin-member-config-overview-platform-policy__914870cc": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· platform-policy"
+    },
+    "public__admin-member-config-overview-skill__f902f02d": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· skill"
+    },
+    "public__admin-member-config-overview-cloud-dev__c99679f1": {
+      "componentSlot": "card-left-icon",
+      "confirmed": true,
+      "note": "卡片左侧图标（设计确认）· 云开发；配置总览「云开发」卡片在用"
+    },
+    "public__admin-member-config-overview-resource-config__fa4a6289": {
+      "componentSlot": "card-left-icon",
+      "confirmed": true,
+      "note": "卡片左侧图标（设计确认）· 资源配置；配置总览「资源配置」卡片在用"
+    },
+    "public__admin-member-config-overview-credential__d59aa11f": {
+      "componentSlot": "card-left-icon",
+      "confirmed": true,
+      "note": "卡片左侧图标（设计确认）· 凭据管理（备用候选）"
+    },
+    "public__admin-member-config-overview-credential-color__78c9fe19": {
+      "componentSlot": "card-left-icon",
+      "confirmed": true,
+      "note": "卡片左侧图标（设计确认）· 凭据管理彩色（备用候选）"
+    },
+    "public__admin-member-config-overview-archive__5ca3c0fb": {
+      "componentSlot": "card-left-icon",
+      "confirmed": true,
+      "note": "卡片左侧图标（设计确认）· 归档（备用候选）"
+    },
+    "public__admin-member-config-overview-information__76b5b79f": {
+      "componentSlot": "card-left-icon",
+      "confirmed": true,
+      "note": "卡片左侧图标（设计确认）· 信息（备用候选）"
+    },
+    "public__admin-member-config-overview-more-setting__fa45c00a": {
+      "componentSlot": "card-left-icon",
+      "confirmed": true,
+      "note": "卡片左侧图标（设计确认）· 更多设置（备用候选）"
+    },
+    "public__admin-memory-management-default-memory-version-icon__7e4fd7b9": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· default-memory-version-icon"
+    },
+    "public__admin-memory-management-version-compare-icon-free__b9e32a34": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· icon-free"
+    },
+    "public__admin-memory-management-version-compare-pro-icon__b30dd2e4": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· pro-icon"
+    },
+    "public__admin-network-features-enterprise-network-interconnect__845e292c": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· enterprise-network-interconnect"
+    },
+    "public__admin-network-features-model-acceleration__44096c9d": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· model-acceleration"
+    },
+    "public__admin-network-features-public-fast-access__43c9691f": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· public-fast-access"
+    },
+    "public__admin-platform-policy-allow-agent-panel__085ccfe8": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-agent-panel"
+    },
+    "public__admin-platform-policy-allow-agent-self-upgrade__eb4e8ecf": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-agent-self-upgrade"
+    },
+    "public__admin-platform-policy-allow-agent-terminal__ed5cf2e1": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-agent-terminal"
+    },
+    "public__admin-platform-policy-allow-chat-view__6626fa49": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-chat-view"
+    },
+    "public__admin-platform-policy-allow-cloud-browser__8ab6cb08": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-cloud-browser"
+    },
+    "public__admin-platform-policy-allow-config-channel__cfd57165": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-config-channel"
+    },
+    "public__admin-platform-policy-allow-config-model__e583c3cd": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-config-model"
+    },
+    "public__admin-platform-policy-allow-custom-model__df53bca3": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-custom-model"
+    },
+    "public__admin-platform-policy-allow-lobster-doctor__ffe24ed0": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-lobster-doctor"
+    },
+    "public__admin-platform-policy-allow-model-quota__9f63369f": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· allow-model-quota"
+    },
+    "public__admin-platform-policy-global-token-limit__e165bb72": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· global-token-limit"
+    },
+    "public__admin-platform-policy-user-agent-limit__cc2dc8d6": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· user-agent-limit"
+    },
+    "public__admin-platform-policy-user-daily-token-limit__fac4f8f0": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· user-daily-token-limit"
+    },
+    "public__admin-session-management-app-log-otel-insight__e2356651": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· app-log-otel-insight"
+    },
+    "public__admin-session-management-business-health-monitoring__1f3dac67": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· business-health-monitoring"
+    },
+    "public__admin-session-management-high-token-session-control__40829c16": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· high-token-session-control"
+    },
+    "public__admin-session-management-session-detail-analysis__eb72600a": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· session-detail-analysis"
+    },
+    "public__admin-session-management-session-global-monitoring__f31eb7ef": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· session-global-monitoring"
+    },
+    "public__admin-session-management-single-session-token-insight__053c1556": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· single-session-token-insight"
+    },
+    "public__admin-skill-packages-advanced-dev-skill-package__593062e0": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· advanced-dev-skill-package"
+    },
+    "public__admin-skill-packages-general-skill-package__cb9330b5": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· general-skill-package"
+    },
+    "public__admin-skill-packages-ops-team-skill-package__ca7692c5": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· ops-team-skill-package"
+    },
+    "public__api-icon__f102b38a": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· api文档-icon"
+    },
+    "public__arrow-left-stroke__0f2bb6a8": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· arrow-left-stroke"
+    },
+    "public__icon__6547a756": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· 上传图片默认icon"
+    },
+    "public__icon-aiagent-netgroup__dfc8b0bc": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· icon-aiagent-netgroup"
+    },
+    "public__icon-enterprise-security__2c5d6cd3": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· icon-enterprise-security"
+    },
+    "public__memory-atom__1a21afce": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· memory-atom"
+    },
+    "public__memory-dialogue__caf6954c": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· memory-dialogue"
+    },
+    "public__memory-scene__0bc3ff72": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· memory-scene"
+    },
+    "public__skillhub-icon__2ef61cb1": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· SkillHub 地址-icon"
+    },
+    "src__icons-agent-page-file-space-file-centralized-management__1e099e56": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· file-centralized-management"
+    },
+    "src__icons-agent-page-file-space-file-intelligent-search__4b52ee0d": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· file-intelligent-search"
+    },
+    "src__icons-agent-page-file-space-file-secure-storage__3ebad35e": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· file-secure-storage"
+    },
+    "src__icons-agent-page-file-space-file-sharing-collaboration__931ee05d": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· file-sharing-collaboration"
+    },
+    "src__icons-go-tenant-arrow__0fd1bf65": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· go-tenant-arrow"
+    },
+    "src__icons-icon-resource-wallet__1ccd8a47": {
+      "confirmed": true,
+      "note": "自有 SVG 设计确认（批量）· icon-resource-wallet"
+    }
+  }
+}

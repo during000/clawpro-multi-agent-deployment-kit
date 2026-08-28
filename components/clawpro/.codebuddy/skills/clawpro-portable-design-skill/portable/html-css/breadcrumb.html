@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Breadcrumb</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      .cp-shell {
+        max-width: 1040px;
+        margin: 0 auto;
+      }
+      .cp-header {
+        margin-bottom: 24px;
+      }
+      .cp-header h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-header p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-group {
+        display: grid;
+        gap: 24px;
+      }
+      .cp-demo-block {
+        display: grid;
+        gap: 12px;
+      }
+      .cp-demo-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+        padding: 20px;
+      }
+      .cp-card-grid {
+        display: grid;
+        gap: 16px;
+      }
+      .cp-breadcrumb {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .cp-breadcrumb__link {
+        color: var(--cp-text-muted);
+        text-decoration: none;
+      }
+      .cp-breadcrumb__link:hover {
+        color: var(--cp-text-title);
+      }
+      .cp-breadcrumb__page {
+        color: var(--cp-text-title);
+        font-weight: 500;
+      }
+      .cp-breadcrumb__separator {
+        color: var(--cp-text-weak);
+      }
+      .cp-note {
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-rule-box {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: #FAFAFA;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-rule-box p {
+        margin: 0;
+      }
+      .cp-rule-box p + p {
+        margin-top: 4px;
+      }
+      @media (max-width: 768px) {
+        body { padding: 16px; }
+        .cp-card { padding: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>Breadcrumb</h1>
+        <p>根据 `component-specs/breadcrumb.md` 生成，覆盖标准层级导航、不同分隔符以及单级页面不显示的使用约束。</p>
+      </header>
+
+      <div class="cp-group">
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">标准层级导航</h2>
+          <div class="cp-card cp-card-grid">
+            <nav class="cp-breadcrumb" aria-label="Breadcrumb">
+              <a class="cp-breadcrumb__link" href="#">控制台</a>
+              <span class="cp-breadcrumb__separator">/</span>
+              <a class="cp-breadcrumb__link" href="#">智能体管理</a>
+              <span class="cp-breadcrumb__separator">/</span>
+              <span class="cp-breadcrumb__page" aria-current="page">Agent-001</span>
+            </nav>
+            <div class="cp-note">当前页不可点击，祖先页为灰色链接，hover 时切换为 `--cp-text-title`。</div>
+          </div>
+        </section>
+
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">分隔符变体</h2>
+          <div class="cp-card cp-card-grid">
+            <nav class="cp-breadcrumb" aria-label="Breadcrumb Slash">
+              <a class="cp-breadcrumb__link" href="#">首页</a>
+              <span class="cp-breadcrumb__separator">/</span>
+              <a class="cp-breadcrumb__link" href="#">文件管理</a>
+              <span class="cp-breadcrumb__separator">/</span>
+              <span class="cp-breadcrumb__page" aria-current="page">私有目录</span>
+            </nav>
+
+            <nav class="cp-breadcrumb" aria-label="Breadcrumb Greater Than">
+              <a class="cp-breadcrumb__link" href="#">首页</a>
+              <span class="cp-breadcrumb__separator">&gt;</span>
+              <a class="cp-breadcrumb__link" href="#">技能库</a>
+              <span class="cp-breadcrumb__separator">&gt;</span>
+              <span class="cp-breadcrumb__page" aria-current="page">批量分发</span>
+            </nav>
+          </div>
+        </section>
+
+        <section class="cp-rule-box">
+          <p><strong>规则</strong></p>
+          <p>• 字号使用 `14px`，当前页为 `--cp-text-title` + `font-medium`</p>
+          <p>• 祖先页使用 `--cp-text-muted`，hover 切换到 `--cp-text-title`</p>
+          <p>• 分隔符使用 `--cp-text-weak`，可用 `/` 或 `>`</p>
+          <p>• 只有一级页面时不显示 Breadcrumb</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

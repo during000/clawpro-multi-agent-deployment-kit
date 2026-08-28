@@ -1,0 +1,637 @@
+{
+  "$schema": "clawpro-gradient-style-overrides",
+  "note": "人工分拣事实源：渐变图标的线条/块状归类。由 _gradient-sorter.html 导出。key=资源 id；value.style ∈ gradient-line | gradient-solid。",
+  "updatedAt": "2026-07-10T07:22:43.055Z",
+  "overrides": {
+    "public____3e75d329": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/威胁告警.svg",
+      "displayName": "威胁告警"
+    },
+    "public____8baf1881": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/icon/域名.svg",
+      "displayName": "域名"
+    },
+    "public____8c42b0ab": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/企业公共空间.svg",
+      "displayName": "企业公共空间"
+    },
+    "public____9bbf76c5": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/icon/所在地域.svg",
+      "displayName": "所在地域"
+    },
+    "public____c3676cfa": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/已开通智能体网盘.svg",
+      "displayName": "已开通智能体网盘"
+    },
+    "public____d413addd": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/icon/关联腾讯云账号.svg",
+      "displayName": "关联腾讯云账号"
+    },
+    "public____f17b4ca6": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/存在风险.svg",
+      "displayName": "存在风险"
+    },
+    "public__admin-cloud-dev-cloud-database__d78886e5": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-cloud-dev/cloud-database.svg",
+      "displayName": "cloud-database"
+    },
+    "public__admin-cloud-dev-cloud-function__22d54e52": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-cloud-dev/cloud-function.svg",
+      "displayName": "cloud-function"
+    },
+    "public__admin-cloud-dev-enterprise-app-deploy__fb96c492": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-cloud-dev/enterprise-app-deploy.svg",
+      "displayName": "enterprise-app-deploy"
+    },
+    "public__admin-cloud-dev-enterprise-security-scalability__7811bc22": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-cloud-dev/enterprise-security-scalability.svg",
+      "displayName": "enterprise-security-scalability"
+    },
+    "public__admin-cloud-dev-mini-program-delivery__bf2b9d7a": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-cloud-dev/mini-program-delivery.svg",
+      "displayName": "mini-program-delivery"
+    },
+    "public__admin-cloud-dev-speak-to-deploy__63900c02": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-cloud-dev/speak-to-deploy.svg",
+      "displayName": "speak-to-deploy"
+    },
+    "public__admin-cloud-dev-static-hosting__6dbad70b": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-cloud-dev/static-hosting.svg",
+      "displayName": "static-hosting"
+    },
+    "public__admin-disk-management-auto-bind-disk__16c1206b": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-disk-management/auto-bind-disk.svg",
+      "displayName": "auto-bind-disk"
+    },
+    "public__admin-disk-management-self-enable-disk__f372de9c": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-disk-management/self-enable-disk.svg",
+      "displayName": "self-enable-disk"
+    },
+    "public__admin-member-config-overview-agent-tool__d3964386": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/agent-tool.svg",
+      "displayName": "agent-tool"
+    },
+    "public__admin-member-config-overview-ai-agent-security__b5cbc1af": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/ai-agent-security.svg",
+      "displayName": "ai-agent-security"
+    },
+    "public__admin-member-config-overview-channel__69c49be0": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/channel.svg",
+      "displayName": "channel"
+    },
+    "public__admin-member-config-overview-cls-log__784a324e": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/cls-log.svg",
+      "displayName": "cls-log"
+    },
+    "public__admin-member-config-overview-file-drive__033e1b79": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/file-drive.svg",
+      "displayName": "file-drive"
+    },
+    "public__admin-member-config-overview-image__68287a6d": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/image.svg",
+      "displayName": "image"
+    },
+    "public__admin-member-config-overview-memory__9d20ecb3": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/memory.svg",
+      "displayName": "memory"
+    },
+    "public__admin-member-config-overview-model__0df3f454": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/model.svg",
+      "displayName": "model"
+    },
+    "public__admin-member-config-overview-network__9680f8d2": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/network.svg",
+      "displayName": "network"
+    },
+    "public__admin-member-config-overview-platform-policy__914870cc": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/platform-policy.svg",
+      "displayName": "platform-policy"
+    },
+    "public__admin-member-config-overview-skill__f902f02d": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/skill.svg",
+      "displayName": "skill"
+    },
+    "public__admin-member-config-overview-cloud-dev__c99679f1": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/cloud-dev.svg",
+      "displayName": "cloud-dev"
+    },
+    "public__admin-member-config-overview-resource-config__fa4a6289": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/resource-config.svg",
+      "displayName": "resource-config"
+    },
+    "public__admin-member-config-overview-credential__d59aa11f": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/credential.svg",
+      "displayName": "credential"
+    },
+    "public__admin-member-config-overview-credential-color__78c9fe19": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/credential-color.svg",
+      "displayName": "credential-color"
+    },
+    "public__admin-member-config-overview-archive__5ca3c0fb": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/archive.svg",
+      "displayName": "archive"
+    },
+    "public__admin-member-config-overview-information__76b5b79f": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/information.svg",
+      "displayName": "information"
+    },
+    "public__admin-member-config-overview-more-setting__fa45c00a": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-member-config-overview/more-setting.svg",
+      "displayName": "more-setting"
+    },
+    "public__admin-memory-management-default-memory-version-icon__7e4fd7b9": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-memory-management/default-memory-version-icon.svg",
+      "displayName": "default-memory-version-icon"
+    },
+    "public__admin-memory-management-instance-disabled__dc7070e4": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/assets/admin-memory-management/instance-disabled.svg",
+      "displayName": "instance-disabled"
+    },
+    "public__admin-memory-management-instance-free__d12a41ee": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/assets/admin-memory-management/instance-free.svg",
+      "displayName": "instance-free"
+    },
+    "public__admin-memory-management-instance-pro__28324613": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/assets/admin-memory-management/instance-pro.svg",
+      "displayName": "instance-pro"
+    },
+    "public__admin-memory-management-instance-total__7be2a111": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/assets/admin-memory-management/instance-total.svg",
+      "displayName": "instance-total"
+    },
+    "public__admin-memory-management-version-compare-icon-free__b9e32a34": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-memory-management/version-compare/icon-free.svg",
+      "displayName": "icon-free"
+    },
+    "public__admin-network-features-enterprise-network-interconnect__845e292c": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-network-features/enterprise-network-interconnect.svg",
+      "displayName": "enterprise-network-interconnect"
+    },
+    "public__admin-network-features-model-acceleration__44096c9d": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-network-features/model-acceleration.svg",
+      "displayName": "model-acceleration"
+    },
+    "public__admin-network-features-public-fast-access__43c9691f": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-network-features/public-fast-access.svg",
+      "displayName": "public-fast-access"
+    },
+    "public__admin-platform-policy-allow-agent-panel__085ccfe8": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-agent-panel.svg",
+      "displayName": "allow-agent-panel"
+    },
+    "public__admin-platform-policy-allow-agent-self-upgrade__eb4e8ecf": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-agent-self-upgrade.svg",
+      "displayName": "allow-agent-self-upgrade"
+    },
+    "public__admin-platform-policy-allow-agent-terminal__ed5cf2e1": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-agent-terminal.svg",
+      "displayName": "allow-agent-terminal"
+    },
+    "public__admin-platform-policy-allow-chat-view__6626fa49": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-chat-view.svg",
+      "displayName": "allow-chat-view"
+    },
+    "public__admin-platform-policy-allow-cloud-browser__8ab6cb08": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-cloud-browser.svg",
+      "displayName": "allow-cloud-browser"
+    },
+    "public__admin-platform-policy-allow-config-channel__cfd57165": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-config-channel.svg",
+      "displayName": "allow-config-channel"
+    },
+    "public__admin-platform-policy-allow-config-model__e583c3cd": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-config-model.svg",
+      "displayName": "allow-config-model"
+    },
+    "public__admin-platform-policy-allow-custom-model__df53bca3": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-custom-model.svg",
+      "displayName": "allow-custom-model"
+    },
+    "public__admin-platform-policy-allow-lobster-doctor__ffe24ed0": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-lobster-doctor.svg",
+      "displayName": "allow-lobster-doctor"
+    },
+    "public__admin-platform-policy-allow-model-quota__9f63369f": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-model-quota.svg",
+      "displayName": "allow-model-quota"
+    },
+    "public__admin-platform-policy-global-token-limit__e165bb72": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/global-token-limit.svg",
+      "displayName": "global-token-limit"
+    },
+    "public__admin-platform-policy-user-agent-limit__cc2dc8d6": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/user-agent-limit.svg",
+      "displayName": "user-agent-limit"
+    },
+    "public__admin-platform-policy-user-daily-token-limit__fac4f8f0": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-platform-policy/user-daily-token-limit.svg",
+      "displayName": "user-daily-token-limit"
+    },
+    "public__admin-security-asset-visibility__fa00945f": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-security/asset-visibility.svg",
+      "displayName": "asset-visibility"
+    },
+    "public__admin-security-audit-tracing__892bd25f": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-security/audit-tracing.svg",
+      "displayName": "audit-tracing"
+    },
+    "public__admin-security-skills-scanning__e6898a31": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-security/skills-scanning.svg",
+      "displayName": "skills-scanning"
+    },
+    "public__admin-session-management-app-log-otel-insight__e2356651": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-session-management/app-log-otel-insight.svg",
+      "displayName": "app-log-otel-insight"
+    },
+    "public__admin-session-management-business-health-monitoring__1f3dac67": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-session-management/business-health-monitoring.svg",
+      "displayName": "business-health-monitoring"
+    },
+    "public__admin-session-management-high-token-session-control__40829c16": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-session-management/high-token-session-control.svg",
+      "displayName": "high-token-session-control"
+    },
+    "public__admin-session-management-session-detail-analysis__eb72600a": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-session-management/session-detail-analysis.svg",
+      "displayName": "session-detail-analysis"
+    },
+    "public__admin-session-management-session-global-monitoring__f31eb7ef": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-session-management/session-global-monitoring.svg",
+      "displayName": "session-global-monitoring"
+    },
+    "public__admin-session-management-single-session-token-insight__053c1556": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-session-management/single-session-token-insight.svg",
+      "displayName": "single-session-token-insight"
+    },
+    "public__admin-sidebar-agent-list__2346830d": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/agent-list.svg",
+      "displayName": "agent-list"
+    },
+    "public__admin-sidebar-agent-startup-config__5016a459": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/agent-startup-config.svg",
+      "displayName": "agent-startup-config"
+    },
+    "public__admin-sidebar-agent-template-icon__c2410aec": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/agent-template-icon.svg",
+      "displayName": "agent-template-icon"
+    },
+    "public__admin-sidebar-agent-tool-library__4df556e7": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/agent-tool-library.svg",
+      "displayName": "agent-tool-library"
+    },
+    "public__admin-sidebar-agent__ee63b779": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/agent.svg",
+      "displayName": "agent"
+    },
+    "public__admin-sidebar-ai-agent-security__b8ae74e9": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/ai-agent-security.svg",
+      "displayName": "ai-agent-security"
+    },
+    "public__admin-sidebar-archive__cb57d2e9": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/archive.svg",
+      "displayName": "archive"
+    },
+    "public__admin-sidebar-audit-log__bc1f3639": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/audit-log.svg",
+      "displayName": "audit-log"
+    },
+    "public__admin-sidebar-basic-info__d921ea2a": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/basic-info.svg",
+      "displayName": "basic-info"
+    },
+    "public__admin-sidebar-channel-config__5cdcb3fe": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/channel-config.svg",
+      "displayName": "channel-config"
+    },
+    "public__admin-sidebar-cloud-dev__aefb24c2": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/cloud-dev.svg",
+      "displayName": "cloud-dev"
+    },
+    "public__admin-sidebar-code-block__3e952bed": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/code-block.svg",
+      "displayName": "code-block"
+    },
+    "public__admin-sidebar-code__fe39ee41": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/code.svg",
+      "displayName": "code"
+    },
+    "public__admin-sidebar-credential-management__5719c9b0": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/credential-management.svg",
+      "displayName": "credential-management"
+    },
+    "public__admin-sidebar-cube__e94cf830": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/cube.svg",
+      "displayName": "cube"
+    },
+    "public__admin-sidebar-fee__d391efe9": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/fee.svg",
+      "displayName": "fee"
+    },
+    "public__admin-sidebar-file-management__35a0c0ca": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/file-management.svg",
+      "displayName": "file-management"
+    },
+    "public__admin-sidebar-image-management__0beadec9": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/image-management.svg",
+      "displayName": "image-management"
+    },
+    "public__admin-sidebar-knowledge-management__23ff423a": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/knowledge-management.svg",
+      "displayName": "knowledge-management"
+    },
+    "public__admin-sidebar-list__b70f87fa": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/list.svg",
+      "displayName": "list"
+    },
+    "public__admin-sidebar-memory-management__900338b9": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/memory-management.svg",
+      "displayName": "memory-management"
+    },
+    "public__admin-sidebar-model-config__f7600471": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/model-config.svg",
+      "displayName": "model-config"
+    },
+    "public__admin-sidebar-network-management__665d51a9": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/network-management.svg",
+      "displayName": "network-management"
+    },
+    "public__admin-sidebar-ops-observation__5a83ef01": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/ops-observation.svg",
+      "displayName": "ops-observation"
+    },
+    "public__admin-sidebar-platform-policy__75b1adbd": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/platform-policy.svg",
+      "displayName": "platform-policy"
+    },
+    "public__admin-sidebar-purchase__adcb3c6d": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/purchase.svg",
+      "displayName": "purchase"
+    },
+    "public__admin-sidebar-session-management__3286f3a6": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/session-management.svg",
+      "displayName": "session-management"
+    },
+    "public__admin-sidebar-sheet__4f546568": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/sheet.svg",
+      "displayName": "sheet"
+    },
+    "public__admin-sidebar-skill-config__cc193613": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/skill-config.svg",
+      "displayName": "skill-config"
+    },
+    "public__admin-sidebar-tokens-monitor__fc8a85e5": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/tokens-monitor.svg",
+      "displayName": "tokens-monitor"
+    },
+    "public__admin-sidebar-toolbox__e3ec6ba2": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/toolbox.svg",
+      "displayName": "toolbox"
+    },
+    "public__admin-sidebar-user-management__3143e5c9": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-sidebar/user-management.svg",
+      "displayName": "user-management"
+    },
+    "public__admin-skill-packages-advanced-dev-skill-package__593062e0": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-skill-packages/advanced-dev-skill-package.svg",
+      "displayName": "advanced-dev-skill-package"
+    },
+    "public__admin-skill-packages-general-skill-package__cb9330b5": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-skill-packages/general-skill-package.svg",
+      "displayName": "general-skill-package"
+    },
+    "public__admin-skill-packages-ops-team-skill-package__ca7692c5": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/assets/admin-skill-packages/ops-team-skill-package.svg",
+      "displayName": "ops-team-skill-package"
+    },
+    "public__ai-agent__2c71b619": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/AI Agent资产.svg",
+      "displayName": "AI Agent资产"
+    },
+    "public__api-icon__f102b38a": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/icon/api文档-icon.svg",
+      "displayName": "api文档-icon"
+    },
+    "public__icon-aiagent-alarm__855fc869": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/icon-aiagent-alarm.svg",
+      "displayName": "icon-aiagent-alarm"
+    },
+    "public__icon-aiagent-assets__37618435": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/icon-aiagent-assets.svg",
+      "displayName": "icon-aiagent-assets"
+    },
+    "public__icon-aiagent-netgroup__dfc8b0bc": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/icon/icon-aiagent-netgroup.svg",
+      "displayName": "icon-aiagent-netgroup"
+    },
+    "public__icon-aiagent-risk__326474aa": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/icon-aiagent-risk.svg",
+      "displayName": "icon-aiagent-risk"
+    },
+    "public__icon-enterprise-security__2c5d6cd3": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/icon/icon-enterprise-security.svg",
+      "displayName": "icon-enterprise-security"
+    },
+    "public__icon__22f7ff43": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/功能上新icon.svg",
+      "displayName": "功能上新icon"
+    },
+    "public__icon__6547a756": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/icon/上传图片默认icon.svg",
+      "displayName": "上传图片默认icon"
+    },
+    "public__icon__af5a012e": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/体验优化-icon.svg",
+      "displayName": "体验优化-icon"
+    },
+    "public__icon__c10e8f31": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/功能上新-icon.svg",
+      "displayName": "功能上新-icon"
+    },
+    "public__memory-personal__be79223b": {
+      "style": "gradient-line",
+      "sourcePath": "client/public/icon/memory-personal.svg",
+      "displayName": "memory-personal"
+    },
+    "public__skillhub-icon__2ef61cb1": {
+      "style": "gradient-solid",
+      "sourcePath": "client/public/icon/SkillHub 地址-icon.svg",
+      "displayName": "SkillHub 地址-icon"
+    },
+    "src__empty-state-security-group__595ffbd4": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/empty-state-security-group.svg",
+      "displayName": "empty-state-security-group"
+    },
+    "src__icons-agent-page-cross-session__e0a8d5d6": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/agent-page/cross-session.svg",
+      "displayName": "cross-session"
+    },
+    "src__icons-agent-page-deeper-understanding__e93ffd4a": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/agent-page/deeper-understanding.svg",
+      "displayName": "deeper-understanding"
+    },
+    "src__icons-agent-page-file-space-file-centralized-management__1e099e56": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/agent-page/file-space/file-centralized-management.svg",
+      "displayName": "file-centralized-management"
+    },
+    "src__icons-agent-page-file-space-file-intelligent-search__4b52ee0d": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/agent-page/file-space/file-intelligent-search.svg",
+      "displayName": "file-intelligent-search"
+    },
+    "src__icons-agent-page-file-space-file-secure-storage__3ebad35e": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/agent-page/file-space/file-secure-storage.svg",
+      "displayName": "file-secure-storage"
+    },
+    "src__icons-agent-page-file-space-file-sharing-collaboration__931ee05d": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/agent-page/file-space/file-sharing-collaboration.svg",
+      "displayName": "file-sharing-collaboration"
+    },
+    "src__icons-agent-page-memory-stable__9075b382": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/agent-page/memory-stable.svg",
+      "displayName": "memory-stable"
+    },
+    "src__icons-agent-page-precise-retrieval__e4a9264e": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/agent-page/precise-retrieval.svg",
+      "displayName": "precise-retrieval"
+    },
+    "src__icons-icon-resource-wallet__1ccd8a47": {
+      "style": "gradient-solid",
+      "sourcePath": "client/src/assets/icons/icon-resource-wallet.svg",
+      "displayName": "icon-resource-wallet"
+    },
+    "src__icons-stat-icon-agent__b9c08f7f": {
+      "style": "gradient-line",
+      "sourcePath": "client/src/assets/icons/stat-icon-agent.svg",
+      "displayName": "stat-icon-agent"
+    },
+    "src__icons-stat-icon-risk__a643caae": {
+      "style": "gradient-line",
+      "sourcePath": "client/src/assets/icons/stat-icon-risk.svg",
+      "displayName": "stat-icon-risk"
+    },
+    "src__icons-stat-icon-threat__45e6e633": {
+      "style": "gradient-line",
+      "sourcePath": "client/src/assets/icons/stat-icon-threat.svg",
+      "displayName": "stat-icon-threat"
+    }
+  }
+}

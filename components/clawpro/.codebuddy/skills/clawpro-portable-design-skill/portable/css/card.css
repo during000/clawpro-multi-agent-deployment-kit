@@ -1,0 +1,47 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Surface / Card — ClawPro
+ * SurfaceCard / SurfaceInner / SurfaceConfig（管控端 4px）+ TenantCard（12px，仅 Tenant）
+ * 颜色 / 圆角 / 阴影全部走 tokens.css 中的 --cp-* / --radius 变量。
+ * 配套：portable/react/card.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ─── 通用内边距修饰（none / sm 16 / md 20 / lg 24） ─── */
+.cp-surface--pad-none { padding: 0; }
+.cp-surface--pad-sm   { padding: 16px; }
+.cp-surface--pad-md   { padding: 20px; }
+.cp-surface--pad-lg   { padding: 24px; }
+
+/* ─── SurfaceCard：管控端默认卡片（白底 + 蓝灰描边 + 4px + 微弱阴影） ─── */
+.cp-surface-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-card-interactive);
+}
+
+/* ─── SurfaceInner：卡内二级容器（无阴影） ─── */
+.cp-surface-inner {
+  border-radius: var(--radius);
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+}
+
+/* ─── SurfaceConfig：高亮配置卡（0.5px 蓝灰高亮描边 + 双层柔和阴影） ─── */
+.cp-surface-config {
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-config), inset 0 0 0 0.5px var(--cp-border-control);
+}
+
+/* ─── TenantCard：用户端业务卡片（12px 圆角，仅 Tenant 场景） ───
+ * allow-radius：Tenant 业务卡在 portable fallback 下要求 12px。 */
+.cp-tenant-card {
+  border-radius: 12px;
+  border: 1px solid var(--cp-tenant-card-border);
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-tenant-card);
+  transition: box-shadow 200ms ease;
+}
+.cp-tenant-card:hover {
+  box-shadow: var(--cp-shadow-tenant-card-hover);
+}

@@ -1,0 +1,105 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable DatePicker — ClawPro
+ * 触发器 36px / 4px 圆角（Tenant 胶囊全圆角）/ 5 状态。
+ * 面板：280px + 蓝灰描边 + overlay 阴影 + 7 列日历网格。
+ * 配套：portable/react/date-picker.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-date-picker {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+/* ─── 触发器 ─── */
+.cp-date-picker__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 36px;
+  min-width: 140px;
+  padding: 0 12px;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  border-radius: var(--radius);
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+.cp-date-picker__trigger--tenant {
+  border-radius: 9999px; /* allow-radius：Tenant 搜索/选择胶囊全圆角 */
+}
+.cp-date-picker__trigger--open {
+  border-color: var(--cp-brand-blue);
+}
+.cp-date-picker__trigger:hover:not(:disabled) {
+  border-color: var(--cp-brand-blue);
+}
+
+.cp-date-picker__value {
+  color: var(--cp-text-body);
+}
+.cp-date-picker__value--placeholder {
+  color: var(--cp-text-weak);
+}
+.cp-date-picker__suffix {
+  color: var(--cp-text-weak);
+}
+
+/* ─── 浮层面板 ─── */
+.cp-date-picker__panel {
+  position: absolute;
+  left: 0;
+  top: 44px;
+  z-index: 10;
+  width: 280px;
+  padding: 12px;
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--cp-shadow-overlay);
+}
+
+.cp-date-picker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--cp-text-title);
+}
+.cp-date-picker__nav {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--cp-text-title);
+}
+
+.cp-date-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--cp-text-muted);
+}
+
+.cp-date-picker__day {
+  margin-top: 4px;
+  height: 32px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--cp-text-body);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.cp-date-picker__day:hover:not(.cp-date-picker__day--active) {
+  background: var(--cp-brand-tint);
+}
+.cp-date-picker__day--active {
+  background: var(--cp-brand-blue);
+  color: #FFFFFF;
+}

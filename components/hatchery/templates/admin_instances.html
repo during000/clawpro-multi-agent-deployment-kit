@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 监控 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-[16px] font-semibold text-gray-800">OpenClaw 监控</h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-[14px] text-gray-600">用户端终端</span>
+                        <button id="terminal-toggle"
+                            onclick="toggleTerminal(this)"
+                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none bg-gray-300"
+                            title="控制用户侧是否可以查看终端，不影响管理员">
+                            <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 translate-x-1"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-3 border-b border-gray-100">
+                        <span class="text-[14px] text-gray-500">共 {{.Total}} 个实例</span>
+                    </div>
+                    <div id="admin-instance-list">
+                        {{block "admin_instance_list" .}}
+                        {{if .Error}}
+                        <div class="text-[#f64041] font-medium text-[14px] px-6 py-3 bg-red-50 border-b border-red-100">{{.Error}}</div>
+                        {{end}}
+                        {{if .Success}}
+                        <div class="text-green-600 font-medium text-[14px] px-6 py-3 bg-green-50 border-b border-green-100">{{.Success}}</div>
+                        {{end}}
+                        <table class="w-full text-[14px] text-left whitespace-nowrap">
+                            <thead class="bg-[#f5f6fa] text-gray-500 text-[12px]">
+                                <tr>
+                                    <th class="px-6 py-3.5 font-medium">ID</th>
+                                    <th class="px-6 py-3.5 font-medium">实例名称</th>
+                                    <th class="px-6 py-3.5 font-medium">实例 ID</th>
+                                    <th class="px-6 py-3.5 font-medium">智能体类型</th>
+                                    <th class="px-6 py-3.5 font-medium">所属用户</th>
+                                    <th class="px-6 py-3.5 font-medium">创建时间</th>
+                                    <th class="px-6 py-3.5 font-medium">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                {{range .Instances}}
+                                <tr class="hover:bg-[#f9fafb]">
+                                    <td class="px-6 py-3.5 text-gray-500">{{.ID}}</td>
+                                    <td class="px-6 py-3.5 font-medium">{{.Name}}</td>
+                                    <td class="px-6 py-3.5 font-mono text-[13px]">{{if .InstanceId}}{{.InstanceId}}{{else}}<span class="text-gray-400">-</span>{{end}}</td>
+                                    <td class="px-6 py-3.5">
+                                        {{if eq .AgentType "openclaw"}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-blue-50 text-[#0052d9]">OpenClaw</span>
+                                        {{else if eq .AgentType "hermes"}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-purple-50 text-purple-700">Hermes</span>
+                                        {{else if eq .AgentType "lightclawace"}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-orange-50 text-orange-700">LightclawACE</span>
+                                        {{else if .AgentType}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-gray-50 text-gray-600">{{.AgentType}}</span>
+                                        {{else}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-blue-50 text-[#0052d9]">OpenClaw</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="px-6 py-3.5">{{.Username}}</td>
+                                    <td class="px-6 py-3.5 text-gray-500">{{.CreatedAt.Format "2006-01-02 15:04:05"}}</td>
+                                    <td class="px-6 py-3.5">
+                                        <div class="flex items-center space-x-3">
+                                            {{if .InstanceId}}
+                                            <button id="terminal-btn-{{.ID}}" data-id="{{.ID}}" onclick="openTerminal({{.ID}}, this)"
+                                                class="text-[14px] text-[#0052d9] hover:text-[#0034b5] font-medium disabled:text-gray-300 disabled:cursor-not-allowed terminal-btn"
+                                                disabled title="检查权限中...">
+                                                终端
+                                            </button>
+                                            {{end}}
+                                            <button hx-post="/admin/instances/delete" hx-vals='{"id":"{{.ID}}"}' hx-target="#admin-instance-list" hx-swap="innerHTML"
+                                                hx-confirm="确定要删除该实例吗？这将同时销毁对应的云服务器。"
+                                                class="text-[14px] text-red-500 hover:text-red-600 font-medium">
+                                                删除
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="7" class="px-6 py-8 text-center text-gray-400 text-[14px]">暂无实例</td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+
+                        {{if gt .TotalPages 1}}
+                        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                            <div class="text-[14px] text-gray-500">
+                                第 {{.Page}} / {{.TotalPages}} 页
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                {{if gt .Page 1}}
+                                <a href="/admin/instances?page={{sub .Page 1}}&page_size={{.PageSize}}"
+                                    class="h-8 px-3 text-[14px] border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors flex items-center">
+                                    上一页
+                                </a>
+                                {{end}}
+                                {{if lt .Page .TotalPages}}
+                                <a href="/admin/instances?page={{add .Page 1}}&page_size={{.PageSize}}"
+                                    class="h-8 px-3 text-[14px] border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors flex items-center">
+                                    下一页
+                                </a>
+                                {{end}}
+                            </div>
+                        </div>
+                        {{end}}
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {{template "admin_scripts" .}}
+    <script>
+    // Update toggle switch UI
+    function updateToggleUI(isOn) {
+        var btn = document.getElementById('terminal-toggle');
+        if (!btn) return;
+        var knob = btn.querySelector('span');
+        if (isOn) {
+            btn.classList.remove('bg-gray-300');
+            btn.classList.add('bg-[#0052d9]');
+            knob.classList.remove('translate-x-1');
+            knob.classList.add('translate-x-6');
+        } else {
+            btn.classList.remove('bg-[#0052d9]');
+            btn.classList.add('bg-gray-300');
+            knob.classList.remove('translate-x-6');
+            knob.classList.add('translate-x-1');
+        }
+    }
+
+    // Fetch initial terminal config state (for toggle UI only)
+    function initTerminalState() {
+        fetch('/admin/config', { headers: { 'Accept': 'application/json' } })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (!data.config) return;
+                updateToggleUI(!!data.config.terminal_enabled);
+            })
+            .catch(function() {});
+    }
+
+    // Toggle terminal feature on/off (controls user-side only, not admin)
+    function toggleTerminal(btn) {
+        var isCurrentlyOn = btn.classList.contains('bg-[#0052d9]');
+        var newVal = !isCurrentlyOn;
+        var form = new FormData();
+        form.append('terminal_enabled', newVal ? 'true' : 'false');
+        fetch('/admin/config', { method: 'POST', headers: { 'Accept': 'application/json' }, body: form })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) { alert(data.error); return; }
+                updateToggleUI(newVal);
+            })
+            .catch(function() { alert('请求失败'); });
+    }
+
+    // Open terminal for an instance
+    function openTerminal(id, btn) {
+        if (btn.disabled) return;
+        var origText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = '打开中...';
+        var form = new FormData();
+        form.append('id', id);
+        fetch('/admin/instances/terminal-url', { method: 'POST', body: form })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    alert(data.error + (data.detail ? '\n' + data.detail : ''));
+                } else if (data.login_url) {
+                    window.open(data.login_url, '_blank');
+                }
+            })
+            .catch(function() { alert('请求失败'); })
+            .finally(function() {
+                btn.disabled = false;
+                btn.textContent = origText;
+            });
+    }
+
+    // Check denied actions for all terminal buttons on the page
+    function checkDeniedActions() {
+        var btns = document.querySelectorAll('.terminal-btn');
+        if (btns.length === 0) return;
+        var ids = [];
+        btns.forEach(function(b) { ids.push(parseInt(b.getAttribute('data-id'))); });
+        fetch('/admin/instances/denied-actions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: ids })
+        })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error || !data.instances) return;
+                data.instances.forEach(function(inst) {
+                    var btn = document.getElementById('terminal-btn-' + inst.id);
+                    if (!btn) return;
+                    if (inst.denied_actions && inst.denied_actions.length > 0) {
+                        btn.disabled = true;
+                        btn.title = '终端不可用：' + inst.denied_actions[0].message;
+                    } else {
+                        btn.disabled = false;
+                        btn.title = '打开终端';
+                    }
+                });
+            })
+            .catch(function() {});
+    }
+
+    // Init on page load
+    initTerminalState();
+    checkDeniedActions();
+    document.body.addEventListener('htmx:afterSwap', function(e) {
+        if (e.detail.target && e.detail.target.id === 'admin-instance-list') {
+            checkDeniedActions();
+        }
+    });
+    </script>
+</body>
+</html>

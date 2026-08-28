@@ -1,0 +1,1337 @@
+{
+  "typography": {
+    "moduleCount": 74,
+    "pageCount": 20,
+    "instanceCount": 891,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 270 处"
+      },
+      {
+        "name": "安全组管理",
+        "path": "/admin/security-group",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 125 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 94 处"
+      },
+      {
+        "name": "记忆管理",
+        "path": "/admin/memory-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 88 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 78 处"
+      }
+    ]
+  },
+  "surface-card": {
+    "moduleCount": 41,
+    "pageCount": 16,
+    "instanceCount": 103,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 20 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 17 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 13 处"
+      },
+      {
+        "name": "基础信息",
+        "path": "/admin/basic-info",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 13 处"
+      },
+      {
+        "name": "会话管理",
+        "path": "/admin/session-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 6 处"
+      }
+    ]
+  },
+  "surface-inner": {
+    "moduleCount": 15,
+    "pageCount": 10,
+    "instanceCount": 31,
+    "pages": [
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "高",
+        "usage": "实际使用 9 处"
+      },
+      {
+        "name": "记忆管理",
+        "path": "/admin/memory-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 7 处"
+      },
+      {
+        "name": "通道配置",
+        "path": "/admin/channel-config",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 3 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 3 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 3 处"
+      }
+    ]
+  },
+  "surface-config": {
+    "moduleCount": 1,
+    "pageCount": 1,
+    "instanceCount": 1,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "surface-overlay": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  },
+  "tenant-card": {
+    "moduleCount": 7,
+    "pageCount": 5,
+    "instanceCount": 21,
+    "pages": [
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "高",
+        "usage": "实际使用 6 处"
+      },
+      {
+        "name": "技能广场",
+        "path": "/skill-square",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 6 处"
+      },
+      {
+        "name": "模型额度",
+        "path": "/model-quota",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "OpenClaw 详情",
+        "path": "/openclaw/1",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 3 处"
+      },
+      {
+        "name": "帮助文档",
+        "path": "/help-docs",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      }
+    ]
+  },
+  "button": {
+    "moduleCount": 126,
+    "pageCount": 23,
+    "instanceCount": 889,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 148 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 141 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 71 处"
+      },
+      {
+        "name": "记忆管理",
+        "path": "/admin/memory-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 60 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 59 处"
+      }
+    ]
+  },
+  "button-group": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  },
+  "input": {
+    "moduleCount": 70,
+    "pageCount": 19,
+    "instanceCount": 180,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 51 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 27 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 14 处"
+      },
+      {
+        "name": "OpenClaw 详情",
+        "path": "/openclaw/1",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 11 处"
+      },
+      {
+        "name": "安全组管理",
+        "path": "/admin/security-group",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 10 处"
+      }
+    ]
+  },
+  "input-group": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  },
+  "textarea": {
+    "moduleCount": 15,
+    "pageCount": 6,
+    "instanceCount": 22,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 13 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "技能配置",
+        "path": "/admin/skill-config",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "模型配置",
+        "path": "/admin/model-config",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 1 处"
+      },
+      {
+        "name": "OpenClaw 详情",
+        "path": "/openclaw/1",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "select": {
+    "moduleCount": 37,
+    "pageCount": 16,
+    "instanceCount": 84,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 28 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 11 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 11 处"
+      },
+      {
+        "name": "平台策略",
+        "path": "/admin/platform-policy",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 6 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 5 处"
+      }
+    ]
+  },
+  "date-picker": {
+    "moduleCount": 6,
+    "pageCount": 6,
+    "instanceCount": 13,
+    "pages": [
+      {
+        "name": "模型额度",
+        "path": "/model-quota",
+        "platform": "Tenant 用户端",
+        "priority": "高",
+        "usage": "实际使用 3 处"
+      },
+      {
+        "name": "操作记录",
+        "path": "/admin/audit-log",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "Agent 监控",
+        "path": "/admin/openclaw-monitor",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "运维观测",
+        "path": "/admin/ops-observation",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "会话管理",
+        "path": "/admin/session-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      }
+    ]
+  },
+  "checkbox": {
+    "moduleCount": 41,
+    "pageCount": 14,
+    "instanceCount": 84,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 28 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 19 处"
+      },
+      {
+        "name": "记忆管理",
+        "path": "/admin/memory-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 8 处"
+      },
+      {
+        "name": "技能配置",
+        "path": "/admin/skill-config",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 5 处"
+      },
+      {
+        "name": "Agent 监控",
+        "path": "/admin/openclaw-monitor",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 4 处"
+      }
+    ]
+  },
+  "field": {
+    "moduleCount": 1,
+    "pageCount": 1,
+    "instanceCount": 14,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 14 处"
+      }
+    ]
+  },
+  "radio-group": {
+    "moduleCount": 16,
+    "pageCount": 10,
+    "instanceCount": 24,
+    "pages": [
+      {
+        "name": "安全组管理",
+        "path": "/admin/security-group",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 5 处"
+      },
+      {
+        "name": "文件管理",
+        "path": "/admin/file-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      }
+    ]
+  },
+  "radio-card": {
+    "moduleCount": 3,
+    "pageCount": 3,
+    "instanceCount": 3,
+    "pages": [
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 1 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "switch": {
+    "moduleCount": 25,
+    "pageCount": 11,
+    "instanceCount": 43,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 18 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 6 处"
+      },
+      {
+        "name": "模型配置",
+        "path": "/admin/model-config",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "记忆管理",
+        "path": "/admin/memory-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      }
+    ]
+  },
+  "filter-chip": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  },
+  "alert": {
+    "moduleCount": 32,
+    "pageCount": 14,
+    "instanceCount": 72,
+    "pages": [
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 18 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 14 处"
+      },
+      {
+        "name": "安全组管理",
+        "path": "/admin/security-group",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 10 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 6 处"
+      },
+      {
+        "name": "平台策略",
+        "path": "/admin/platform-policy",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 5 处"
+      }
+    ]
+  },
+  "dialog": {
+    "moduleCount": 76,
+    "pageCount": 19,
+    "instanceCount": 176,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 32 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 22 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 22 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 18 处"
+      },
+      {
+        "name": "OpenClaw 详情",
+        "path": "/openclaw/1",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 15 处"
+      }
+    ]
+  },
+  "alert-dialog": {
+    "moduleCount": 29,
+    "pageCount": 16,
+    "instanceCount": 45,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 9 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 9 处"
+      },
+      {
+        "name": "Agent 监控",
+        "path": "/admin/openclaw-monitor",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 5 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 4 处"
+      }
+    ]
+  },
+  "drawer": {
+    "moduleCount": 9,
+    "pageCount": 3,
+    "instanceCount": 9,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 7 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      },
+      {
+        "name": "Agent 监控",
+        "path": "/admin/openclaw-monitor",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "tooltip": {
+    "moduleCount": 72,
+    "pageCount": 19,
+    "instanceCount": 287,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 76 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 41 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 28 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 21 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 20 处"
+      }
+    ]
+  },
+  "popover": {
+    "moduleCount": 27,
+    "pageCount": 12,
+    "instanceCount": 45,
+    "pages": [
+      {
+        "name": "Agent 监控",
+        "path": "/admin/openclaw-monitor",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 9 处"
+      },
+      {
+        "name": "平台策略",
+        "path": "/admin/platform-policy",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 7 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 7 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 5 处"
+      },
+      {
+        "name": "安全组管理",
+        "path": "/admin/security-group",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 4 处"
+      }
+    ]
+  },
+  "info-popover": {
+    "moduleCount": 1,
+    "pageCount": 1,
+    "instanceCount": 7,
+    "pages": [
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 7 处"
+      }
+    ]
+  },
+  "progress": {
+    "moduleCount": 3,
+    "pageCount": 3,
+    "instanceCount": 3,
+    "pages": [
+      {
+        "name": "Agent 迁移",
+        "path": "/admin/agent-migration",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 1 处"
+      },
+      {
+        "name": "记忆管理",
+        "path": "/admin/memory-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      },
+      {
+        "name": "模型额度",
+        "path": "/model-quota",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "spinner": {
+    "moduleCount": 2,
+    "pageCount": 1,
+    "instanceCount": 3,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 3 处"
+      }
+    ]
+  },
+  "table": {
+    "moduleCount": 62,
+    "pageCount": 21,
+    "instanceCount": 138,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 26 处"
+      },
+      {
+        "name": "平台策略",
+        "path": "/admin/platform-policy",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 19 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 19 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 16 处"
+      },
+      {
+        "name": "API 文档",
+        "path": "/admin/api-docs",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 10 处"
+      }
+    ]
+  },
+  "pagination": {
+    "moduleCount": 28,
+    "pageCount": 14,
+    "instanceCount": 37,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 10 处"
+      },
+      {
+        "name": "Tokens 监控",
+        "path": "/admin/tokens-monitor",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 6 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 5 处"
+      },
+      {
+        "name": "记忆管理",
+        "path": "/admin/memory-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      }
+    ]
+  },
+  "kbd": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  },
+  "badge": {
+    "moduleCount": 30,
+    "pageCount": 12,
+    "instanceCount": 76,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 19 处"
+      },
+      {
+        "name": "平台策略",
+        "path": "/admin/platform-policy",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 14 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 8 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 8 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 6 处"
+      }
+    ]
+  },
+  "status-tag": {
+    "moduleCount": 50,
+    "pageCount": 17,
+    "instanceCount": 175,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 34 处"
+      },
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 24 处"
+      },
+      {
+        "name": "平台策略",
+        "path": "/admin/platform-policy",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 23 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 19 处"
+      },
+      {
+        "name": "基础信息",
+        "path": "/admin/basic-info",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 16 处"
+      }
+    ]
+  },
+  "empty": {
+    "moduleCount": 18,
+    "pageCount": 7,
+    "instanceCount": 25,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 10 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 7 处"
+      },
+      {
+        "name": "技能配置",
+        "path": "/admin/skill-config",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 3 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "通道配置",
+        "path": "/admin/channel-config",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "stepper": {
+    "moduleCount": 2,
+    "pageCount": 2,
+    "instanceCount": 2,
+    "pages": [
+      {
+        "name": "成员管理",
+        "path": "/admin/members",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 1 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "segment": {
+    "moduleCount": 2,
+    "pageCount": 2,
+    "instanceCount": 3,
+    "pages": [
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "OpenClaw 详情",
+        "path": "/openclaw/1",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "segmented-tabs": {
+    "moduleCount": 3,
+    "pageCount": 1,
+    "instanceCount": 3,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 3 处"
+      }
+    ]
+  },
+  "tabs": {
+    "moduleCount": 10,
+    "pageCount": 7,
+    "instanceCount": 21,
+    "pages": [
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 6 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 4 处"
+      },
+      {
+        "name": "Agent 迁移",
+        "path": "/admin/agent-migration",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "模型配置",
+        "path": "/admin/model-config",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      }
+    ]
+  },
+  "tenant-section": {
+    "moduleCount": 4,
+    "pageCount": 3,
+    "instanceCount": 6,
+    "pages": [
+      {
+        "name": "OpenClaw 详情",
+        "path": "/openclaw/1",
+        "platform": "Tenant 用户端",
+        "priority": "高",
+        "usage": "实际使用 3 处"
+      },
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "帮助文档",
+        "path": "/help-docs",
+        "platform": "Tenant 用户端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "topnav": {
+    "moduleCount": 1,
+    "pageCount": 1,
+    "instanceCount": 1,
+    "pages": [
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "高",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "admin-page-header": {
+    "moduleCount": 24,
+    "pageCount": 19,
+    "instanceCount": 24,
+    "pages": [
+      {
+        "name": "基础信息",
+        "path": "/admin/basic-info",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "文件管理",
+        "path": "/admin/file-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "镜像管理",
+        "path": "/admin/image-management",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "安全管理",
+        "path": "/admin/security-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      },
+      {
+        "name": "会话管理",
+        "path": "/admin/session-management",
+        "platform": "Admin 管控端",
+        "priority": "补充",
+        "usage": "实际使用 2 处"
+      }
+    ]
+  },
+  "admin-sidebar": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  },
+  "toast": {
+    "moduleCount": 1,
+    "pageCount": 1,
+    "instanceCount": 2,
+    "pages": [
+      {
+        "name": "我的 Agent",
+        "path": "/my-openclaw",
+        "platform": "Tenant 用户端",
+        "priority": "高",
+        "usage": "实际使用 2 处"
+      }
+    ]
+  },
+  "avatar": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  },
+  "tree": {
+    "moduleCount": 2,
+    "pageCount": 2,
+    "instanceCount": 4,
+    "pages": [
+      {
+        "name": "Agent 迁移",
+        "path": "/admin/agent-migration",
+        "platform": "Admin 管控端",
+        "priority": "高",
+        "usage": "实际使用 3 处"
+      },
+      {
+        "name": "Agent 工具库",
+        "path": "/admin/agent-tool-library",
+        "platform": "Admin 管控端",
+        "priority": "中",
+        "usage": "实际使用 1 处"
+      }
+    ]
+  },
+  "breadcrumb": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  },
+  "transfer": {
+    "moduleCount": 0,
+    "pageCount": 0,
+    "instanceCount": 0,
+    "pages": []
+  }
+}

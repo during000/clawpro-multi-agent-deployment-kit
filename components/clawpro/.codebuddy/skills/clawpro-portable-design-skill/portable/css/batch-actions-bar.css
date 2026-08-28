@@ -1,0 +1,175 @@
+/* Batch Actions Bar CSS
+ * Provides unified batch selection feedback and cross-page selection handling.
+ * Follows ClawPro design system with consistent colors, spacing, and semantics.
+ */
+
+/* Container */
+.cp-batch-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--cp-border, #d9d9d9);
+  border-radius: 4px;
+  background: var(--cp-surface, #ffffff);
+  padding: 8px 12px;
+  min-height: 32px;
+}
+
+/* Cross-page all-selected state (grey background instead of brand tint) */
+.cp-batch-bar--all {
+  background: var(--bg-grey-normal, #f5f5f5);
+}
+
+/* Selection summary section */
+.cp-batch-summary {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--cp-text-brand, #2563eb);
+}
+
+.cp-batch-summary strong {
+  font-weight: 500;
+}
+
+/* Cross-page selection link */
+.cp-batch-summary__link {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--cp-text-brand, #2563eb);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.cp-batch-summary__link:hover {
+  opacity: 0.8;
+}
+
+.cp-batch-summary__link:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Actions container */
+.cp-batch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Individual action button */
+.cp-batch-action {
+  height: 32px;
+  border: 1px solid var(--cp-border, #d9d9d9);
+  border-radius: 4px;
+  background: var(--cp-surface, #ffffff);
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--cp-text-title, #262626);
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.cp-batch-action:hover:not(:disabled) {
+  border-color: var(--cp-border-hover, #b3b3b3);
+  background: var(--cp-surface-hover, #fafafa);
+}
+
+.cp-batch-action:active:not(:disabled) {
+  background: var(--cp-surface-active, #f0f0f0);
+}
+
+.cp-batch-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Danger action variant (for destructive operations like delete) */
+.cp-batch-action--danger {
+  color: var(--cp-text-danger, #d32f2f);
+}
+
+.cp-batch-action--danger:hover:not(:disabled) {
+  border-color: var(--cp-text-danger, #d32f2f);
+  background: var(--cp-surface-danger-hover, #ffebee);
+}
+
+/* Clear action variant (link/ghost style) */
+.cp-batch-action--clear {
+  border-color: transparent;
+  background: transparent;
+  color: var(--cp-text-muted, #8c8c8c);
+  padding: 0 8px;
+}
+
+.cp-batch-action--clear:hover:not(:disabled) {
+  border-color: transparent;
+  background: transparent;
+  color: var(--cp-text-title, #262626);
+}
+
+.cp-batch-action--clear:active:not(:disabled) {
+  background: transparent;
+}
+
+/* Loading state */
+.cp-batch-action.is-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Focus state for accessibility */
+.cp-batch-action:focus-visible {
+  outline: 2px solid var(--cp-focus-ring, #2563eb);
+  outline-offset: 2px;
+}
+
+.cp-batch-summary__link:focus-visible {
+  outline: 2px solid var(--cp-focus-ring, #2563eb);
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .cp-batch-bar {
+    gap: 8px;
+    padding: 6px 10px;
+    min-height: 28px;
+  }
+
+  .cp-batch-summary {
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .cp-batch-actions {
+    gap: 6px;
+  }
+
+  .cp-batch-action {
+    height: 28px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
+  .cp-batch-action--clear {
+    padding: 0 6px;
+  }
+}

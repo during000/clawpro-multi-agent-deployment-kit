@@ -1,0 +1,188 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Table — ClawPro
+ * 对齐 component-specs/table.md。配套：portable/react/table.tsx
+ *
+ * 设计口径（spec §3）：
+ *   容器  圆角 4px + 蓝灰描边 + 白底（管控端铁律 4px；spec §3.1 文中 rounded-xl
+ *         与 SKILL §2.4 的 4px 铁律冲突，portable 统一落 4px 保持一致，详见
+ *         references/conflict-log.md）
+ *   表头  bg var(--cp-bg-subtle) / 高 40px / 12px Medium / var(--cp-text-muted)
+ *   表体  12px / 行高 54px / 横向 padding 16px / 行 hover 弱灰
+ *   操作列 纯品牌蓝文字按钮 + 24px 间距 + hover 下划线，禁红色（删除靠二次确认）
+ *   状态列 纯文字变色，无底色无圆点（禁胶囊）
+ *   空态  colSpan 内纯文字双行，禁插画
+ *   页脚  总数左对齐 + 分页器右对齐（grid 两端布局）
+ *   字号  表格内统一 12px（globals.css 已对 [data-slot="table"] 做 !important 强制）
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ─── 容器（spec §3.1） ─── */
+.cp-table-shell {
+  overflow: hidden;
+  border-radius: var(--radius);          /* 4px */
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+}
+
+/* white 变体：用于非白底（蓝渐变 Hero / 灰色页面底）上的浮起白卡（spec §3.2）。
+ * ⚠️ 禁止在白色容器 / Dialog / Drawer 内使用（白上加白看不见）。 */
+.cp-table-shell--white {
+  border-color: var(--cp-surface);
+  box-shadow: var(--cp-shadow-card-interactive);
+}
+.cp-table-shell--white .cp-table thead {
+  background: var(--cp-surface);
+}
+
+/* ─── 横向滚动层（列多时横滚兜底 / 固定列容器） ─── */
+.cp-table-scroll {
+  overflow-x: auto;
+}
+
+/* ─── 表格本体 ─── */
+.cp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--cp-font-sans);
+  font-size: 12px;                       /* spec §3.3：统一 12px */
+  line-height: 1.5;
+  color: var(--cp-text-body);
+}
+
+/* ─── 表头（spec §3.1：灰底 / 40px / 12px Medium / muted） ─── */
+.cp-table thead {
+  background: var(--cp-bg-subtle);       /* #FAFBFD */
+}
+.cp-table thead tr {
+  border-bottom: 1px solid var(--cp-border);
+}
+.cp-table th {
+  height: 40px;
+  padding: 0 16px;                       /* px-4 固定，不因密度缩减 */
+  text-align: left;
+  vertical-align: middle;
+  font-size: 12px;
+  font-weight: 500;                      /* Medium */
+  color: var(--cp-text-muted);
+  white-space: nowrap;
+}
+/* 表头行禁止 hover 变色（spec §14 Do） */
+.cp-table thead tr:hover td,
+.cp-table thead tr:hover th {
+  background: transparent;
+}
+
+/* ─── 单元格（spec §3.1：12px / 行高 54px / py 12 / px 16 / border-b） ─── */
+.cp-table td {
+  height: 54px;
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: middle;
+  font-size: 12px;
+  color: var(--cp-text-body);
+  border-bottom: 1px solid var(--cp-border);
+}
+.cp-table tbody tr {
+  transition: background-color 120ms ease;
+}
+/* 行 hover：弱灰背景，不做强色块（spec §3.1 Row Hover） */
+.cp-table tbody tr:hover td {
+  background: var(--bg-grey-normal);
+}
+/* 最后一行不画底边，避免与外层卡片底边重合 */
+.cp-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+/* 选中态：无背景高亮（spec §10 selected，v2026.06 起移除蓝底；由 Checkbox 表达） */
+
+/* ─── 紧凑密度（spec density="compact"：行高 40px / py 8 / 字号不变） ─── */
+.cp-table--compact th {
+  height: 36px;
+}
+.cp-table--compact td {
+  height: 40px;
+  padding: 8px 16px;
+}
+
+/* ─── 列对齐 / 数字工具 ─── */
+.cp-col-right { text-align: right; }
+.cp-col-center { text-align: center; }
+.cp-num { font-variant-numeric: tabular-nums; }
+
+/* ─── 状态列：纯文字变色（spec §7 / §17.2，禁止带底色胶囊） ─── */
+.cp-table-status { font-weight: 500; }
+.cp-table-status--info    { color: #1447E6; }
+.cp-table-status--success { color: #008236; }
+.cp-table-status--danger  { color: #DC2626; }
+.cp-table-status--warning { color: #B45309; }
+.cp-table-status--muted   { color: #0A0A0A; }
+
+/* ─── 操作列（spec §5：品牌蓝文字按钮 + 24px 间距 + 禁红） ─── */
+.cp-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;                             /* 项间距固定 24px，由容器统一管控 */
+  white-space: nowrap;
+}
+.cp-table-action {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 12px;
+  color: var(--cp-text-brand);           /* 品牌蓝；删除按钮同样蓝色 */
+  cursor: pointer;
+  transition: color 100ms ease;
+}
+.cp-table-action:hover:not(:disabled) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+/* Disabled：浅蓝灰，保留色相但大幅降弱，不用透明度（spec §5 Disabled） */
+.cp-table-action:disabled {
+  color: #d0dafa;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* ─── 空态（spec §9：colSpan 内纯文字双行，禁插画） ─── */
+.cp-table-empty {
+  padding: 48px 16px;
+  text-align: center;
+}
+.cp-table-empty p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--cp-text-weak);
+}
+.cp-table-empty p + p {
+  margin-top: 4px;
+}
+/* 空态行禁止 hover 变色 */
+.cp-table tbody tr.cp-table-empty-row:hover td {
+  background: transparent;
+}
+
+/* ─── 页脚 / 分页（spec §8：总数左 + 分页器右） ─── */
+.cp-table-footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;                     /* px-4 py-2，与表头/单元格对齐 */
+  border-top: 1px solid var(--cp-border);
+}
+.cp-table-footer__total {
+  justify-self: start;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--cp-text-muted);
+}
+.cp-table-footer__pager {
+  justify-self: end;
+}
+
+/* ─── 分页器 ───
+ * 表格底部分页统一复用 portable/css/pagination.css 的 .cp-pagination
+ * （按钮 28×28，spec/component-specs/pagination.md §3 唯一口径）。
+ * 此处不再单独实现 .cp-pager，避免与 pagination.css 双套并存、长期漂移。
+ * 用法：在 .cp-table-footer__pager 内放 <div class="cp-pagination__list">…</div>，
+ *       并确保已引入 pagination.css。 */

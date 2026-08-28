@@ -1,0 +1,31 @@
+{{define "home_sidebar"}}
+<aside id="sidebar" class="w-56 bg-white border-r border-gray-200 flex-shrink-0 transition-all duration-200 overflow-hidden">
+    <nav class="py-3">
+        <a {{if ne .ActiveMenu "openclaw"}}href="/openclaw"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "openclaw"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "openclaw"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            <span class="whitespace-nowrap">我的 OpenClaw</span>
+        </a>
+        <a {{if ne .ActiveMenu "quota"}}href="/quota"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "quota"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "quota"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span class="whitespace-nowrap">模型额度</span>
+        </a>
+        <a href="#" class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent">
+            <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="whitespace-nowrap">帮助文档</span>
+        </a>
+    </nav>
+</aside>
+{{end}}
+
+{{define "home_scripts"}}
+<script>
+function toggleSidebar() {
+    var sb = document.getElementById('sidebar');
+    if (sb.style.width === '0px') {
+        sb.style.width = '';
+    } else {
+        sb.style.width = '0px';
+    }
+}
+</script>
+{{end}}

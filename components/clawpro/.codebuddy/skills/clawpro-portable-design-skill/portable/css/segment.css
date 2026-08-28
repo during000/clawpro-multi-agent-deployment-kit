@@ -1,0 +1,118 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Segment — ClawPro
+ * Admin（方角）+ Tenant（胶囊），不共用同一套皮肤
+ * 配套：portable/react/segment.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Admin Segment（方角 / 4px Item / 半透明灰底）
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.cp-segment--admin {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  border-radius: 6px;
+  background: rgba(219, 221, 228, 0.32);
+  border: 1px solid rgba(219, 221, 228, 0.32);
+  padding: 2px;
+  gap: 0;
+}
+
+.cp-segment--admin .cp-segment__item {
+  height: calc(100% - 1px);
+  padding: 4px 16px;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: #7B818F;
+  cursor: pointer;
+  transition: all 150ms ease;
+  white-space: nowrap;
+}
+
+.cp-segment--admin .cp-segment__item:hover:not(:disabled) {
+  color: #4B5563;
+}
+
+.cp-segment--admin .cp-segment__item--active {
+  background: #FFFFFF;
+  color: #020617;
+  font-weight: 600;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.cp-segment--admin .cp-segment__item:disabled {
+  color: #D3D6DB;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.cp-segment--admin .cp-segment__item:focus-visible {
+  outline: 3px solid rgba(53, 94, 241, 0.2);
+  outline-offset: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Tenant Segment（胶囊 / 40px Item / 半透明灰底）
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.cp-segment--tenant {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  border-radius: 80px;
+  background: rgba(219, 221, 228, 0.32);
+  padding: 0;
+  gap: 0;
+}
+
+.cp-segment--tenant .cp-segment__item {
+  height: 100%;
+  padding: 4px 12px;
+  border-radius: 40px;
+  background: transparent;
+  border: 0;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.005em;
+  font-weight: 400;
+  color: #334155;
+  cursor: pointer;
+  transition: all 150ms ease;
+  white-space: nowrap;
+}
+
+.cp-segment--tenant .cp-segment__item:hover:not(:disabled) {
+  color: #020617;
+}
+
+.cp-segment--tenant .cp-segment__item--active {
+  background: #FFFFFF;
+  color: #020617;
+  font-weight: 500;
+  outline: 1px solid #CDD4DC;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.cp-segment--tenant .cp-segment__item:disabled {
+  color: #CBD5E1;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.cp-segment--tenant .cp-segment__item:focus-visible {
+  outline: 3px solid rgba(53, 94, 241, 0.2);
+  outline-offset: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * 容器 role 属性
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.cp-segment {
+  outline: none;
+}

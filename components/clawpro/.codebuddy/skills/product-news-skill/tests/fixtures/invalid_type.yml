@@ -1,0 +1,9 @@
+# 错误示例：type 使用了非法值 "bugfix"
+changes:
+  - id: "test-invalid-type"
+    title: "测试标题"
+    type: "bugfix"
+    date: "2026-07-05"
+    endpoint: "管控端"
+    description: "测试描述。"
+    display_components: {banner: {enabled: false}, floating_window: {enabled: false}}

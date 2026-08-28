@@ -1,0 +1,10 @@
+[
+  {
+    "agent_type": "hermes",
+    "plugin": "memory-tencentdb",
+    "reason": "记忆插件向量存储数据（含长期记忆上下文），升级后须保留以维持记忆连续性",
+    "paths": [
+      ".memory-tencentdb/memory-tdai"
+    ]
+  }
+]

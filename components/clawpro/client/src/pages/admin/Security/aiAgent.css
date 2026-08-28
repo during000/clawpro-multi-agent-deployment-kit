@@ -1,0 +1,1043 @@
+.csip-ai-agent-wrap {
+  /* .sdk-overviewcard-securitycenter-layout__header-title {
+    padding-bottom: 40px;
+  } */
+
+  .operate-showBtn {
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .AIAgent-tips {
+    /* width: calc(100% + 40px);
+    margin: -20px 0 0 -20px; */
+    background: url("../../assets/exposure/teaching-bg.png") right no-repeat;
+    background-color: #fff;
+    background-size: auto 100%;
+    border-top: none;
+
+    .operate {
+      display: inline-block;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .sdk-overviewcard-securitycenter-list {
+      color: #76797f;
+    }
+  }
+
+
+
+  .manage-batch-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    width: 100%;
+    height: 100%;
+    padding-top: 100px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    background: rgb(0 0 0 / 45%);
+  }
+}
+
+.dropdown-blue-triangle {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin: 0 0 0 -2px;
+  vertical-align: top;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/cwp-dropdown-blue-arrow.png")
+    left no-repeat;
+  background-size: 14px;
+}
+
+.csip-ai-header-tabs {
+  > .sdk-overviewcard-securitycenter-tabs__tabbar {
+    margin: -58px 0 0 -15px;
+
+    .sdk-overviewcard-securitycenter-tabs__tabitem {
+      height: 38px;
+      line-height: 38px;
+    }
+  }
+
+  > .sdk-overviewcard-securitycenter-tabs__tabpanel {
+    padding-top: 20px;
+  }
+}
+
+.AIAgent-contentTables {
+  .tabs {
+    > .sdk-overviewcard-securitycenter-tabs__tabbar {
+      margin: -10px -20px 0;
+      padding-left: 8px;
+
+      .sdk-overviewcard-securitycenter-tabs__tabitem {
+        height: 38px;
+        line-height: 38px;
+      }
+    }
+
+    > .sdk-overviewcard-securitycenter-tabs__tabpanel {
+      padding-top: 20px;
+    }
+
+    .control-line {
+      position: relative;
+      top: 4px;
+      left: 20px;
+      display: inline-block;
+      width: 0;
+      height: 18px;
+      border-left: 1px solid #dbdfe6;
+    }
+
+    .logs-line {
+      position: relative;
+      top: 4px;
+      left: 20px;
+      display: inline-block;
+      width: 0;
+      height: 18px;
+      border-left: 1px solid #dbdfe6;
+    }
+  }
+}
+
+.csip-AIAgent-table-icon {
+  padding-left: 35px;
+
+  &.openclaw {
+    background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-openclaw.png")
+      left no-repeat;
+    background-position: 0 0;
+    background-size: 28px;
+  }
+
+  &.other {
+    background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-other.png")
+      left no-repeat;
+    background-position: 0 2px;
+    background-size: 28px;
+  }
+}
+
+.csip-AIAgent-alarms-line {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  width: 0;
+  height: 30px;
+  margin: 0 5px;
+  vertical-align: top;
+  border-left: 1px solid #e9ecf1;
+}
+
+.malware-table-pop {
+  max-width: 420px !important;
+}
+
+.malware-table-drop {
+  margin: -5px 0 15px 20px;
+  color: #999;
+}
+
+.malware-table-dropdown {
+  min-width: 70px !important;
+  max-width: 85px !important;
+
+  &.en,
+  &.attackSource {
+    max-width: none !important;
+  }
+
+  li {
+    padding: 3px 6px;
+  }
+
+  button {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+.malware-table-recomand {
+  display: inline-block;
+  margin-top: -2px;
+  margin-left: 10px;
+  padding: 3px 10px;
+  color: #0052d9;
+  font-size: 12px;
+  background: #e5efff;
+}
+
+.cwp-moreBtn-dropdown-list {
+  li {
+    padding: 3px 10px !important;
+    line-height: 28px;
+  }
+}
+
+.csip-AIAgent-groups-wrap {
+  .sdk-overviewcard-securitycenter-grid--split-line
+    > [class*="sdk-overviewcard-securitycenter-grid__item"]:before {
+    top: -11px;
+    bottom: -20px;
+  }
+
+  .csip-AIAgent-groups-side {
+    position: relative;
+    width: 190px;
+    font-size: 13px;
+
+    .list-wrap {
+      margin: 0 0 0 -20px;
+
+      .list-item {
+        display: flex;
+        height: 44px;
+        margin-bottom: 0;
+        padding: 0 15px 0 20px;
+        line-height: 44px;
+        cursor: pointer;
+
+        &.selected {
+          padding: 0 15px 0 18px;
+          color: #000;
+          font-weight: 600;
+          background: #e3ecff;
+          border-left: 2px solid #0052d9;
+        }
+
+        .icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+
+          &.icon-net {
+            width: 16px;
+            height: 16px;
+            margin: 14px 8px 0 0;
+            background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/cwp-strategy-sidebar-attack.png")
+              center no-repeat;
+            background-size: 16px;
+            border-radius: 0;
+          }
+
+          &.icon-host {
+            width: 16px;
+            height: 16px;
+            margin: 14px 8px 0 0;
+            background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/cwp-strategy-sidebar-all.png")
+              center no-repeat;
+            background-size: 16px;
+            border-radius: 0;
+          }
+
+          &.icon-user {
+            width: 16px;
+            height: 16px;
+            margin: 14px 8px 0 0;
+            background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-user.png")
+              center no-repeat;
+            background-size: 16px;
+            border-radius: 0;
+          }
+        }
+
+        .cont {
+          display: inline-block;
+          max-width: 120px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .count {
+          position: absolute;
+          right: 15px;
+          display: inline-block;
+          max-width: 56px;
+          overflow: hidden;
+          color: rgb(0 0 0 / 30%);
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          .ztag {
+            margin-top: -3px;
+            padding-right: 0;
+            padding-left: 0;
+            color: rgb(0 0 0 / 70%);
+            font-weight: normal;
+            background: transparent;
+
+            .zstack-security-tag-dot-success {
+              background-color: rgb(10 191 91);
+            }
+
+            .zstack-security-tag-dot-warning {
+              background-color: rgb(255 157 0);
+            }
+
+            .zstack-security-tag-dot {
+              display: inline-block;
+              width: 4px;
+              height: 4px;
+              margin-right: 4px;
+              border-radius: 50%;
+              position: relative;
+              top: -2px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .csip-AIAgent-groups-content {
+    width: calc(100% - 190px);
+    margin: -30px 0 0;
+    padding: 0;
+
+    .wrap {
+      padding: 0 0 10px 20px;
+
+      .wrap-child {
+        margin-right: -20px;
+        padding-right: 20px;
+        overflow-y: auto;
+      }
+    }
+
+    &.scroll {
+      width: calc(100% - 3px);
+    }
+  }
+}
+
+.csip-AIAgent-netGroup-content {
+  .head-panel {
+    position: relative;
+    margin-top: 10px;
+    padding: 20px 30px;
+    background:
+      linear-gradient(to right, rgb(237 129 57 / 8%), rgb(237 129 57 / 0%)) left,
+      linear-gradient(to left, rgb(237 129 57 / 8%), rgb(237 129 57 / 0%)) right;
+    background-repeat: no-repeat;
+    background-size:
+      50% 100%,
+      50% 100%;
+
+    &.open {
+      background:
+        linear-gradient(to right, rgb(0 82 217 / 8%), rgb(0 82 217 / 0%)) left,
+        linear-gradient(to left, rgb(0 82 217 / 8%), rgb(0 82 217 / 0%)) right;
+      background-repeat: no-repeat;
+      background-size:
+        50% 100%,
+        50% 100%;
+    }
+
+    .title-panel {
+      display: inline-block;
+      padding-left: 40px;
+
+      &.open {
+        background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/cwp-agentSetting-antiUninstall.png")
+          left no-repeat;
+        background-position: 0 11px;
+        background-size: 28px;
+      }
+
+      &.close {
+        background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-net-close.png")
+          left no-repeat;
+        background-position: 0 11px;
+        background-size: 28px;
+      }
+
+      .tips {
+        font-size: 12px;
+        margin-top: 5px;
+        color: rgb(0 0 0 / 50%);
+      }
+
+      .switch {
+        position: absolute;
+        top: 33px;
+        right: 30px;
+      }
+    }
+  }
+}
+
+.maliciousRequest-editPolicy {
+  .mg-bt-10 {
+    margin-bottom: 10px;
+  }
+
+  .mg-bt-16 {
+    margin-bottom: 16px;
+  }
+
+  .mg-bt-20 {
+    margin-bottom: 25px;
+  }
+
+  .mg-tp-6 {
+    margin-top: 6px;
+  }
+
+  .label-txt {
+    display: inline-block;
+    width: 98px;
+    color: #888;
+    vertical-align: top;
+  }
+
+  .content {
+    display: inline-block;
+    width: calc(100% - 98px);
+    vertical-align: top;
+
+    .table-head-bgc {
+      .sdk-overviewcard-securitycenter-table__box th {
+        background-color: #f9f9fb;
+      }
+    }
+  }
+
+  &.en {
+    .label-txt {
+      width: 120px;
+    }
+
+    .content {
+      width: calc(100% - 120px);
+    }
+
+    &.label_140 {
+      .label-txt {
+        width: 140px;
+      }
+
+      .content {
+        width: calc(100% - 140px);
+      }
+    }
+  }
+
+  .tip {
+    margin-top: 10px;
+    color: #979797;
+  }
+}
+
+.malware-level-wrap {
+  display: inline-block;
+  padding: 2px 10px;
+  color: #fff;
+  font-size: 12px;
+}
+
+.bash-level-1 {
+  background: #ff633f;
+}
+
+.bash-level-2 {
+  background: #ff9c18;
+}
+
+.bash-level-3 {
+  background: #0052d9;
+}
+
+.maliciousRequest-alarmList-policyType {
+  display: inline-block;
+  padding: 2px 6px;
+  background: #f3f4f7;
+  border-radius: 3px;
+}
+
+.maliciousRequest-alarmList-black {
+  display: inline-block;
+  padding: 2px 6px;
+  color: #e24c55;
+  background: #fce0e2;
+  border-radius: 3px;
+}
+
+.maliciousRequest-alarmList-white {
+  display: inline-block;
+  padding: 2px 6px;
+  color: #33cb4b;
+  background: #defae4;
+  border-radius: 3px;
+}
+
+.autoBlock-protect-mode-segment {
+  .sdk-overviewcard-securitycenter-btn {
+    padding: 0;
+    color: #444;
+    background: #eef0f4;
+    border: none;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+
+    .inner {
+      padding: 0 7px;
+      background: #eef0f4;
+    }
+  }
+
+  .sdk-overviewcard-securitycenter-btn:last-child {
+    padding: 0 3px;
+    color: #444;
+    background: #eef0f4;
+    border: none;
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+  }
+
+  .sdk-overviewcard-securitycenter-btn.is-disabled {
+    color: #aaa;
+    background-color: #eef0f4;
+  }
+
+  .sdk-overviewcard-securitycenter-btn.is-disabled:hover {
+    color: #aaa;
+    background-color: #eef0f4;
+  }
+
+  .sdk-overviewcard-securitycenter-btn.is-selected {
+    padding: 0 3px;
+    color: #0052d9;
+    background: #eef0f4;
+
+    .inner {
+      height: 26px;
+      padding: 0 7px;
+      line-height: 26px;
+      background: #fff;
+      border-radius: 2px;
+    }
+  }
+
+  .sdk-overviewcard-securitycenter-btn.is-selected.is-disabled {
+    color: #5f97ff;
+    background-color: #eef0f4;
+  }
+
+  .sdk-overviewcard-securitycenter-btn.is-selected:hover {
+    background-color: #eef0f4;
+  }
+}
+
+.csip-AIAgent-policyAction-dot {
+  padding: 0;
+  color: #000 !important;
+  background: transparent !important;
+
+  .zstack-security-tag-dot-error {
+    background-color: #f64041;
+  }
+
+  .zstack-security-tag-dot-success {
+    background-color: #0cbf5b;
+  }
+
+  .zstack-security-tag-dot-warning {
+    background-color: #ff7800;
+  }
+
+  .zstack-security-tag-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
+    border-radius: 50%;
+  }
+}
+
+.maliciousRequest-policyDetail-title {
+  display: inline-block;
+  margin-top: 3px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.maliciousRequest-policyDetail {
+  .mg-bt-10 {
+    margin-bottom: 10px;
+  }
+
+  .mg-bt-16 {
+    margin-bottom: 16px;
+  }
+
+  .mg-bt-20 {
+    margin-bottom: 25px;
+  }
+
+  .label-txt {
+    display: inline-block;
+    width: 98px;
+    color: #888;
+    vertical-align: top;
+  }
+
+  .content {
+    display: inline-block;
+    width: calc(100% - 98px);
+    vertical-align: top;
+    word-break: break-all;
+  }
+
+  .name-icon {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    vertical-align: top;
+    background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-policyDetail-nameIcon.svg")
+      left no-repeat;
+  }
+
+  .name {
+    display: inline-block;
+    width: calc(100% - 65px);
+    margin-top: 4px;
+    padding-left: 15px;
+    vertical-align: top;
+
+    .lab {
+      color: #888;
+    }
+
+    .cont {
+      margin-top: 3px;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 21px;
+    }
+  }
+}
+
+.csip-AIAgent-netModal-list > li {
+  display: inline-block;
+  margin: 10px 10px 0;
+}
+
+.cwp-content-loading {
+  height: 100vh;
+  text-align: center;
+
+  .loading-status {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.csip-AIAgent-lockPage {
+  height: 100%;
+  padding: 120px 60px 0 100px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-lock-bg.png")
+    right no-repeat;
+  background-color: #fff;
+  background-position: 100% 100%;
+  background-size: contain;
+
+  .item-wrap {
+    height: 190px;
+    padding: 30px 10px 30px 20px;
+    border: 1px solid #e9ecf1;
+    border-radius: 12px;
+
+    .header {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .auto,
+    .control,
+    .logs,
+    .skills {
+      width: 36px;
+      height: 36px;
+      border-radius: 40%;
+      background-size: 36px;
+    }
+
+    .auto {
+      background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-lock-auto.png")
+        center no-repeat;
+      background-size: 36px;
+    }
+
+    .control {
+      background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-lock-control.png")
+        center no-repeat;
+      background-size: 36px;
+    }
+
+    .logs {
+      background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-lock-logs.png")
+        center no-repeat;
+      background-size: 36px;
+    }
+
+    .skills {
+      background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-lock-skills.png")
+        center no-repeat;
+      background-size: 36px;
+    }
+
+    .tips {
+      margin-top: 10px;
+      color: rgb(0 0 0 / 60%);
+      font-size: 12px;
+    }
+  }
+}
+
+.csip-AIAgent-zstack-tag {
+  margin-top: -1px;
+  color: rgb(0 0 0 / 50%) !important;
+  background: transparent !important;
+
+  .zstack-security-tag-dot-error {
+    background-color: #f64041;
+  }
+
+  .zstack-security-tag-dot-success {
+    background-color: #0cbf5b;
+  }
+
+  .zstack-security-tag-dot-warning {
+    background-color: #ff7800;
+  }
+
+  .zstack-security-tag-dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    margin-right: 5px;
+    border-radius: 50%;
+  }
+}
+
+.csip-AiAgent-meta {
+  display: inline-block;
+  margin: 0 10px 0 0;
+
+  &.AK_TMP {
+    padding-left: 21px;
+    background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-meta-ak.png")
+      left no-repeat;
+    background-size: 16px;
+    cursor: pointer;
+  }
+
+  &.USERDATA {
+    margin-right: 0;
+    padding-left: 21px;
+    background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-meta-user.png")
+      left no-repeat;
+    background-size: 16px;
+    cursor: pointer;
+  }
+
+  &.USER_DATA {
+    margin-right: 0;
+    padding-left: 21px;
+    background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-meta-user.png")
+      left no-repeat;
+    background-size: 16px;
+    cursor: pointer;
+  }
+}
+
+.vulDetail-version-0 {
+  display: inline-block;
+  padding: 1px 5px 1px 25px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/basic.svg")
+    left no-repeat;
+  background-position: 6px 2px;
+  background-size: 16px 16px;
+}
+
+.vulDetail-version-1 {
+  display: inline-block;
+  padding: 1px 5px 1px 25px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/pro.svg")
+    left no-repeat;
+  background-position: 6px 2px;
+  background-size: 16px 16px;
+}
+
+.vulDetail-version-2 {
+  display: inline-block;
+  padding: 1px 5px 1px 25px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/flagship.svg")
+    left no-repeat;
+  background-position: 6px 2px;
+  background-size: 16px 16px;
+}
+
+.vulDetail-version-3 {
+  display: inline-block;
+  padding: 1px 5px 1px 25px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/pro.svg")
+    left no-repeat;
+  background-position: 6px 2px;
+  background-size: 16px 16px;
+}
+
+.csip-AiAgent-skills-count {
+  display: inline-block;
+  padding-left: 22px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-skills.png")
+    left no-repeat;
+  background-size: 16px;
+}
+
+.csip-AiAgent-alarms-bash {
+  display: inline-block;
+  width: 55px;
+  margin-right: 6px;
+  padding-left: 22px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-alarms-bash.png")
+    left no-repeat;
+  background-size: 16px;
+}
+
+.csip-AiAgent-alarms-malicious {
+  display: inline-block;
+  margin-right: 0;
+  padding-left: 22px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-alarms-malicious.png")
+    left no-repeat;
+  background-size: 16px;
+}
+
+.cwp-progress-tree {
+  .sdk-overviewcard-securitycenter-tree__node {
+    .sdk-overviewcard-securitycenter-tree__node-content {
+      .sdk-overviewcard-securitycenter-tree__label {
+        .sdk-overviewcard-securitycenter-tree__label-title {
+          .sdk-overviewcard-securitycenter-row {
+            max-width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+}
+
+.aialrm-tree-item {
+  overflow: hidden;
+  color: #888;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.aialarm-detail-tree1 {
+  padding-left: 20px;
+
+  .sdk-overviewcard-securitycenter-tree__label-title {
+    width: 100%;
+  }
+
+  .sdk-overviewcard-securitycenter-grid__box {
+    overflow: hidden;
+  }
+}
+
+.aialarm-detail-tree0 {
+  padding-left: 38px;
+
+  .sdk-overviewcard-securitycenter-tree__label-title {
+    width: 100%;
+  }
+
+  .sdk-overviewcard-securitycenter-grid__box {
+    overflow: hidden;
+  }
+}
+
+.aialarm-detail-tree2 {
+  .sdk-overviewcard-securitycenter-tree__label-title {
+    width: 100%;
+  }
+
+  .sdk-overviewcard-securitycenter-grid__box {
+    overflow: hidden;
+  }
+}
+
+.csip-AiAgent-count-tag-gray {
+  margin-top: -2px;
+  padding: 1px 4px;
+  color: rgb(255 255 255 / 90%) !important;
+  line-height: 16px;
+  background-color: rgb(188 196 208 / 70%) !important;
+  border: 0 solid rgb(188 196 208 / 70%) !important;
+}
+
+.csip-AiAgent-count-tag-red {
+  margin-top: -1px;
+  padding: 1px 4px;
+  color: rgb(255 255 255 / 90%) !important;
+  line-height: 16px;
+  background-color: #f64041 !important;
+  border: 0 solid #f64041 !important;
+}
+
+.csip-AIAgent-netGroup-tag {
+  padding-right: 0;
+  padding-left: 0;
+  color: rgb(0 0 0 / 50%) !important;
+  background-color: transparent !important;
+
+  .zstack-security-tag-dot-default {
+    background-color: #888;
+  }
+
+  .zstack-security-tag-dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    margin-right: 5px;
+    border-radius: 50%;
+  }
+}
+
+.csip-AIAgent-group-name-icon {
+  padding-left: 55px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-group-icon.png")
+    left no-repeat;
+  background-size: 42px;
+}
+
+.csip-AIAgent-assets-ztag {
+  padding-right: 0;
+  padding-left: 0;
+  color: rgb(0 0 0 / 70%) !important;
+  font-weight: normal;
+  background: transparent !important;
+
+  .zstack-security-tag-dot-success {
+    background-color: rgb(10 191 91);
+  }
+
+  .zstack-security-tag-dot-warning {
+    background-color: rgb(255 157 0);
+  }
+
+  .zstack-security-tag-dot-default {
+    background-color: #888;
+  }
+
+  .zstack-security-tag-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 4px;
+    border-radius: 50%;
+  }
+}
+
+.csip-AIAgent-trial-modal {
+  .sdk-overviewcard-securitycenter-dialog__inner {
+    background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-trial-modal.png")
+      right no-repeat;
+    background-color: #fff;
+    background-position: right top;
+    background-size: auto 180px;
+  }
+}
+
+.csip-AIAgent-model {
+  display: inline-block;
+  padding-left: 22px;
+  line-height: 19px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-model-icon.png")
+    left no-repeat;
+  background-position: 0 1px;
+  background-size: 18px;
+}
+
+.cwp-hover-underline {
+  text-decoration: underline dashed rgb(0 0 0 / 30%);
+  text-underline-offset: 5px;
+  cursor: pointer;
+}
+
+.csip-AIAgent-assetDetail-alarm {
+  padding: 10px 0 4px 60px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-assetDetail-alarm.png")
+    left no-repeat;
+  background-position: 15px 16px;
+  background-size: 36px;
+}
+
+.csip-AIAgent-assetDetail-skills {
+  padding: 0 0 0 60px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-assetDetail-skills.png")
+    left no-repeat;
+  background-position: 15px 16px;
+  background-size: 36px;
+}
+
+.csip-AIAgent-assetDetail-allSkills {
+  padding: 0 0 0 60px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-assetDetail-allSkills.png")
+    left no-repeat;
+  background-position: 15px 16px;
+  background-size: 36px;
+}
+
+.csip-AIAgent-assetDetail-meta {
+  padding: 6px 0 0 66px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-assetDetail-meta.png")
+    left no-repeat;
+  background-position: 15px 16px;
+  background-size: 36px;
+}
+
+.csip-AIAgent-assetDetail-bubble {
+  .sdk-overviewcard-securitycenter-bubble {
+    max-width: 1000px;
+  }
+}
+
+.csip-AIAgent-hostGroup-recommend {
+  margin: 0 0 18px;
+  padding: 10px 16px 10px 45px;
+  font-size: 13px;
+  background: url("https://test-1256299843.cos.ap-shanghai.myqcloud.com/FEConsoleImage/csip-AIAgent-hostGroup-recommend.png")
+    left no-repeat;
+  background-position: 14px 9px;
+  background-size: 24px;
+  border: 1px solid #e6e9ef;
+  border-radius: 4px;
+
+  .sdk-overviewcard-securitycenter-action-state {
+    position: relative;
+    top: -1px;
+  }
+
+  .sdk-overviewcard-securitycenter-action-state-dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+  }
+}

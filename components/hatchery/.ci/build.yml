@@ -1,0 +1,36 @@
+version: v2.0
+
+on:
+  push: ["master"]
+  tag: ["*"]
+
+variables:
+  IMAGE_URL: cvm-openclaw-gz.tencentcloudcr.com/cvm-openclaw/hatchery
+  IMAGE_TAG: ${{ci.sha_short}}
+
+
+jobs:
+  build:
+    runs-on:
+      self-hosted: true
+      pool-name: build
+    steps:
+    - checkout: self
+    - run: |
+        if [ "${{ ci.event }}" = "push" ] && [ "${{ ci.branch }}" = "master" ]; then
+          echo "::set-variable name=IMAGE_TAG::latest"
+        fi
+    - run: |
+        if [ "${{ ci.event }}" = "tag_push" ]; then
+          echo "::set-variable name=IMAGE_TAG::${{ ci.branch }}"
+        fi
+    - uses: DockerBuildAndPushImage@3.*
+      with:
+        targetTicketId: MIRROS_PUBLIC
+        targetImage: ${{ variables.IMAGE_URL }}
+        targetImageTag: ${{ variables.IMAGE_TAG }}
+        dockerBuildDir: ./
+        dockerFilePath: ./Dockerfile
+
+notices:
+- type: wework-message

@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Segment</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/segment.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      .cp-shell {
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+      .cp-header {
+        margin-bottom: 24px;
+      }
+      .cp-header h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-header p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-group {
+        display: grid;
+        gap: 24px;
+      }
+      .cp-demo-block {
+        display: grid;
+        gap: 12px;
+      }
+      .cp-demo-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+        padding: 20px;
+      }
+      .cp-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+      }
+      .cp-item {
+        display: grid;
+        gap: 8px;
+      }
+      .cp-item-label {
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .cp-section {
+        display: grid;
+        gap: 8px;
+      }
+      .cp-section-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--cp-text-title);
+      }
+      .cp-subsection {
+        display: grid;
+        gap: 12px;
+        padding: 12px;
+        background: #FAFBFD;
+        border-radius: 4px;
+        border: 1px solid #EAEEF4;
+      }
+      .cp-subsection-label {
+        font-size: 12px;
+        color: var(--cp-text-secondary);
+      }
+      .cp-rule-box {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: #FAFAFA;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-rule-box p {
+        margin: 0;
+      }
+      .cp-rule-box p + p {
+        margin-top: 4px;
+      }
+      .cp-comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      .cp-comparison-table th,
+      .cp-comparison-table td {
+        padding: 8px 12px;
+        text-align: left;
+        border: 1px solid var(--cp-border);
+      }
+      .cp-comparison-table th {
+        background: #F7F9FC;
+        font-weight: 600;
+        color: var(--cp-text-title);
+      }
+      .cp-comparison-table td {
+        background: var(--cp-surface);
+      }
+      .cp-comparison-table tr:nth-child(even) td {
+        background: #FAFBFD;
+      }
+      /* Segment 演示用的 JS 辅助类（模拟受控状态） */
+      [data-segment-active="false"] {
+        opacity: 1;
+      }
+
+      @media (max-width: 900px) {
+        .cp-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>Segment / SegmentGroup</h1>
+        <p>根据 `component-specs/segment.md` 生成，集中验证 Admin（方角）/ Tenant（胶囊）分段切换器以及受控 / 非受控两种模式。</p>
+      </header>
+
+      <div class="cp-group">
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- Admin Segment（方角 / 受控） -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">Admin Segment - 方角（受控模式）</h2>
+          <div class="cp-card">
+            <div class="cp-grid">
+              <!-- 基础示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Default / Hover / Active</div>
+                <div class="cp-segment cp-segment--admin" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    概览
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    详情
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    配置
+                  </button>
+                </div>
+              </div>
+
+              <!-- 禁用项示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">With Disabled Item</div>
+                <div class="cp-segment cp-segment--admin" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    可用
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false" disabled>
+                    禁用项
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    可用
+                  </button>
+                </div>
+              </div>
+
+              <!-- 5 项示例（max recommended） -->
+              <div class="cp-item">
+                <div class="cp-item-label">5 Items (Max Recommended)</div>
+                <div class="cp-segment cp-segment--admin" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    Overview
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    Details
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    Settings
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    Access
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    Logs
+                  </button>
+                </div>
+              </div>
+
+              <!-- 交互示例（切换 active 状态） -->
+              <div class="cp-item">
+                <div class="cp-item-label">Interactive Tab (Click to Switch)</div>
+                <div id="adminInteractive">
+                  <div class="cp-segment cp-segment--admin" role="tablist">
+                    <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true" data-tab="list">
+                      列表
+                    </button>
+                    <button class="cp-segment__item" type="button" role="tab" aria-selected="false" data-tab="grid">
+                      网格
+                    </button>
+                    <button class="cp-segment__item" type="button" role="tab" aria-selected="false" data-tab="compact">
+                      紧凑
+                    </button>
+                  </div>
+                  <p style="margin: 8px 0 0; font-size: 12px; color: var(--cp-text-muted);">
+                    当前选中: <span id="adminStatus">list</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- Admin SegmentGroup（方角 / 非受控） -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">Admin SegmentGroup - 方角（非受控模式）</h2>
+          <div class="cp-card">
+            <div class="cp-grid">
+              <!-- 筛选示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Filter Options</div>
+                <div class="cp-segment cp-segment--admin" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    全部
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    已激活
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    已禁用
+                  </button>
+                </div>
+              </div>
+
+              <!-- 视图模式示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">View Mode Toggle</div>
+                <div class="cp-segment cp-segment--admin" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    列表
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    网格
+                  </button>
+                </div>
+              </div>
+
+              <!-- 日期范围示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Date Range Filter</div>
+                <div class="cp-segment cp-segment--admin" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    日
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    周
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    月
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    年
+                  </button>
+                </div>
+              </div>
+
+              <!-- 简单二元示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Binary Toggle</div>
+                <div class="cp-segment cp-segment--admin" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    普通
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    多分组
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- Tenant Segment（胶囊 / 受控） -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">Tenant Segment - 胶囊（受控模式）</h2>
+          <div class="cp-card">
+            <div class="cp-grid">
+              <!-- 基础示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Default / Hover / Active + Outline</div>
+                <div class="cp-segment cp-segment--tenant" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    全部
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    已激活
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    已禁用
+                  </button>
+                </div>
+              </div>
+
+              <!-- 禁用项示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">With Disabled Item</div>
+                <div class="cp-segment cp-segment--tenant" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    可用
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false" disabled>
+                    禁用项
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    可用
+                  </button>
+                </div>
+              </div>
+
+              <!-- 4 项示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">4 Items Example</div>
+                <div class="cp-segment cp-segment--tenant" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    Overview
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    Settings
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    Members
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    Audit
+                  </button>
+                </div>
+              </div>
+
+              <!-- 交互示例 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Interactive Tab (Click to Switch)</div>
+                <div id="tenantInteractive">
+                  <div class="cp-segment cp-segment--tenant" role="tablist">
+                    <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true" data-tab="all">
+                      全部
+                    </button>
+                    <button class="cp-segment__item" type="button" role="tab" aria-selected="false" data-tab="active">
+                      已激活
+                    </button>
+                    <button class="cp-segment__item" type="button" role="tab" aria-selected="false" data-tab="inactive">
+                      已禁用
+                    </button>
+                  </div>
+                  <p style="margin: 8px 0 0; font-size: 12px; color: var(--cp-text-muted);">
+                    当前选中: <span id="tenantStatus">all</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- Tenant SegmentGroup（胶囊 / 非受控） -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">Tenant SegmentGroup - 胶囊（非受控模式）</h2>
+          <div class="cp-card">
+            <div class="cp-grid">
+              <!-- 日期范围 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Date Range Picker</div>
+                <div class="cp-segment cp-segment--tenant" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    日
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    周
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    月
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    年
+                  </button>
+                </div>
+              </div>
+
+              <!-- 视图模式 -->
+              <div class="cp-item">
+                <div class="cp-item-label">View Mode</div>
+                <div class="cp-segment cp-segment--tenant" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    卡片
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    列表
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    表格
+                  </button>
+                </div>
+              </div>
+
+              <!-- 内容类型过滤 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Content Type Filter</div>
+                <div class="cp-segment cp-segment--tenant" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    全部
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    已发布
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    草稿
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    已归档
+                  </button>
+                </div>
+              </div>
+
+              <!-- 简单二元 -->
+              <div class="cp-item">
+                <div class="cp-item-label">Binary Toggle</div>
+                <div class="cp-segment cp-segment--tenant" role="tablist">
+                  <button class="cp-segment__item cp-segment__item--active" type="button" role="tab" aria-selected="true">
+                    单个
+                  </button>
+                  <button class="cp-segment__item" type="button" role="tab" aria-selected="false">
+                    批量
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- Admin vs Tenant 对比 -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">Admin vs Tenant 视觉对比</h2>
+          <div class="cp-card">
+            <table class="cp-comparison-table">
+              <thead>
+                <tr>
+                  <th>特性</th>
+                  <th>Admin（方角）</th>
+                  <th>Tenant（胶囊）</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>容器圆角</strong></td>
+                  <td><code>6px</code></td>
+                  <td><code>80px</code>（完全胶囊）</td>
+                </tr>
+                <tr>
+                  <td><strong>项圆角</strong></td>
+                  <td><code>4px</code></td>
+                  <td><code>40px</code></td>
+                </tr>
+                <tr>
+                  <td><strong>项 Padding</strong></td>
+                  <td><code>py-1 px-4</code></td>
+                  <td><code>py-1 px-3</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Active 字重</strong></td>
+                  <td><code>Semibold（600）</code></td>
+                  <td><code>Medium（500）</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Active 样式</strong></td>
+                  <td>白底 + 阴影（无 outline）</td>
+                  <td>白底 + outline + 阴影</td>
+                </tr>
+                <tr>
+                  <td><strong>默认文字</strong></td>
+                  <td><code>#7B818F</code></td>
+                  <td><code>#334155</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Hover 文字</strong></td>
+                  <td><code>#4B5563</code></td>
+                  <td><code>#020617</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- 规则和建议 -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <section class="cp-rule-box">
+          <p><strong>✅ 推荐做法</strong></p>
+          <p>• Admin 和 Tenant 端别需在路由层提前确定，不要在组件内部自己判断</p>
+          <p>• 项数 ≤ 5；超过 5 项改用侧导航或分页（不要硬塞）</p>
+          <p>• Active 项必须同时有背景 + 阴影，不仅靠颜色微差</p>
+          <p>• 卡片分区用受控模式（Segment + SegmentItem + value）</p>
+          <p>• 筛选条用非受控模式（SegmentGroup + SegmentOption + active）</p>
+          <p>• 不要在 page header 下方用 Segment（那是 LineTabs 的位置）</p>
+          <p><strong>❌ 禁止做法</strong></p>
+          <p>• 混用 Admin 和 Tenant 皮肤（分别用独立组件，不共用）</p>
+          <p>• 用 className 临时改圆角或颜色（破坏单一真理源）</p>
+          <p>• 在组件内部自己判断端别（pathname.startsWith 等）</p>
+          <p>• 项数 > 5 时硬塞到 Segment（应改用侧导航结构）</p>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      // Admin Interactive 示例
+      document.querySelectorAll('#adminInteractive .cp-segment__item').forEach(btn => {
+        btn.addEventListener('click', function() {
+          // 移除所有 active 类
+          this.parentElement.querySelectorAll('.cp-segment__item').forEach(b => {
+            b.classList.remove('cp-segment__item--active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          // 添加到被点击的按钮
+          this.classList.add('cp-segment__item--active');
+          this.setAttribute('aria-selected', 'true');
+          // 更新状态显示
+          document.getElementById('adminStatus').textContent = this.dataset.tab;
+        });
+      });
+
+      // Tenant Interactive 示例
+      document.querySelectorAll('#tenantInteractive .cp-segment__item').forEach(btn => {
+        btn.addEventListener('click', function() {
+          // 移除所有 active 类
+          this.parentElement.querySelectorAll('.cp-segment__item').forEach(b => {
+            b.classList.remove('cp-segment__item--active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          // 添加到被点击的按钮
+          this.classList.add('cp-segment__item--active');
+          this.setAttribute('aria-selected', 'true');
+          // 更新状态显示
+          document.getElementById('tenantStatus').textContent = this.dataset.tab;
+        });
+      });
+    </script>
+  </body>
+</html>

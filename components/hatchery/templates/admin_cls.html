@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLS 日志服务 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <div class="flex items-center space-x-3">
+                        <h2 class="text-[16px] font-semibold text-gray-800">CLS 日志服务</h2>
+                        {{if .CLSEnabled}}
+                        <span id="cls-global-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-green-50 text-green-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>已开通
+                        </span>
+                        {{else}}
+                        <span id="cls-global-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-gray-100 text-gray-500">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5"></span>未开通
+                        </span>
+                        {{end}}
+                    </div>
+                </div>
+
+                <!-- 部署步骤卡片 -->
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="text-[14px] font-medium text-gray-700">部署步骤</h3>
+                        <button id="btn-run-all" onclick="runAllSteps()"
+                            class="h-8 inline-flex items-center px-4 text-[13px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            一键部署
+                        </button>
+                    </div>
+                    <div class="px-6 py-5">
+                        <!-- Step list container -->
+                        <div id="step-list" class="space-y-4">
+                            <!-- 步骤 1: 检查 ClawPro 服务角色 -->
+                            <div id="step-1" class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 mt-0.5">
+                                    <span id="step-1-icon" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-400 text-[12px] font-medium">1</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-[14px] font-medium text-gray-700">检查 ClawPro 服务角色</span>
+                                        <span id="step-1-badge" class="hidden text-[12px] px-2 py-0.5 rounded-full"></span>
+                                    </div>
+                                    <div id="step-1-detail" class="text-[13px] text-gray-400 mt-1">等待执行</div>
+                                </div>
+                            </div>
+
+                            <!-- 步骤 2: 开通 CLS 服务 -->
+                            <div id="step-2" class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 mt-0.5">
+                                    <span id="step-2-icon" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-400 text-[12px] font-medium">2</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-[14px] font-medium text-gray-700">开通 CLS 服务</span>
+                                        <span id="step-2-badge" class="hidden text-[12px] px-2 py-0.5 rounded-full"></span>
+                                    </div>
+                                    <div id="step-2-detail" class="text-[13px] text-gray-400 mt-1">等待执行</div>
+                                </div>
+                            </div>
+
+                            <!-- 后续步骤在此添加，保持相同结构 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 绑定 Agent 服务角色卡片 -->
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <h3 class="text-[14px] font-medium text-gray-700">绑定 Agent 服务角色</h3>
+                            <span class="text-[12px] text-gray-400">CVM_QCSLinkedRoleInClawProAgent</span>
+                        </div>
+                        <button id="btn-bind-cam-role" onclick="bindCamRole()"
+                            class="h-8 inline-flex items-center px-4 text-[13px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            执行绑定
+                        </button>
+                    </div>
+                    <div class="px-6 py-5">
+                        <div class="mb-3">
+                            <label class="block text-[13px] text-gray-500 mb-1.5">实例 ID 列表 <span class="text-gray-400">（每行一个，或用逗号/空格分隔）</span></label>
+                            <textarea id="cam-role-instance-ids" rows="4" placeholder="ins-abc123&#10;ins-def456&#10;ins-ghi789"
+                                class="w-full px-3 py-2 text-[13px] border border-gray-200 rounded bg-white text-gray-700 placeholder-gray-300 focus:outline-none focus:border-[#0052d9] resize-y font-mono"></textarea>
+                        </div>
+                        <div id="cam-role-result" class="hidden"></div>
+                    </div>
+                </div>
+
+                <!-- 关闭 CLS 服务卡片 -->
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="text-[14px] font-medium text-gray-700">关闭 CLS 服务</h3>
+                        <button id="btn-close-all" onclick="runCloseSteps()"
+                            class="h-8 inline-flex items-center px-4 text-[13px] font-medium text-white bg-red-500 rounded hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            一键关闭
+                        </button>
+                    </div>
+                    <div class="px-6 py-5">
+                        <div id="close-step-list" class="space-y-4">
+                            <!-- 关闭步骤 1: 关闭 CLS 服务 -->
+                            <div id="close-step-1" class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 mt-0.5">
+                                    <span id="close-step-1-icon" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-400 text-[12px] font-medium">1</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-[14px] font-medium text-gray-700">关闭 CLS 服务</span>
+                                        <span id="close-step-1-badge" class="hidden text-[12px] px-2 py-0.5 rounded-full"></span>
+                                    </div>
+                                    <div id="close-step-1-detail" class="text-[13px] text-gray-400 mt-1">等待执行</div>
+                                </div>
+                            </div>
+
+                            <!-- 后续关闭步骤在此添加，保持相同结构 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 状态查看卡片 -->
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="text-[14px] font-medium text-gray-700">状态查看</h3>
+                        <div class="flex items-center space-x-3">
+                            <label class="text-[13px] text-gray-500">BizType:</label>
+                            <select id="status-biz-type" class="h-8 px-3 text-[13px] border border-gray-200 rounded bg-white text-gray-700 focus:outline-none focus:border-[#0052d9]">
+                                <option value="0">0 - 日志主题</option>
+                                <option value="1">1 - 指标主题</option>
+                            </select>
+                            <button id="btn-query-status" onclick="queryTopicStatus()"
+                                class="h-8 inline-flex items-center px-4 text-[13px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                查询
+                            </button>
+                        </div>
+                    </div>
+                    <div class="px-6 py-5">
+                        <div id="status-result" class="text-center text-gray-400 text-[14px]">
+                            请选择 BizType 后点击「查询」
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Placeholder for future CLS management features -->
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100">
+                        <h3 class="text-[14px] font-medium text-gray-700">日志管理</h3>
+                    </div>
+                    <div class="px-6 py-8 text-center text-gray-400 text-[14px]" id="cls-logsets">
+                        请先完成上方部署步骤
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {{template "admin_scripts" .}}
+    <script>
+    // ========== 步骤 UI 辅助函数 ==========
+
+    // 更新全局 CLS 状态标签
+    function updateGlobalStatus(enabled) {
+        var el = document.getElementById('cls-global-status');
+        if (!el) return;
+        if (enabled) {
+            el.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-green-50 text-green-700';
+            el.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>已开通';
+        } else {
+            el.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-gray-100 text-gray-500';
+            el.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5"></span>未开通';
+        }
+    }
+
+    var spinnerSvg = '<svg class="w-4 h-4 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24">' +
+        '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>' +
+        '<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>' +
+        '</svg>';
+
+    var checkSvg = '<svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>' +
+        '</svg>';
+
+    var crossSvg = '<svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>' +
+        '</svg>';
+
+    var skipSvg = '<svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>' +
+        '</svg>';
+
+    // 设置步骤状态: 'pending' | 'running' | 'success' | 'skipped' | 'error'
+    function setStepStatus(stepNum, status, detail) {
+        var icon = document.getElementById('step-' + stepNum + '-icon');
+        var badge = document.getElementById('step-' + stepNum + '-badge');
+        var detailEl = document.getElementById('step-' + stepNum + '-detail');
+
+        // 重置样式
+        icon.className = 'inline-flex items-center justify-center w-6 h-6 rounded-full text-[12px] font-medium';
+        badge.className = 'hidden text-[12px] px-2 py-0.5 rounded-full';
+
+        switch (status) {
+            case 'running':
+                icon.className = 'inline-flex items-center justify-center w-6 h-6';
+                icon.innerHTML = spinnerSvg;
+                badge.className = 'inline-block text-[12px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-600';
+                badge.textContent = '执行中';
+                detailEl.className = 'text-[13px] text-blue-500 mt-1';
+                detailEl.textContent = detail || '正在执行...';
+                break;
+            case 'success':
+                icon.className += ' bg-green-500';
+                icon.innerHTML = checkSvg;
+                badge.className = 'inline-block text-[12px] px-2 py-0.5 rounded-full bg-green-50 text-green-600';
+                badge.textContent = '完成';
+                detailEl.className = 'text-[13px] text-green-600 mt-1';
+                detailEl.textContent = detail || '执行成功';
+                break;
+            case 'skipped':
+                icon.className += ' bg-blue-400';
+                icon.innerHTML = skipSvg;
+                badge.className = 'inline-block text-[12px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-500';
+                badge.textContent = '跳过';
+                detailEl.className = 'text-[13px] text-blue-500 mt-1';
+                detailEl.textContent = detail || '已跳过';
+                break;
+            case 'error':
+                icon.className += ' bg-red-500';
+                icon.innerHTML = crossSvg;
+                badge.className = 'inline-block text-[12px] px-2 py-0.5 rounded-full bg-red-50 text-red-600';
+                badge.textContent = '失败';
+                detailEl.className = 'text-[13px] text-red-500 mt-1';
+                detailEl.textContent = detail || '执行失败';
+                break;
+            default: // pending
+                icon.className += ' bg-gray-100 text-gray-400';
+                icon.innerHTML = stepNum;
+                detailEl.className = 'text-[13px] text-gray-400 mt-1';
+                detailEl.textContent = detail || '等待执行';
+                break;
+        }
+    }
+
+    function escapeHtml(text) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(text || ''));
+        return div.innerHTML;
+    }
+
+    function setRunning(running) {
+        var btn = document.getElementById('btn-run-all');
+        btn.disabled = running;
+        btn.textContent = running ? '部署中...' : '一键部署';
+    }
+
+    // ========== 步骤执行逻辑 ==========
+
+    // 步骤 1: 检查 ClawPro 服务角色
+    function stepCheckRole() {
+        setStepStatus(1, 'running', '正在检查 CVM_QCSLinkedRoleInClawPro 服务角色...');
+        return fetch('/admin/check-role', { headers: { 'Accept': 'application/json' } })
+            .then(function(resp) { return resp.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    setStepStatus(1, 'error', '检查失败: ' + data.error);
+                    return { ok: false };
+                }
+                if (data.has_role) {
+                    setStepStatus(1, 'success', data.message || '服务角色已存在');
+                    return { ok: true, has_role: true };
+                }
+                setStepStatus(1, 'error', '服务角色不存在，请先创建 CVM_QCSLinkedRoleInClawPro 角色');
+                return { ok: false, has_role: false };
+            })
+            .catch(function(err) {
+                setStepStatus(1, 'error', '请求失败: ' + err.message);
+                return { ok: false };
+            });
+    }
+
+    // 步骤 2: 开通 CLS 服务（查询状态 + 自动开通）
+    function stepOpenService() {
+        setStepStatus(2, 'running', '正在开通 CLS 服务...');
+        return fetch('/admin/cls/open', { headers: { 'Accept': 'application/json' } })
+            .then(function(resp) { return resp.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    setStepStatus(2, 'error', '开通失败: ' + data.error);
+                    return { ok: false };
+                }
+                if (data.opened) {
+                    var detail = data.message || 'CLS 服务已开通';
+                    if (data.topic_id) {
+                        detail += ' (TopicId: ' + data.topic_id + ')';
+                    }
+                    setStepStatus(2, 'success', detail);
+                    return { ok: true };
+                }
+                setStepStatus(2, 'error', '开通结果异常');
+                return { ok: false };
+            })
+            .catch(function(err) {
+                setStepStatus(2, 'error', '请求失败: ' + err.message);
+                return { ok: false };
+            });
+    }
+
+    // ========== 一键部署：顺序执行所有步骤 ==========
+
+    function runAllSteps() {
+        setRunning(true);
+
+        // 重置所有步骤状态
+        setStepStatus(1, 'pending');
+        setStepStatus(2, 'pending');
+
+        // 顺序执行步骤链，每步可以依赖上一步的结果
+        stepCheckRole()
+            .then(function(result) {
+                if (!result.ok) { return { ok: false }; }
+                return stepOpenService();
+            })
+            // 后续步骤在此追加:
+            // .then(function(result) {
+            //     if (!result.ok) { return { ok: false }; }
+            //     return stepXxx(result);
+            // })
+            .then(function(result) {
+                setRunning(false);
+                if (result && result.ok) {
+                    updateGlobalStatus(true);
+                    var logsetsDiv = document.getElementById('cls-logsets');
+                    logsetsDiv.innerHTML = '<span class="text-green-600">CLS 服务已就绪，更多管理功能开发中...</span>';
+                }
+            })
+            .catch(function() {
+                setRunning(false);
+            });
+    }
+
+    // ========== 绑定 Agent 服务角色（独立功能） ==========
+
+    function parseInstanceIds(text) {
+        // 支持换行、逗号、空格、分号分隔
+        return text.split(/[\s,;，；\n]+/).map(function(s) { return s.trim(); }).filter(function(s) { return s.length > 0; });
+    }
+
+    function setCamRoleResult(type, message) {
+        var el = document.getElementById('cam-role-result');
+        el.className = 'mt-3 text-[13px] px-3 py-2 rounded';
+        switch (type) {
+            case 'success':
+                el.className += ' bg-green-50 text-green-700 border border-green-200';
+                break;
+            case 'error':
+                el.className += ' bg-red-50 text-red-600 border border-red-200';
+                break;
+            case 'running':
+                el.className += ' bg-blue-50 text-blue-600 border border-blue-200';
+                break;
+            default:
+                el.className += ' bg-gray-50 text-gray-600 border border-gray-200';
+        }
+        el.innerHTML = message;
+    }
+
+    function bindCamRole() {
+        var textarea = document.getElementById('cam-role-instance-ids');
+        var btn = document.getElementById('btn-bind-cam-role');
+        var resultEl = document.getElementById('cam-role-result');
+
+        var ids = parseInstanceIds(textarea.value);
+        if (ids.length === 0) {
+            setCamRoleResult('error', '请输入至少一个实例 ID');
+            return;
+        }
+
+        // 校验格式（ins- 开头）
+        var invalid = [];
+        for (var i = 0; i < ids.length; i++) {
+            if (!/^ins-/i.test(ids[i])) {
+                invalid.push(ids[i]);
+            }
+        }
+        if (invalid.length > 0) {
+            setCamRoleResult('error', '以下 ID 格式不正确（应以 ins- 开头）：<br><code>' + escapeHtml(invalid.join(', ')) + '</code>');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '绑定中...';
+        setCamRoleResult('running', spinnerSvg + ' 正在为 ' + ids.length + ' 台实例绑定 Agent 角色...');
+
+        fetch('/admin/instances/cam-role', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ instance_ids: ids })
+        })
+        .then(function(resp) { return resp.json(); })
+        .then(function(data) {
+            btn.disabled = false;
+            btn.textContent = '执行绑定';
+            if (data.error) {
+                setCamRoleResult('error', '绑定失败：' + escapeHtml(data.error));
+                return;
+            }
+            var msg = escapeHtml(data.message || '绑定成功');
+            if (data.request_id) {
+                msg += '<br><span class="text-[12px] text-gray-400">RequestId: ' + escapeHtml(data.request_id) + '</span>';
+            }
+            setCamRoleResult('success', checkSvg.replace('text-white', 'text-green-600') + ' ' + msg);
+        })
+        .catch(function(err) {
+            btn.disabled = false;
+            btn.textContent = '执行绑定';
+            setCamRoleResult('error', '请求失败：' + escapeHtml(err.message));
+        });
+    }
+
+    // ========== 关闭 CLS 服务：步骤 UI ==========
+
+    function setCloseStepStatus(stepNum, status, detail) {
+        var icon = document.getElementById('close-step-' + stepNum + '-icon');
+        var badge = document.getElementById('close-step-' + stepNum + '-badge');
+        var detailEl = document.getElementById('close-step-' + stepNum + '-detail');
+
+        icon.className = 'inline-flex items-center justify-center w-6 h-6 rounded-full text-[12px] font-medium';
+        badge.className = 'hidden text-[12px] px-2 py-0.5 rounded-full';
+
+        switch (status) {
+            case 'running':
+                icon.className = 'inline-flex items-center justify-center w-6 h-6';
+                icon.innerHTML = spinnerSvg;
+                badge.className = 'inline-block text-[12px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-600';
+                badge.textContent = '执行中';
+                detailEl.className = 'text-[13px] text-blue-500 mt-1';
+                detailEl.textContent = detail || '正在执行...';
+                break;
+            case 'success':
+                icon.className += ' bg-green-500';
+                icon.innerHTML = checkSvg;
+                badge.className = 'inline-block text-[12px] px-2 py-0.5 rounded-full bg-green-50 text-green-600';
+                badge.textContent = '完成';
+                detailEl.className = 'text-[13px] text-green-600 mt-1';
+                detailEl.textContent = detail || '执行成功';
+                break;
+            case 'skipped':
+                icon.className += ' bg-blue-400';
+                icon.innerHTML = skipSvg;
+                badge.className = 'inline-block text-[12px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-500';
+                badge.textContent = '跳过';
+                detailEl.className = 'text-[13px] text-blue-500 mt-1';
+                detailEl.textContent = detail || '已跳过';
+                break;
+            case 'error':
+                icon.className += ' bg-red-500';
+                icon.innerHTML = crossSvg;
+                badge.className = 'inline-block text-[12px] px-2 py-0.5 rounded-full bg-red-50 text-red-600';
+                badge.textContent = '失败';
+                detailEl.className = 'text-[13px] text-red-500 mt-1';
+                detailEl.textContent = detail || '执行失败';
+                break;
+            default:
+                icon.className += ' bg-gray-100 text-gray-400';
+                icon.innerHTML = stepNum;
+                detailEl.className = 'text-[13px] text-gray-400 mt-1';
+                detailEl.textContent = detail || '等待执行';
+                break;
+        }
+    }
+
+    function setCloseRunning(running) {
+        var btn = document.getElementById('btn-close-all');
+        btn.disabled = running;
+        btn.textContent = running ? '关闭中...' : '一键关闭';
+    }
+
+    // ========== 关闭步骤执行逻辑 ==========
+
+    // 关闭步骤 1: 关闭 CLS 服务（查询并删除 ClawPro 相关主题）
+    function closeStepCloseCls() {
+        setCloseStepStatus(1, 'running', '正在关闭 CLS 服务...');
+        return fetch('/admin/cls/close', { headers: { 'Accept': 'application/json' } })
+            .then(function(resp) { return resp.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    setCloseStepStatus(1, 'error', '关闭失败: ' + data.error);
+                    return { ok: false };
+                }
+                if (data.deleted_topics && data.deleted_topics.length > 0) {
+                    setCloseStepStatus(1, 'success', data.message || ('已删除 ' + data.deleted_topics.length + ' 个主题'));
+                    return { ok: true };
+                }
+                // 没有主题需要删除，服务可能未开通
+                setCloseStepStatus(1, 'skipped', data.message || 'CLS 服务未开通，无需关闭');
+                return { ok: true };
+            })
+            .catch(function(err) {
+                setCloseStepStatus(1, 'error', '请求失败: ' + err.message);
+                return { ok: false };
+            });
+    }
+
+    // ========== 一键关闭：顺序执行所有关闭步骤 ==========
+
+    function runCloseSteps() {
+        setCloseRunning(true);
+
+        // 重置所有关闭步骤状态
+        setCloseStepStatus(1, 'pending');
+
+        closeStepCloseCls()
+            // 后续关闭步骤在此追加:
+            // .then(function(result) {
+            //     if (!result.ok) { return { ok: false }; }
+            //     return closeStepXxx(result);
+            // })
+            .then(function(result) {
+                setCloseRunning(false);
+                if (result && result.ok) {
+                    updateGlobalStatus(false);
+                }
+            })
+            .catch(function() {
+                setCloseRunning(false);
+            });
+    }
+
+    // ========== 状态查看：查询 ClawPro Topics ==========
+
+    function queryTopicStatus() {
+        var bizType = document.getElementById('status-biz-type').value;
+        var btn = document.getElementById('btn-query-status');
+        var resultDiv = document.getElementById('status-result');
+
+        btn.disabled = true;
+        btn.textContent = '查询中...';
+        resultDiv.innerHTML = '<div class="flex items-center justify-center space-x-2 text-blue-500">' + spinnerSvg + '<span>正在查询...</span></div>';
+
+        fetch('/admin/cls/status?biz_type=' + bizType, { headers: { 'Accept': 'application/json' } })
+            .then(function(resp) { return resp.json(); })
+            .then(function(data) {
+                btn.disabled = false;
+                btn.textContent = '查询';
+
+                if (data.error) {
+                    resultDiv.innerHTML = '<div class="text-red-500 text-[13px]">查询失败: ' + escapeHtml(data.error) + '</div>';
+                    return;
+                }
+
+                var bizTypeLabel = data.biz_type === 0 ? '日志主题' : '指标主题';
+                var totalCount = data.total_count || 0;
+                var topics = data.topics || [];
+
+                if (totalCount === 0 || topics.length === 0) {
+                    resultDiv.innerHTML = '<div class="text-gray-400 text-[13px]">未查询到任何 ' + bizTypeLabel + '（BizType=' + data.biz_type + '）</div>';
+                    return;
+                }
+
+                // 构建摘要信息
+                var html = '<div class="mb-4 flex items-center space-x-3">';
+                html += '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-blue-50 text-blue-700">' + bizTypeLabel + '</span>';
+                html += '<span class="text-[13px] text-gray-500">共 ' + totalCount + ' 个主题</span>';
+                html += '</div>';
+
+                // 遍历每个 topic，生成详情卡片
+                for (var i = 0; i < topics.length; i++) {
+                    var t = topics[i];
+                    html += '<div class="border border-gray-100 rounded mb-3 last:mb-0">';
+
+                    // 卡片标题
+                    html += '<div class="px-4 py-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">';
+                    html += '<div class="flex items-center space-x-2">';
+                    html += '<span class="text-[13px] font-medium text-gray-700">' + escapeHtml(t.TopicName || '-') + '</span>';
+                    if (t.Status === true) {
+                        html += '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-green-50 text-green-600">采集中</span>';
+                    } else if (t.Status === false) {
+                        html += '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-500">已关闭</span>';
+                    }
+                    html += '</div>';
+                    html += '<span class="text-[12px] text-gray-400">#' + (i + 1) + '</span>';
+                    html += '</div>';
+
+                    // 卡片内容: 字段表格
+                    html += '<div class="px-4 py-3">';
+                    html += '<table class="w-full text-[13px]">';
+                    html += '<tbody>';
+
+                    var fields = [
+                        ['TopicId', t.TopicId],
+                        ['TopicName', t.TopicName],
+                        ['LogsetId', t.LogsetId],
+                        ['BizType', t.BizType !== undefined ? (t.BizType === 0 ? '0 (日志主题)' : '1 (指标主题)') : undefined],
+                        ['PartitionCount', t.PartitionCount],
+                        ['Index', t.Index !== undefined ? (t.Index ? '是' : '否') : undefined],
+                        ['Status', t.Status !== undefined ? (t.Status ? '开启采集' : '关闭采集') : undefined],
+                        ['AssumerUin', t.AssumerUin],
+                        ['AssumerName', t.AssumerName],
+                        ['SubAssumerName', t.SubAssumerName],
+                        ['RoleName', t.RoleName],
+                        ['CreateTime', t.CreateTime],
+                        ['StorageType', t.StorageType !== undefined ? (t.StorageType === 'hot' ? 'hot (标准存储)' : 'cold (低频存储)') : undefined],
+                        ['Period', t.Period !== undefined ? (t.Period === 3640 ? t.Period + ' (永久保存)' : t.Period + ' 天') : undefined],
+                        ['HotPeriod', t.HotPeriod !== undefined ? (t.HotPeriod === 0 ? '0 (未开启日志沉降)' : t.HotPeriod + ' 天') : undefined],
+                        ['AutoSplit', t.AutoSplit !== undefined ? (t.AutoSplit ? '是' : '否') : undefined],
+                        ['MaxSplitPartitions', t.MaxSplitPartitions],
+                        ['IsWebTracking', t.IsWebTracking !== undefined ? (t.IsWebTracking ? '开启' : '关闭') : undefined],
+                        ['Describes', t.Describes]
+                    ];
+
+                    for (var j = 0; j < fields.length; j++) {
+                        var fieldName = fields[j][0];
+                        var fieldValue = fields[j][1];
+                        if (fieldValue === undefined || fieldValue === null) continue;
+                        html += '<tr class="border-b border-gray-50 last:border-0">';
+                        html += '<td class="py-1.5 pr-4 text-gray-400 whitespace-nowrap w-40">' + escapeHtml(fieldName) + '</td>';
+                        html += '<td class="py-1.5 text-gray-700 break-all">' + escapeHtml(String(fieldValue)) + '</td>';
+                        html += '</tr>';
+                    }
+
+                    // Tags 单独处理
+                    if (t.Tags && t.Tags.length > 0) {
+                        html += '<tr class="border-b border-gray-50 last:border-0">';
+                        html += '<td class="py-1.5 pr-4 text-gray-400 whitespace-nowrap w-40 align-top">Tags</td>';
+                        html += '<td class="py-1.5 text-gray-700">';
+                        for (var k = 0; k < t.Tags.length; k++) {
+                            var tag = t.Tags[k];
+                            html += '<span class="inline-flex items-center mr-2 mb-1 px-2 py-0.5 rounded bg-gray-100 text-[12px] text-gray-600">';
+                            html += escapeHtml(tag.Key || '') + ': ' + escapeHtml(tag.Value || '');
+                            html += '</span>';
+                        }
+                        html += '</td>';
+                        html += '</tr>';
+                    }
+
+                    html += '</tbody></table>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+
+                resultDiv.innerHTML = html;
+            })
+            .catch(function(err) {
+                btn.disabled = false;
+                btn.textContent = '查询';
+                resultDiv.innerHTML = '<div class="text-red-500 text-[13px]">请求失败: ' + escapeHtml(err.message) + '</div>';
+            });
+    }
+
+    // 页面加载后不自动执行，等待用户手动点击"一键部署"按钮
+    </script>
+</body>
+</html>

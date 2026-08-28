@@ -1,0 +1,210 @@
+{
+  "audit_metadata": {
+    "phase": "A3",
+    "title": "ClawPro Portable Design Skill - 事故复盘分析",
+    "execution_date": "2026-06-26",
+    "scope": "portable/react (实现代码) + portable/css (样式文件)",
+    "total_incidents": 7,
+    "root_causes_identified": 3
+  },
+  "incidents": [
+    {
+      "id": 1,
+      "title": "禁 lucide 槽位硬编码内联 SVG（Alert 组件）",
+      "severity": "high",
+      "category": "icon-usage",
+      "files": [
+        {
+          "path": "portable/react/alert.tsx",
+          "lines": "115-125, 128-142, 145-150"
+        }
+      ],
+      "rule_violated": "SKILL.md §2.8 图标规范 + §8 Self-Audit 第 4 项",
+      "bypass_mechanism": "脚本规则 emoji-icon 只检查 emoji，未涵盖硬编码 SVG path 检测。Self-Audit Checklist 是手工清单，无强制执行。",
+      "root_cause": "文档未明确 + 脚本盲区 + 流程缺失",
+      "phase_b_action": "在 SKILL.md §2.8 补充说明框架级组件可内联 lucide SVG path",
+      "phase_c_action": "新增脚本规则检测内联 SVG path",
+      "acceptance_criteria": "业务层硬编码 SVG 被脚本拦住；框架级组件内联通过"
+    },
+    {
+      "id": 2,
+      "title": "硬编码色值混用 Token（StatusTag CSS）",
+      "severity": "high",
+      "category": "color-hardcoding",
+      "files": [
+        {"path": "portable/css/status-tag.css", "lines": "28-32"},
+        {"path": "portable/css/alert.css", "lines": "218"},
+        {"path": "portable/css/segment.css", "lines": "31, 38-39, 43, 90, 97"}
+      ],
+      "rule_violated": "SKILL.md §2.1 颜色与 token + §8 Self-Audit 第 1 项",
+      "bypass_mechanism": "脚本规则 old-brand-color 只检查旧色值，不检查现行品牌色的硬编码",
+      "root_cause": "脚本设计缺陷（只黑名单旧值）+ 文档指导模糊",
+      "phase_b_action": "在 SKILL.md §8 补充明确项：所有颜色必须来自 token",
+      "phase_c_action": "修改脚本规则为白名单模式，检测硬编码的任何 hex 颜色",
+      "acceptance_criteria": "硬编码 #1447E6 被脚本拦住；改用 var(--cp-brand-blue) 通过"
+    },
+    {
+      "id": 3,
+      "title": "硬编码阴影不走 Token（Segment CSS）",
+      "severity": "high",
+      "category": "shadow-hardcoding",
+      "files": [
+        {"path": "portable/css/segment.css", "lines": "45, 98"}
+      ],
+      "rule_violated": "SKILL.md §2.2 卡片与层级 + §8 Self-Audit 第 1 项（未覆盖 box-shadow）",
+      "bypass_mechanism": "脚本规则 inline-box-shadow 只检查 React JSX style，不检查 CSS 文件",
+      "root_cause": "脚本只针对 JSX/TSX，不覆盖 CSS 文件",
+      "phase_b_action": "在 SKILL.md §8 Self-Audit 补充第 9 项：没有硬编码阴影值",
+      "phase_c_action": "扩展脚本规则覆盖 CSS box-shadow 属性",
+      "acceptance_criteria": "硬编码 box-shadow: 0px 1px 2px 被脚本拦住；改用 var(--shadow-sm) 通过"
+    },
+    {
+      "id": 4,
+      "title": "Toast 圆角误用 12px（管控端违规）",
+      "severity": "high",
+      "category": "radius-violation",
+      "files": [
+        {"path": "portable/css/toast/TOAST_TOKENS.css", "lines": "1-2"},
+        {"path": "portable/css/toast/toast.css", "lines": "25"}
+      ],
+      "rule_violated": "SKILL.md §2.4 圆角管控端铁律（4px） + §8 Self-Audit 第 2 项",
+      "bypass_mechanism": "脚本规则 large-radius 只检查 Tailwind 类名，不检查 CSS 变量中的 rem 值",
+      "root_cause": "脚本针对 JSX className，不检查 CSS 变量",
+      "phase_b_action": "补充跨端浮层组件的圆角规则；toast.css 补充注释",
+      "phase_c_action": "新增脚本规则检查 CSS 变量中圆角值 ≥ 8px",
+      "acceptance_criteria": "CSS 变量 --toast-radius: 0.75rem 被拦住；改为 4px 通过"
+    },
+    {
+      "id": 5,
+      "title": "Alert 重定义与双份实现（文件结构混乱）",
+      "severity": "medium",
+      "category": "duplicate-definitions",
+      "files": [
+        {"path": "portable/react/alert.tsx"},
+        {"path": "portable/react/alert/alert.tsx"},
+        {"path": "portable/css/alert.css"},
+        {"path": "portable/css/alert/alert.css"}
+      ],
+      "rule_violated": "流程缺失文件管理审查",
+      "bypass_mechanism": "脚本 check-design-usage.mjs 没有重复文件检测机制",
+      "root_cause": "没有单一真实源；流程缺乏重复检测",
+      "phase_a_action": "运行 find 命令检查所有重复",
+      "phase_b_action": "补充文件组织规范；删除重复文件",
+      "phase_c_action": "新增脚本 check-duplicates.mjs，集成到 pre-commit hook",
+      "acceptance_criteria": "删除重复文件；check-duplicates 脚本输出为空"
+    },
+    {
+      "id": 6,
+      "title": "Token 覆盖率不一致（AdminSidebar 与通用 Token 重复）",
+      "severity": "medium",
+      "category": "token-redundancy",
+      "files": [
+        {"path": "portable/css/tokens.css", "lines": "8-40"},
+        {"path": "portable/css/admin-sidebar-style.css", "lines": "1-30"}
+      ],
+      "rule_violated": "SKILL.md §1 原则第 3 项（Token 不重复定义）",
+      "bypass_mechanism": "当前脚本无法检查 token 值的重复定义",
+      "root_cause": "文档未明确 token 分层原则 + 脚本无法检测",
+      "phase_b_action": "补充 Token 分层设计原则文档；禁止重复定义同一值",
+      "phase_c_action": "新增脚本 check-token-duplication.mjs 检测重复的 token 值",
+      "acceptance_criteria": "重复 token 值被脚本拦住；改为 var(--cp-brand-black) 通过"
+    },
+    {
+      "id": 7,
+      "title": "NumberCard 图标槽位规范模糊（多 Variant 组件的同步缺陷）",
+      "severity": "medium",
+      "category": "api-design-ambiguity",
+      "files": [
+        {"path": "portable/react/number-card.tsx", "lines": "60-90"}
+      ],
+      "rule_violated": "组件 API 设计缺乏约束条件",
+      "bypass_mechanism": "脚本无法检查组件 Props 组合的合理性",
+      "root_cause": "component-specs 缺少决策树 + 类型定义未约束",
+      "phase_b_action": "补充 Icon 决策树；明确禁止同时传 icon + iconSrc",
+      "phase_c_action": "修改 TypeScript 类型为 discriminated union 强制 XOR",
+      "acceptance_criteria": "同时传 icon + iconSrc 被 TypeScript 拦住；单传通过"
+    }
+  ],
+  "root_cause_analysis": [
+    {
+      "defect": "文档指导不明确",
+      "manifestation": "SKILL.md 对 portable 自包含策略约束不足；对'何时允许例外'缺乏明确定义",
+      "root_reason": "设计师未充分参与文档编写；设计 vs 工程的认知不一致",
+      "impact": "AI 混淆规则优先级；开发者难以判断；Self-Audit 手工流程容易漏掉",
+      "priority": "P1"
+    },
+    {
+      "defect": "脚本覆盖不全",
+      "manifestation": "check-design-usage.mjs 有 7 个盲区（内联 SVG / CSS hex 值 / CSS box-shadow / 双份定义 / token 重复等）",
+      "root_reason": "脚本只针对 JSX/TSX，不全面覆盖 CSS；只检查已知的'旧'问题，不检查'新'代码的同类问题",
+      "impact": "违规无法被自动捕捉；依赖手工 code review",
+      "priority": "P1"
+    },
+    {
+      "defect": "流程缺乏自动化",
+      "manifestation": "Self-Audit 是手工清单（§8）+ 无 pre-commit hook；token 治理、重复检测、跨端判断都缺自动化",
+      "root_reason": "文档指导 vs 工程落地的断层；没有建立'持续执行'的审查机制",
+      "impact": "即便规则清楚、脚本完善，也容易被绕过；新人难以理解期望",
+      "priority": "P1"
+    }
+  ],
+  "improvement_roadmap": [
+    {
+      "phase": "B",
+      "priority": "P1",
+      "area": "Documentation",
+      "action": "文档明确化",
+      "details": "SKILL.md §2.8 图标、§2.1 颜色、§2.4 圆角、§8 Self-Audit 补充项",
+      "timeline": "1-2 days"
+    },
+    {
+      "phase": "C",
+      "priority": "P1",
+      "area": "Script Enhancement",
+      "action": "脚本增强",
+      "details": "新增规则：inline-svg / hardcoded-color / css-var-radius / duplicate-check / token-duplication",
+      "timeline": "2-3 days"
+    },
+    {
+      "phase": "B/C",
+      "priority": "P2",
+      "area": "Process Automation",
+      "action": "流程自动化",
+      "details": "Self-Audit 强制执行、pre-commit hook、Token 治理指南、API 约束",
+      "timeline": "2-3 days"
+    },
+    {
+      "phase": "B",
+      "priority": "P2",
+      "area": "Documentation",
+      "action": "跨端场景明确化",
+      "details": "references/components.md 补充浮层组件在 Admin/Tenant 的适配",
+      "timeline": "1 day"
+    },
+    {
+      "phase": "B/C",
+      "priority": "P3",
+      "area": "Technical Debt",
+      "action": "技术债处理",
+      "details": "Alert 去重、card 命名澄清、token 重复整理",
+      "timeline": "1-2 days"
+    }
+  ],
+  "execution_summary": {
+    "total_incidents": 7,
+    "critical_incidents": 4,
+    "medium_incidents": 3,
+    "root_causes": 3,
+    "script_gaps": 7,
+    "documentation_gaps": 6,
+    "process_gaps": 5,
+    "status": "完成",
+    "next_steps": [
+      "1. 将本报告分享给设计师 + 团队 lead",
+      "2. 在 B 阶段迭代文档（3 个 markdown 文件补充）",
+      "3. 在 C 阶段增强脚本（7 个新规则）",
+      "4. 建立 pre-commit hook 强制执行",
+      "5. 每月运行 A3 审计检查是否有新的违规模式"
+    ]
+  }
+}

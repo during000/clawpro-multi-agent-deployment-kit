@@ -1,0 +1,119 @@
+# ----------------------------------------------------------------------------
+# ClawPro 管控端走查 - MR CI（蓝盾 Stream v2.0 / 工蜂版）
+# ----------------------------------------------------------------------------
+# 模板源：.codebuddy/skills/clawpro-walkthrough/ci/bk-walkthrough.yml
+# 落地副本：仓库根 .ci/walkthrough.yml（工蜂 Stream 读 .ci/ 下的 *.yml）
+# 接入说明：.codebuddy/skills/clawpro-walkthrough/ci/README.md §五
+#
+# 触发：向 main/master 发起 MR 的 open / reopen / push-update
+# 行为：
+#   1) 只对本次 MR 的改动文件（base...head 的 .tsx/.ts/.jsx/.js/.css）跑 walkthrough audit
+#   2) 读脚本写的 _walkthrough/LATEST 指针定位快照，按 WALKTHROUGH_BLOCK_LEVEL 判定退出码
+#   3) step 非零退出 → job 失败；配合 mr.block-mr 阻止合并
+#
+# 当前阶段：**第 1 周试运行（warning 模式，不阻断）**
+#   env.WALKTHROUGH_BLOCK_LEVEL = NONE  且  mr.block-mr = false
+# 升级路径：
+#   第 2 周起：WALKTHROUGH_BLOCK_LEVEL 改 P0，mr.block-mr 改 true（失败阻止合并）
+#   团队成熟后：再升到 P1（连硬编码颜色 / 自创 shadow 也卡红）
+# ----------------------------------------------------------------------------
+
+version: v2.0
+
+name: clawpro-admin-walkthrough
+
+on:
+  mr:
+    target-branches:
+      - main
+      - master
+    action:
+      - open
+      - reopen
+      - push-update
+    paths:
+      - "client/src/**"
+      - ".codebuddy/skills/clawpro-walkthrough/**"
+      - ".codebuddy/skills/clawpro-walkthrough/**"
+    report-commit-check: true
+    # 试运行期不阻断合并；第 2 周起改为 true
+    block-mr: false
+
+stages:
+  - name: walkthrough
+    jobs:
+      admin_walkthrough:
+        name: Static Design Audit (MR diff)
+        runs-on:
+          pool-name: docker
+          # 需要 Node 20；按你的蓝盾项目实际可用镜像调整。
+          # 若该镜像无 node，可换成内网带 node 的镜像，或在 step 里 nvm install 20。
+          container:
+            image: mirrors.tencent.com/ci/tlinux3_ci:latest
+        steps:
+          - checkout: self
+            with:
+              # 取够深度以便 git diff base...head
+              strategy: FRESH_CHECKOUT
+          - name: Run walkthrough on MR diff
+            run: |
+              set -uo pipefail
+
+              # 第 1 周试运行：NONE = 只打印、不阻断；第 2 周改 P0
+              export WALKTHROUGH_BLOCK_LEVEL=NONE
+
+              # 确保 node 可用
+              if ! command -v node >/dev/null 2>&1; then
+                echo "::error:: 构建机无 node，请改用带 Node 20 的镜像或先安装 node"
+                exit 2
+              fi
+
+              BASE="${{ ci.base_ref }}"
+              echo "[walkthrough] MR base=$BASE head=${{ ci.head_ref }}"
+              git fetch origin "$BASE" --depth=100 || true
+
+              # 算改动文件（只看前端代码），兜底两种 diff 写法
+              CHANGED=$(git diff --name-only "origin/$BASE"...HEAD 2>/dev/null \
+                || git diff --name-only "origin/$BASE" HEAD 2>/dev/null || true)
+              echo "$CHANGED" | grep -E '\.(tsx?|jsx?|css)$' > /tmp/wt-targets.txt || true
+
+              if [ ! -s /tmp/wt-targets.txt ]; then
+                echo "[walkthrough] 本 MR 未改动前端代码，跳过审计"
+                exit 0
+              fi
+
+              echo "---- 走查目标 ----"; cat /tmp/wt-targets.txt
+
+              # 逐行作为 audit 目标传入
+              TARGETS=$(tr '\n' ' ' < /tmp/wt-targets.txt)
+              node .codebuddy/skills/clawpro-walkthrough/scripts/walkthrough.mjs \
+                audit $TARGETS || true
+
+              # 读 LATEST 指针定位本次快照（绝不用 ls -t，避免撞 snapshots/）
+              SNAPSHOT=$(cat _walkthrough/LATEST 2>/dev/null || ls -dt _walkthrough/[0-9]*/ 2>/dev/null | head -n1 | xargs -n1 basename)
+              META="_walkthrough/$SNAPSHOT/meta.json"
+              if [ ! -f "$META" ]; then
+                echo "::error:: 找不到走查快照 meta.json（$META）"
+                exit 2
+              fi
+
+              P0=$(node -e "console.log((JSON.parse(require('fs').readFileSync('$META','utf8')).bySeverity||{}).P0||0)")
+              P1=$(node -e "console.log((JSON.parse(require('fs').readFileSync('$META','utf8')).bySeverity||{}).P1||0)")
+              echo "[walkthrough] 快照=$SNAPSHOT  P0=$P0  P1=$P1  阈值=$WALKTHROUGH_BLOCK_LEVEL"
+              echo "---- audit-report.csv（前 20 行）----"
+              head -n 21 "_walkthrough/$SNAPSHOT/audit-report.csv" || true
+
+              LEVEL="${WALKTHROUGH_BLOCK_LEVEL:-P0}"
+              if [ "$LEVEL" = "NONE" ]; then
+                echo "[walkthrough] 试运行模式（NONE）：不阻断，仅告警"
+                exit 0
+              fi
+              if [ "$LEVEL" = "P0" ] && [ "$P0" -gt 0 ]; then
+                echo "::error:: 本 MR 引入 $P0 处 P0 违规，阻断合并"
+                exit 1
+              fi
+              if [ "$LEVEL" = "P1" ] && [ $(("$P0" + "$P1")) -gt 0 ]; then
+                echo "::error:: 本 MR 引入 P0+P1 共 $(("$P0" + "$P1")) 处违规，阻断合并"
+                exit 1
+              fi
+              echo "[walkthrough] 通过"

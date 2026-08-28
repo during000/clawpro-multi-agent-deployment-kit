@@ -1,0 +1,71 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Empty State — ClawPro
+ * 页面级空态：min-h 320 + 蓝灰虚线描边 + 4px + 白底 + p-48；插画 100×100。
+ * 表格内空态（cp-table-empty）：colSpan 内纯文字双行，禁用插画。
+ * 配套：portable/react/empty-state.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  gap: 24px;
+  padding: 48px;
+  text-align: center;
+}
+
+.cp-empty--bordered {
+  border-radius: var(--radius);
+  border: 1px dashed var(--cp-border);
+  background: var(--cp-surface);
+}
+
+.cp-empty__media {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  color: var(--cp-text-weak);
+}
+
+.cp-empty__body {
+  display: flex;
+  max-width: 24rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-empty__title {
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--cp-text-title);
+}
+
+.cp-empty__desc {
+  font-size: 12px;
+  color: var(--cp-text-weak);
+}
+
+.cp-empty__action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ─── 表格内空态 ─── */
+.cp-table-empty {
+  padding: 48px 0;
+  text-align: center;
+}
+.cp-table-empty__text {
+  font-size: 12px;
+  color: var(--cp-text-weak);
+}
+.cp-table-empty__text + .cp-table-empty__text {
+  margin-top: 4px;
+}

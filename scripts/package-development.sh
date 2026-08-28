@@ -6,7 +6,7 @@ OUTPUT_ROOT=""
 SKIP_TESTS=0
 
 usage() {
-  echo "Usage: bash scripts/package-development.sh --source-root /absolute/path/to/clawpro-multi-agent-source-YYYYMMDD [--output-root /absolute/path] [--skip-tests]"
+  echo "Usage: bash scripts/package-development.sh [--source-root /absolute/path] [--output-root /absolute/path] [--skip-tests]"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -35,13 +35,25 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "$SOURCE_ROOT" || "$SOURCE_ROOT" != /* || ! -d "$SOURCE_ROOT/repos" ]]; then
-  echo "--source-root must be an extracted absolute source snapshot path." >&2
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+if [[ -z "$SOURCE_ROOT" ]]; then
+  SOURCE_ROOT="$REPO_DIR"
+fi
+if [[ "$SOURCE_ROOT" != /* ]]; then
+  echo "--source-root must be an absolute path." >&2
   exit 2
 fi
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+if [[ -d "$SOURCE_ROOT/components" ]]; then
+  COMPONENT_ROOT="$SOURCE_ROOT/components"
+elif [[ -d "$SOURCE_ROOT/repos" ]]; then
+  COMPONENT_ROOT="$SOURCE_ROOT/repos"
+else
+  echo "Source root must contain components/ (or legacy repos/)." >&2
+  exit 2
+fi
+
 if [[ -z "$OUTPUT_ROOT" ]]; then
   OUTPUT_ROOT="$REPO_DIR/.local-releases"
 fi
@@ -52,7 +64,7 @@ if [[ "$OUTPUT_ROOT" != /* ]]; then
 fi
 
 for component in clawpro hatchery teamai-cli orchestrator; do
-  if [[ ! -d "$SOURCE_ROOT/repos/$component" ]]; then
+  if [[ ! -d "$COMPONENT_ROOT/$component" ]]; then
     echo "Missing source component: $component" >&2
     exit 1
   fi
@@ -71,10 +83,10 @@ if [[ "$NODE_MAJOR" -lt 22 ]]; then
   exit 1
 fi
 
-CLAWPRO_DIR="$SOURCE_ROOT/repos/clawpro"
-HATCHERY_DIR="$SOURCE_ROOT/repos/hatchery"
-TEAMAI_DIR="$SOURCE_ROOT/repos/teamai-cli"
-ORCHESTRATOR_DIR="$SOURCE_ROOT/repos/orchestrator"
+CLAWPRO_DIR="$COMPONENT_ROOT/clawpro"
+HATCHERY_DIR="$COMPONENT_ROOT/hatchery"
+TEAMAI_DIR="$COMPONENT_ROOT/teamai-cli"
+ORCHESTRATOR_DIR="$COMPONENT_ROOT/orchestrator"
 
 if [[ ! -d "$CLAWPRO_DIR/node_modules" ]]; then
   (cd "$CLAWPRO_DIR" && npm ci)
@@ -115,7 +127,11 @@ cp "$HATCHERY_DIR/build/hatchery" "$BUNDLE_DIR/server/bin/hatchery-linux-amd64"
 cp -a "$ORCHESTRATOR_DIR/." "$BUNDLE_DIR/server/orchestrator/"
 cp -a "$REPO_DIR/packaging/client" "$BUNDLE_DIR/client"
 (cd "$TEAMAI_DIR" && npm pack --ignore-scripts --pack-destination "$BUNDLE_DIR/client/teamai")
-cp "$SOURCE_ROOT/SOURCE_STATE.md" "$BUNDLE_DIR/source-info/SOURCE_STATE.md"
+if [[ -f "$SOURCE_ROOT/SOURCE_STATE.md" ]]; then
+  cp "$SOURCE_ROOT/SOURCE_STATE.md" "$BUNDLE_DIR/source-info/SOURCE_STATE.md"
+else
+  printf '# Source state\n\nBuilt from %s\n' "$SOURCE_ROOT" > "$BUNDLE_DIR/source-info/SOURCE_STATE.md"
+fi
 
 chmod 0755 \
   "$BUNDLE_DIR/server/bin/hatchery-linux-amd64" \
@@ -128,7 +144,8 @@ chmod 0755 \
   printf '  "name": "clawpro-multi-agent-deployment-kit",\n'
   printf '  "version": "dev-%s",\n' "$STAMP"
   printf '  "target": "linux-amd64",\n'
-  printf '  "source_snapshot": "%s"\n' "$(basename "$SOURCE_ROOT")"
+  printf '  "source_layout": "components",\n'
+  printf '  "source_root": "%s"\n' "$(basename "$SOURCE_ROOT")"
   printf '}\n'
 } > "$BUNDLE_DIR/VERSION.json"
 

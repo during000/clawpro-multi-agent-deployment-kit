@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>运维观测卡片 — 分割线层级优化预览</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; padding: 40px; color: #0a0a0a; }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { color: #737373; font-size: 13px; margin-bottom: 32px; }
+
+  /* SurfaceCard */
+  .card {
+    background: #fff;
+    border: 1px solid #EAEEF4;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0px 1px 4px rgba(0,0,0,0.05), 0px 0px 2px rgba(0,0,0,0.1);
+  }
+
+  /* 卡片标题：黑色 regular + 底部分割线 */
+  .card-title {
+    font-size: 14px;
+    font-weight: 400;
+    color: #0a0a0a;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #EAEEF4;
+  }
+
+  /* 内容网格 */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+
+  /* 功能项 */
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+  }
+  .feature-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0f3fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .feature-icon svg { width: 18px; height: 18px; stroke: #355ef1; fill: none; stroke-width: 1.5; }
+  .feature-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #020617;
+    line-height: 22px;
+  }
+  .feature-desc {
+    font-size: 12px;
+    line-height: 20px;
+    color: #64748b;
+  }
+</style>
+</head>
+<body>
+
+<h1>运维观测卡片 — 标题分割线层级优化</h1>
+<p class="subtitle">标题改为黑色 regular，底部加 #EAEEF4 分割线，内容区间距收紧</p>
+
+<div class="card">
+  <div class="card-title">开启CLS日志服务后您可以在此处获得以下观测数据：</div>
+  <div class="grid">
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div>
+        <div class="feature-title">业务运行健康度实时监控</div>
+        <div class="feature-desc">聚焦消息处理总量、入队效率与卡死会话，保障系统稳定运行</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+      </div>
+      <div>
+        <div class="feature-title">应用日志与 OTEL 指标全景洞察</div>
+        <div class="feature-desc">多维度分析日志级别与模块分布，精细化追踪消息处理、队列状态与执行耗时</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">开启CLS日志服务后您还可以在Tokens监控和运维观测页面中获得以下观测数据：</div>
+  <div class="grid">
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div>
+        <div class="feature-title">高Token会话实时分析与管控</div>
+        <div class="feature-desc">聚焦 TOP 会话的 Token 消耗、轮次分布与耗时特征，精准定位高Token交互</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      </div>
+      <div>
+        <div class="feature-title">单会话全链路Token透视</div>
+        <div class="feature-desc">拆解每轮交互的 Token 流量与耗时分布，可视化工具调用与上下文膨胀对成本的影响</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><polyline points="18 9 12 15 9 12 3 18"/></svg>
+      </div>
+      <div>
+        <div class="feature-title">会话全局运行态势监控</div>
+        <div class="feature-desc">聚合总会话数、平均轮次与工具调用量，多维度洞察渠道与模型分布</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div>
+        <div class="feature-title">会话详情与交互效率精细化分析</div>
+        <div class="feature-desc">聚焦单会话 Token 消耗，可视化渠道与模型分布特征，精准定位高Token会话</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

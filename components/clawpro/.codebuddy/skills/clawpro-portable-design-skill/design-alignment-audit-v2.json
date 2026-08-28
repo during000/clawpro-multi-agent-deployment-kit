@@ -1,0 +1,374 @@
+{
+  "audit_date": "2026-06-26",
+  "project": "ClawPro Portable Design Skill",
+  "working_directory": "/Users/addietang/Documents/cvm/openclaw-enterprise/.codebuddy/skills/clawpro-portable-design-skill",
+  "summary": {
+    "spec_total": 37,
+    "component_react_total": 37,
+    "component_css_total": 35,
+    "manifest_spec_count": 36,
+    "total_unique_components": 52,
+    "duplicates_count": 2,
+    "complete_components": 28,
+    "real_gaps": 9,
+    "intentional_items": 15
+  },
+  "table1_components_without_spec": {
+    "count": 5,
+    "description": "Components with React/CSS implementation but missing spec documentation",
+    "items": [
+      {
+        "component": "admin-sidebar-with-tooltip",
+        "react_file": "portable/react/admin-sidebar-with-tooltip.tsx",
+        "css_file": null,
+        "spec_file": null,
+        "priority": "medium",
+        "notes": "Variant/extension of admin-sidebar component"
+      },
+      {
+        "component": "badges",
+        "react_file": "portable/react/badges.tsx",
+        "css_file": null,
+        "spec_file": null,
+        "priority": "high",
+        "notes": "Likely related to badge spec, but separate implementation"
+      },
+      {
+        "component": "card",
+        "react_file": "portable/react/card.tsx",
+        "css_file": "portable/css/card.css",
+        "spec_file": null,
+        "priority": "high",
+        "notes": "Should match card-surface spec - needs clarification"
+      },
+      {
+        "component": "popover-menu",
+        "react_file": "portable/react/popover-menu.tsx",
+        "css_file": "portable/css/popover-menu.css",
+        "spec_file": null,
+        "priority": "high",
+        "notes": "Spec exists as popover-dropdown-menu - naming mismatch"
+      },
+      {
+        "component": "searchable-select",
+        "react_file": "portable/react/searchable-select.tsx",
+        "css_file": null,
+        "spec_file": null,
+        "priority": "high",
+        "notes": "Spec exists as combobox - intentional alias"
+      }
+    ]
+  },
+  "table2_specs_without_components": {
+    "count": 9,
+    "description": "Spec files without corresponding React/CSS implementation or recognized alias",
+    "items": [
+      {
+        "spec_name": "card-surface",
+        "react_file": null,
+        "css_file": null,
+        "status": "unimplemented",
+        "priority": "high",
+        "notes": "Likely related to card component - needs clarification with design team"
+      },
+      {
+        "spec_name": "combobox",
+        "react_file": null,
+        "css_file": null,
+        "status": "alias",
+        "alias_for": "searchable-select",
+        "priority": "low",
+        "notes": "Confirmed alias - combobox spec points to searchable-select implementation"
+      },
+      {
+        "spec_name": "data-table",
+        "react_file": null,
+        "css_file": null,
+        "status": "alias",
+        "alias_for": "table",
+        "priority": "low",
+        "notes": "Confirmed alias - data-table spec points to table implementation"
+      },
+      {
+        "spec_name": "datetime-display",
+        "react_file": null,
+        "css_file": null,
+        "status": "alias",
+        "alias_for": "date-picker",
+        "priority": "medium",
+        "notes": "Partial overlap with date-picker - in directory but not in MANIFEST"
+      },
+      {
+        "spec_name": "popover-dropdown-menu",
+        "react_file": null,
+        "css_file": null,
+        "status": "alias",
+        "alias_for": "popover-menu",
+        "priority": "high",
+        "notes": "Naming mismatch - spec name doesn't match implementation name"
+      },
+      {
+        "spec_name": "tag-label",
+        "react_file": null,
+        "css_file": null,
+        "status": "alias",
+        "alias_for": "selection-controls",
+        "priority": "medium",
+        "notes": "Related to selection-controls implementation"
+      },
+      {
+        "spec_name": "tenant-topnav",
+        "react_file": null,
+        "css_file": null,
+        "status": "unimplemented",
+        "priority": "high",
+        "notes": "Specific to tenant UI - needs implementation"
+      },
+      {
+        "spec_name": "typography",
+        "react_file": null,
+        "css_file": null,
+        "status": "unimplemented",
+        "priority": "medium",
+        "notes": "Foundation/utility component - may be integrated into tokens"
+      },
+      {
+        "spec_name": "upload-file-browser",
+        "react_file": null,
+        "css_file": null,
+        "status": "unimplemented",
+        "priority": "high",
+        "notes": "File upload component - needs implementation"
+      }
+    ]
+  },
+  "table3_manifest_vs_directory": {
+    "manifest_count": 36,
+    "actual_count_specs": 37,
+    "actual_count_react": 37,
+    "actual_count_css": 35,
+    "specs_in_directory_not_in_manifest": [
+      "datetime-display"
+    ],
+    "specs_in_manifest_not_in_directory": [],
+    "discrepancy_summary": "MANIFEST missing 1 spec (datetime-display). All React and CSS files in MANIFEST are accounted for in directory."
+  },
+  "duplicates": {
+    "count": 2,
+    "alert_react": {
+      "files": [
+        "portable/react/alert.tsx",
+        "portable/react/alert/alert.tsx"
+      ],
+      "severity": "high",
+      "recommendation": "Consolidate - determine canonical location and remove duplicate"
+    },
+    "alert_css": {
+      "files": [
+        "portable/css/alert.css",
+        "portable/css/alert/alert.css"
+      ],
+      "severity": "high",
+      "recommendation": "Consolidate - determine canonical location and remove duplicate"
+    }
+  },
+  "component_categories": {
+    "complete": {
+      "count": 28,
+      "description": "Components with spec + implementation",
+      "components": [
+        "admin-sidebar", "alert", "avatar", "badge", "batch-actions-bar",
+        "breadcrumb", "button", "chart-stat", "date-picker", "dialog-drawer",
+        "empty-state", "file-browser", "form-controls", "input-select",
+        "loading-progress", "number-card", "page-header", "pagination",
+        "search-filter-bar", "segment", "selection-controls", "status-tag",
+        "table", "tabs", "toast", "tooltip", "transfer", "tree"
+      ]
+    },
+    "components_without_spec": {
+      "count": 5,
+      "description": "Real implementation but missing spec",
+      "components": [
+        "admin-sidebar-with-tooltip", "badges", "card",
+        "popover-menu", "searchable-select"
+      ]
+    },
+    "specs_without_component": {
+      "count": 4,
+      "description": "Spec documented but no implementation",
+      "components": [
+        "card-surface", "tenant-topnav", "typography", "upload-file-browser"
+      ]
+    },
+    "confirmed_aliases": {
+      "count": 4,
+      "description": "Intentional naming consolidations",
+      "mappings": {
+        "combobox": "searchable-select",
+        "data-table": "table",
+        "popover-dropdown-menu": "popover-menu",
+        "tag-label": "selection-controls"
+      }
+    },
+    "partial_aliases": {
+      "count": 1,
+      "description": "Partial overlap or consolidation",
+      "items": {
+        "datetime-display": "included in date-picker"
+      }
+    },
+    "demo_components": {
+      "count": 4,
+      "description": "Demo/showcase files, not production components",
+      "items": [
+        "alert-demo", "segment-showcase", "sonner", "toast-demo"
+      ]
+    },
+    "foundation_files": {
+      "count": 6,
+      "description": "Foundation/utility CSS files, not discrete components",
+      "items": [
+        "admin-sidebar-style", "globals", "input", "portable", "toast-tokens", "tokens"
+      ]
+    }
+  },
+  "findings": {
+    "real_gaps": {
+      "count": 5,
+      "severity": "high",
+      "items": [
+        {
+          "gap": "Card component naming confusion",
+          "description": "card.tsx exists but no card.md spec; card-surface.md spec exists with no implementation",
+          "requires_decision": true,
+          "action": "Clarify with design team: is card the implementation of card-surface spec or separate?"
+        },
+        {
+          "gap": "Popover naming mismatch",
+          "description": "popover-menu.tsx exists; popover-dropdown-menu.md spec exists",
+          "requires_decision": true,
+          "action": "Rename spec to match implementation OR rename implementation to match spec"
+        },
+        {
+          "gap": "Upload component unimplemented",
+          "description": "upload-file-browser.md spec exists but no React/CSS implementation",
+          "requires_implementation": true,
+          "priority": "high"
+        },
+        {
+          "gap": "Tenant topnav unimplemented",
+          "description": "tenant-topnav.md spec exists but no React/CSS implementation",
+          "requires_implementation": true,
+          "priority": "high"
+        },
+        {
+          "gap": "Typography unimplemented",
+          "description": "typography.md spec exists but no React/CSS implementation",
+          "requires_implementation": true,
+          "priority": "medium",
+          "notes": "May be intentional if typography is only in design tokens"
+        }
+      ]
+    },
+    "intentional_consolidations": {
+      "count": 5,
+      "severity": "low",
+      "items": [
+        "combobox → searchable-select",
+        "data-table → table",
+        "popover-dropdown-menu → popover-menu (needs naming fix)",
+        "tag-label → selection-controls",
+        "datetime-display → date-picker (partial)"
+      ]
+    },
+    "structural_issues": {
+      "count": 4,
+      "items": [
+        {
+          "issue": "Duplicate alert components",
+          "severity": "high",
+          "files": ["alert.tsx & alert/alert.tsx", "alert.css & alert/alert.css"],
+          "action": "Consolidate to single canonical location"
+        },
+        {
+          "issue": "MANIFEST out of sync",
+          "severity": "medium",
+          "discrepancy": "datetime-display.md in directory but not in MANIFEST.json",
+          "action": "Add to MANIFEST.json componentSpecs array"
+        },
+        {
+          "issue": "Demo files in production directory",
+          "severity": "low",
+          "files": ["alert-demo", "toast-demo", "segment-showcase", "sonner"],
+          "action": "Document or move to separate demo directory"
+        },
+        {
+          "issue": "Missing specs for variants",
+          "severity": "medium",
+          "examples": ["admin-sidebar-with-tooltip", "badges"],
+          "action": "Add specs or clarify as variants in parent component spec"
+        }
+      ]
+    }
+  },
+  "priority_actions": [
+    {
+      "rank": 1,
+      "action": "Fix alert component duplicates",
+      "detail": "Consolidate alert.tsx/alert.css and alert/alert.tsx/alert.css to single location",
+      "severity": "blocker",
+      "effort": "1 hour"
+    },
+    {
+      "rank": 2,
+      "action": "Clarify card naming",
+      "detail": "Decide if card.tsx is implementation of card-surface.md spec; rename or align",
+      "severity": "high",
+      "effort": "design decision + 2 hours"
+    },
+    {
+      "rank": 3,
+      "action": "Fix popover naming",
+      "detail": "Rename either popover-menu spec or implementation to match (currently misaligned)",
+      "severity": "high",
+      "effort": "1-2 hours"
+    },
+    {
+      "rank": 4,
+      "action": "Update MANIFEST.json",
+      "detail": "Add datetime-display.md to componentSpecs array",
+      "severity": "medium",
+      "effort": "15 minutes"
+    },
+    {
+      "rank": 5,
+      "action": "Implement missing components",
+      "detail": "Prioritize: tenant-topnav, upload-file-browser, typography",
+      "severity": "high",
+      "effort": "design dependent (8-16 hours each)"
+    },
+    {
+      "rank": 6,
+      "action": "Document demo/variant components",
+      "detail": "Clarify status of alert-demo, toast-demo, segment-showcase, admin-sidebar-with-tooltip, badges",
+      "severity": "medium",
+      "effort": "2 hours"
+    }
+  ],
+  "statistics": {
+    "total_true_gaps": 5,
+    "total_intentional_aliases": 5,
+    "total_duplicates": 2,
+    "percent_complete": "58%",
+    "percent_with_gaps": "17%",
+    "coverage_analysis": {
+      "fully_documented_and_implemented": 28,
+      "partially_implemented": 5,
+      "spec_only_unimplemented": 4,
+      "aliases_consolidated": 5,
+      "duplicates_to_consolidate": 2,
+      "demo_utilities": 4,
+      "foundation_utilities": 6
+    }
+  }
+}

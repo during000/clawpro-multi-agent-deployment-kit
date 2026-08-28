@@ -1,0 +1,266 @@
+/**
+ * Alert Component Styles
+ * ─────────────────────────────────────────────────────────────────────────────
+ * ClawPro Alert 提示条组件的完整样式定义。
+ * 支持 6 种变体：info / operation-info / warning / product-news / success / error
+ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CSS 变量定义
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* 基础参数 */
+  --alert-radius: 4px;
+  --alert-px: 16px;      /* 左右内边距 */
+  --alert-py: 10px;      /* 上下内边距 */
+  --alert-icon-size: 16px;
+  --alert-icon-gap: 8px;
+  --alert-title-gap: 4px;
+
+  /* Info 变体 */
+  --alert-info-bg: #f0f3fc;
+  --alert-info-border: #bfcffe;
+  --alert-info-foreground: #0a0a0a;
+  --alert-info-icon: #1447e6;
+
+  /* Operation-Info 变体 */
+  --alert-operation-info-bg: #ffffff;
+  --alert-operation-info-border: #eaeef4;
+  --alert-operation-info-foreground: #0a0a0a;
+  --alert-operation-info-icon: #7b818f;
+
+  /* Warning 变体 */
+  --alert-warning-bg: #fff7ed;
+  --alert-warning-border: #fed7aa;
+  --alert-warning-foreground: #0a0a0a;
+  --alert-warning-icon: #ff6900;
+
+  /* Product-News 变体（与 Info 相同） */
+  --alert-product-news-bg: #f0f3fc;
+  --alert-product-news-border: #bfcffe;
+  --alert-product-news-foreground: #0a0a0a;
+  --alert-product-news-icon: #1447e6;
+
+  /* Success 变体 */
+  --alert-success-bg: #ecfdf5;
+  --alert-success-border: #a7f3d0;
+  --alert-success-foreground: #0a0a0a;
+  --alert-success-icon: #059669;
+
+  /* Error 变体 */
+  --alert-error-bg: #fef2f2;
+  --alert-error-border: #fecaca;
+  --alert-error-foreground: #0a0a0a;
+  --alert-error-icon: #dc2626;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   基础 Alert 样式
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert {
+  display: grid;
+  grid-template-columns: var(--alert-icon-size) minmax(0, 1fr);
+  gap: var(--alert-icon-gap);
+  align-items: flex-start;
+
+  padding: var(--alert-py) var(--alert-px);
+  border-radius: var(--alert-radius);
+  border: 1px solid;
+  background-color: var(--alert-bg, #ffffff);
+  border-color: var(--alert-border, #eaeef4);
+  color: var(--alert-foreground, #0a0a0a);
+
+  font-size: 12px;
+  line-height: 1.5;
+
+  /* 确保没有过度的圆角或阴影 */
+  box-shadow: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 标题样式
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-title {
+  grid-column: 2;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font-size: 12px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 描述文案样式
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-description {
+  grid-column: 2;
+  font-size: 12px;
+  line-height: 1.5;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/* 标题存在时，描述文案添加间距 */
+.alert-title + .alert-description {
+  margin-top: var(--alert-title-gap);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 图标样式
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-icon {
+  width: var(--alert-icon-size);
+  height: var(--alert-icon-size);
+  flex-shrink: 0;
+  margin-top: 2px;
+  /* 与 12px/18px 行高文字首行对齐 */
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 变体：Info（蓝色信息提示）
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-info {
+  --alert-bg: var(--alert-info-bg);
+  --alert-border: var(--alert-info-border);
+  --alert-foreground: var(--alert-info-foreground);
+}
+
+.alert-info-icon {
+  color: var(--alert-info-icon);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 变体：Operation-Info（白底灰边操作说明）
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-operation-info {
+  --alert-bg: var(--alert-operation-info-bg);
+  --alert-border: var(--alert-operation-info-border);
+  --alert-foreground: var(--alert-operation-info-foreground);
+}
+
+.alert-operation-info-icon {
+  color: var(--alert-operation-info-icon);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 变体：Warning（橙色警告）
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-warning {
+  --alert-bg: var(--alert-warning-bg);
+  --alert-border: var(--alert-warning-border);
+  --alert-foreground: var(--alert-warning-foreground);
+}
+
+.alert-warning-icon,
+.alert-warning svg {
+  color: var(--alert-warning-icon);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 变体：Product-News（产品动态）
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-product-news {
+  --alert-bg: var(--alert-product-news-bg);
+  --alert-border: var(--alert-product-news-border);
+  --alert-foreground: var(--alert-product-news-foreground);
+}
+
+.alert-product-news-icon {
+  color: var(--alert-product-news-icon);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 变体：Success（绿色成功提示）
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-success {
+  --alert-bg: var(--alert-success-bg);
+  --alert-border: var(--alert-success-border);
+  --alert-foreground: var(--alert-success-foreground);
+}
+
+.alert-success-icon {
+  color: var(--alert-success-icon);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 变体：Error（红色错误提示）
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert-error {
+  --alert-bg: var(--alert-error-bg);
+  --alert-border: var(--alert-error-border);
+  --alert-foreground: var(--alert-error-foreground);
+}
+
+.alert-error-icon {
+  color: var(--alert-error-icon);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Alert 带右侧操作区布局（使用 has-[] 选择器）
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert.has-action {
+  grid-template-columns: var(--alert-icon-size) minmax(0, 1fr) auto;
+}
+
+.alert.has-action .alert-description {
+  grid-column: 2;
+}
+
+.alert-action {
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   可访问性
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.alert {
+  /* 确保色彩对比度 ≥ 4.5:1 */
+}
+
+/* 暗色模式支持（可选） */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --alert-info-bg: #0f1927;
+    --alert-info-border: #1e3a5f;
+    --alert-info-foreground: #e5e7eb;
+
+    --alert-operation-info-bg: #1a1a1a;
+    --alert-operation-info-border: #333;
+    --alert-operation-info-foreground: #e5e7eb;
+
+    --alert-warning-bg: #3d2817;
+    --alert-warning-border: #6b3f1e;
+    --alert-warning-foreground: #fef3c7;
+
+    --alert-product-news-bg: #0f1927;
+    --alert-product-news-border: #1e3a5f;
+    --alert-product-news-foreground: #e5e7eb;
+
+    --alert-success-bg: #0f2e1e;
+    --alert-success-border: #1e5e3f;
+    --alert-success-foreground: #d1fae5;
+
+    --alert-error-bg: #3f1e1e;
+    --alert-error-border: #6e2e2e;
+    --alert-error-foreground: #fee2e2;
+  }
+}

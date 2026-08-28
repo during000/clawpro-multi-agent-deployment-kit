@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜像管理 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-[16px] font-semibold text-gray-800">镜像管理</h2>
+                    <button onclick="openImportModal()"
+                        class="h-10 bg-[#0052d9] text-white px-5 rounded hover:bg-[#0034b5] transition-colors duration-200 font-medium text-[14px]">
+                        导入镜像
+                    </button>
+                </div>
+
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
+                    <div id="image-list">
+                        {{block "image_list" .}}
+                        {{if .Error}}
+                        <div class="text-[#f64041] font-medium text-[14px] px-6 py-3 bg-red-50 border-b border-red-100">{{.Error}}</div>
+                        {{end}}
+                        {{if .Success}}
+                        <div class="text-green-600 font-medium text-[14px] px-6 py-3 bg-green-50 border-b border-green-100">{{.Success}}</div>
+                        {{end}}
+                        <table class="w-full text-[14px] text-left whitespace-nowrap">
+                            <thead class="bg-[#f5f6fa] text-gray-500 text-[12px]">
+                                <tr>
+                                <th class="px-6 py-3.5 font-medium">镜像 ID</th>
+                                    <th class="px-6 py-3.5 font-medium">镜像名称</th>
+                                    <th class="px-6 py-3.5 font-medium">操作系统</th>
+                                    <th class="px-6 py-3.5 font-medium">镜像类型</th>
+                                    <th class="px-6 py-3.5 font-medium">智能体类型</th>
+                                    <th class="px-6 py-3.5 font-medium">镜像大小</th>
+                                    <th class="px-6 py-3.5 font-medium">状态</th>
+                                    <th class="px-6 py-3.5 font-medium">启用</th>
+                                    <th class="px-6 py-3.5 font-medium">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                {{range .Images}}
+                                <tr class="hover:bg-[#f9fafb]">
+                                    <td class="px-6 py-3.5 font-mono text-[13px]">{{.ImageId}}</td>
+                                    <td class="px-6 py-3.5 font-medium">
+                                        {{.ImageName}}
+                                        {{if eq .ImageId $.PublicImageId}}
+                                        <span class="ml-1.5 inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-blue-50 text-[#0052d9]">公共</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="px-6 py-3.5 text-gray-500">{{.OsName}}</td>
+                                    <td class="px-6 py-3.5">{{.ImageType}}</td>
+                                    <td class="px-6 py-3.5">
+                                        {{if eq .AgentType "openclaw"}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-blue-50 text-[#0052d9]">OpenClaw</span>
+                                        {{else if eq .AgentType "hermes"}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-purple-50 text-purple-700">Hermes</span>
+                                        {{else if eq .AgentType "lightclawace"}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-orange-50 text-orange-700">LightclawACE</span>
+                                        {{else if .AgentType}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-gray-50 text-gray-600">{{.AgentType}}</span>
+                                        {{else}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-gray-50 text-gray-400">未设置</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="px-6 py-3.5">{{if .ImageSize}}{{.ImageSize}} GB{{else}}-{{end}}</td>
+                                    <td class="px-6 py-3.5">
+                                        {{if eq .ImageState "NORMAL"}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-green-50 text-green-700">正常</span>
+                                        {{else if eq .ImageState "CREATING"}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-yellow-50 text-yellow-700">创建中</span>
+                                        {{else}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-gray-50 text-gray-600">{{.ImageState}}</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        <button hx-post="/admin/images/enable?id={{.ID}}" hx-target="#image-list" hx-swap="innerHTML"
+                                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none {{if .Enabled}}bg-[#0052d9]{{else}}bg-gray-300{{end}}">
+                                            <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 {{if .Enabled}}translate-x-6{{else}}translate-x-1{{end}}"></span>
+                                        </button>
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        <button hx-post="/admin/images/delete?id={{.ID}}" hx-target="#image-list" hx-swap="innerHTML"
+                                            hx-confirm="确定要删除该镜像记录吗？"
+                                            class="text-[14px] text-red-500 hover:text-red-600 font-medium">
+                                            删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="8" class="px-6 py-8 text-center text-gray-400 text-[14px]">暂无镜像记录</td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="import-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h3 class="text-[16px] font-semibold text-gray-800">导入镜像</h3>
+                <button onclick="document.getElementById('import-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <form hx-post="/admin/images/import" hx-target="#image-list" hx-swap="innerHTML"
+                  hx-on::after-request="if(event.detail.successful) document.getElementById('import-modal').classList.add('hidden')">
+                <div class="px-6 py-4 space-y-4">
+                    <div>
+                        <label class="block text-[14px] font-medium text-gray-700 mb-1">选择镜像 <span class="text-red-500">*</span></label>
+                        <select id="cloud-image-select" name="image_id" required
+                            onchange="onImageSelect(this)"
+                            class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors bg-white">
+                            <option value="">请先打开弹窗加载镜像列表</option>
+                        </select>
+                        <div id="cloud-image-error" class="hidden text-[12px] text-[#f64041] mt-1"></div>
+                    </div>
+                    <div>
+                        <label class="block text-[14px] font-medium text-gray-700 mb-1">镜像名称</label>
+                        <input type="text" id="image-name-input" name="image_name"
+                            class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                            placeholder="留空则使用腾讯云返回的名称">
+                    </div>
+                    <div>
+                        <label class="block text-[14px] font-medium text-gray-700 mb-1">智能体类型 <span class="text-red-500">*</span></label>
+                        <select id="import-agent-type" name="agent_type" required
+                            class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors bg-white">
+                            <option value="">请选择类型</option>
+                            <option value="openclaw">OpenClaw</option>
+                            <option value="hermes">Hermes</option>
+                            <option value="lightclawace">LightclawACE</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[14px] font-medium text-gray-700 mb-1">智能体版本 <span class="text-red-500">*</span></label>
+                        <input type="text" id="import-agent-version" name="agent_version" required
+                            class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                            placeholder="OpenClaw: 2026.4.11 ｜ Hermes/LightclawACE: 0.9.0">
+                        <p class="mt-1 text-[12px] text-gray-400">OpenClaw 格式：YYYY.M.D；Hermes/LightclawACE 格式：X.Y.Z</p>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 px-6 py-4 border-t border-gray-100">
+                    <button type="button" onclick="document.getElementById('import-modal').classList.add('hidden')"
+                        class="h-10 px-5 text-[14px] font-medium text-gray-600 border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors">
+                        取消
+                    </button>
+                    <button type="submit"
+                        class="h-10 px-5 text-[14px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors">
+                        确认导入
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{template "admin_scripts" .}}
+    <script>
+    function openImportModal() {
+        var form = document.getElementById('import-modal').querySelector('form');
+        form.reset();
+        document.getElementById('import-modal').classList.remove('hidden');
+        loadCloudImages();
+        // 尝试根据选中的镜像自动匹配类型
+        document.getElementById('cloud-image-select').addEventListener('change', autoFillAgentType);
+    }
+
+    function loadCloudImages() {
+        var select = document.getElementById('cloud-image-select');
+        var errorDiv = document.getElementById('cloud-image-error');
+        errorDiv.classList.add('hidden');
+        select.innerHTML = '<option value="">加载中...</option>';
+        select.disabled = true;
+
+        fetch('/admin/images/cloud', {headers: {'Accept': 'application/json'}})
+            .then(function(resp) {
+                if (!resp.ok) return resp.json().then(function(d) { throw new Error(d.error || '请求失败'); });
+                return resp.json();
+            })
+            .then(function(images) {
+                select.innerHTML = '<option value="">请选择镜像</option>';
+                if (!images || images.length === 0) {
+                    select.innerHTML = '<option value="">没有可导入的镜像</option>';
+                } else {
+                    images.forEach(function(img) {
+                        var opt = document.createElement('option');
+                        opt.value = img.imageId;
+                        opt.textContent = img.imageName + ' (' + img.imageId + ')' + (img.public ? ' [公共]' : '');
+                        opt.dataset.name = img.imageName;
+                        select.appendChild(opt);
+                    });
+                }
+                select.disabled = false;
+            })
+            .catch(function(err) {
+                select.innerHTML = '<option value="">加载失败</option>';
+                select.disabled = false;
+                errorDiv.textContent = err.message;
+                errorDiv.classList.remove('hidden');
+            });
+    }
+
+    function onImageSelect(sel) {
+        var nameInput = document.getElementById('image-name-input');
+        var opt = sel.options[sel.selectedIndex];
+        if (opt && opt.dataset.name) {
+            nameInput.value = opt.dataset.name;
+        }
+        autoFillAgentType();
+    }
+
+    // 根据选中的镜像名称自动匹配智能体类型和版本
+    var candidateImages = [
+        {imageId: 'img-idzg74s9', agentType: 'openclaw', agentVersion: '2026.4.11'},
+        {imageId: 'img-nmg7pw1r', agentType: 'openclaw', agentVersion: '2026.4.11'},
+        {imageId: 'img-pf18atu9', agentType: 'openclaw', agentVersion: '2026.4.11'},
+        {imageId: 'img-3d3vc1hg', agentType: 'lightclawace', agentVersion: '0.1.1'},
+        {imageId: 'img-1b6igqg6', agentType: 'hermes', agentVersion: '0.9.0'},
+        {imageId: 'img-h24svx3c', agentType: 'hermes', agentVersion: '0.9.0'}
+    ];
+    function autoFillAgentType() {
+        var sel = document.getElementById('cloud-image-select');
+        var typeSelect = document.getElementById('import-agent-type');
+        var versionInput = document.getElementById('import-agent-version');
+        if (!sel || !typeSelect || !versionInput) return;
+        var imageId = sel.value;
+        var matched = candidateImages.find(function(c) { return c.imageId === imageId; });
+        if (matched) {
+            typeSelect.value = matched.agentType;
+            versionInput.value = matched.agentVersion;
+        }
+    }
+    </script>
+</body>
+</html>

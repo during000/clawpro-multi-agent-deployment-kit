@@ -1,0 +1,840 @@
+/* ============================================================
+   永辉 AI Agent 管控平台 - Landing Page 样式
+   基于 Figma 高保真设计稿 1:1 还原
+   设计基准: 1920px
+   ============================================================ */
+
+/* ---------- CSS 变量 ---------- */
+/*
+ * 永远预留滚动条位置：避免 shadcn Dialog 打开时给 body 加 overflow:hidden
+ * 后浏览器收掉滚动条，导致页面右侧出现一条 ~15px 的空白轨道（遮罩盖不住）。
+ * `scrollbar-gutter: stable` 是现代浏览器统一支持的标准方案。
+ */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* ----------------------------------------------------------------
+   首屏整屏交互：仅在 Landing 页生效（:has 作用域，不影响其它路由）
+   - 滚动吸附：第一屏只展示 Hero，向下滚动后吸附到第二屏（Features）
+   - 用 proximity 而非 mandatory，避免在内容较长的 Features 区被困住
+   - scroll-padding-top 预留固定 Navbar（最大 64px）空间，使吸附后内容不被遮挡
+   ---------------------------------------------------------------- */
+html:has(.yh-root) {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 64px;
+  scroll-behavior: smooth;
+}
+
+.yh-root {
+  --yh-blue: #1447E6;
+  --yh-blue-dark: #163E9C;
+  --yh-black: #020617;
+  --yh-text-primary: #0A0A0A;
+  --yh-text-secondary: #334155;
+  --yh-text-tertiary: #737373;
+  --yh-text-weak: rgba(0, 0, 0, 0.5);
+  --yh-border: #DFE7F0;
+  --yh-border-light: #E2E8F0;
+  --yh-bg-gray: #F8F8F8;
+  --yh-card-shadow: 0px 4px 16px rgba(0, 0, 0, 0.08);
+  --yh-glass-bg: linear-gradient(
+    90deg,
+    rgba(231.93, 241.93, 255, 0.8) 0%,
+    rgba(239.81, 249.94, 255, 0.95) 50%,
+    rgba(217.47, 233.73, 255, 0.86) 100%
+  );
+
+  width: 100%;
+  min-height: 100vh;
+  background: transparent;
+}
+
+/* ---------- 页面缩放容器（1920 基准） ---------- */
+.yh-page-wrapper {
+  position: relative;
+  width: 100%;
+  min-width: 1920px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   NAVBAR - 顶部导航栏
+   ============================================================ */
+/* ============================================================
+   NAVBAR - 顶部导航栏
+   外壳铺满视口宽度（解决 2560px 等超宽屏右侧空白问题），
+   内容固定 1920px + 32px 内边距居中。
+   ============================================================ */
+.yh-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* 低于 shadcn Dialog overlay 的 z-50，确保点击「管理后台」时遮罩能覆盖导航栏 */
+  z-index: 40;
+  width: 100%;
+  height: 64px;
+  /* 仅底部描边，与用户端 TopNav 保持一致，避免左侧 1px border 让 logo
+     起点偏移 1px、跨页跳转时位置不齐 */
+  border-bottom: 1px solid #DFE7F0;
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.yh-navbar.is-scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 内容容器：铺满视口宽度，左右各留 28px 内边距，两端对齐 */
+.yh-navbar-inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 8px 28px;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.yh-navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.yh-navbar-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+.yh-navbar-title {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "PingFang SC", sans-serif;
+  color: var(--yh-text-primary);
+  white-space: nowrap;
+}
+
+.yh-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 按钮 */
+.yh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-family: "PingFang SC", sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  white-space: nowrap;
+}
+
+.yh-btn-outline {
+  background: #FFF;
+  color: var(--yh-black);
+  border: 1px solid #DBDBDB;
+  border-radius: 40px;
+}
+.yh-btn-outline:hover {
+  background: #f5f5f5;
+  border-color: #C8C8C8;
+}
+
+.yh-btn-primary {
+  background: var(--yh-black);
+  color: white;
+}
+.yh-btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* ============================================================
+   HERO - 首屏区域 (高度 ~965px)
+   ============================================================ */
+.yh-hero {
+  position: relative;
+  width: 100%;
+  /* 第一屏占满整个视口高度（精确像素由 JS 按 视口高/缩放比 计算并以 inline 覆盖，
+     规避 zoom 下 vh 失真）；100vh 仅作为无 JS 时的兜底 */
+  height: 100vh;
+  /* 向下滚动后吸附到下一屏 */
+  scroll-snap-align: start;
+  /* Navbar 是 fixed 64px，Hero 自带 64px 顶部内边距留出空间，避免内容被遮挡同时去除多余空隙 */
+  padding-top: 64px;
+  margin-top: 0;
+  overflow: hidden;
+}
+
+/* ---- 背景层：视频固定在视口底层，滚动时始终可见 ---- */
+video.yh-hero-bg {
+  background: #eaf1ff;
+}
+.yh-hero-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* ---- 内容区（垂直 flex 居中，统一通过 margin 控制间距）---- */
+.yh-hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  /* 内容竖直排布、整体水平居中，并在整屏高度内垂直居中 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* 整体上移（视觉居中偏上） */
+  padding-top: 0;
+  padding-bottom: 76px;
+}
+
+/* Logo + Badge 容器（Badge 盖在 Logo 右上角） */
+.yh-hero-logo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 上移 32px（16 + 16） */
+  margin-top: -32px;
+}
+
+/* Badge: Enterprise（绝对定位到 Logo 卡片右上角） */
+.yh-hero-badge {
+  position: absolute;
+  top: -8px;
+  right: -24px;
+  z-index: 12;
+  display: inline-flex;
+  padding: 4px 12px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 60px;
+  border: 1px solid #EDF0F9;
+  background: linear-gradient(98deg, #FFF 30.49%, #F2F8FF 62.5%, #FFF 89.98%);
+  box-shadow: 0 4px 24px 0 rgba(27, 77, 148, 0.14);
+  /* 让扫光被胶囊形状裁切，不溢出 */
+  overflow: hidden;
+}
+
+/* 扫光：一道极淡的白色高光从左到右循环扫过。
+   - 高光宽度约占 badge 的 40%
+   - 中心透明度仅 0.4，两端透明，整体非常克制
+   - 4s 一周期，期间 60% 时间在画面外（pause 段），看起来像偶尔扫一下 */
+.yh-hero-badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.40) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  animation: yhBadgeShimmer 4s ease-in-out infinite;
+}
+@keyframes yhBadgeShimmer {
+  0%   { left: -60%; }
+  60%  { left: 110%; } /* 0~60% 时长内一次扫过 */
+  100% { left: 110%; } /* 60%~100% 停留在画面外，形成"间歇扫光"节奏 */
+}
+@media (prefers-reduced-motion: reduce) {
+  .yh-hero-badge::before {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+.yh-hero-badge img {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  /* 提到扫光层之上 */
+  position: relative;
+  z-index: 1;
+}
+.yh-hero-badge span {
+  font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  color: #0A0A0A;
+  /* 提到扫光层之上 */
+  position: relative;
+  z-index: 1;
+}
+
+/* 中央图标卡片（160×160） */
+.yh-hero-icon-card {
+  position: relative;
+  z-index: 11;
+  width: 160px;
+  height: 160px;
+  background: #FFF;
+  box-shadow: 0 8px 32px 0 rgba(25, 32, 52, 0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.yh-hero-icon-card-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 大标题（距大图标 36px：1920 画布 y:408→y:444）。
+   始终水平居中：用户修改文案后仍保持水平居中（依靠父级 flex align-items: center
+   + 自身 text-align: center） */
+.yh-hero-title {
+  margin: 36px 0 0 0;
+  text-align: center;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 52px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 72px; /* 138.462% */
+  background: linear-gradient(91deg, #000 52.11%, #1F3E9C 98.88%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 副标题组（两行文字 + 横线装饰，作为一个整体）。
+   下方 CTA 与本组距离 36px，由 .yh-hero-cta 的 margin-top 控制。 */
+.yh-hero-subtitle-group {
+  margin: 16px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 行间距 12px：用 gap 自然处理，不依赖 line-height */
+  gap: 12px;
+}
+.yh-hero-subtitle-line {
+  margin: 0;
+  text-align: center;
+  color: #000;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 140% */
+}
+.yh-hero-subtitle-underline {
+  /* 紧跟在第二行下方，按图片原始比例展示 */
+  display: block;
+  margin-top: 4px;
+  height: 16px;
+  width: auto;
+  pointer-events: none;
+  user-select: none;
+  /* 向右偏移 284px */
+  margin-left: 284px;
+  margin-top: -6px;
+}
+
+/* CTA 按钮（距离副标题组 48px） */
+.yh-hero-cta {
+  margin-top: 48px;
+  display: flex;
+  width: 280px;
+  height: 48px;
+  padding: 4px 28px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 80px;
+  background: linear-gradient(96deg, #000 65.69%, #1447E6 120.32%);
+  color: white;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(20, 71, 230, 0.25);
+}
+.yh-hero-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(20, 71, 230, 0.35);
+}
+.yh-hero-cta img {
+  filter: brightness(0) invert(1);
+}
+
+/* 左侧装饰标签 */
+.yh-hero-left-tag {
+  position: absolute;
+  left: 160px;
+  top: 420px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--yh-card-shadow);
+  font-family: "PingFang SC", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--yh-text-primary);
+}
+
+/* 吉祥物区域 */
+.yh-hero-mascot-area {
+  position: absolute;
+  right: 180px;
+  bottom: 80px;
+  width: 200px;
+  height: 200px;
+  z-index: 15;
+}
+.yh-hero-mascot-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ============================================================
+   STEPS BAR - 步骤条（无背景、虚线分隔）
+   ============================================================ */
+.yh-steps-bar {
+  position: relative;
+  /* 距离 CTA 按钮 72px（60 + 12） */
+  margin-top: 72px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+/* 单个步骤项：编号 + 标题 */
+.yh-step-item {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.yh-step-num {
+  font-family: "Menlo", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--yh-blue);
+}
+.yh-step-label {
+  color: rgba(10, 10, 10, 0.60);
+  font-family: var(--font-definitions-font-family-body, "PingFang SC");
+  font-size: var(--paragraph-small-font-size, 14px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--paragraph-small-line-height, 22px); /* 157.143% */
+  white-space: nowrap;
+}
+
+/* 虚线分隔线 */
+.yh-step-divider {
+  display: inline-block;
+  width: 64px;
+  height: 0;
+  border: none;
+  border-top: 1px dashed rgba(0, 0, 0, 0.46);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   SCROLL HINT - 底部滚动提示（距 Hero 底部 48px）
+   ============================================================ */
+.yh-scroll-hint {
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 鼠标图标：17×26 圆角矩形 */
+.yh-scroll-mouse {
+  width: 17px;
+  height: 26px;
+  border: 1px solid rgba(0, 0, 0, 0.40);
+  border-radius: 9px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+/* 滚轮：3×8 圆角矩形，呼吸闪烁动效 */
+.yh-scroll-wheel {
+  width: 3px;
+  height: 8px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.40);
+  animation: yhScrollBreathe 1.8s ease-in-out infinite;
+}
+@keyframes yhScrollBreathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .yh-scroll-wheel {
+    animation: none !important;
+  }
+}
+
+/* 文字 */
+.yh-scroll-text {
+  font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.40);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   FEATURES - 特色功能区（上 2 大卡 + 下 3 小卡）
+   ============================================================ */
+.yh-features {
+  position: relative;
+  width: 100%;
+  /* 去掉背景：让固定视频透出 */
+  background: transparent;
+  /* 第二屏吸附：滚动后内容固定在标题可见处（配合 html scroll-padding-top: 64px） */
+  scroll-snap-align: start;
+  /* 顶部留白 */
+  padding: 72px 0 100px;
+  /* 初始隐藏（向上渐显） */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.yh-features.yh-features-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- Section Header ---- */
+.yh-section-header {
+  width: 1576px;
+  max-width: calc(100% - 160px);
+  margin: 0 auto 48px;
+  text-align: center;
+}
+.yh-section-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  background: rgba(20, 71, 230, 0.08);
+  border-radius: 20px;
+  font-family: "Menlo", monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--yh-blue);
+  margin-bottom: 16px;
+}
+.yh-section-title {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--yh-text-primary);
+  margin: 0 0 12px 0;
+}
+.yh-section-desc {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(51, 65, 85, 0.7);
+  margin: 0;
+}
+
+/* ---- 卡片行 ---- */
+.yh-features-row {
+  width: 1600px;
+  max-width: calc(100% - 160px);
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+.yh-features-row-top {
+  grid-template-columns: 1fr 1fr;          /* 上排 2 张大卡 */
+  margin-bottom: 20px;
+}
+.yh-features-row-bottom {
+  grid-template-columns: 1fr 1fr 1fr;      /* 下排 3 张小卡 */
+}
+
+/* ---- 通用卡片 ---- */
+.yh-feature-card {
+  background: #FFF;
+  border: 1px solid #E6E9F0;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px 0 rgba(149, 162, 175, 0.18);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* 不再裁切内容，避免描述文字 / 配图被强制隐藏 */
+  overflow: visible;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.yh-feature-card:hover {
+  border-color: #E6E9F0;
+  box-shadow: 0 4px 32px 0 rgba(86, 125, 164, 0.24);
+  transform: translateY(-2px);
+}
+/* 第一排大卡 / 第二排小卡：用最小高度兜底，内容超出会自然撑开而不是被裁 */
+.yh-feature-card-lg { min-height: 434px; }
+.yh-feature-card-sm { min-height: 456px; }
+
+/* 卡片头部（badge 行）：与下方 title 的间距由 .yh-feature-card-body 控制，这里不再额外塞 margin-bottom */
+.yh-feature-card-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  margin-bottom: 16px;
+}
+.yh-feature-num {
+  font-family: "Menlo", monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--yh-blue);
+  letter-spacing: 0.5px;
+}
+.yh-feature-tag {
+  font-family: "Menlo", monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: #737373;
+  letter-spacing: 0.5px;
+}
+
+/* 卡片文字区 - 大卡 */
+.yh-feature-card-body {
+  flex-shrink: 0;
+  /* 描述与下方配图的间距 = 24px（精确控制，不再让 flex 拉伸） */
+  margin-bottom: 24px;
+}
+.yh-feature-title {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--yh-text-primary);
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+.yh-feature-desc {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(51, 65, 85, 0.7);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 卡片文字区 - 小卡 */
+.yh-feature-card-body-sm {
+  flex-shrink: 0;
+  margin-bottom: 24px;
+}
+.yh-feature-title-sm {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--yh-text-primary);
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+.yh-feature-desc-sm {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(51, 65, 85, 0.7);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ---- 视觉插图区 ----
+   按设计稿固定容器尺寸（第一排 742×240、第二排 472×240），
+   静态图与视频均以容器为画布做 contain 渲染（保持原始比例不裁切）。
+   配图紧贴在描述文字下方，间距由 .yh-feature-card-body { margin-bottom: 24px } 决定，
+   不再用 margin-top: auto 把它推到卡片底部 —— 否则会和文字之间产生"夹缝空白" */
+.yh-feature-visual {
+  flex: 0 0 auto;
+  align-self: center;
+  background: transparent;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.yh-feature-visual-lg {
+  width: 742px;
+  height: 240px;
+}
+.yh-feature-visual-sm {
+  width: 472px;
+  height: 240px;
+}
+
+/* ---- FeatureMedia: 静态图 / 视频 hover 切换 ----
+   .yh-fm 是配图容器本体（同时挂着 .yh-feature-visual 类，已固定 742×240 / 472×240）。
+   它必须用 position: relative，让内部 static/video 相对它定位；
+   绝对不能写 position: absolute —— 否则会脱离文档流并把卡片里上方的标题/描述全部盖住。 */
+.yh-fm {
+  position: relative;
+  background: transparent;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.yh-fm-static,
+.yh-fm-video {
+  position: absolute;
+  inset: 0;
+  /* 源图比例 1484:480 / 944:480 与容器 742:240 / 472:240 完全一致，
+     用 contain 等比缩放即可 1:1 填满容器，不会失真也不会出现留白 */
+  object-fit: contain;
+  object-position: center;
+  transition: opacity 0.3s ease;
+}
+.yh-fm-static {
+  z-index: 1;
+}
+.yh-fm-video {
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ============================================================
+   FOOTER - 页脚
+   ============================================================ */
+.yh-footer {
+  width: 1600px;
+  max-width: calc(100% - 160px);
+  margin: 48px auto 0;
+  height: 80px;
+  border-top: 1px solid var(--yh-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+.yh-footer-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.yh-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.yh-footer-logo {
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.yh-footer-brand span {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--yh-text-primary);
+}
+.yh-footer-copy {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(51, 65, 85, 0.7);
+}
+
+/* ============================================================
+   入场动画
+   ============================================================ */
+.yh-root .page-enter {
+  animation: yhPageEnter 0.35s ease-out;
+}
+@keyframes yhPageEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   响应式降级提示
+   ============================================================ */
+@media (max-width: 1919px) {
+  .yh-page-wrapper {
+    /* 由 JS zoom 处理 */
+  }
+}
+
+/* ============================================================
+   入场动画 - Reveal (淡入 + 上移)
+   ------------------------------------------------------------
+   用法：
+   1. 给元素加 .yh-reveal（默认隐藏：opacity 0、translate y +24px）
+   2. 通过 inline style 设 --yh-d="0.1s" 控制延迟，做错峰
+   3. 触发时机：
+      - 首屏 (Hero)：组件挂载即用 .yh-revealed 触发
+      - 非首屏 (Features)：IntersectionObserver 进入视口后切到 .yh-revealed
+   说明：
+   - 使用 CSS 独立属性 `translate` 而不是 `transform`，避免和元素自身
+     的 `transform: translateX(-50%)`（如 Steps 卡片居中）发生冲突
+   - 同时只过渡 opacity / translate，不影响 transform 链上的 hover 效果
+   ============================================================ */
+.yh-reveal {
+  opacity: 0;
+  translate: 0 24px;
+  transition:
+    opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+    translate 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--yh-d, 0s);
+  will-change: opacity, translate;
+}
+.yh-reveal.yh-revealed {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* 用户偏好减弱动画时，立即显示，不做位移 */
+@media (prefers-reduced-motion: reduce) {
+  .yh-reveal {
+    opacity: 1 !important;
+    translate: none !important;
+    transition: none !important;
+  }
+}
+
+

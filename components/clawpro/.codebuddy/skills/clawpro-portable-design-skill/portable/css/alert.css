@@ -1,0 +1,239 @@
+/**
+ * Portable Alert — ClawPro Portable Design Skill
+ * ───────────────────────────────────────────────────────────────────────────
+ * 配套 portable/react/alert.tsx，与 demo 仓 client/src/components/ui/alert.tsx
+ * 1:1 对齐（spec/component-specs/alert.md §4）。
+ *
+ * 承载 className 难以表达的部分：6 个 variant 的 --alert-* token、grid 布局、
+ * 图标列、标题/描述排版，以及 AdminNoticeAlert（管控端顶部公告条）的渐变标签。
+ *
+ * 依赖的 --alert-* / --cp-* token 见 portable/css/tokens.css。
+ * 若宿主仓未引入 tokens.css，可直接使用本文件底部的 :root fallback 兜底块。
+ * ───────────────────────────────────────────────────────────────────────────
+ */
+
+/* ── 1. 基础 Alert 容器（spec §4.1） ───────────────────────────────────── */
+.cp-alert {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0 minmax(0, 1fr);
+  column-gap: 0;
+  row-gap: 4px;
+  align-items: start;
+  width: 100%;
+  border: 1px solid var(--alert-border);
+  border-radius: var(--alert-radius, 4px);
+  background: var(--alert-bg);
+  color: var(--alert-foreground);
+  padding: 10px 16px; /* py-2.5 px-4 */
+  font-family: var(--cp-font-sans);
+}
+
+/* 含图标时切换为 16px 图标列 + 8px 间距（对齐 has-[>svg] 行为） */
+.cp-alert:has(> .cp-alert__icon) {
+  grid-template-columns: 16px minmax(0, 1fr);
+  column-gap: 8px;
+}
+
+.cp-alert__icon {
+  grid-column: 1;
+  width: 16px;
+  height: 16px;
+  transform: translateY(1px); /* translate-y-px：与 18px 行高首行居中 */
+  color: var(--alert-icon);
+  flex-shrink: 0;
+}
+.cp-alert__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cp-alert__title {
+  grid-column: 2;
+  min-height: 18px;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 500; /* MetaMedium */
+  letter-spacing: -0.01em; /* tracking-tight */
+  color: inherit;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cp-alert__description {
+  grid-column: 2;
+  min-height: 18px;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 400; /* MetaText */
+  color: inherit;
+}
+.cp-alert__description p { line-height: 1.5; margin: 0; }
+.cp-alert__description p + p { margin-top: 4px; }
+
+/* 右侧操作区（spec §5 带右侧操作区） */
+.cp-alert--with-action:has(> .cp-alert__icon) {
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  row-gap: 0;
+}
+.cp-alert__action {
+  grid-column: 3;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+/* ── 2. 6 个 variant（spec §4.2） ──────────────────────────────────────── */
+.cp-alert--info {
+  --alert-bg: var(--alert-info-bg);
+  --alert-border: var(--alert-info-border);
+  --alert-foreground: var(--alert-info-foreground);
+  --alert-icon: var(--alert-info-icon);
+}
+.cp-alert--operation-info {
+  --alert-bg: var(--alert-operation-info-bg);
+  --alert-border: var(--alert-operation-info-border);
+  --alert-foreground: var(--alert-operation-info-foreground);
+  --alert-icon: var(--alert-operation-info-icon);
+}
+.cp-alert--warning {
+  --alert-bg: var(--alert-warning-bg);
+  --alert-border: var(--alert-warning-border);
+  --alert-foreground: var(--alert-warning-foreground);
+  --alert-icon: var(--alert-warning-icon);
+}
+.cp-alert--product-news {
+  --alert-bg: var(--alert-product-news-bg);
+  --alert-border: var(--alert-product-news-border);
+  --alert-foreground: var(--alert-product-news-foreground);
+  --alert-icon: var(--alert-product-news-icon);
+}
+.cp-alert--success {
+  --alert-bg: var(--alert-success-bg);
+  --alert-border: var(--alert-success-border);
+  --alert-foreground: var(--alert-success-foreground);
+  --alert-icon: var(--alert-success-icon);
+}
+.cp-alert--error {
+  --alert-bg: var(--alert-error-bg);
+  --alert-border: var(--alert-error-border);
+  --alert-foreground: var(--alert-error-foreground);
+  --alert-icon: var(--alert-error-icon);
+}
+
+/* ── 3. AdminNoticeAlert 管控端顶部公告条（spec §6） ───────────────────── */
+.cp-notice-stage {
+  border-radius: 4px;
+  background: linear-gradient(180deg, #F7FAFF 0%, #EEF4FB 100%);
+  padding: 16px 20px;
+}
+.cp-notice-stack { display: grid; gap: 12px; }
+
+.cp-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* gap-2.5 */
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid #FFFFFF;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 7px 12px; /* px-3 */
+  font-size: 12px;
+  line-height: 18px;
+  color: #030712;
+  font-family: var(--cp-font-sans);
+}
+.cp-notice__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  height: 22px;
+  border: 1px solid;
+  border-radius: 2px;
+  padding: 0 6px;
+  font-size: 11px;
+  line-height: 18px;
+}
+.cp-notice__tag-icon {
+  display: inline-flex;
+  width: 11px;
+  height: 11px;
+  align-items: center;
+  justify-content: center;
+}
+.cp-notice__tag-icon svg { display: block; width: 100%; height: 100%; }
+.cp-notice__content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 4px;
+}
+.cp-notice__content a {
+  color: var(--cp-text-emphasis);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cp-notice__controls {
+  flex-shrink: 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--cp-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.cp-notice--product-news .cp-notice__tag {
+  background: linear-gradient(139deg, #EFF3FF 18%, #F3F6FF 51%, #ECF1FF 100%);
+  border-color: #C6D4FF;
+  color: #2547B1;
+}
+.cp-notice--product-news .cp-notice__tag-icon { color: #2547B1; }
+.cp-notice--pending-config .cp-notice__tag,
+.cp-notice--resource-alert .cp-notice__tag {
+  background: linear-gradient(139deg, #FFF2E6 18%, #FFF9F4 51%, #FFF2E6 100%);
+  border-color: #F8DDC4;
+  color: #D76610;
+}
+.cp-notice--pending-config .cp-notice__tag-icon,
+.cp-notice--resource-alert .cp-notice__tag-icon { color: #EE7A23; }
+
+@media (max-width: 768px) {
+  .cp-notice-stage { padding: 16px; }
+  .cp-notice { flex-wrap: wrap; align-items: flex-start; }
+  .cp-notice__content { width: 100%; }
+  .cp-notice__controls { margin-left: auto; }
+}
+
+/* ── 4. :root fallback（宿主仓未引入 tokens.css 时的兜底，与 index.css 一致） ─ */
+:root {
+  --alert-radius: 4px;
+  --alert-info-bg: #F0F3FC;
+  --alert-info-border: #BFCFFE;
+  --alert-info-foreground: #0A0A0A;
+  --alert-info-icon: #1447E6;
+  --alert-operation-info-bg: #FFFFFF;
+  --alert-operation-info-border: #EAEEF4;
+  --alert-operation-info-foreground: var(--alert-info-foreground);
+  --alert-operation-info-icon: #64748B;
+  --alert-warning-bg: #FFF7ED;
+  --alert-warning-border: #FED7AA;
+  --alert-warning-foreground: #0A0A0A;
+  --alert-warning-icon: #FF6900;
+  --alert-product-news-bg: var(--alert-info-bg);
+  --alert-product-news-border: var(--alert-info-border);
+  --alert-product-news-foreground: var(--alert-info-foreground);
+  --alert-product-news-icon: var(--alert-info-icon);
+  --alert-success-bg: #ECFDF5;
+  --alert-success-border: #A7F3D0;
+  --alert-success-foreground: #0A0A0A;
+  --alert-success-icon: #059669;
+  --alert-error-bg: #FEF2F2;
+  --alert-error-border: #FECACA;
+  --alert-error-foreground: #0A0A0A;
+  --alert-error-icon: #DC2626;
+}

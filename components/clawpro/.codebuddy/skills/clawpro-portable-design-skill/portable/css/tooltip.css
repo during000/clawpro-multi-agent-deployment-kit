@@ -1,0 +1,59 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Tooltip — ClawPro
+ * 短提示浮层。深黑底白字、4px 圆角、px-3 py-1.5、12px leading-relaxed、
+ * 最大宽度 240px（超出换行）；top 优先。
+ * 仅短文本，不放可交互内容（用 Popover / HoverCard）。
+ * 配套：portable/react/tooltip.tsx
+ * 规范：component-specs/tooltip.md §3
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.cp-tooltip__content {
+  position: absolute;
+  z-index: 50;
+  max-width: 240px;
+  width: max-content;
+  border-radius: var(--radius);
+  background: var(--cp-brand-black); /* #020617 */
+  padding: 6px 12px; /* py-1.5 px-3 */
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.625; /* leading-relaxed */
+  text-align: left;
+  white-space: normal;
+  word-break: break-word;
+  pointer-events: none;
+}
+
+/* ─── 四向定位 ─── */
+.cp-tooltip__content--top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+}
+
+.cp-tooltip__content--bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 6px;
+}
+
+.cp-tooltip__content--left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 6px;
+}
+
+.cp-tooltip__content--right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 6px;
+}

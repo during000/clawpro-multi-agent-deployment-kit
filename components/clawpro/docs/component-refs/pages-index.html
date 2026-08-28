@@ -1,0 +1,2452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>OpenClaw 企业版 · 组件 & 页面交叉索引</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #fafafa;
+    --panel: #fff;
+    --border: #e5e7eb;
+    --text: #111827;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --tag-bg: #eff6ff;
+    --tag-text: #1d4ed8;
+    --hot: #dc2626;
+    --warm: #f59e0b;
+    --cool: #10b981;
+    --gray: #9ca3af;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  header {
+    position: sticky; top: 0; background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px; z-index: 10;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  h1 { margin: 0 0 12px 0; font-size: 18px; font-weight: 600; }
+  .top-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .top-tab {
+    padding: 8px 16px; border: 1px solid var(--border);
+    background: #fff; border-radius: 8px; cursor: pointer;
+    font-size: 14px; font-weight: 500;
+    transition: all .15s;
+  }
+  .top-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .top-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  /* 外链型 Tab（去 a 默认下划线 / 跟普通按钮视觉对齐 / 加一道左边轻微强调） */
+  a.top-tab-external {
+    text-decoration: none; color: var(--text);
+    background: linear-gradient(90deg, #eff6ff 0%, #fff 60%);
+    border-color: #bfdbfe; font-weight: 600;
+  }
+  a.top-tab-external:hover {
+    background: linear-gradient(90deg, #dbeafe 0%, #eff6ff 100%);
+    border-color: var(--accent); color: var(--accent);
+  }
+  .toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  #search {
+    flex: 1; min-width: 280px; padding: 8px 14px;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 14px; outline: none; transition: border-color .2s;
+  }
+  #search:focus { border-color: var(--accent); }
+  .stats { color: var(--muted); font-size: 13px; }
+  main { padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* 组件视图 */
+  .comp-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 14px; overflow: hidden;
+  }
+  .comp-card.hidden { display: none; }
+  .comp-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; cursor: pointer; user-select: none;
+    background: #fff; transition: background .15s;
+  }
+  .comp-header:hover { background: #f9fafb; }
+  .comp-header-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .comp-name {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 600; font-size: 15px; color: var(--text);
+  }
+  .comp-cn { color: var(--muted); font-size: 13px; }
+  .comp-count {
+    display: inline-flex; align-items: center; padding: 2px 10px;
+    border-radius: 12px; font-size: 12px; font-weight: 600;
+  }
+  .count-hot { background: #fee2e2; color: var(--hot); }
+  .count-warm { background: #fef3c7; color: var(--warm); }
+  .count-cool { background: #d1fae5; color: var(--cool); }
+  .count-gray { background: #f3f4f6; color: var(--gray); }
+  .shadcn-link {
+    color: var(--accent); font-size: 12px; text-decoration: none;
+    padding: 2px 8px; border-radius: 4px; background: var(--tag-bg);
+  }
+  .shadcn-link:hover { text-decoration: underline; }
+  .toggle-icon { color: var(--muted); transition: transform .2s; }
+  .comp-card.collapsed .toggle-icon { transform: rotate(-90deg); }
+  .comp-card.collapsed .comp-body { display: none; }
+  .comp-body {
+    border-top: 1px solid var(--border); background: #fafbfc;
+  }
+  .comp-empty { padding: 16px 18px; color: var(--muted); font-style: italic; }
+
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  thead th {
+    text-align: left; padding: 8px 16px; background: #f9fafb;
+    border-bottom: 1px solid var(--border); font-weight: 500;
+    color: var(--muted); font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  tbody tr {
+    border-bottom: 1px solid #f3f4f6; transition: background .1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #fafbfc; }
+  td { padding: 10px 16px; vertical-align: top; }
+  .page-cn { font-weight: 600; color: var(--text); }
+  .page-path {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px; color: var(--muted);
+    cursor: pointer; padding: 2px 6px; border-radius: 4px;
+    transition: all .15s; display: inline-block; word-break: break-all;
+  }
+  .page-path:hover { background: var(--tag-bg); color: var(--tag-text); }
+  .page-path.copied { background: #d1fae5; color: #065f46; }
+  .badge {
+    display: inline-block; padding: 1px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 500; margin-right: 4px;
+  }
+  .badge-tenant { background: #ecfdf5; color: #047857; }
+  .badge-admin { background: #eff6ff; color: #1d4ed8; }
+  .badge-sub { background: #f3e8ff; color: #6b21a8; }
+  .badge-top { background: #fef3c7; color: #92400e; }
+  .desc { color: var(--text); line-height: 1.5; font-size: 13px; }
+  .empty-state { padding: 40px; text-align: center; color: var(--muted); }
+
+  /* 页面视图 */
+  .page-section {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 16px; overflow: hidden;
+  }
+  .page-section.hidden { display: none; }
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px; background: #f9fafb;
+    border-bottom: 1px solid var(--border); cursor: pointer; user-select: none;
+  }
+  .section-header:hover { background: #f3f4f6; }
+  .section-title {
+    font-weight: 600; font-size: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-count { color: var(--muted); font-weight: 400; font-size: 12px; }
+  .page-section.collapsed .toggle-icon { transform: rotate(-90deg); }
+  .page-section.collapsed .section-body { display: none; }
+  .page-card-uses {
+    display: flex; flex-wrap: wrap; gap: 4px; max-width: 460px;
+  }
+  .uses-chip {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px; padding: 1px 6px; background: var(--tag-bg);
+    color: var(--tag-text); border-radius: 3px;
+  }
+  .route {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px; color: var(--accent); background: var(--tag-bg);
+    padding: 2px 8px; border-radius: 4px; display: inline-block;
+  }
+
+  /* 改造优先级标签 */
+  .priority {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 600;
+  }
+  .priority-p0 { background: #fee2e2; color: #b91c1c; }
+  .priority-p1 { background: #fef3c7; color: #92400e; }
+  .priority-p2 { background: #dbeafe; color: #1e40af; }
+  .priority-p3 { background: #f3f4f6; color: #4b5563; }
+  .priority-skip { background: #f3f4f6; color: #9ca3af; text-decoration: line-through; }
+
+  /* 改造提示框 */
+  .reform-tip {
+    margin: 0; padding: 12px 18px;
+    background: linear-gradient(to right, #fef9c3, #fef3c7);
+    border-bottom: 1px solid #fde68a;
+    font-size: 13px; line-height: 1.6; color: #713f12;
+  }
+  .reform-tip.tip-p0 {
+    background: linear-gradient(to right, #fee2e2, #fecaca);
+    border-bottom-color: #fca5a5; color: #7f1d1d;
+  }
+  .reform-tip.tip-p1 {
+    background: linear-gradient(to right, #fef3c7, #fde68a);
+    border-bottom-color: #fcd34d; color: #78350f;
+  }
+  .reform-tip.tip-p2 {
+    background: linear-gradient(to right, #dbeafe, #bfdbfe);
+    border-bottom-color: #93c5fd; color: #1e3a8a;
+  }
+  .reform-tip.tip-skip {
+    background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+    border-bottom-color: #d1d5db; color: #4b5563;
+  }
+  .reform-tip.tip-promote {
+    background: linear-gradient(to right, #d1fae5, #a7f3d0);
+    border-bottom-color: #6ee7b7; color: #064e3b;
+  }
+  .reform-tip strong { font-weight: 700; }
+  .reform-tip ul { margin: 6px 0 0 0; padding-left: 22px; }
+  .reform-tip li { margin: 2px 0; }
+  .reform-tip code {
+    background: rgba(0,0,0,0.06); padding: 1px 6px; border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+  }
+
+  /* 路线图视图 */
+  .roadmap-section {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 20px; padding: 20px 24px;
+  }
+  .roadmap-section h2 {
+    margin: 0 0 12px 0; font-size: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .roadmap-section h2 .priority { font-size: 12px; padding: 3px 12px; }
+  .roadmap-section p { margin: 8px 0; color: var(--text); }
+  .roadmap-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px; margin-top: 12px;
+  }
+  .roadmap-item {
+    background: #fafbfc; border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px;
+  }
+  .roadmap-item-name {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 600; color: var(--text); margin-bottom: 4px;
+  }
+  .roadmap-item-cn { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+  .roadmap-item-action { color: var(--text); font-size: 13px; }
+  .roadmap-item-stat {
+    display: inline-block; padding: 1px 8px; border-radius: 10px;
+    background: var(--tag-bg); color: var(--tag-text);
+    font-size: 11px; margin-left: 6px;
+  }
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--tag-bg); padding: 10px 14px;
+    border-radius: 0 8px 8px 0; margin: 12px 0;
+    color: var(--text); font-size: 13px; line-height: 1.6;
+  }
+  .callout.warn { border-left-color: var(--warm); background: #fef3c7; color: #78350f; }
+  .callout.danger { border-left-color: var(--hot); background: #fee2e2; color: #7f1d1d; }
+  .callout.success { border-left-color: var(--cool); background: #d1fae5; color: #064e3b; }
+  .design-rules {
+    background: #f9fafb; border: 1px dashed var(--border);
+    border-radius: 8px; padding: 14px 18px; margin: 14px 0;
+  }
+  .design-rules h4 { margin: 0 0 8px 0; font-size: 13px; color: var(--text); }
+  .design-rules table { background: transparent; }
+  .design-rules td { padding: 6px 12px; border: none; }
+  .design-rules td:first-child {
+    color: var(--muted); white-space: nowrap; font-size: 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  /* ========== 改造进度视图（仿 dashboard 风格） ========== */
+  .progress-toolbar {
+    display: flex; gap: 8px; align-items: center;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .progress-toolbar .btn {
+    padding: 6px 14px; border: 1px solid var(--border);
+    background: #fff; border-radius: 8px; cursor: pointer;
+    font-size: 13px; transition: all .15s;
+  }
+  .progress-toolbar .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .progress-toolbar .btn.primary {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .progress-toolbar .btn.primary:hover { background: #1d4ed8; color: #fff; }
+  .progress-toolbar .btn.danger {
+    color: var(--hot); border-color: #fecaca;
+  }
+  .progress-toolbar .btn.danger:hover { background: #fee2e2; }
+
+  .dash-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .dash-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .dash-card h3 {
+    margin: 0 0 4px 0;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .dash-card .dash-sub {
+    color: var(--muted); font-size: 12px; margin-bottom: 12px;
+  }
+  .dash-card .dash-big {
+    font-size: 32px; font-weight: 700;
+    line-height: 1.1; color: var(--text);
+    margin: 6px 0 4px 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .dash-card .dash-tag {
+    display: inline-block; padding: 2px 8px;
+    border-radius: 10px; font-size: 11px; font-weight: 600;
+    background: var(--tag-bg); color: var(--tag-text);
+    margin-left: 8px;
+  }
+
+  /* 第一行：4 个 KPI 卡片，各 3 列 */
+  .dash-card.col-3 { grid-column: span 3; }
+  .dash-card.col-4 { grid-column: span 4; }
+  .dash-card.col-6 { grid-column: span 6; }
+  .dash-card.col-8 { grid-column: span 8; }
+  .dash-card.col-12 { grid-column: span 12; }
+  @media (max-width: 1100px) {
+    .dash-card.col-3 { grid-column: span 6; }
+    .dash-card.col-4, .dash-card.col-6, .dash-card.col-8 { grid-column: span 12; }
+  }
+
+  /* 进度条 */
+  .pbar {
+    position: relative;
+    height: 8px; background: #f3f4f6;
+    border-radius: 999px; overflow: hidden;
+    margin-top: 10px;
+  }
+  .pbar > span {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 999px;
+    transition: width .4s cubic-bezier(.2,.8,.2,1);
+  }
+  .pbar.p-p0 > span { background: linear-gradient(90deg, #ef4444, #fb7185); }
+  .pbar.p-p1 > span { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .pbar.p-p2 > span { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .pbar.p-promote > span { background: linear-gradient(90deg, #10b981, #6ee7b7); }
+  .pbar.p-p3 > span { background: linear-gradient(90deg, #9ca3af, #d1d5db); }
+
+  .pbar-row {
+    display: flex; align-items: center; gap: 12px;
+    margin: 10px 0; font-size: 13px;
+  }
+  .pbar-row .label {
+    width: 140px; flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+  }
+  .pbar-row .pbar { flex: 1; margin-top: 0; }
+  .pbar-row .num {
+    color: var(--muted); font-size: 12px; width: 86px; text-align: right;
+    font-variant-numeric: tabular-nums; flex-shrink: 0;
+  }
+
+  /* 列表：最近更新 / 待办前列 */
+  .dash-list {
+    margin: 0; padding: 0; list-style: none;
+  }
+  .dash-list li {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid #f3f4f6;
+    font-size: 13px;
+  }
+  .dash-list li:last-child { border-bottom: none; }
+  .dash-list .name {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 600; color: var(--text);
+  }
+  .dash-list .meta { color: var(--muted); font-size: 12px; margin-left: auto; }
+  .dash-list .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dot.s-done { background: #10b981; }
+  .dot.s-doing { background: #f59e0b; }
+  .dot.s-todo  { background: #d1d5db; }
+
+  /* 状态徽标 / 切换按钮（嵌入到组件、页面表格里） */
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 12px; cursor: pointer;
+    font-size: 12px; font-weight: 600; user-select: none;
+    border: 1px solid transparent; transition: all .15s;
+    white-space: nowrap;
+  }
+  .status-pill:hover { transform: translateY(-1px); }
+  .status-todo  { background: #f3f4f6; color: #4b5563; border-color: #e5e7eb; }
+  .status-doing { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+  .status-done  { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+
+  .status-mini {
+    display: inline-flex; align-items: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    cursor: pointer; user-select: none; flex-shrink: 0;
+    border: 1.5px solid #d1d5db; background: #fff;
+    transition: all .15s; font-size: 11px;
+    justify-content: center; color: transparent;
+  }
+  .status-mini:hover { border-color: var(--accent); }
+  .status-mini.s-doing { border-color: #f59e0b; background: #fef3c7; color: #92400e; }
+  .status-mini.s-doing::after { content: "◐"; font-size: 12px; line-height: 1; }
+  .status-mini.s-done {
+    border-color: #10b981; background: #10b981; color: #fff;
+  }
+  .status-mini.s-done::after { content: "✓"; font-weight: 700; line-height: 1; }
+
+  /* 页面视图里：path 单元里的勾选块 */
+  .page-status-cell {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+
+  /* 进度卡的小 hint */
+  .progress-hint {
+    background: linear-gradient(90deg, #eff6ff, #dbeafe);
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 16px;
+    font-size: 13px; color: #1e40af; line-height: 1.6;
+  }
+  .progress-hint code {
+    background: rgba(255,255,255,0.6); padding: 1px 6px; border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  /* ============ 变体视图（按 variant 维度反向索引） ============ */
+  .var-toolbar {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    margin-bottom: 14px; color: var(--muted); font-size: 13px;
+  }
+  .var-toolbar .legend-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 12px; font-size: 12px;
+    background: #f3f4f6; color: #4b5563;
+  }
+  .var-comp {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 16px; overflow: hidden;
+  }
+  .var-comp.hidden { display: none; }
+  .var-comp-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; background: #fff; cursor: pointer; user-select: none;
+  }
+  .var-comp-header:hover { background: #f9fafb; }
+  .var-comp-header-left {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  }
+  .var-comp-name {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 600; font-size: 15px;
+  }
+  .var-comp-cn { color: var(--muted); font-size: 13px; }
+  .var-comp-stat {
+    color: var(--muted); font-size: 12px;
+    background: #f3f4f6; padding: 2px 8px; border-radius: 10px;
+  }
+  .var-comp.collapsed .toggle-icon { transform: rotate(-90deg); }
+  .var-comp.collapsed .var-comp-body { display: none; }
+  .var-comp-body { border-top: 1px solid var(--border); background: #fafbfc; padding: 12px 18px; }
+  .var-dim {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 12px; overflow: hidden;
+  }
+  .var-dim:last-child { margin-bottom: 0; }
+  .var-dim-header {
+    padding: 8px 14px; background: #f9fafb;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .var-dim-header strong {
+    color: var(--text); font-weight: 600;
+    text-transform: none; letter-spacing: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px;
+  }
+  .var-dim-header .var-dim-default {
+    color: #1d4ed8; font-size: 11px; background: var(--tag-bg);
+    padding: 1px 6px; border-radius: 3px; text-transform: none;
+    letter-spacing: 0; font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .var-row {
+    display: grid;
+    grid-template-columns: 200px 70px 1fr;
+    gap: 12px; padding: 10px 14px;
+    border-top: 1px solid #f3f4f6;
+    align-items: start;
+  }
+  .var-row:first-of-type { border-top: none; }
+  .var-row.row-empty { color: var(--muted); font-style: italic; }
+  .var-value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px; font-weight: 600;
+    padding: 3px 8px; border-radius: 4px;
+    background: var(--tag-bg); color: var(--tag-text);
+    align-self: start; word-break: break-all;
+  }
+  .var-value.is-special { background: #f3f4f6; color: #6b7280; }
+  .var-value.is-claw { background: #fef3c7; color: #92400e; }   /* claw-* 自定义变体高亮 */
+  .var-count {
+    font-size: 12px; color: var(--muted);
+    text-align: right; font-variant-numeric: tabular-nums;
+    padding-top: 4px;
+  }
+  .var-pages {
+    display: flex; flex-wrap: wrap; gap: 4px 6px;
+  }
+  .var-page-chip {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px; padding: 2px 6px;
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 4px; color: var(--text);
+    cursor: pointer; transition: all .15s;
+  }
+  .var-page-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .var-page-chip.copied { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
+  .var-page-chip .x { color: var(--muted); margin-left: 4px; }
+
+  .var-empty-block {
+    padding: 24px; text-align: center;
+    color: var(--muted); font-style: italic;
+  }
+  .var-tip {
+    background: linear-gradient(to right, #eff6ff, #dbeafe);
+    border: 1px solid #bfdbfe; color: #1e3a8a;
+    padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;
+    font-size: 13px; line-height: 1.6;
+  }
+  .var-tip strong { font-weight: 700; }
+  .var-tip code {
+    background: rgba(255,255,255,0.7); padding: 1px 6px; border-radius: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 OpenClaw 企业版 · 组件 & 页面交叉索引</h1>
+  <div class="top-tabs">
+    <a class="top-tab top-tab-external" href="https://clawprocomponent.devcloud.woa.com/index.html" target="_blank" rel="noopener" title="设计师入口 · 部署在 devcloud · 源文件 ../button-tokens/">🎭 组件图鉴 ↗</a>
+    <button class="top-tab active" data-view="progress">📊 改造进度</button>
+    <button class="top-tab" data-view="comp">🧩 组件 → 页面</button>
+    <button class="top-tab" data-view="page">📄 页面 → 组件</button>
+    <button class="top-tab" data-view="variants">🎨 变体分工</button>
+    <button class="top-tab" data-view="roadmap">🗺 改造路线图</button>
+  </div>
+  <div class="toolbar">
+    <input id="search" type="text" placeholder="🔍 搜索组件名 / 页面名（中英文都行）..." />
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<main>
+
+<!-- 视图 1：组件 → 页面 -->
+<div class="view" id="view-comp"></div>
+
+<!-- 视图 2：页面 → 组件 -->
+<div class="view" id="view-page"></div>
+
+<!-- 视图 3：改造路线图 -->
+<div class="view" id="view-roadmap"></div>
+
+<!-- 视图 4：改造进度仪表盘 -->
+<div class="view active" id="view-progress"></div>
+
+<!-- 视图 5：变体分工（按 variant/size 维度的反向索引） -->
+<div class="view" id="view-variants"></div>
+
+<div class="empty-state" id="empty-state" style="display:none">没有匹配的内容 🤔</div>
+
+</main>
+
+<script>
+// ============== 数据 1：组件元信息（中文名 + shadcn 链接） ==============
+const COMP_META = {
+  "accordion":      { cn: "手风琴折叠", shadcn: "accordion" },
+  "alert-dialog":   { cn: "警告确认弹窗", shadcn: "alert-dialog" },
+  "alert":          { cn: "横幅提示", shadcn: "alert" },
+  "aspect-ratio":   { cn: "宽高比容器", shadcn: "aspect-ratio" },
+  "avatar":         { cn: "头像", shadcn: "avatar" },
+  "badge":          { cn: "徽章/状态标签", shadcn: "badge" },
+  "breadcrumb":     { cn: "面包屑导航", shadcn: "breadcrumb" },
+  "button-group":   { cn: "按钮组", shadcn: "button-group" },
+  "button":         { cn: "按钮", shadcn: "button" },
+  "calendar":       { cn: "日历", shadcn: "calendar" },
+  "card":           { cn: "卡片容器", shadcn: "card" },
+  "carousel":       { cn: "轮播图", shadcn: "carousel" },
+  "chart":          { cn: "图表", shadcn: "chart" },
+  "checkbox":       { cn: "复选框", shadcn: "checkbox" },
+  "collapsible":    { cn: "折叠区块", shadcn: "collapsible" },
+  "command":        { cn: "命令面板（⌘K）", shadcn: "command" },
+  "context-menu":   { cn: "右键菜单", shadcn: "context-menu" },
+  "dialog":         { cn: "弹窗对话框", shadcn: "dialog" },
+  "drawer":         { cn: "底部抽屉（移动端）", shadcn: "drawer" },
+  "dropdown-menu":  { cn: "下拉菜单", shadcn: "dropdown-menu" },
+  "empty":          { cn: "空状态", shadcn: "empty" },
+  "field":          { cn: "表单字段", shadcn: "field" },
+  "form":           { cn: "表单", shadcn: "form" },
+  "hover-card":     { cn: "悬浮信息卡", shadcn: "hover-card" },
+  "input-group":    { cn: "输入框组", shadcn: "input-group" },
+  "input-otp":      { cn: "验证码输入", shadcn: "input-otp" },
+  "input":          { cn: "单行输入框", shadcn: "input" },
+  "item":           { cn: "列表项（新版）", shadcn: "item" },
+  "kbd":            { cn: "键盘按键标识", shadcn: "kbd" },
+  "label":          { cn: "表单标签", shadcn: "label" },
+  "menubar":        { cn: "菜单栏", shadcn: "menubar" },
+  "navigation-menu":{ cn: "导航菜单", shadcn: "navigation-menu" },
+  "pagination":     { cn: "分页器", shadcn: "pagination" },
+  "popover":        { cn: "气泡浮层", shadcn: "popover" },
+  "progress":       { cn: "进度条", shadcn: "progress" },
+  "radio-group":    { cn: "单选组", shadcn: "radio-group" },
+  "resizable":      { cn: "可调宽度分栏", shadcn: "resizable" },
+  "scroll-area":    { cn: "滚动区域", shadcn: "scroll-area" },
+  "select":         { cn: "下拉选择", shadcn: "select" },
+  "separator":      { cn: "分割线", shadcn: "separator" },
+  "sheet":          { cn: "侧边抽屉", shadcn: "sheet" },
+  "sidebar":        { cn: "侧边栏", shadcn: "sidebar" },
+  "skeleton":       { cn: "骨架屏", shadcn: "skeleton" },
+  "slider":         { cn: "滑块", shadcn: "slider" },
+  "sonner":         { cn: "Toast 浮窗提示", shadcn: "sonner" },
+  "spinner":        { cn: "加载旋转图标", shadcn: "spinner" },
+  "switch":         { cn: "开关", shadcn: "switch" },
+  "table":          { cn: "数据表格", shadcn: "table" },
+  "tabs":           { cn: "标签页切换", shadcn: "tabs" },
+  "textarea":       { cn: "多行输入", shadcn: "textarea" },
+  "toggle-group":   { cn: "切换按钮组", shadcn: "toggle-group" },
+  "toggle":         { cn: "切换按钮", shadcn: "toggle" },
+  "tooltip":        { cn: "鼠标悬浮提示", shadcn: "tooltip" },
+};
+
+// ============== 改造优先级 & 提示 ==============
+// priority: p0 / p1 / p2 / p3 / skip / promote
+// tip: HTML 字符串，描述改造要点
+const COMP_REFORM = {
+  // 🔥 P0 基石（必改）
+  "button":   { priority: "p0", tip: "<strong>🎯 P0 · 全场景基石</strong>覆盖 78% 的页面，先改它收益最大。<ul><li>统一 size：<code>sm / md / lg</code> 三档高度（建议 28/32/40）</li><li>统一 variant：<code>default / outline / ghost / secondary / destructive / link</code></li><li>规范 icon 间距、loading 态、disabled 态</li><li>focus ring 统一颜色 + 厚度（无障碍要求）</li></ul>" },
+  "dialog":  { priority: "p0", tip: "<strong>🎯 P0 · 弹窗骨架</strong>49 个页面在用，但项目里弹窗参差不齐。<ul><li>统一宽度档位：<code>sm(420) / md(560) / lg(760) / xl(960)</code></li><li>固定底部按钮排布：左次要 / 右主要</li><li>长内容区自动滚动（内置 scroll-area）</li><li>关闭逻辑统一（点遮罩、ESC、× 按钮）</li></ul>" },
+  "input":   { priority: "p0", tip: "<strong>🎯 P0 · 表单核心</strong>43 个页面在用。<ul><li>高度与 button 对齐（建议 32px）</li><li>统一 placeholder 颜色 / 字号 / error 态边框</li><li>顺手启用 <code>input-group.tsx</code>（前后缀、清除按钮、单位标识）</li></ul>" },
+  "select":  { priority: "p0", tip: "<strong>🎯 P0 · 高频筛选</strong>触发器与 input 同高，下拉面板与 dialog 同风格。<ul><li>统一空态文案、加载态</li><li>大数据量场景考虑接 <code>command</code>（带搜索）</li></ul>" },
+  "tabs":    { priority: "p0", tip: "<strong>🎯 P0 · 视图切换</strong>建议沉淀三种风格供产品按场景挑：<ul><li><code>line</code>：底部下划线（详情页常见）</li><li><code>pill</code>：胶囊背景（轻量切换）</li><li><code>segmented</code>：iOS 风格分段（左右切换）</li></ul>" },
+  "label":   { priority: "p0", tip: "<strong>🎯 P0 · 表单四件套之一</strong>统一字号、与 input 间距、必填星号位置、required/optional 标识。" },
+
+  // 🟡 P1 高频
+  "tooltip":      { priority: "p1", tip: "<strong>P1 · 高频辅助</strong>统一延迟（300ms）、最大宽度、箭头样式、深色主题适配。" },
+  "checkbox":     { priority: "p1", tip: "<strong>P1 · 表单四件套</strong>统一选中色、indeterminate（半选）态、与 label 对齐基线。" },
+  "switch":       { priority: "p1", tip: "<strong>P1 · 表单四件套</strong>统一尺寸、动画时长、loading 态（异步开关）。" },
+  "popover":      { priority: "p1", tip: "<strong>P1 · 浮层基础</strong>它和 dialog 是两种弹层，常用于行内详情、过滤面板。统一阴影、箭头、padding。" },
+  "alert-dialog": { priority: "p1", tip: "<strong>P1 · 危险确认</strong>所有「删除/停用/清空」类操作必须用它（不要用普通 dialog），主按钮固定红色。" },
+
+  // 🟢 P2 中频
+  "textarea":     { priority: "p2", tip: "<strong>P2</strong>风格与 input 保持一致，统一最小高度、字数计数器（可选）。" },
+  "table":        { priority: "p2", tip: "<strong>P2 · 重要但低引用</strong>当前只有 1 处用到（多数页面手写 table）。改造时建议沉淀「表头排序、行 hover、空态、加载态、紧凑模式」，并推动管理端列表页统一改用。" },
+  "dropdown-menu":{ priority: "p2", tip: "<strong>P2</strong>常用于行操作（…菜单）。统一图标+文字间距、危险项颜色、组织分隔线。" },
+  "badge":        { priority: "p2", tip: "<strong>P2 · 状态标识</strong>建议沉淀语义色板：<code>success / warning / error / info / neutral</code> 五种，避免每个页面自定义。" },
+  "radio-group":  { priority: "p2", tip: "<strong>P2</strong>与 checkbox 风格统一，提供卡片式（大块可点）和经典圆点两种 variant。" },
+
+  // 🌱 推广 = 现状低引用但应该重点推广
+  "card":         { priority: "promote", tip: "<strong>🌱 推广目标 · 仅 2 处引用！</strong>大量页面在用 <code>&lt;div className=\"bg-white rounded-lg border ...\"&gt;</code> 手写卡片。<br/><strong>改造策略：</strong><ul><li>先把 card.tsx 设计令牌定好（圆角 12、阴影 sm、padding 24）</li><li>提供 Default / Dense / Borderless 三种密度</li><li>推动新增页面只用 <code>&lt;Card&gt;</code>，老页面渐进替换</li></ul>这是统一 UI 风格的最佳抓手。" },
+  "scroll-area":  { priority: "promote", tip: "<strong>🌱 推广目标 · 0 引用！</strong>当前所有滚动都是浏览器原生样式（不一致）。改造后推动：dialog 长内容、侧栏菜单、表格内容区都包一层 ScrollArea，统一滚动条样式。" },
+  "form":         { priority: "promote", tip: "<strong>🌱 强烈推广 · 0 引用</strong>项目用了 react-hook-form 但没用 shadcn 的 form 组件。改造后统一表单 label/error/description 排版，能解决「表单错误提示风格不一」的痛点。" },
+  "field":        { priority: "promote", tip: "<strong>🌱 推广目标 · 0 引用</strong>shadcn 新出的「表单字段壳子」组件。和 form 配合用，能极大简化重复的「label + input + 错误提示」三件套样板。" },
+  "empty":        { priority: "promote", tip: "<strong>🌱 推广目标 · 0 引用</strong>当前各页面空态自由发挥（图片+文字+按钮各搞各的）。统一后新增页面直接 <code>&lt;Empty&gt;</code>。" },
+  "skeleton":     { priority: "promote", tip: "<strong>🌱 推广目标 · 1 处引用</strong>加载态目前多用 spinner 居中，颗粒感差。建议结合 card/table 沉淀骨架屏样式，提升等待体感。" },
+
+  // ⚪️ P3 低频，跟着改即可
+  "calendar":     { priority: "p3", tip: "<strong>P3 · 跟着 popover 改</strong>用作日期选择器的弹层内容。" },
+  "progress":     { priority: "p3", tip: "<strong>P3</strong>统一颜色 / 圆角 / 高度，配合 token 上传/任务进度场景。" },
+  "separator":    { priority: "p3", tip: "<strong>P3</strong>分割线极简改：颜色用 border token，避免页面里出现深浅不一的分隔。" },
+  "avatar":       { priority: "p3", tip: "<strong>P3</strong>统一尺寸档（24/32/40）、fallback 文字色、群组叠加（avatar-group）。" },
+  "carousel":     { priority: "p3", tip: "<strong>P3</strong>仅 LandingPage 一处用到，跟着主题色改就行。" },
+  "hover-card":   { priority: "p3", tip: "<strong>P3</strong>2 处用到。统一阴影/圆角，与 popover 区分清楚（hover-card 仅悬浮触发）。" },
+  "sheet":        { priority: "p3", tip: "<strong>P3</strong>侧边抽屉，2 处用到。建议和 dialog 共享尺寸 token。" },
+
+  // 🚫 跳过 / 待评估
+  "command":      { priority: "p3", tip: "<strong>P3</strong>1 处用到。如果决定推 ⌘K 全局搜索，再升级；否则保持现状。" },
+  "slider":       { priority: "p3", tip: "<strong>P3</strong>1 处用到，跟随主题色改。" },
+  "collapsible":  { priority: "p3", tip: "<strong>P3</strong>1 处用到。" },
+
+  // 0 引用且非推广目标 - 可考虑裁剪
+  "accordion":      { priority: "skip", tip: "0 引用。如确认全工程未用，可考虑删除（先全 src 搜索确认）。" },
+  "alert":          { priority: "skip", tip: "0 引用。横幅提示当前用 sonner toast 替代了，建议下线。" },
+  "aspect-ratio":   { priority: "skip", tip: "0 引用。可移除。" },
+  "breadcrumb":     { priority: "skip", tip: "0 引用。AdminLayout 自己实现了导航，建议下线。" },
+  "button-group":   { priority: "skip", tip: "0 引用。新出的组件，按需开启。" },
+  "chart":          { priority: "skip", tip: "0 引用。项目用 recharts 直接画图，shadcn 这层包装未启用。" },
+  "context-menu":   { priority: "skip", tip: "0 引用。右键菜单当前不需要。" },
+  "drawer":         { priority: "skip", tip: "0 引用。移动端抽屉，当前桌面项目不需要。" },
+  "input-group":    { priority: "skip", tip: "0 引用。改造 input 时一并启用，作为推广目标。" },
+  "input-otp":      { priority: "skip", tip: "0 引用。无验证码场景。" },
+  "item":           { priority: "skip", tip: "0 引用。新出的列表项组件。" },
+  "kbd":            { priority: "skip", tip: "0 引用。键盘按键标识，仅文档场景需要。" },
+  "menubar":        { priority: "skip", tip: "0 引用。桌面应用菜单栏，不适用。" },
+  "navigation-menu":{ priority: "skip", tip: "0 引用。AdminLayout 自实现导航。" },
+  "pagination":     { priority: "skip", tip: "0 引用 ⚠️ 但管理端表格肯定有分页，需调研当前实现，统一为 shadcn pagination。" },
+  "resizable":      { priority: "skip", tip: "0 引用。当前布局固定，不需要。" },
+  "sidebar":        { priority: "skip", tip: "0 引用。AdminLayout 自实现，可考虑迁移到 shadcn sidebar。" },
+  "sonner":         { priority: "skip", tip: "0 import 但 App.tsx 注册了 Toaster，全局 toast 提示在用。<strong>不要删</strong>。" },
+  "spinner":        { priority: "skip", tip: "0 引用。建议改造时全局推广替代散落的 lucide Loader2。" },
+  "toggle":         { priority: "skip", tip: "0 引用。" },
+  "toggle-group":   { priority: "skip", tip: "0 引用。" },
+};
+
+// ============== 数据 2：组件 → 页面引用列表 ==============
+const COMP_REFS = {
+  "accordion": [],
+  "alert": [],
+  "alert-dialog": [
+    "admin/OpenClawMonitor.tsx",
+    "admin/PlatformPolicy.tsx",
+    "admin/SkillLibrary/BatchDistributeDialog.tsx",
+    "admin/SkillLibrary/DeleteSkillDialog.tsx",
+    "admin/SkillLibrary/SkillDetail.tsx",
+    "admin/SkillLibrary/SkillListTab.tsx",
+    "admin/SkillRolesTab.tsx",
+    "tenant/ChatView.tsx",
+    "tenant/OpenClawDetail.tsx"
+  ],
+  "aspect-ratio": [],
+  "avatar": [],
+  "badge": [
+    "admin/AgentMigration.tsx",
+    "admin/DocManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemberManagement/NodeContentPanel.tsx",
+    "admin/SkillLibrary/AddToPackageDialog.tsx",
+    "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/SkillRolesTab.tsx"
+  ],
+  "breadcrumb": [],
+  "button": [
+    "Home.tsx",
+    "LandingPage.tsx",
+    "NotFound.tsx",
+    "SsoLoginDemo.tsx",
+    "admin/AgentMigration.tsx",
+    "admin/AuditLog.tsx",
+    "admin/AuthSourceImportDialog.tsx",
+    "admin/BasicInfo.tsx",
+    "admin/ChannelConfig.tsx",
+    "admin/DocManagement.tsx",
+    "admin/FileManagement.tsx",
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemberManagement/GroupDialog.tsx",
+    "admin/MemberManagement/GroupList.tsx",
+    "admin/MemberManagement/GroupView.tsx",
+    "admin/MemberManagement/NodeContentPanel.tsx",
+    "admin/MemberManagement/OverrideCell.tsx",
+    "admin/MemberManagement/SyncResultDialog.tsx",
+    "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+    "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+    "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+    "admin/MemoryManagement/components/FreeVersionCard.tsx",
+    "admin/MemoryManagement/components/ProActivationDialog.tsx",
+    "admin/MemoryManagement/components/ProCloseDialog.tsx",
+    "admin/MemoryManagement/components/ProDashboard.tsx",
+    "admin/MemoryManagement/components/ProServiceCard.tsx",
+    "admin/MemoryManagement/components/ProVersionCard.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/OpsObservation.tsx",
+    "admin/PlatformPolicy.tsx",
+    "admin/SecurityGroupManagement.tsx",
+    "admin/ServerManagement.tsx",
+    "admin/SessionManagement.tsx",
+    "admin/SkillConfig.tsx",
+    "admin/SkillLibrary/AddCategoryDialog.tsx",
+    "admin/SkillLibrary/AddToPackageDialog.tsx",
+    "admin/SkillLibrary/BatchDistributeDialog.tsx",
+    "admin/SkillLibrary/BucketManagementTab.tsx",
+    "admin/SkillLibrary/CategoryManagementTab.tsx",
+    "admin/SkillLibrary/DistributeDialog.tsx",
+    "admin/SkillLibrary/EditCategoriesDialog.tsx",
+    "admin/SkillLibrary/EditCategoryDialog.tsx",
+    "admin/SkillLibrary/EditScopeDialog.tsx",
+    "admin/SkillLibrary/EnableCOSDialog.tsx",
+    "admin/SkillLibrary/MCPAddDialog.tsx",
+    "admin/SkillLibrary/MCPDetail.tsx",
+    "admin/SkillLibrary/MCPListTab.tsx",
+    "admin/SkillLibrary/PluginDetail.tsx",
+    "admin/SkillLibrary/PluginListTab.tsx",
+    "admin/SkillLibrary/PluginUploadDialog.tsx",
+    "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+    "admin/SkillLibrary/SkillDetail.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/SkillLibrary/SkillListTab.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/SkillRolesTab.tsx",
+    "admin/TokensMonitor.tsx",
+    "admin/standard/StandardBasicInfo.tsx",
+    "tenant/ChatView.tsx",
+    "tenant/FileSpace.tsx",
+    "tenant/HelpDocs.tsx",
+    "tenant/ModelQuota.tsx",
+    "tenant/MyOpenClaw.tsx",
+    "tenant/OpenClawDetail.tsx",
+    "tenant/ResetPassword.tsx",
+    "tenant/SkillSquare.tsx"
+  ],
+  "button-group": [],
+  "calendar": [],
+  "card": [
+    "NotFound.tsx",
+    "admin/AgentMigration.tsx"
+  ],
+  "carousel": [],
+  "chart": [],
+  "checkbox": [
+    "admin/AgentMigration.tsx",
+    "admin/FileManagement.tsx",
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement/NodeContentPanel.tsx",
+    "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+    "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+    "admin/MemoryManagement/components/InstanceTable.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/OpsObservation.tsx",
+    "admin/SessionManagement.tsx",
+    "admin/SkillLibrary/BatchDistributeDialog.tsx",
+    "admin/SkillLibrary/DistributeDialog.tsx",
+    "admin/SkillLibrary/EnableCOSDialog.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/TokensMonitor.tsx",
+    "admin/standard/StandardBasicInfo.tsx"
+  ],
+  "collapsible": [
+    "admin/AgentMigration.tsx"
+  ],
+  "command": [
+    "admin/SecurityGroupManagement.tsx"
+  ],
+  "context-menu": [],
+  "dialog": [
+    "admin/AuditLog.tsx",
+    "admin/AuthSourceImportDialog.tsx",
+    "admin/ChannelConfig.tsx",
+    "admin/DocManagement.tsx",
+    "admin/FileManagement.tsx",
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemberManagement/GroupDialog.tsx",
+    "admin/MemberManagement/GroupView.tsx",
+    "admin/MemberManagement/NodeContentPanel.tsx",
+    "admin/MemberManagement/SyncResultDialog.tsx",
+    "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+    "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+    "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+    "admin/MemoryManagement/components/FreeVersionCard.tsx",
+    "admin/MemoryManagement/components/ProActivationDialog.tsx",
+    "admin/MemoryManagement/components/ProCloseDialog.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/OpsObservation.tsx",
+    "admin/PlatformPolicy.tsx",
+    "admin/SecurityGroupManagement.tsx",
+    "admin/ServerManagement.tsx",
+    "admin/SessionManagement.tsx",
+    "admin/SkillLibrary/AddCategoryDialog.tsx",
+    "admin/SkillLibrary/AddToPackageDialog.tsx",
+    "admin/SkillLibrary/BatchDistributeDialog.tsx",
+    "admin/SkillLibrary/DistributeDialog.tsx",
+    "admin/SkillLibrary/EditCategoriesDialog.tsx",
+    "admin/SkillLibrary/EditCategoryDialog.tsx",
+    "admin/SkillLibrary/EnableCOSDialog.tsx",
+    "admin/SkillLibrary/MCPAddDialog.tsx",
+    "admin/SkillLibrary/MCPDetail.tsx",
+    "admin/SkillLibrary/MCPListTab.tsx",
+    "admin/SkillLibrary/PluginDetail.tsx",
+    "admin/SkillLibrary/PluginListTab.tsx",
+    "admin/SkillLibrary/PluginUploadDialog.tsx",
+    "admin/SkillLibrary/SkillDetail.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/SkillLibrary/SkillListTab.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/SkillRolesTab.tsx",
+    "admin/TokensMonitor.tsx",
+    "tenant/ChatView.tsx",
+    "tenant/FileSpace.tsx",
+    "tenant/MyOpenClaw.tsx",
+    "tenant/OpenClawDetail.tsx",
+    "tenant/SkillSquare.tsx"
+  ],
+  "drawer": [],
+  "dropdown-menu": [
+    "admin/MemberManagement.tsx",
+    "admin/MemberManagement/GroupList.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/SkillLibrary/SkillListTab.tsx",
+    "tenant/ChatView.tsx",
+    "tenant/FileSpace.tsx",
+    "tenant/MyOpenClaw.tsx"
+  ],
+  "empty": [],
+  "field": [],
+  "form": [],
+  "hover-card": [
+    "admin/MemberManagement/OverrideCell.tsx",
+    "admin/OpenClawMonitor.tsx"
+  ],
+  "input": [
+    "admin/AgentMigration.tsx",
+    "admin/AuditLog.tsx",
+    "admin/AuthSourceImportDialog.tsx",
+    "admin/BasicInfo.tsx",
+    "admin/ChannelConfig.tsx",
+    "admin/DocManagement.tsx",
+    "admin/FileManagement.tsx",
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemberManagement/NodeContentPanel.tsx",
+    "admin/MemoryManagement/components/InstanceTable.tsx",
+    "admin/MemoryManagement/components/ProCloseDialog.tsx",
+    "admin/MemoryManagement/components/ProDashboard.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/PlatformPolicy.tsx",
+    "admin/SecurityGroupManagement.tsx",
+    "admin/ServerManagement.tsx",
+    "admin/SkillConfig.tsx",
+    "admin/SkillLibrary/AddCategoryDialog.tsx",
+    "admin/SkillLibrary/BatchDistributeDialog.tsx",
+    "admin/SkillLibrary/DistributeDialog.tsx",
+    "admin/SkillLibrary/EditCategoryDialog.tsx",
+    "admin/SkillLibrary/EnableCOSDialog.tsx",
+    "admin/SkillLibrary/MCPAddDialog.tsx",
+    "admin/SkillLibrary/MCPDetail.tsx",
+    "admin/SkillLibrary/MCPListTab.tsx",
+    "admin/SkillLibrary/PluginDetail.tsx",
+    "admin/SkillLibrary/PluginListTab.tsx",
+    "admin/SkillLibrary/PluginUploadDialog.tsx",
+    "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+    "admin/SkillLibrary/SkillDetail.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/SkillLibrary/SkillListTab.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/SkillRolesTab.tsx",
+    "admin/standard/StandardBasicInfo.tsx",
+    "tenant/FileSpace.tsx",
+    "tenant/MyOpenClaw.tsx",
+    "tenant/OpenClawDetail.tsx",
+    "tenant/ResetPassword.tsx",
+    "tenant/SkillSquare.tsx"
+  ],
+  "input-group": [],
+  "input-otp": [],
+  "item": [],
+  "kbd": [],
+  "label": [
+    "admin/AgentMigration.tsx",
+    "admin/AuthSourceImportDialog.tsx",
+    "admin/BasicInfo.tsx",
+    "admin/DocManagement.tsx",
+    "admin/FileManagement.tsx",
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemoryManagement/components/ProCloseDialog.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/OpsObservation.tsx",
+    "admin/SecurityGroupManagement.tsx",
+    "admin/ServerManagement.tsx",
+    "admin/SessionManagement.tsx",
+    "admin/SkillLibrary/CategoryManagementTab.tsx",
+    "admin/SkillLibrary/MCPAddDialog.tsx",
+    "admin/SkillLibrary/PluginUploadDialog.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/SkillRolesTab.tsx",
+    "admin/TokensMonitor.tsx",
+    "admin/standard/StandardBasicInfo.tsx",
+    "tenant/MyOpenClaw.tsx",
+    "tenant/ResetPassword.tsx"
+  ],
+  "menubar": [],
+  "navigation-menu": [],
+  "pagination": [],
+  "popover": [
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemberManagement/NodeContentPanel.tsx",
+    "admin/MemberManagement/OverrideCell.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/PlatformPolicy.tsx",
+    "admin/SecurityGroupManagement.tsx",
+    "admin/SkillLibrary/EditScopeDialog.tsx",
+    "admin/SkillLibrary/PluginUploadDialog.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/SkillRolesTab.tsx",
+    "admin/TokensMonitor.tsx",
+    "admin/standard/StandardBasicInfo.tsx"
+  ],
+  "progress": [
+    "admin/AgentMigration.tsx",
+    "tenant/OpenClawDetail.tsx"
+  ],
+  "radio-group": [
+    "admin/FileManagement.tsx",
+    "admin/ImageManagement.tsx"
+  ],
+  "resizable": [],
+  "scroll-area": [],
+  "select": [
+    "admin/AgentMigration.tsx",
+    "admin/AuthSourceImportDialog.tsx",
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemoryManagement/components/ProDashboard.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/SecurityGroupManagement.tsx",
+    "admin/ServerManagement.tsx",
+    "admin/SkillLibrary/BatchDistributeDialog.tsx",
+    "admin/SkillLibrary/CategoryManagementTab.tsx",
+    "admin/SkillLibrary/DistributeDialog.tsx",
+    "admin/SkillLibrary/MCPDetail.tsx",
+    "admin/SkillLibrary/PluginDetail.tsx",
+    "admin/SkillLibrary/SkillDetail.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/SkillRolesTab.tsx",
+    "tenant/OpenClawDetail.tsx",
+    "tenant/SkillSquare.tsx"
+  ],
+  "separator": [],
+  "sheet": [
+    "admin/MemberManagement/MemberDrawer.tsx",
+    "tenant/OpenClawDetail.tsx"
+  ],
+  "sidebar": [],
+  "skeleton": [],
+  "slider": [
+    "admin/SecurityGroupManagement.tsx"
+  ],
+  "sonner": [],
+  "spinner": [],
+  "switch": [
+    "admin/AgentMigration.tsx",
+    "admin/ChannelConfig.tsx",
+    "admin/DocManagement.tsx",
+    "admin/FileManagement.tsx",
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemoryManagement/components/FreeVersionCard.tsx",
+    "admin/MemoryManagement/components/ProActivationDialog.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/ServerManagement.tsx",
+    "admin/SkillLibrary/EnableCOSDialog.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/SkillRolesTab.tsx"
+  ],
+  "table": [
+    "admin/AgentMigration.tsx"
+  ],
+  "tabs": [
+    "admin/AgentMigration.tsx",
+    "admin/EnterpriseSkillLibrary.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/ServerManagement.tsx",
+    "admin/SkillLibrary/MCPDetail.tsx",
+    "admin/SkillLibrary/PluginDetail.tsx",
+    "admin/SkillLibrary/SkillDetail.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/TokensMonitor.tsx",
+    "tenant/SkillSquare.tsx"
+  ],
+  "textarea": [
+    "admin/ModelConfig.tsx",
+    "admin/SkillLibrary/AddCategoryDialog.tsx",
+    "admin/SkillLibrary/EditCategoryDialog.tsx",
+    "admin/SkillLibrary/MCPAddDialog.tsx",
+    "admin/SkillLibrary/PluginUploadDialog.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/SkillRolesTab.tsx",
+    "tenant/OpenClawDetail.tsx"
+  ],
+  "toggle": [],
+  "toggle-group": [],
+  "tooltip": [
+    "admin/AgentMigration.tsx",
+    "admin/AuthSourceImportDialog.tsx",
+    "admin/FileManagement.tsx",
+    "admin/ImageManagement.tsx",
+    "admin/MemberManagement.tsx",
+    "admin/MemberManagement/GroupList.tsx",
+    "admin/MemberManagement/NodeContentPanel.tsx",
+    "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+    "admin/MemoryManagement/components/FreeVersionCard.tsx",
+    "admin/MemoryManagement/components/InstanceTable.tsx",
+    "admin/MemoryManagement/components/ProDashboard.tsx",
+    "admin/MemoryManagement/components/ProServiceCard.tsx",
+    "admin/ModelConfig.tsx",
+    "admin/OpenClawMonitor.tsx",
+    "admin/PlatformPolicy.tsx",
+    "admin/SecurityGroupManagement.tsx",
+    "admin/SessionDetail.tsx",
+    "admin/SkillLibrary/BatchDistributeDialog.tsx",
+    "admin/SkillLibrary/EditScopeDialog.tsx",
+    "admin/SkillLibrary/MCPAddDialog.tsx",
+    "admin/SkillLibrary/MCPDetail.tsx",
+    "admin/SkillLibrary/MCPListTab.tsx",
+    "admin/SkillLibrary/PluginDetail.tsx",
+    "admin/SkillLibrary/PluginListTab.tsx",
+    "admin/SkillLibrary/SkillDetail.tsx",
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+    "admin/SkillLibrary/SkillListTab.tsx",
+    "admin/SkillLibrary/SkillUpdateDialog.tsx",
+    "admin/SkillLibrary/SkillUploadDialog.tsx",
+    "admin/SkillRolesTab.tsx",
+    "admin/TokensMonitor.tsx",
+    "tenant/ChatView.tsx",
+    "tenant/FileSpace.tsx",
+    "tenant/ModelQuota.tsx",
+    "tenant/MyOpenClaw.tsx",
+    "tenant/OpenClawDetail.tsx",
+    "tenant/SkillSquare.tsx"
+  ]
+};
+
+// ============== 数据 3：页面元信息（路径 → 中文名/简介/路由） ==============
+const PAGE_META = {
+  // 顶级
+  "Home.tsx": { cn: "首页占位", group: "top", route: "（未挂路由）", desc: "项目根首页占位。" },
+  "LandingPage.tsx": { cn: "产品介绍页", group: "top", route: "/", desc: "对外营销/介绍落地页。" },
+  "NotFound.tsx": { cn: "404 页面", group: "top", route: "/404 + fallback", desc: "找不到页面。" },
+  "SsoLoginDemo.tsx": { cn: "SSO 登录 Demo", group: "top", route: "/demo/sso-login", desc: "SSO 登录弹窗交互样式演示。" },
+
+  // 用户端
+  "tenant/ChatView.tsx": { cn: "对话主界面", group: "tenant", route: "（嵌入 OpenClawDetail）", desc: "员工与 AI 聊天的主战场。" },
+  "tenant/MyOpenClaw.tsx": { cn: "我的 OpenClaw", group: "tenant", route: "/my-openclaw", desc: "员工的 AI 助手列表。" },
+  "tenant/OpenClawDetail.tsx": { cn: "OpenClaw 详情", group: "tenant", route: "/openclaw/:id", desc: "单个 AI 助手的详情、对话、配置。" },
+  "tenant/SkillSquare.tsx": { cn: "技能广场", group: "tenant", route: "/skill-square", desc: "员工挑选可用的插件/技能。" },
+  "tenant/FileSpace.tsx": { cn: "文件空间", group: "tenant", route: "（嵌入 OpenClawDetail）", desc: "当前龙虾实例的文件管理。" },
+  "tenant/ModelQuota.tsx": { cn: "模型额度", group: "tenant", route: "/model-quota", desc: "用户的 token 额度查询。" },
+  "tenant/HelpDocs.tsx": { cn: "帮助文档", group: "tenant", route: "/help-docs", desc: "用户使用文档（MDX 渲染）。" },
+  "tenant/ResetPassword.tsx": { cn: "重置密码", group: "tenant", route: "/reset-password", desc: "用户端修改密码。" },
+
+  // 管理端 - 顶级
+  "admin/BasicInfo.tsx": { cn: "基础信息（自定义模式）", group: "admin", route: "/admin/basic-info", desc: "6 步分步引导：平台/配额/模型/通道/镜像/安全组。" },
+  "admin/standard/StandardBasicInfo.tsx": { cn: "基础信息（OneID 模式）", group: "admin", route: "/admin/basic-info（同路由）", desc: "腾讯统一身份专用版，比上面多 1 步「用户登录方式」。" },
+  "admin/PlatformPolicy.tsx": { cn: "平台策略", group: "admin", route: "/admin/platform-policy", desc: "全局策略（公告、隐私、使用规则）。" },
+  "admin/ModelConfig.tsx": { cn: "模型配置", group: "admin", route: "/admin/model-config", desc: "接入并管理大模型。" },
+  "admin/ChannelConfig.tsx": { cn: "通道配置", group: "admin", route: "/admin/channel-config", desc: "对外接入通道（IM/邮件/Webhook）。" },
+  "admin/MemoryManagement.tsx": { cn: "记忆管理（主页）", group: "admin", route: "/admin/memory-management", desc: "Pro/免费版本管理、特性对比。" },
+  "admin/ApiDocs.tsx": { cn: "API 文档", group: "admin", route: "/admin/api-docs", desc: "对外开放的 API 文档。" },
+  "admin/MemberManagement.tsx": { cn: "用户管理", group: "admin", route: "/admin/members", desc: "成员/组织/同步源/批量导入。" },
+  "admin/AuthSourceImportDialog.tsx": { cn: "数据源导入弹窗", group: "admin", route: "（弹窗）", desc: "外部数据源导入用户。" },
+  "admin/SessionManagement.tsx": { cn: "会话管理", group: "admin", route: "/admin/session-management", desc: "全用户的对话会话列表。" },
+  "admin/SessionDetail.tsx": { cn: "会话详情", group: "admin", route: "/admin/session/:id", desc: "单条会话的完整内容、用量、技能调用链。" },
+  "admin/AuditLog.tsx": { cn: "操作审计", group: "admin", route: "/admin/audit-log", desc: "管理员操作日志/敏感行为审计。" },
+  "admin/OpenClawMonitor.tsx": { cn: "实例监控", group: "admin", route: "/admin/openclaw-monitor", desc: "Agent 实例列表/健康度/状态。" },
+  "admin/TokensMonitor.tsx": { cn: "Tokens 监控", group: "admin", route: "/admin/tokens-monitor", desc: "全平台 token 用量监控。" },
+  "admin/OpsObservation.tsx": { cn: "运维观测", group: "admin", route: "/admin/ops-observation", desc: "系统级运维大盘。" },
+  "admin/AgentMigration.tsx": { cn: "Agent 迁移", group: "admin", route: "/admin/agent-migration", desc: "Agent 跨环境/租户迁移工具。" },
+  "admin/SkillConfig.tsx": { cn: "技能配置", group: "admin", route: "/admin/skill-config", desc: "技能基础配置。" },
+  "admin/EnterpriseSkillLibrary.tsx": { cn: "企业技能库", group: "admin", route: "（多 Tab）", desc: "技能/插件/MCP 三类的统一入口。" },
+  "admin/SkillDetailPage.tsx": { cn: "技能详情", group: "admin", route: "/admin/skill-detail/:id", desc: "单个技能的详情页。" },
+  "admin/SkillRolesTab.tsx": { cn: "技能角色管理", group: "admin", route: "（嵌入 SkillDetail）", desc: "技能角色设定（可用人员/部门）。" },
+  "admin/AgentTemplate.tsx": { cn: "Agent 模板", group: "admin", route: "/admin/agent-template", desc: "Agent 创建模板。" },
+  "admin/AgentToolLibrary.tsx": { cn: "Agent 工具库", group: "admin", route: "/admin/agent-tool-library", desc: "供 Agent 调用的内置工具。" },
+  "admin/ImageManagement.tsx": { cn: "镜像管理", group: "admin", route: "/admin/image-management", desc: "Docker / 容器镜像管理。" },
+  "admin/CloudDevManagement.tsx": { cn: "云开发管理", group: "admin", route: "/admin/cloud-dev", desc: "云端开发环境（CloudStudio/在线 IDE）。" },
+  "admin/SecurityGroupManagement.tsx": { cn: "网络管理（安全组）", group: "admin", route: "/admin/security-group", desc: "VPC、安全组、网络访问策略。" },
+  "admin/ServerManagement.tsx": { cn: "云服务器管理", group: "admin", route: "（未挂路由）", desc: "云服务器（CVM）资源管理。" },
+  "admin/FileManagement.tsx": { cn: "文件管理", group: "admin", route: "/admin/file-management", desc: "全平台文件资源管理。" },
+  "admin/DocManagement.tsx": { cn: "文档管理", group: "admin", route: "（未挂路由）", desc: "知识库文档管理（编辑/版本/分类）。" },
+  "admin/SecurityManagement.tsx": { cn: "安全管理", group: "admin", route: "/admin/security-management", desc: "数据安全、敏感词、密钥配置。" },
+
+  // 子模块 - MemberManagement
+  "admin/MemberManagement/GroupDialog.tsx": { cn: "组织弹窗", group: "sub", route: "（弹窗）", desc: "新建/编辑用户组织。" },
+  "admin/MemberManagement/GroupList.tsx": { cn: "组织列表", group: "sub", route: "（内嵌）", desc: "左侧组织树。" },
+  "admin/MemberManagement/GroupView.tsx": { cn: "组织视图", group: "sub", route: "（内嵌）", desc: "组织下成员列表视图。" },
+  "admin/MemberManagement/MemberDrawer.tsx": { cn: "成员抽屉", group: "sub", route: "（抽屉）", desc: "右侧成员详情抽屉。" },
+  "admin/MemberManagement/NodeContentPanel.tsx": { cn: "节点内容面板", group: "sub", route: "（内嵌）", desc: "树节点的内容区面板。" },
+  "admin/MemberManagement/OverrideCell.tsx": { cn: "覆盖单元格", group: "sub", route: "（表格单元）", desc: "「配额覆盖」单元格控件。" },
+  "admin/MemberManagement/SyncResultDialog.tsx": { cn: "同步结果弹窗", group: "sub", route: "（弹窗）", desc: "外部数据源同步结果展示。" },
+
+  // 子模块 - MemoryManagement
+  "admin/MemoryManagement/components/BenchmarkSection.tsx": { cn: "基准段落", group: "sub", route: "（内嵌）", desc: "基准测试展示区。" },
+  "admin/MemoryManagement/components/BenchmarkTable.tsx": { cn: "基准表", group: "sub", route: "（内嵌）", desc: "Pro/Free 性能对比表。" },
+  "admin/MemoryManagement/components/ComparisonTable.tsx": { cn: "对比表", group: "sub", route: "（内嵌）", desc: "功能差异对比表。" },
+  "admin/MemoryManagement/components/DefaultMemoryVersion.tsx": { cn: "默认记忆版本", group: "sub", route: "（内嵌）", desc: "新实例默认记忆版本（三选一）。" },
+  "admin/MemoryManagement/components/DisableConfirmDialog.tsx": { cn: "停用确认弹窗", group: "sub", route: "（弹窗）", desc: "停用 Pro 版的确认弹窗。" },
+  "admin/MemoryManagement/components/EnableConfirmDialog.tsx": { cn: "启用确认弹窗", group: "sub", route: "（弹窗）", desc: "启用 Pro 版的确认弹窗。" },
+  "admin/MemoryManagement/components/FeatureGrid.tsx": { cn: "特性宫格", group: "sub", route: "（内嵌）", desc: "Pro 版特性宫格展示。" },
+  "admin/MemoryManagement/components/FreeVersionCard.tsx": { cn: "免费版卡片", group: "sub", route: "（内嵌）", desc: "免费版概览卡片。" },
+  "admin/MemoryManagement/components/InstanceTable.tsx": { cn: "实例表", group: "sub", route: "（内嵌）", desc: "已启用记忆的实例列表。" },
+  "admin/MemoryManagement/components/OneClickUpgradeDialog.tsx": { cn: "一键升级弹窗", group: "sub", route: "（弹窗）", desc: "全员升级 Pro 的批量弹窗。" },
+  "admin/MemoryManagement/components/OverviewStats.tsx": { cn: "总览统计", group: "sub", route: "（内嵌）", desc: "顶部 KPI 统计卡片。" },
+  "admin/MemoryManagement/components/ProActivationDialog.tsx": { cn: "Pro 激活弹窗", group: "sub", route: "（弹窗）", desc: "购买/激活 Pro 版。" },
+  "admin/MemoryManagement/components/ProCloseDialog.tsx": { cn: "Pro 关闭弹窗", group: "sub", route: "（弹窗）", desc: "关闭/取消 Pro 版。" },
+  "admin/MemoryManagement/components/ProDashboard.tsx": { cn: "Pro 仪表盘", group: "sub", route: "（内嵌）", desc: "Pro 版用量仪表盘。" },
+  "admin/MemoryManagement/components/ProServiceCard.tsx": { cn: "Pro 服务卡片", group: "sub", route: "（内嵌）", desc: "Pro 版服务概览。" },
+  "admin/MemoryManagement/components/ProVersionCard.tsx": { cn: "Pro 版本卡片", group: "sub", route: "（内嵌）", desc: "Pro 版本信息展示。" },
+  "admin/MemoryManagement/components/RadarWidget.tsx": { cn: "雷达图", group: "sub", route: "（内嵌）", desc: "能力维度雷达图。" },
+
+  // 子模块 - SkillLibrary
+  "admin/SkillLibrary/AddCategoryDialog.tsx": { cn: "新增分类弹窗", group: "sub", route: "（弹窗）", desc: "技能分类新增。" },
+  "admin/SkillLibrary/AddToPackageDialog.tsx": { cn: "添加到包弹窗", group: "sub", route: "（弹窗）", desc: "把技能加入初始包。" },
+  "admin/SkillLibrary/BatchDistributeDialog.tsx": { cn: "批量分发弹窗", group: "sub", route: "（弹窗）", desc: "批量分发技能。" },
+  "admin/SkillLibrary/BucketManagementTab.tsx": { cn: "桶管理 Tab", group: "sub", route: "（Tab）", desc: "COS 存储桶管理。" },
+  "admin/SkillLibrary/CategoryManagementTab.tsx": { cn: "分类管理 Tab", group: "sub", route: "（Tab）", desc: "技能分类管理。" },
+  "admin/SkillLibrary/DeleteSkillDialog.tsx": { cn: "删除技能弹窗", group: "sub", route: "（弹窗）", desc: "技能删除确认。" },
+  "admin/SkillLibrary/DistributeDialog.tsx": { cn: "分发弹窗", group: "sub", route: "（弹窗）", desc: "单个技能分发。" },
+  "admin/SkillLibrary/EditCategoriesDialog.tsx": { cn: "编辑分类（多）", group: "sub", route: "（弹窗）", desc: "技能批量编辑分类。" },
+  "admin/SkillLibrary/EditCategoryDialog.tsx": { cn: "编辑分类弹窗", group: "sub", route: "（弹窗）", desc: "单个分类编辑。" },
+  "admin/SkillLibrary/EditScopeDialog.tsx": { cn: "编辑作用域弹窗", group: "sub", route: "（弹窗）", desc: "技能可见范围编辑。" },
+  "admin/SkillLibrary/EnableCOSDialog.tsx": { cn: "启用 COS 弹窗", group: "sub", route: "（弹窗）", desc: "首次启用 COS 存储。" },
+  "admin/SkillLibrary/MCPAddDialog.tsx": { cn: "MCP 新增弹窗", group: "sub", route: "（弹窗）", desc: "新增 MCP 服务。" },
+  "admin/SkillLibrary/MCPDetail.tsx": { cn: "MCP 详情", group: "sub", route: "（页面）", desc: "MCP 服务详情。" },
+  "admin/SkillLibrary/MCPListTab.tsx": { cn: "MCP 列表 Tab", group: "sub", route: "（Tab）", desc: "企业 MCP 库列表。" },
+  "admin/SkillLibrary/PluginDetail.tsx": { cn: "插件详情", group: "sub", route: "（页面）", desc: "插件详情。" },
+  "admin/SkillLibrary/PluginListTab.tsx": { cn: "插件列表 Tab", group: "sub", route: "（Tab）", desc: "企业插件库列表。" },
+  "admin/SkillLibrary/PluginUploadDialog.tsx": { cn: "插件上传弹窗", group: "sub", route: "（弹窗）", desc: "发布/上传插件。" },
+  "admin/SkillLibrary/PublicSkillLibraryTab.tsx": { cn: "公共技能库 Tab", group: "sub", route: "（Tab）", desc: "公共可见的技能。" },
+  "admin/SkillLibrary/SkillDetail.tsx": { cn: "技能详情", group: "sub", route: "（页面）", desc: "技能详情。" },
+  "admin/SkillLibrary/SkillInitialPackageTab.tsx": { cn: "初始技能包 Tab", group: "sub", route: "（Tab）", desc: "新用户默认技能包。" },
+  "admin/SkillLibrary/SkillListTab.tsx": { cn: "技能列表 Tab", group: "sub", route: "（Tab）", desc: "企业技能库列表。" },
+  "admin/SkillLibrary/SkillUpdateDialog.tsx": { cn: "技能更新弹窗", group: "sub", route: "（弹窗）", desc: "技能版本更新。" },
+  "admin/SkillLibrary/SkillUploadDialog.tsx": { cn: "技能上传弹窗", group: "sub", route: "（弹窗）", desc: "上传新技能。" },
+};
+
+// ============== 工具：组织标签 ==============
+function groupBadge(group) {
+  const map = {
+    tenant: { label: "用户端", cls: "badge-tenant" },
+    admin: { label: "管理端", cls: "badge-admin" },
+    sub: { label: "子组件", cls: "badge-sub" },
+    top: { label: "顶级", cls: "badge-top" },
+  };
+  const m = map[group] || { label: group, cls: "" };
+  return `<span class="badge ${m.cls}">${m.label}</span>`;
+}
+
+function pageMeta(path) {
+  return PAGE_META[path] || { cn: path, group: "", route: "—", desc: "（未登记说明）" };
+}
+
+function countClass(n) {
+  if (n >= 30) return "count-hot";
+  if (n >= 10) return "count-warm";
+  if (n >= 1) return "count-cool";
+  return "count-gray";
+}
+
+// ========================================================================
+//   改造进度（数据 + 仪表盘 + 状态控件）—— 必须在 renderCompView 之前定义
+// ========================================================================
+// 数据 schema：
+//   PROGRESS = {
+//     components: { [compName]: { status: 'todo'|'doing'|'done', updatedAt: number } },
+//     pages:      { [pagePath]: { status: 'todo'|'doing'|'done', updatedAt: number } }
+//   }
+// 持久化在 localStorage('clawpro-refactor-progress')
+// 也支持「导入 / 导出 JSON」，方便沉淀到仓库 component-page-refs.json 同目录。
+// ========================================================================
+
+const PROGRESS_KEY = "clawpro-refactor-progress";
+const STATUS_LIST = ["todo", "doing", "done"];
+const STATUS_LABEL = { todo: "待替换", doing: "进行中", done: "已替换" };
+const STATUS_NEXT = { todo: "doing", doing: "done", done: "todo" };
+
+// 进度数据来源：
+//   1. localStorage（用户手动勾选的最高优先级）
+//   2. progress-auto.json（脚本扫描真实仓库代码自动生成的基线）
+//   3. 都没有 → 全部 todo
+// PROGRESS_AUTO 在 fetch 完成后填充，仅在用户没有手动覆盖该项时作为兜底来源。
+let PROGRESS_AUTO = null;
+let PROGRESS_AUTO_META = null;
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return { components: {}, pages: {} };
+    const obj = JSON.parse(raw);
+    return {
+      components: obj.components || {},
+      pages: obj.pages || {},
+    };
+  } catch (e) {
+    return { components: {}, pages: {} };
+  }
+}
+function saveProgress() {
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(PROGRESS)); } catch (e) {}
+}
+let PROGRESS = loadProgress();
+
+function getCompStatus(name) {
+  if (PROGRESS.components[name]) return PROGRESS.components[name].status;
+  if (PROGRESS_AUTO && PROGRESS_AUTO.components && PROGRESS_AUTO.components[name]) {
+    return PROGRESS_AUTO.components[name].status;
+  }
+  return "todo";
+}
+function getPageStatus(path) {
+  if (PROGRESS.pages[path]) return PROGRESS.pages[path].status;
+  if (PROGRESS_AUTO && PROGRESS_AUTO.pages && PROGRESS_AUTO.pages[path]) {
+    return PROGRESS_AUTO.pages[path].status;
+  }
+  return "todo";
+}
+// 来源标记：用于在仪表盘/明细里区分「自动扫描结果」和「人工覆盖」
+function getCompSource(name) {
+  if (PROGRESS.components[name]) return "manual";
+  if (PROGRESS_AUTO && PROGRESS_AUTO.components && PROGRESS_AUTO.components[name]) return "auto";
+  return "default";
+}
+function getPageSource(path) {
+  if (PROGRESS.pages[path]) return "manual";
+  if (PROGRESS_AUTO && PROGRESS_AUTO.pages && PROGRESS_AUTO.pages[path]) return "auto";
+  return "default";
+}
+function setCompStatus(name, status) {
+  // 如果有自动扫描结果（auto）且 status 与 auto 一致，可以删 manual（让 auto 接管）；
+  // 否则必须显式写入，确保覆盖 auto。
+  const autoStatus = (PROGRESS_AUTO && PROGRESS_AUTO.components && PROGRESS_AUTO.components[name])
+    ? PROGRESS_AUTO.components[name].status : null;
+  if (status === "todo" && !autoStatus) {
+    delete PROGRESS.components[name];
+  } else if (autoStatus && status === autoStatus) {
+    delete PROGRESS.components[name];
+  } else {
+    PROGRESS.components[name] = { status, updatedAt: Date.now() };
+  }
+  saveProgress();
+}
+function setPageStatus(path, status) {
+  const autoStatus = (PROGRESS_AUTO && PROGRESS_AUTO.pages && PROGRESS_AUTO.pages[path])
+    ? PROGRESS_AUTO.pages[path].status : null;
+  if (status === "todo" && !autoStatus) {
+    delete PROGRESS.pages[path];
+  } else if (autoStatus && status === autoStatus) {
+    delete PROGRESS.pages[path];
+  } else {
+    PROGRESS.pages[path] = { status, updatedAt: Date.now() };
+  }
+  saveProgress();
+}
+
+// 把状态点击切到下一个：todo → doing → done → todo
+function cycleCompStatus(name) {
+  const next = STATUS_NEXT[getCompStatus(name)];
+  setCompStatus(name, next);
+  return next;
+}
+function cyclePageStatus(path) {
+  const next = STATUS_NEXT[getPageStatus(path)];
+  setPageStatus(path, next);
+  return next;
+}
+
+// ============== 渲染：组件视图 ==============
+function renderCompView() {
+  const container = document.getElementById("view-comp");
+  // 按引用数降序排
+  const entries = Object.entries(COMP_REFS).sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
+
+  for (const [name, refs] of entries) {
+    const meta = COMP_META[name] || { cn: "—", shadcn: name };
+    const reform = COMP_REFORM[name] || { priority: "p3", tip: "" };
+    const priorityLabel = {
+      p0: "🔥 P0 必改", p1: "🟡 P1 高频", p2: "🟢 P2 中频",
+      p3: "⚪️ P3 低频", skip: "🚫 暂跳过", promote: "🌱 推广目标"
+    }[reform.priority] || "—";
+    const card = document.createElement("div");
+    card.className = "comp-card" + (refs.length === 0 && reform.priority !== "promote" ? " collapsed" : "");
+    card.dataset.compName = name;
+    card.dataset.priority = reform.priority;
+    card.dataset.search = (name + " " + meta.cn + " " + refs.join(" ") + " " + reform.priority).toLowerCase();
+
+    const header = document.createElement("div");
+    header.className = "comp-header";
+    const compStatus = getCompStatus(name);
+    header.innerHTML = `
+      <div class="comp-header-left">
+        <span class="toggle-icon">▼</span>
+        <span class="comp-name">${name}.tsx</span>
+        <span class="comp-cn">${meta.cn}</span>
+        <span class="priority priority-${reform.priority}">${priorityLabel}</span>
+        <a class="shadcn-link" href="https://ui.shadcn.com/docs/components/${meta.shadcn}" target="_blank" onclick="event.stopPropagation()">查看 shadcn ↗</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="status-pill status-${compStatus}" data-comp-status="${name}" title="点击切换：待替换 → 进行中 → 已替换">${STATUS_LABEL[compStatus]}</span>
+        <span class="comp-count ${countClass(refs.length)}">被 ${refs.length} 个页面引用</span>
+      </div>
+    `;
+    header.addEventListener("click", () => card.classList.toggle("collapsed"));
+    // 状态 pill 单独绑定，阻止冒泡
+    const statusPill = header.querySelector(`[data-comp-status="${name}"]`);
+    statusPill.addEventListener("click", (e) => {
+      e.stopPropagation();
+      cycleCompStatus(name);
+      refreshAllStatusUIs();
+      renderProgress();
+    });
+    card.appendChild(header);
+
+    const body = document.createElement("div");
+    body.className = "comp-body";
+
+    // 改造提示
+    if (reform.tip) {
+      const tipBox = document.createElement("div");
+      const tipClass = ["p0", "p1", "p2", "skip", "promote"].includes(reform.priority) ? `tip-${reform.priority}` : "";
+      tipBox.className = "reform-tip " + tipClass;
+      tipBox.innerHTML = reform.tip;
+      body.appendChild(tipBox);
+    }
+
+    if (refs.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "comp-empty";
+      empty.textContent = "暂无任何页面引用此组件（可能在 layout/App.tsx 等非 page 目录用，或未使用）";
+      body.appendChild(empty);
+    } else {
+      const table = document.createElement("table");
+      table.innerHTML = `
+        <thead><tr>
+          <th style="width:6%">替换</th>
+          <th style="width:22%">页面（中文）</th>
+          <th style="width:28%">文件路径</th>
+          <th style="width:10%">类别</th>
+          <th style="width:34%">简介</th>
+        </tr></thead>
+        <tbody></tbody>
+      `;
+      const tbody = table.querySelector("tbody");
+      for (const path of refs) {
+        const m = pageMeta(path);
+        const ps = getPageStatus(path);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><span class="status-mini s-${ps}" data-page-mini="${path}" title="${STATUS_LABEL[ps]}（点击切换）"></span></td>
+          <td><span class="page-cn">${m.cn}</span></td>
+          <td><span class="page-path" title="点击复制完整路径">${path}</span></td>
+          <td>${groupBadge(m.group)}</td>
+          <td class="desc">${m.desc}</td>
+        `;
+        // mini 状态点
+        tr.querySelector(`[data-page-mini="${path}"]`).addEventListener("click", (e) => {
+          e.stopPropagation();
+          cyclePageStatus(path);
+          refreshAllStatusUIs();
+          renderProgress();
+        });
+        tr.querySelector(".page-path").addEventListener("click", (e) => {
+          const fullPath = "client/src/pages/" + path;
+          navigator.clipboard.writeText(fullPath).then(() => {
+            const el = e.currentTarget;
+            const orig = el.textContent;
+            el.classList.add("copied");
+            el.textContent = "已复制 ✓";
+            setTimeout(() => { el.classList.remove("copied"); el.textContent = orig; }, 1000);
+          });
+        });
+        tbody.appendChild(tr);
+      }
+      body.appendChild(table);
+    }
+    card.appendChild(body);
+    container.appendChild(card);
+  }
+}
+
+// ============== 渲染：页面视图（页面 → 它用了哪些组件） ==============
+function renderPageView() {
+  const container = document.getElementById("view-page");
+  // 反转 COMP_REFS：每个 page 用了哪些 comp
+  const pageUses = {};
+  for (const [comp, refs] of Object.entries(COMP_REFS)) {
+    for (const path of refs) {
+      if (!pageUses[path]) pageUses[path] = [];
+      pageUses[path].push(comp);
+    }
+  }
+
+  // 把所有已知页面（以 PAGE_META 为准）都列出
+  const allPaths = Object.keys(PAGE_META).sort();
+  const groups = {
+    tenant: [], admin: [], sub: [], top: []
+  };
+  const groupTitles = {
+    top: "📌 顶级 / Demo（4 个）",
+    tenant: "👤 用户端（8 个）",
+    admin: "🛠 管理端 · 顶级页面",
+    sub: "🧩 管理端 · 子组件",
+  };
+  for (const p of allPaths) {
+    const g = (PAGE_META[p] && PAGE_META[p].group) || "admin";
+    if (groups[g]) groups[g].push(p);
+    else groups.admin.push(p);
+  }
+
+  for (const groupKey of ["top", "tenant", "admin", "sub"]) {
+    const paths = groups[groupKey];
+    if (paths.length === 0) continue;
+    const section = document.createElement("div");
+    section.className = "page-section";
+    section.dataset.group = groupKey;
+
+    const header = document.createElement("div");
+    header.className = "section-header";
+    header.innerHTML = `
+      <div class="section-title">
+        <span class="toggle-icon">▼</span>
+        ${groupTitles[groupKey]}
+        <span class="section-count">（${paths.length} 个）</span>
+      </div>
+    `;
+    header.addEventListener("click", () => section.classList.toggle("collapsed"));
+    section.appendChild(header);
+
+    const body = document.createElement("div");
+    body.className = "section-body";
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <thead><tr>
+        <th style="width:6%">替换</th>
+        <th style="width:18%">页面（中文）</th>
+        <th style="width:22%">文件路径</th>
+        <th style="width:14%">路由</th>
+        <th style="width:8%">用了几个组件</th>
+        <th style="width:32%">用了哪些组件</th>
+      </tr></thead>
+      <tbody></tbody>
+    `;
+    const tbody = table.querySelector("tbody");
+    for (const path of paths) {
+      const m = pageMeta(path);
+      const uses = (pageUses[path] || []).sort();
+      const ps = getPageStatus(path);
+      const tr = document.createElement("tr");
+      tr.dataset.search = (path + " " + m.cn + " " + m.desc + " " + uses.join(" ")).toLowerCase();
+      tr.innerHTML = `
+        <td><span class="status-mini s-${ps}" data-page-status="${path}" title="${STATUS_LABEL[ps]}（点击切换）"></span></td>
+        <td><span class="page-cn">${m.cn}</span><br/><span style="color:var(--muted);font-size:11px">${m.desc}</span></td>
+        <td><span class="page-path" title="点击复制">${path}</span></td>
+        <td><span class="route">${m.route}</span></td>
+        <td><span class="comp-count ${countClass(uses.length)}">${uses.length}</span></td>
+        <td><div class="page-card-uses">${uses.map(u => `<span class="uses-chip">${u}</span>`).join("")}</div></td>
+      `;
+      // 页面状态切换
+      tr.querySelector(`[data-page-status="${path}"]`).addEventListener("click", (e) => {
+        e.stopPropagation();
+        cyclePageStatus(path);
+        refreshAllStatusUIs();
+        renderProgress();
+      });
+      tr.querySelector(".page-path").addEventListener("click", (e) => {
+        const fullPath = "client/src/pages/" + path;
+        navigator.clipboard.writeText(fullPath).then(() => {
+          const el = e.currentTarget;
+          const orig = el.textContent;
+          el.classList.add("copied");
+          el.textContent = "已复制 ✓";
+          setTimeout(() => { el.classList.remove("copied"); el.textContent = orig; }, 1000);
+        });
+      });
+      tbody.appendChild(tr);
+    }
+    body.appendChild(table);
+    section.appendChild(body);
+    container.appendChild(section);
+  }
+}
+
+renderCompView();
+renderPageView();
+
+// ============== 渲染：改造路线图 ==============
+function renderRoadmap() {
+  const container = document.getElementById("view-roadmap");
+
+  // 总览说明
+  const intro = document.createElement("div");
+  intro.className = "roadmap-section";
+  intro.innerHTML = `
+    <h2>📋 改造总览</h2>
+    <p>项目共 <strong>53 个 shadcn UI 组件</strong> + <strong>88 个页面</strong>。下面按"改这个收益最大"的优先级排了 5 档：</p>
+    <div class="design-rules">
+      <h4>📐 改造前必读 · 三条纪律</h4>
+      <table>
+        <tr><td>✅ 可以改</td><td>className 里的 Tailwind 类、cva 的 variant 定义、组件结构调整</td></tr>
+        <tr><td>⚠️ 谨慎改</td><td>组件 Props 接口（改了所有引用页都要跟着改）</td></tr>
+        <tr><td>❌ 不要改</td><td><code>@radix-ui/*</code> 的行为属性、<code>asChild</code>、<code>Slot</code>，否则破坏键盘导航/无障碍</td></tr>
+      </table>
+    </div>
+    <div class="callout success">
+      <strong>💡 关键策略：</strong>把 <strong>P0 6 个基石</strong>改完后，立刻沉淀 <strong>3 个页面模板</strong>（列表页/表单页/详情页），这样产品后续新增页面拼一拼就能用，UI 风格自然统一。
+    </div>
+  `;
+  container.appendChild(intro);
+
+  // 路线图分档
+  const phases = [
+    {
+      key: "p0", title: "🔥 第一阶段 · P0 基石（必改）",
+      desc: "覆盖 78%+ 页面，先改它们 = 整体 UI 立刻焕新一半。预计工作量：每个组件 0.5-1 天。",
+      tipClass: "tip-p0",
+    },
+    {
+      key: "promote", title: "🌱 第二阶段 · 推广目标（与 P0 并行）",
+      desc: "这些组件当前几乎没人用，但应该用——改造后推动产品强制使用，能根治「样式参差不齐」的老毛病。",
+      tipClass: "tip-promote",
+    },
+    {
+      key: "p1", title: "🟡 第三阶段 · P1 高频补齐",
+      desc: "补齐表单与浮层场景，让管理端表单页统一观感。",
+      tipClass: "tip-p1",
+    },
+    {
+      key: "p2", title: "🟢 第四阶段 · P2 中频",
+      desc: "管理端列表页 / 状态展示 / 行操作场景。",
+      tipClass: "tip-p2",
+    },
+    {
+      key: "p3", title: "⚪️ 第五阶段 · P3 跟随",
+      desc: "跟着主题色/设计令牌一起改即可。",
+      tipClass: "",
+    },
+    {
+      key: "skip", title: "🚫 待裁剪 · 暂跳过",
+      desc: "0 引用且非推广目标的组件，建议在全工程二次确认后裁剪，减小包体积。",
+      tipClass: "tip-skip",
+    },
+  ];
+
+  for (const phase of phases) {
+    const items = Object.entries(COMP_REFORM)
+      .filter(([n, r]) => r.priority === phase.key)
+      .sort((a, b) => (COMP_REFS[b[0]] || []).length - (COMP_REFS[a[0]] || []).length);
+    if (items.length === 0) continue;
+
+    const sec = document.createElement("div");
+    sec.className = "roadmap-section";
+    sec.innerHTML = `
+      <h2>${phase.title}<span class="comp-count count-gray">${items.length} 个组件</span></h2>
+      <p>${phase.desc}</p>
+      <div class="roadmap-grid"></div>
+    `;
+    const grid = sec.querySelector(".roadmap-grid");
+    for (const [name, reform] of items) {
+      const meta = COMP_META[name] || { cn: "—" };
+      const refCount = (COMP_REFS[name] || []).length;
+      const item = document.createElement("div");
+      item.className = "roadmap-item";
+      item.innerHTML = `
+        <div class="roadmap-item-name">${name}.tsx
+          <span class="roadmap-item-stat">${refCount} 引用</span>
+        </div>
+        <div class="roadmap-item-cn">${meta.cn}</div>
+        <div class="roadmap-item-action">${reform.tip || ""}</div>
+      `;
+      grid.appendChild(item);
+    }
+    container.appendChild(sec);
+  }
+
+  // 页面模板建议
+  const tpl = document.createElement("div");
+  tpl.className = "roadmap-section";
+  tpl.innerHTML = `
+    <h2>🧱 沉淀页面模板（产品新增页面的"开箱即用"指南）</h2>
+    <p>P0 改完后，建议沉淀 3 个范式模板，产品后续新增页面只需照搬：</p>
+    <div class="roadmap-grid">
+      <div class="roadmap-item">
+        <div class="roadmap-item-name">📋 管理列表页模板</div>
+        <div class="roadmap-item-cn">仿 MemberManagement / SessionManagement</div>
+        <div class="roadmap-item-action">
+          用到：<code>card</code> + <code>table</code> + <code>input</code>(搜索) + <code>select</code>(筛选)
+          + <code>button</code> + <code>dropdown-menu</code>(行操作) + <code>dialog</code>(增删改) + <code>pagination</code>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-item-name">📝 配置/表单页模板</div>
+        <div class="roadmap-item-cn">仿 ModelConfig / ChannelConfig / BasicInfo</div>
+        <div class="roadmap-item-action">
+          用到：<code>card</code> + <code>tabs</code>(组织) + <code>form</code> + <code>field</code> + <code>label</code>
+          + <code>input</code> + <code>textarea</code> + <code>switch</code> + <code>radio-group</code> + <code>button</code>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-item-name">🔍 详情页模板</div>
+        <div class="roadmap-item-cn">仿 SkillDetail / MCPDetail / OpenClawDetail</div>
+        <div class="roadmap-item-action">
+          用到：<code>card</code> + <code>tabs</code> + <code>badge</code> + <code>tooltip</code>
+          + <code>scroll-area</code> + MDXRenderer
+        </div>
+      </div>
+    </div>
+    <div class="callout warn">
+      <strong>⚠️ 沉淀方式建议：</strong>不要做成 React 组件级的"模板组件"（会过度封装），而是做成
+      <code>docs/templates/</code> 下的「示例代码片段」+ 截图，让产品/设计可以直接拷到新页面里。
+    </div>
+  `;
+  container.appendChild(tpl);
+
+  // 修正历史认知
+  const correction = document.createElement("div");
+  correction.className = "roadmap-section";
+  correction.innerHTML = `
+    <h2>🧐 几个反直觉的真相（改造前先看这个）</h2>
+    <div class="callout danger">
+      <strong>card 居然只有 2 处引用！</strong>项目里大量页面用 <code>&lt;div className="bg-white rounded-lg border ..."&gt;</code> 自己拼卡片。
+      改造 card 时务必同步出一份「禁止手写卡片」的规约，否则改了也白改。
+    </div>
+    <div class="callout danger">
+      <strong>scroll-area / form / field / empty 全是 0 引用</strong>——shadcn 提供的标准件没人用。
+      改造时把它们一起补上，能拉齐很多隐性的样式不一致。
+    </div>
+    <div class="callout warn">
+      <strong>pagination 0 引用 ⚠️</strong>但管理端表格肯定用了分页——说明现在用的是某种自实现或第三方分页。
+      改造时需先调研当前用的是什么，决定是否迁移到 shadcn pagination。
+    </div>
+    <div class="callout">
+      <strong>sonner 0 import 但不要删！</strong>它在 App.tsx 注册了全局 <code>&lt;Toaster /&gt;</code>，
+      所有 <code>toast()</code> 调用依赖它。
+    </div>
+  `;
+  container.appendChild(correction);
+}
+
+renderRoadmap();
+
+// ============== 渲染：进度仪表盘 ==============
+function renderProgress() {
+  const container = document.getElementById("view-progress");
+  container.innerHTML = "";
+
+  // 工具栏：导入 / 导出 / 重置
+  const toolbar = document.createElement("div");
+  toolbar.className = "progress-toolbar";
+  toolbar.innerHTML = `
+    <button class="btn primary" id="btn-export">⬇️ 导出进度 JSON</button>
+    <button class="btn" id="btn-import">⬆️ 导入进度 JSON</button>
+    <input type="file" id="file-import" accept="application/json" style="display:none" />
+    <button class="btn danger" id="btn-reset">🗑 重置全部</button>
+    <span style="color:var(--muted);font-size:12px;margin-left:auto">
+      💾 进度自动保存在浏览器本地。多人协作请定期「导出 JSON」提交到仓库。
+    </span>
+  `;
+  container.appendChild(toolbar);
+
+  const hint = document.createElement("div");
+  hint.className = "progress-hint";
+  if (PROGRESS_AUTO_META) {
+    const t = new Date(PROGRESS_AUTO_META.generatedAt);
+    const ts = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')} ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+    hint.innerHTML = `
+      <strong>📡 数据来源：</strong>已加载 <code>progress-auto.json</code>（生成于 ${ts}） · 自动扫描真实仓库代码得出的「v2 设计系统改造进度」 ·
+      仓库 <code>${PROGRESS_AUTO_META.repo || "openclaw-enterprise"}</code>。
+      <br/>
+      <strong>判定规则：</strong>组件命中 <code>rounded-[4px]</code> / <code>var(--shadow-*)</code> / <code>var(--color-gray-*)</code> / <code>#1447E6</code> / <code>Surface*</code> 任一 → 已替换；页面按命中信号数量评分。
+      <br/>
+      <strong>手动覆盖：</strong>点击任意组件/页面状态徽标即可手动调整（覆盖会保存在浏览器本地 localStorage，<strong>优先级高于扫描结果</strong>）。重新跑 <code>node scan-progress.cjs</code> 可以刷新基线。
+    `;
+  } else {
+    hint.innerHTML = `
+      <strong>⚠️ 未加载到 <code>progress-auto.json</code></strong>（当前展示的全是手动勾选的状态）。
+      <br/>
+      运行 <code>cd 组件引用及更新 && node scan-progress.cjs</code> 即可基于真实仓库代码自动生成「v2 设计系统改造进度」基线。
+      <br/>
+      或者直接通过页面切换状态徽标手动维护进度。
+    `;
+  }
+  container.appendChild(hint);
+
+  // === 数据汇总 ===
+  const allComps = Object.keys(COMP_REFS);
+  const allPages = Object.keys(PAGE_META);
+
+  const compStatCount = { todo: 0, doing: 0, done: 0 };
+  const pageStatCount = { todo: 0, doing: 0, done: 0 };
+  allComps.forEach(c => compStatCount[getCompStatus(c)]++);
+  allPages.forEach(p => pageStatCount[getPageStatus(p)]++);
+
+  const compTotal = allComps.length;
+  const pageTotal = allPages.length;
+  const compDone = compStatCount.done;
+  const compDoing = compStatCount.doing;
+  const pageDone = pageStatCount.done;
+  const pageDoing = pageStatCount.doing;
+
+  // 加权综合进度：组件占 60%，页面占 40%（doing 计 0.5 个进度）
+  const compProgress = compTotal === 0 ? 0 : (compDone + compDoing * 0.5) / compTotal;
+  const pageProgress = pageTotal === 0 ? 0 : (pageDone + pageDoing * 0.5) / pageTotal;
+  const overall = compProgress * 0.6 + pageProgress * 0.4;
+
+  // 按优先级组织的组件进度
+  const priorityKeys = ["p0", "promote", "p1", "p2", "p3", "skip"];
+  const priorityTitle = {
+    p0: "🔥 P0 基石",
+    promote: "🌱 推广目标",
+    p1: "🟡 P1 高频",
+    p2: "🟢 P2 中频",
+    p3: "⚪️ P3 低频",
+    skip: "🚫 待裁剪",
+  };
+  const priorityStat = {};
+  priorityKeys.forEach(k => priorityStat[k] = { total: 0, done: 0, doing: 0 });
+  allComps.forEach(c => {
+    const pk = (COMP_REFORM[c] && COMP_REFORM[c].priority) || "p3";
+    if (!priorityStat[pk]) return;
+    priorityStat[pk].total++;
+    const s = getCompStatus(c);
+    if (s === "done") priorityStat[pk].done++;
+    if (s === "doing") priorityStat[pk].doing++;
+  });
+
+  // 页面组织进度
+  const pageGroupKeys = ["top", "tenant", "admin", "sub"];
+  const pageGroupTitle = {
+    top: "📌 顶级",
+    tenant: "👤 用户端",
+    admin: "🛠 管理端",
+    sub: "🧩 子组件",
+  };
+  const pageGroupStat = {};
+  pageGroupKeys.forEach(k => pageGroupStat[k] = { total: 0, done: 0, doing: 0 });
+  allPages.forEach(p => {
+    const g = (PAGE_META[p] && PAGE_META[p].group) || "admin";
+    if (!pageGroupStat[g]) return;
+    pageGroupStat[g].total++;
+    const s = getPageStatus(p);
+    if (s === "done") pageGroupStat[g].done++;
+    if (s === "doing") pageGroupStat[g].doing++;
+  });
+
+  // 最近更新（取 updatedAt 倒序前 8 条）
+  const recent = [];
+  Object.entries(PROGRESS.components).forEach(([name, v]) =>
+    recent.push({ kind: "组件", name: name + ".tsx", cn: (COMP_META[name] && COMP_META[name].cn) || "", status: v.status, t: v.updatedAt }));
+  Object.entries(PROGRESS.pages).forEach(([path, v]) =>
+    recent.push({ kind: "页面", name: path, cn: (PAGE_META[path] && PAGE_META[path].cn) || "", status: v.status, t: v.updatedAt }));
+  recent.sort((a, b) => (b.t || 0) - (a.t || 0));
+  const recentTop = recent.slice(0, 8);
+
+  // P0 待办：列出 P0 中尚未 done 的组件，按引用数倒序
+  const p0Todo = allComps
+    .filter(c => (COMP_REFORM[c] && COMP_REFORM[c].priority) === "p0" && getCompStatus(c) !== "done")
+    .sort((a, b) => (COMP_REFS[b] || []).length - (COMP_REFS[a] || []).length);
+
+  // === 渲染：第一行 4 个 KPI ===
+  const grid1 = document.createElement("div");
+  grid1.className = "dash-grid";
+  grid1.innerHTML = `
+    <div class="dash-card col-3">
+      <h3>整体改造进度</h3>
+      <div class="dash-sub">组件 60% · 页面 40% 加权</div>
+      <div class="dash-big">${(overall * 100).toFixed(1)}<span style="font-size:18px;color:var(--muted)">%</span></div>
+      <div class="pbar"><span style="width:${(overall * 100).toFixed(2)}%"></span></div>
+    </div>
+    <div class="dash-card col-3">
+      <h3>组件改造</h3>
+      <div class="dash-sub">${compDone} / ${compTotal} 已替换 · ${compDoing} 进行中</div>
+      <div class="dash-big">${compTotal === 0 ? 0 : Math.round(compDone / compTotal * 100)}<span style="font-size:18px;color:var(--muted)">%</span></div>
+      <div class="pbar"><span style="width:${compTotal === 0 ? 0 : (compDone / compTotal * 100).toFixed(2)}%"></span></div>
+    </div>
+    <div class="dash-card col-3">
+      <h3>页面改造</h3>
+      <div class="dash-sub">${pageDone} / ${pageTotal} 已替换 · ${pageDoing} 进行中</div>
+      <div class="dash-big">${pageTotal === 0 ? 0 : Math.round(pageDone / pageTotal * 100)}<span style="font-size:18px;color:var(--muted)">%</span></div>
+      <div class="pbar"><span style="width:${pageTotal === 0 ? 0 : (pageDone / pageTotal * 100).toFixed(2)}%"></span></div>
+    </div>
+    <div class="dash-card col-3">
+      <h3>状态分布</h3>
+      <div class="dash-sub">组件 + 页面合计</div>
+      <div style="display:flex;gap:6px;align-items:flex-end;margin-top:6px">
+        <div style="flex:1">
+          <div style="font-size:20px;font-weight:700;color:#10b981">${compStatCount.done + pageStatCount.done}</div>
+          <div style="font-size:11px;color:var(--muted)">已替换</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:20px;font-weight:700;color:#f59e0b">${compStatCount.doing + pageStatCount.doing}</div>
+          <div style="font-size:11px;color:var(--muted)">进行中</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:20px;font-weight:700;color:#9ca3af">${compStatCount.todo + pageStatCount.todo}</div>
+          <div style="font-size:11px;color:var(--muted)">待替换</div>
+        </div>
+      </div>
+    </div>
+  `;
+  container.appendChild(grid1);
+
+  // === 第二行：按优先级 + 按页面组织的进度条 ===
+  const grid2 = document.createElement("div");
+  grid2.className = "dash-grid";
+
+  // 卡 A：按优先级
+  const cardPriority = document.createElement("div");
+  cardPriority.className = "dash-card col-6";
+  let priorityRowsHTML = "";
+  priorityKeys.forEach(k => {
+    const s = priorityStat[k];
+    if (s.total === 0) return;
+    const pct = ((s.done + s.doing * 0.5) / s.total) * 100;
+    priorityRowsHTML += `
+      <div class="pbar-row">
+        <span class="label">${priorityTitle[k]}</span>
+        <div class="pbar p-${k}"><span style="width:${pct.toFixed(2)}%"></span></div>
+        <span class="num">${s.done}/${s.total}${s.doing ? ` · ${s.doing} 中` : ""}</span>
+      </div>
+    `;
+  });
+  cardPriority.innerHTML = `
+    <h3>按改造优先级 · 组件进度</h3>
+    <div class="dash-sub">先把 P0 拉满，再启动推广目标</div>
+    ${priorityRowsHTML}
+  `;
+  grid2.appendChild(cardPriority);
+
+  // 卡 B：按页面组织
+  const cardPageGroup = document.createElement("div");
+  cardPageGroup.className = "dash-card col-6";
+  let groupRowsHTML = "";
+  pageGroupKeys.forEach(k => {
+    const s = pageGroupStat[k];
+    if (s.total === 0) return;
+    const pct = ((s.done + s.doing * 0.5) / s.total) * 100;
+    groupRowsHTML += `
+      <div class="pbar-row">
+        <span class="label">${pageGroupTitle[k]}</span>
+        <div class="pbar"><span style="width:${pct.toFixed(2)}%"></span></div>
+        <span class="num">${s.done}/${s.total}${s.doing ? ` · ${s.doing} 中` : ""}</span>
+      </div>
+    `;
+  });
+  cardPageGroup.innerHTML = `
+    <h3>按页面组织 · 页面进度</h3>
+    <div class="dash-sub">用户端 / 管理端 / 子组件分别看完成度</div>
+    ${groupRowsHTML}
+  `;
+  grid2.appendChild(cardPageGroup);
+
+  container.appendChild(grid2);
+
+  // === 第三行：最近更新 + P0 待办 ===
+  const grid3 = document.createElement("div");
+  grid3.className = "dash-grid";
+
+  // 最近更新
+  const cardRecent = document.createElement("div");
+  cardRecent.className = "dash-card col-6";
+  let recentHTML = "";
+  if (recentTop.length === 0) {
+    recentHTML = `<div style="color:var(--muted);font-size:13px;padding:14px 0">还没有任何改造记录。去「组件 → 页面」视图标记你已经替换的部分。</div>`;
+  } else {
+    recentHTML = `<ul class="dash-list">` + recentTop.map(r => {
+      const dt = r.t ? new Date(r.t) : null;
+      const time = dt ? `${dt.getMonth()+1}/${dt.getDate()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}` : "—";
+      return `
+        <li>
+          <span class="dot s-${r.status === 'done' ? 'done' : r.status === 'doing' ? 'doing' : 'todo'}"></span>
+          <span class="name">${r.name}</span>
+          <span style="color:var(--muted);font-size:12px">${r.cn || ''}</span>
+          <span class="status-pill status-${r.status}" style="cursor:default">${STATUS_LABEL[r.status]}</span>
+          <span class="meta">${r.kind} · ${time}</span>
+        </li>
+      `;
+    }).join("") + `</ul>`;
+  }
+  cardRecent.innerHTML = `
+    <h3>🕒 最近更新</h3>
+    <div class="dash-sub">最近 8 条改造状态变化</div>
+    ${recentHTML}
+  `;
+  grid3.appendChild(cardRecent);
+
+  // P0 待办列表
+  const cardP0 = document.createElement("div");
+  cardP0.className = "dash-card col-6";
+  let p0HTML = "";
+  if (p0Todo.length === 0) {
+    p0HTML = `<div style="color:#10b981;font-size:13px;padding:14px 0">🎉 P0 基石组件已全部完成！可以推进推广目标了。</div>`;
+  } else {
+    p0HTML = `<ul class="dash-list">` + p0Todo.map(c => {
+      const cn = (COMP_META[c] && COMP_META[c].cn) || "";
+      const refs = (COMP_REFS[c] || []).length;
+      const st = getCompStatus(c);
+      return `
+        <li>
+          <span class="dot s-${st === 'doing' ? 'doing' : 'todo'}"></span>
+          <span class="name">${c}.tsx</span>
+          <span style="color:var(--muted);font-size:12px">${cn}</span>
+          <span class="status-pill status-${st}" data-toggle-comp="${c}">${STATUS_LABEL[st]}</span>
+          <span class="meta">${refs} 个页面在用</span>
+        </li>
+      `;
+    }).join("") + `</ul>`;
+  }
+  cardP0.innerHTML = `
+    <h3>🎯 P0 待办（按引用数倒序）</h3>
+    <div class="dash-sub">点击右侧标签可直接切换状态</div>
+    ${p0HTML}
+  `;
+  grid3.appendChild(cardP0);
+
+  container.appendChild(grid3);
+
+  // 绑定卡片里直接切换状态
+  cardP0.querySelectorAll("[data-toggle-comp]").forEach(el => {
+    el.addEventListener("click", () => {
+      const name = el.dataset.toggleComp;
+      cycleCompStatus(name);
+      // 重新渲染整个进度面板（同时刷新组件视图里的状态）
+      renderProgress();
+      refreshAllStatusUIs();
+    });
+  });
+
+  // 工具栏按钮
+  document.getElementById("btn-export").addEventListener("click", exportProgress);
+  document.getElementById("btn-import").addEventListener("click", () => document.getElementById("file-import").click());
+  document.getElementById("file-import").addEventListener("change", (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const obj = JSON.parse(reader.result);
+        if (typeof obj !== "object" || !obj) throw new Error("invalid");
+        PROGRESS = {
+          components: obj.components || {},
+          pages: obj.pages || {},
+        };
+        saveProgress();
+        renderProgress();
+        refreshAllStatusUIs();
+        alert("✅ 已导入进度 JSON");
+      } catch (err) {
+        alert("❌ 文件格式不对，应该是导出过的 progress.json");
+      }
+    };
+    reader.readAsText(f);
+    e.target.value = ""; // 允许重复选同一个文件
+  });
+  document.getElementById("btn-reset").addEventListener("click", () => {
+    if (!confirm("确定要重置所有改造进度记录吗？此操作不可撤销（建议先导出备份）。")) return;
+    PROGRESS = { components: {}, pages: {} };
+    saveProgress();
+    renderProgress();
+    refreshAllStatusUIs();
+  });
+}
+
+function exportProgress() {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    summary: {
+      componentsTotal: Object.keys(COMP_REFS).length,
+      pagesTotal: Object.keys(PAGE_META).length,
+      componentsDone: Object.values(PROGRESS.components).filter(v => v.status === "done").length,
+      pagesDone: Object.values(PROGRESS.pages).filter(v => v.status === "done").length,
+    },
+    components: PROGRESS.components,
+    pages: PROGRESS.pages,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const ts = new Date();
+  const fn = `refactor-progress-${ts.getFullYear()}${String(ts.getMonth()+1).padStart(2,'0')}${String(ts.getDate()).padStart(2,'0')}.json`;
+  a.href = url;
+  a.download = fn;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+}
+
+// 把组件视图、页面视图里的状态控件刷一遍（不重建表格，只更新 class）
+function refreshAllStatusUIs() {
+  document.querySelectorAll("[data-comp-status]").forEach(el => {
+    const c = el.dataset.compStatus;
+    const s = getCompStatus(c);
+    el.className = `status-pill status-${s}`;
+    el.textContent = STATUS_LABEL[s];
+  });
+  document.querySelectorAll("[data-page-status]").forEach(el => {
+    const p = el.dataset.pageStatus;
+    const s = getPageStatus(p);
+    el.className = `status-mini s-${s}`;
+    el.title = `页面状态：${STATUS_LABEL[s]}（点击切换）`;
+  });
+  // 组件视图里页面行的 mini 控件
+  document.querySelectorAll("[data-page-mini]").forEach(el => {
+    const p = el.dataset.pageMini;
+    const s = getPageStatus(p);
+    el.className = `status-mini s-${s}`;
+    el.title = `${STATUS_LABEL[s]}（点击切换）`;
+  });
+}
+
+// 启动时先尝试加载自动扫描的真实改造进度，再渲染面板
+function bootstrapProgress() {
+  fetch("progress-auto.json", { cache: "no-store" })
+    .then(r => {
+      if (!r.ok) throw new Error("not found");
+      return r.json();
+    })
+    .then(data => {
+      PROGRESS_AUTO = {
+        components: data.components || {},
+        pages: data.pages || {},
+      };
+      PROGRESS_AUTO_META = {
+        generatedAt: data.generatedAt,
+        repo: data.repo,
+        rules: data.rules,
+        summary: data.summary,
+      };
+      renderProgress();
+      refreshAllStatusUIs();
+    })
+    .catch(() => {
+      // 没有 progress-auto.json：直接渲染（一切按 todo）
+      renderProgress();
+    });
+}
+bootstrapProgress();
+
+// ============== 变体视图：按 variant/size 维度反向索引 ==============
+let VARIANTS_DATA = null;
+let VARIANTS_LOADED = false;
+
+function bootstrapVariants() {
+  if (VARIANTS_LOADED) return;
+  VARIANTS_LOADED = true;
+  const root = views.variants;
+  root.innerHTML = `<div class="empty-state">⏳ 正在加载 component-variants.json...</div>`;
+  fetch("./component-variants.json", { cache: "no-cache" })
+    .then(r => { if (!r.ok) throw new Error("not found"); return r.json(); })
+    .then(data => { VARIANTS_DATA = data; renderVariants(); applySearch(); })
+    .catch(() => {
+      root.innerHTML = `
+        <div class="empty-state">
+          ❌ 找不到 <code>component-variants.json</code>。<br/>
+          请先在「组件引用及更新」目录下执行：<br/>
+          <code style="display:inline-block; margin-top:8px; padding:6px 10px; background:#f3f4f6; border-radius:4px;">node scan-variants.cjs</code>
+        </div>`;
+    });
+}
+
+/**
+ * 这些 bucket key 是脚本约定的"非真实变体值"标记：
+ *   (unset)   = 调用处没显式写该 prop，运行时取 cva defaultVariants
+ *   (dynamic) = 写的是 {expr}，需要人工确认
+ *   (unknown) = 写了字符串但不在 cva 已声明的取值里
+ */
+const SPECIAL_BUCKETS = new Set(["(unset)", "(dynamic)", "(unknown)"]);
+
+const SPECIAL_BUCKET_LABEL = {
+  "(unset)":   "（未显式声明，走默认值）",
+  "(dynamic)": "（写的是动态表达式）",
+  "(unknown)": "（写的不是 cva 已声明的值）",
+};
+
+function renderVariants() {
+  const root = views.variants;
+  if (!VARIANTS_DATA) return;
+  const comps = VARIANTS_DATA.components || {};
+  const cvaComps = Object.entries(comps).filter(([, v]) => v.hasCva);
+
+  let html = `
+    <div class="var-tip">
+      🎨 <strong>变体分工视图</strong>：按组件的 <code>cva</code> 维度（variant / size 等）做反向索引。
+      想给设计师/前端分工时，不再是「button 在 70 个页面被引用」，而是「<code>claw-primary</code> 黑底主按钮目前只覆盖 5 个页面，剩下还在用 <code>default</code> 的 56 个未声明 + 3 个显式 default 才是要改的目标」。
+      <br/>
+      <span style="color:#475569; font-size:12px; margin-top:4px; display:inline-block;">
+        数据来源：<code>scan-variants.cjs</code> · 生成于 ${VARIANTS_DATA.generatedAt || "—"}
+      </span>
+    </div>
+    <div class="var-toolbar">
+      <span class="legend-chip" style="background:#fef3c7; color:#92400e;">claw-* = ClawPro 自定义变体</span>
+      <span class="legend-chip">${SPECIAL_BUCKET_LABEL["(unset)"]}</span>
+      <span class="legend-chip">${SPECIAL_BUCKET_LABEL["(dynamic)"]}</span>
+      <span class="legend-chip">${SPECIAL_BUCKET_LABEL["(unknown)"]}</span>
+    </div>
+  `;
+
+  // 按"使用最多"倒序排，重头戏放前面
+  cvaComps.sort((a, b) => (b[1].totalUsages || 0) - (a[1].totalUsages || 0));
+
+  for (const [name, info] of cvaComps) {
+    const meta = COMP_META[name] || { cn: "", shadcn: name };
+    const dims = info.dimensions || {};
+    const dimNames = Object.keys(dims);
+    const totalUsages = info.totalUsages || 0;
+    const totalPages = (info.pagesWithUsage || []).length;
+
+    // 搜索锚点：组件名 + 中文名 + 所有变体值 + 所有页面
+    const searchTokens = [
+      name, meta.cn || "",
+      ...dimNames.flatMap(d => dims[d].values || []),
+      ...Object.keys(info.byDimension || {}).flatMap(d =>
+        Object.keys(info.byDimension[d] || {}).flatMap(bucket =>
+          (info.byDimension[d][bucket] || []).map(x => x.page)
+        )
+      ),
+    ].join("\n").toLowerCase();
+
+    const dimSummary = dimNames.length === 0
+      ? `<span class="var-comp-stat">无变体维度</span>`
+      : dimNames.map(d => `<span class="var-comp-stat"><strong style="color:#1d4ed8;">${d}</strong> · ${(dims[d].values || []).length} 个值</span>`).join(" ");
+
+    html += `
+      <section class="var-comp" data-search="${escapeHtml(searchTokens)}">
+        <div class="var-comp-header">
+          <div class="var-comp-header-left">
+            <span class="toggle-icon">▼</span>
+            <span class="var-comp-name">&lt;${primaryJsxName(name)}&gt;</span>
+            <span class="var-comp-cn">${escapeHtml(meta.cn || "")}</span>
+            ${dimSummary}
+          </div>
+          <div>
+            <span class="var-comp-stat">${totalUsages} 处使用 / ${totalPages} 页</span>
+          </div>
+        </div>
+        <div class="var-comp-body">
+          ${renderVariantBody(name, info)}
+        </div>
+      </section>
+    `;
+  }
+
+  if (cvaComps.length === 0) {
+    html += `<div class="empty-state">没有发现使用 cva 定义变体的组件。</div>`;
+  }
+
+  root.innerHTML = html;
+
+  // 折叠/展开
+  root.querySelectorAll(".var-comp-header").forEach(h => {
+    h.addEventListener("click", () => h.parentElement.classList.toggle("collapsed"));
+  });
+  // 默认全部折叠（除了第一个），避免一打开太长
+  const cards = root.querySelectorAll(".var-comp");
+  cards.forEach((card, idx) => { if (idx > 0) card.classList.add("collapsed"); });
+
+  // 页面 chip 点击：复制路径
+  root.querySelectorAll(".var-page-chip").forEach(chip => {
+    chip.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const text = chip.dataset.path;
+      if (!text) return;
+      navigator.clipboard?.writeText(text).then(() => {
+        chip.classList.add("copied");
+        setTimeout(() => chip.classList.remove("copied"), 800);
+      });
+    });
+  });
+}
+
+function primaryJsxName(kebab) {
+  // 简化：与扫描脚本的 PRIMARY_JSX_NAME 对齐，常见 alias：sonner→Toaster
+  const map = {
+    "alert-dialog": "AlertDialog", "aspect-ratio": "AspectRatio",
+    "button-group": "ButtonGroup", "context-menu": "ContextMenu",
+    "dropdown-menu": "DropdownMenu", "hover-card": "HoverCard",
+    "input-group": "InputGroup", "input-otp": "InputOTP",
+    "navigation-menu": "NavigationMenu", "radio-group": "RadioGroup",
+    "scroll-area": "ScrollArea", "toggle-group": "ToggleGroup",
+    "sonner": "Toaster",
+  };
+  if (map[kebab]) return map[kebab];
+  return kebab.split("-").map(s => s[0]?.toUpperCase() + s.slice(1)).join("");
+}
+
+function renderVariantBody(compName, info) {
+  const dims = info.dimensions || {};
+  const byDim = info.byDimension || {};
+  const dimNames = Object.keys(dims);
+
+  if (dimNames.length === 0) {
+    return `<div class="var-empty-block">该组件用了 cva 但没有声明 variants 维度。</div>`;
+  }
+
+  return dimNames.map(dim => {
+    const dimDef = dims[dim];
+    const declaredValues = dimDef.values || [];
+    const defaultVal = dimDef.default;
+    const buckets = byDim[dim] || {};
+    // 排序：先按 cva 声明顺序铺开声明值，再追加 special buckets
+    const orderedKeys = [
+      ...declaredValues.filter(v => buckets[v] !== undefined || true), // 全部声明值都铺出来，方便看到"哪些变体没人用"
+      ...Object.keys(buckets).filter(k => SPECIAL_BUCKETS.has(k)),
+    ];
+    // 去重保持顺序
+    const seen = new Set();
+    const keys = [];
+    for (const k of orderedKeys) { if (!seen.has(k)) { seen.add(k); keys.push(k); } }
+
+    const rows = keys.map(value => {
+      const pages = buckets[value] || [];
+      const isSpecial = SPECIAL_BUCKETS.has(value);
+      const isClaw = !isSpecial && /^claw-/.test(value);
+      const valueClass = isSpecial ? "is-special" : (isClaw ? "is-claw" : "");
+
+      let pagesHtml;
+      if (pages.length === 0) {
+        pagesHtml = `<span class="var-pages" style="color:var(--muted); font-style:italic;">— 当前没有页面使用 —</span>`;
+      } else {
+        pagesHtml = `<div class="var-pages">${pages.map(p => {
+          const meta = PAGE_META[p.page] || {};
+          const cn = meta.cn ? ` · ${meta.cn}` : "";
+          const title = `${p.page}${cn}${p.value ? ` · 实际写的是 "${p.value}"` : ""} · ${p.count} 次`;
+          return `<span class="var-page-chip" data-path="${escapeHtml(p.page)}" title="${escapeHtml(title)}">${escapeHtml(p.page)}${p.count > 1 ? `<span class="x">×${p.count}</span>` : ""}</span>`;
+        }).join("")}</div>`;
+      }
+
+      return `
+        <div class="var-row${pages.length === 0 ? ' row-empty' : ''}">
+          <div class="var-value ${valueClass}" title="${isSpecial ? escapeHtml(SPECIAL_BUCKET_LABEL[value] || '') : ''}">${escapeHtml(value)}${value === defaultVal ? ' <span style="font-size:10px; color:#1d4ed8;">DEFAULT</span>' : ''}</div>
+          <div class="var-count">${pages.length === 0 ? '0 页' : `${pages.length} 页`}</div>
+          ${pagesHtml}
+        </div>
+      `;
+    }).join("");
+
+    return `
+      <div class="var-dim">
+        <div class="var-dim-header">
+          维度：<strong>${escapeHtml(dim)}</strong>
+          ${defaultVal ? `<span class="var-dim-default">default = ${escapeHtml(defaultVal)}</span>` : ''}
+          <span style="margin-left:auto;">${declaredValues.length} 个声明值</span>
+        </div>
+        ${rows || `<div class="var-empty-block">该维度暂无任何使用记录。</div>`}
+      </div>
+    `;
+  }).join("");
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+
+// ============== 视图切换 ==============
+const tabs = document.querySelectorAll(".top-tab");
+const views = {
+  comp: document.getElementById("view-comp"),
+  page: document.getElementById("view-page"),
+  roadmap: document.getElementById("view-roadmap"),
+  progress: document.getElementById("view-progress"),
+  variants: document.getElementById("view-variants"),
+};
+let currentView = "progress";
+tabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    tabs.forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentView = tab.dataset.view;
+    Object.entries(views).forEach(([k, el]) => el.classList.toggle("active", k === currentView));
+    // 切到 roadmap / progress 时不需要搜索框
+    document.getElementById("search").style.display = (currentView === "roadmap" || currentView === "progress") ? "none" : "";
+    // 切到 progress 时强制刷新一次（保证看到最新数据）
+    if (currentView === "progress") renderProgress();
+    // 切到 variants 时按需懒加载
+    if (currentView === "variants") bootstrapVariants();
+    applySearch();
+  });
+});
+
+// ============== 搜索 ==============
+const search = document.getElementById("search");
+const stats = document.getElementById("stats");
+const empty = document.getElementById("empty-state");
+
+function applySearch() {
+  const q = search.value.trim().toLowerCase();
+  let visible = 0;
+  if (currentView === "comp") {
+    views.comp.querySelectorAll(".comp-card").forEach((card) => {
+      const ok = !q || card.dataset.search.includes(q);
+      card.classList.toggle("hidden", !ok);
+      if (ok) visible++;
+    });
+    stats.textContent = q ? `匹配 ${visible} 个组件` : `共 ${visible} 个 UI 组件 · 含改造优先级`;
+  } else if (currentView === "page") {
+    views.page.querySelectorAll(".page-section").forEach((section) => {
+      let secVisible = 0;
+      section.querySelectorAll("tbody tr").forEach((tr) => {
+        const ok = !q || tr.dataset.search.includes(q);
+        tr.style.display = ok ? "" : "none";
+        if (ok) secVisible++;
+      });
+      section.classList.toggle("hidden", secVisible === 0);
+      visible += secVisible;
+    });
+    stats.textContent = q ? `匹配 ${visible} 个页面` : `共 ${visible} 个页面`;
+  } else if (currentView === "progress") {
+    // progress 视图：不参与搜索
+    const total = Object.keys(COMP_REFS).length + Object.keys(PAGE_META).length;
+    const done = Object.values(PROGRESS.components).filter(v => v.status === "done").length
+               + Object.values(PROGRESS.pages).filter(v => v.status === "done").length;
+    stats.textContent = `📊 改造进度 · 已替换 ${done} / ${total}`;
+    empty.style.display = "none";
+    return;
+  } else if (currentView === "variants") {
+    // 变体视图：按 组件名 / 页面名 / 变体值 都过滤
+    views.variants.querySelectorAll(".var-comp").forEach((card) => {
+      const ok = !q || card.dataset.search.includes(q);
+      card.classList.toggle("hidden", !ok);
+      if (ok) visible++;
+    });
+    stats.textContent = q ? `匹配 ${visible} 个组件` : `共 ${visible} 个有变体的组件 · 按变体维度反向索引`;
+    empty.style.display = visible === 0 ? "block" : "none";
+    return;
+  } else {
+    // roadmap 视图：不参与搜索
+    stats.textContent = '🗺 改造路线图 · 按「改了收益最大」排序';
+    empty.style.display = "none";
+    return;
+  }
+  empty.style.display = visible === 0 ? "block" : "none";
+}
+search.addEventListener("input", applySearch);
+// 初始视图是 progress，先把搜索框隐藏
+document.getElementById("search").style.display = "none";
+applySearch();
+</script>
+
+</body>
+</html>

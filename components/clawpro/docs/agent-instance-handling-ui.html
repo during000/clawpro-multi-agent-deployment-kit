@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>存量 Agent 实例处理 - UI 线框图</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; padding: 40px; color: #333; line-height: 1.6; }
+h1 { font-size: 24px; margin-bottom: 32px; color: #111; }
+h2 { font-size: 18px; margin: 48px 0 16px; color: #111; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; }
+h3 { font-size: 15px; margin: 32px 0 12px; color: #555; }
+
+.dialog {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+  max-width: 720px;
+  margin: 24px auto;
+  overflow: hidden;
+}
+.dialog-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px; border-bottom: 1px solid #f0f0f0;
+}
+.dialog-header h4 { font-size: 16px; font-weight: 600; }
+.dialog-close { width: 28px; height: 28px; border-radius: 6px; border: none; background: #f5f5f5; cursor: pointer; font-size: 14px; color: #999; }
+.dialog-body { padding: 24px; }
+.dialog-footer { padding: 16px 24px; border-top: 1px solid #f0f0f0; display: flex; justify-content: flex-end; gap: 12px; }
+
+.info-banner {
+  background: #f0f7ff; border: 1px solid #d0e8ff; border-radius: 8px;
+  padding: 12px 16px; font-size: 13px; color: #1a5fab; margin-bottom: 20px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.info-banner::before { content: "ⓘ"; font-size: 14px; flex-shrink: 0; }
+
+.user-section {
+  background: #fafafa; border: 1px solid #e8e8e8; border-radius: 12px;
+  padding: 16px; margin-bottom: 16px;
+}
+.user-label { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.user-label::before { content: "👤"; }
+
+.group-card {
+  background: white; border: 1px solid #e8e8e8; border-radius: 8px;
+  margin-bottom: 12px; overflow: hidden;
+}
+.group-card-header {
+  background: #f8f9fa; padding: 10px 14px; font-size: 12px; font-weight: 500; color: #666;
+  border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between;
+}
+.group-card-body { padding: 14px; }
+
+.instance-list { margin-bottom: 14px; }
+.instance-list-title { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.instance-item { font-size: 13px; color: #333; padding: 4px 0; border-bottom: 1px solid #f8f8f8; }
+.instance-item:last-child { border-bottom: none; }
+
+.options-title { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 10px; padding-top: 14px; border-top: 1px dashed #e8e8e8; }
+
+.radio-option { margin-bottom: 12px; padding: 10px 12px; border-radius: 8px; border: 1px solid #e8e8e8; }
+.radio-option.selected { border-color: #007AFF; background: #f0f7ff; }
+.radio-label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: #333; }
+.radio-label .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; }
+.radio-option.selected .radio-dot { border-color: #007AFF; background: #007AFF; box-shadow: inset 0 0 0 3px white; }
+.radio-desc { font-size: 12px; color: #888; margin: 4px 0 0 24px; }
+.radio-link { font-size: 12px; color: #007AFF; margin: 4px 0 0 24px; cursor: pointer; }
+.radio-select { margin: 6px 0 0 24px; }
+.radio-select select { font-size: 12px; padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; }
+.radio-option.disabled { opacity: 0.45; }
+.radio-option.disabled .radio-label { color: #999; }
+.disabled-hint { font-size: 11px; color: #e53e3e; margin: 2px 0 0 24px; }
+
+.checkbox-group { margin: 6px 0 0 24px; display: flex; gap: 16px; }
+.checkbox-item { font-size: 12px; color: #555; display: flex; align-items: center; gap: 4px; }
+.checkbox-item input { width: 14px; height: 14px; }
+
+.btn { padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; }
+.btn-cancel { background: #f5f5f5; color: #666; border: 1px solid #e0e0e0; }
+.btn-primary { background: linear-gradient(135deg, #007AFF, #5856D6); color: white; }
+
+/* 配置差异 */
+.diff-dialog { max-width: 680px; }
+.diff-section { margin-bottom: 16px; }
+.diff-section-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.diff-section-title.same { color: #16a34a; }
+.diff-section-title.changed { color: #ea580c; }
+.diff-table { width: 100%; border: 1px solid #e8e8e8; border-radius: 6px; overflow: hidden; font-size: 12px; }
+.diff-table th { background: #f8f9fa; padding: 8px 12px; text-align: left; font-weight: 500; color: #666; border-bottom: 1px solid #e8e8e8; }
+.diff-table td { padding: 7px 12px; border-bottom: 1px solid #f5f5f5; color: #333; }
+.diff-table tr:last-child td { border-bottom: none; }
+
+/* Agent列表 */
+.agent-list-table { width: 100%; border: 1px solid #e8e8e8; border-radius: 8px; overflow: hidden; font-size: 13px; margin: 16px 0; }
+.agent-list-table th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 500; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
+.agent-list-table td { padding: 10px 12px; border-top: 1px solid #f5f5f5; }
+.status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+.status-badge.warning { background: #fff7ed; color: #ea580c; }
+.status-badge.running { background: #f0fdf4; color: #16a34a; }
+.action-bar { background: #f8f9fa; border: 1px solid #e8e8e8; border-radius: 8px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; margin-top: 8px; font-size: 12px; }
+.action-bar .action-btn { padding: 4px 12px; border-radius: 4px; border: 1px solid #ddd; background: white; font-size: 12px; cursor: pointer; }
+
+/* hover tooltip */
+.tooltip-card { background: #1a1a1a; color: white; border-radius: 8px; padding: 12px 16px; max-width: 280px; margin: 12px 0; font-size: 12px; }
+.tooltip-card .tooltip-title { font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.tooltip-card .tooltip-row { color: #ccc; padding: 2px 0; }
+
+/* 用户端 */
+.notification-bar { background: #f0f7ff; border: 1px solid #d0e8ff; border-radius: 8px; padding: 10px 16px; font-size: 13px; color: #1a5fab; margin: 8px 0; display: flex; align-items: center; gap: 8px; }
+.notification-bar::before { content: "🔔"; }
+
+.agent-card { background: white; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px; margin: 8px 0; }
+.agent-card-title { font-size: 14px; font-weight: 600; color: #333; }
+.agent-card-id { font-size: 12px; color: #999; margin: 2px 0 8px; }
+.agent-card-status { font-size: 12px; }
+.agent-card-action { margin-top: 10px; font-size: 12px; color: #007AFF; cursor: pointer; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<h1>存量 Agent 实例处理 — UI 线框图</h1>
+
+<!-- ===== 2.3 完整处理弹窗 ===== -->
+<h2>2.3 完整处理弹窗（场景 1a~5）</h2>
+
+<div class="dialog">
+  <div class="dialog-header">
+    <h4>存量 Agent 实例处理</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <div class="info-banner">本次组织变更涉及以下存量 Agent 实例，请为每个原组织选择处理方式。</div>
+
+    <!-- 用户 1 -->
+    <div class="user-section">
+      <div class="user-label">alice@a.com</div>
+      <div style="font-size:12px; color:#666; margin-bottom:12px; padding:8px 12px; background:#f8f9fa; border-radius:6px; line-height:1.8;">
+        原组织：<span style="color:#333; font-weight:500;">前端组、后端研发同学</span><br>
+        现组织：<span style="color:#333; font-weight:500;">AI 组</span>
+      </div>
+
+      <!-- 原组织 1 -->
+      <div class="group-card">
+        <div class="group-card-header">
+          <span>原组织：前端组</span>
+          <span>3 个实例</span>
+        </div>
+        <div class="group-card-body">
+          <div class="instance-list">
+            <div class="instance-list-title">Agent 实例名称 / ID</div>
+            <div class="instance-item">代码助手 (claw-001)</div>
+            <div class="instance-item">文档生成器 (claw-002)</div>
+            <div class="instance-item">测试工具 (claw-005)</div>
+          </div>
+
+          <div class="options-title">处理方式</div>
+
+          <div class="radio-option selected">
+            <div class="radio-label"><span class="radio-dot"></span>随用户迁移到新组织</div>
+            <div class="radio-select"><select><option>AI 组</option></select></div>
+            <div class="radio-desc">实例将按新组织配置生效，原组织中不兼容的配置将替换为新组织配置</div>
+            <div class="radio-link">查看配置差异</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>移交给同组织其他用户</div>
+            <div class="radio-select"><select><option>选择接手用户</option><option>bob@a.com</option><option>frank@a.com</option></select></div>
+            <div class="radio-desc">实例将转交给原组织内的其他用户，配置保持不变</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>允许用户自行处理</div>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" checked> 允许同组移交</label>
+              <label class="checkbox-item"><input type="checkbox" checked> 允许迁移到新组织</label>
+            </div>
+            <div class="radio-desc">实例将自动关机，直到用户完成移交或迁移后自动开机</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>归档关机</div>
+            <div class="radio-desc">实例保留在原组织名下，但会自动关机，可到 Agent 列表页做后续处理</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>删除实例</div>
+            <div class="radio-desc">跳转至 Agent 列表页批量删除</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 原组织 2 -->
+      <div class="group-card">
+        <div class="group-card-header">
+          <span>原组织：后端研发同学</span>
+          <span>1 个实例</span>
+        </div>
+        <div class="group-card-body">
+          <div class="instance-list">
+            <div class="instance-list-title">Agent 实例名称 / ID</div>
+            <div class="instance-item">API 调试助手 (claw-003)</div>
+          </div>
+          <div class="options-title">处理方式</div>
+          <div class="radio-option selected">
+            <div class="radio-label"><span class="radio-dot"></span>随用户迁移到新组织</div>
+            <div class="radio-select"><select><option>AI 组</option></select></div>
+            <div class="radio-desc">实例将按新组织配置生效，原组织中不兼容的配置将替换为新组织配置</div>
+            <div class="radio-link">查看配置差异</div>
+          </div>
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>移交给同组织其他用户</div>
+            <div class="radio-desc">实例将转交给原组织内的其他用户，配置保持不变</div>
+          </div>
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>允许用户自行处理</div>
+            <div class="radio-desc">实例将自动关机，直到用户完成移交或迁移后自动开机</div>
+          </div>
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>归档关机</div>
+            <div class="radio-desc">实例保留在原组织名下，但会自动关机，可到 Agent 列表页做后续处理</div>
+          </div>
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>删除实例</div>
+            <div class="radio-desc">跳转至 Agent 列表页批量删除</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 用户 2 -->
+    <div class="user-section">
+      <div class="user-label">frank@a.com</div>
+      <div style="font-size:12px; color:#666; margin-bottom:12px; padding:8px 12px; background:#f8f9fa; border-radius:6px; line-height:1.8;">
+        原组织：<span style="color:#333; font-weight:500;">前端组</span><br>
+        现组织：<span style="color:#333; font-weight:500;">AI 组</span>
+      </div>
+      <div class="group-card">
+        <div class="group-card-header">
+          <span>原组织：前端组</span>
+          <span>1 个实例</span>
+        </div>
+        <div class="group-card-body">
+          <div class="instance-list">
+            <div class="instance-list-title">Agent 实例名称 / ID</div>
+            <div class="instance-item">前端构建工具 (claw-008)</div>
+          </div>
+          <div class="options-title">处理方式</div>
+          <div class="radio-option selected">
+            <div class="radio-label"><span class="radio-dot"></span>随用户迁移到新组织</div>
+            <div class="radio-select"><select><option>AI 组</option></select></div>
+            <div class="radio-desc">实例将按新组织配置生效，原组织中不兼容的配置将替换为新组织配置</div>
+            <div class="radio-link">查看配置差异</div>
+          </div>
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>移交给同组织其他用户</div>
+            <div class="radio-select"><select><option>选择接手用户</option><option>alice@a.com</option><option>bob@a.com</option></select></div>
+            <div class="radio-desc">实例将转交给原组织内的其他用户，配置保持不变</div>
+          </div>
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>允许用户自行处理</div>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" checked> 允许同组移交</label>
+              <label class="checkbox-item"><input type="checkbox" checked> 允许迁移到新组织</label>
+            </div>
+            <div class="radio-desc">实例将自动关机，直到用户完成移交或迁移后自动开机</div>
+          </div>
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>归档关机</div>
+            <div class="radio-desc">实例保留在原组织名下，但会自动关机，可到 Agent 列表页做后续处理</div>
+          </div>
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>删除实例</div>
+            <div class="radio-desc">跳转至 Agent 列表页批量删除</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-cancel">取消</button>
+    <button class="btn btn-primary">确认处理</button>
+  </div>
+</div>
+
+<!-- ===== 2.4 配置差异 ===== -->
+<h2>2.4 配置差异查看</h2>
+
+<div class="dialog diff-dialog" style="max-width:780px">
+  <div class="dialog-header">
+    <h4>配置差异：前端组 → AI 组</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <table class="diff-table">
+      <thead>
+        <tr>
+          <th style="width:22%">配置项</th>
+          <th style="width:30%">原组织（前端组）</th>
+          <th style="width:30%">新组织（AI 组）</th>
+          <th style="width:18%">差异</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>模型</td>
+          <td>混元 TurboS Latest<br>Claude Sonnet 4<br>GPT-4o</td>
+          <td>混元 TurboS Latest<br>Claude Sonnet 4<br>DeepSeek V3</td>
+          <td><span class="status-badge warning">⚠️ 不同，替换</span></td>
+        </tr>
+        <tr>
+          <td>通道</td>
+          <td>微信、企业微信、飞书、钉钉</td>
+          <td>微信、企业微信、飞书、钉钉</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>技能 &gt; 初始技能包</td>
+          <td>标准技能包<br>开发者技能包</td>
+          <td>标准技能包<br>AI 研发技能包</td>
+          <td><span class="status-badge warning">⚠️ 不同，替换</span></td>
+        </tr>
+        <tr>
+          <td>技能 &gt; 角色</td>
+          <td>通用助手、代码助手</td>
+          <td>通用助手、AI 研究员</td>
+          <td><span class="status-badge warning">⚠️ 不同，替换</span></td>
+        </tr>
+        <tr>
+          <td>技能 &gt; 技能安装来源</td>
+          <td>git.techcorp.cn/skill-registry</td>
+          <td>git.techcorp.cn/skill-registry</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>Agent 工具 &gt; 企业技能</td>
+          <td>知识库检索、代码审查</td>
+          <td>知识库检索</td>
+          <td><span class="status-badge warning">⚠️ 不同，替换</span></td>
+        </tr>
+        <tr>
+          <td>Agent 工具 &gt; 企业插件</td>
+          <td>Jira、GitLab CI/CD<br>Figma 设计稿同步</td>
+          <td>Jira</td>
+          <td><span class="status-badge warning">⚠️ 不同，替换</span></td>
+        </tr>
+        <tr>
+          <td>Agent 工具 &gt; 企业MCP</td>
+          <td>文档解析、代码仓库 MCP</td>
+          <td>文档解析、AI 推理 MCP</td>
+          <td><span class="status-badge warning">⚠️ 不同，替换</span></td>
+        </tr>
+        <tr>
+          <td>记忆</td>
+          <td>开启 Pro 版</td>
+          <td>开启 Pro 版</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>网盘</td>
+          <td>开启</td>
+          <td>开启</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>镜像</td>
+          <td>Openclaw<br>Hermes Agent</td>
+          <td>Openclaw<br>Hermes Agent<br>Lighthouse ACE</td>
+          <td><span class="status-badge warning">⚠️ 不同，替换</span></td>
+        </tr>
+        <tr>
+          <td>网络 &gt; 私有网络与子网</td>
+          <td>企业默认网络</td>
+          <td>AI 组专用网络</td>
+          <td><span class="status-badge warning">⚠️ 不同，替换</span></td>
+        </tr>
+        <tr>
+          <td>网络 &gt; 安全组</td>
+          <td>技术部安全组（sg-tech4n7w）</td>
+          <td>技术部安全组（sg-tech4n7w）</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>网络 &gt; 公网</td>
+          <td>按带宽计费 / 200Mbps</td>
+          <td>按带宽计费 / 200Mbps</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>CLS 日志服务</td>
+          <td>开启</td>
+          <td>开启</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>AI Agent 安全</td>
+          <td>开启</td>
+          <td>开启</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>平台策略 &gt; 用户配额</td>
+          <td>Agent 上限 3<br>Tokens 50万/日</td>
+          <td>Agent 上限 3<br>Tokens 50万/日</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>平台策略 &gt; 模型配额</td>
+          <td>全局 Tokens 上限 100万/日</td>
+          <td>全局 Tokens 上限 100万/日</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+        <tr>
+          <td>平台策略 &gt; 功能权限</td>
+          <td>允许配置模型 ✓<br>允许配置通道 ✓<br>允许添加自定义模型 ✗<br>允许进入终端 ✓<br>允许访问面板 ✓<br>允许对话视图 ✓<br>允许云端浏览器 ✗<br>允许龙虾医生 ✗<br>允许查看模型额度 ✓</td>
+          <td>允许配置模型 ✓<br>允许配置通道 ✓<br>允许添加自定义模型 ✗<br>允许进入终端 ✓<br>允许访问面板 ✓<br>允许对话视图 ✓<br>允许云端浏览器 ✗<br>允许龙虾医生 ✗<br>允许查看模型额度 ✓</td>
+          <td><span class="status-badge running">✅ 相同，保留</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-cancel">关闭</button>
+  </div>
+</div>
+
+<!-- ===== 2.4b 特殊场景：2a（从A移出→未分配组织） ===== -->
+<h2>2.4b 特殊场景：从组织 A 移出 → 未分配组织（场景 2a）</h2>
+<h3>"迁移"变为"回退全局默认配置"，"允许用户自行处理"仅支持同组移交+回退全局配置</h3>
+
+<div class="dialog" style="max-width:640px">
+  <div class="dialog-header">
+    <h4>存量 Agent 实例处理</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <div class="info-banner">本次组织变更涉及以下存量 Agent 实例，请为每个原组织选择处理方式。</div>
+
+    <div class="user-section">
+      <div class="user-label">alice@a.com</div>
+      <div style="font-size:12px; color:#666; margin-bottom:12px; padding:8px 12px; background:#f8f9fa; border-radius:6px; line-height:1.8;">
+        原组织：<span style="color:#333; font-weight:500;">前端组</span><br>
+        现组织：<span style="color:#333; font-weight:500;">未分配组织</span>
+      </div>
+      <div class="group-card">
+        <div class="group-card-header"><span>原组织：前端组</span><span>2 个实例</span></div>
+        <div class="group-card-body">
+          <div class="instance-list">
+            <div class="instance-list-title">Agent 实例名称 / ID</div>
+            <div class="instance-item">代码助手 (claw-001)</div>
+            <div class="instance-item">文档生成器 (claw-002)</div>
+          </div>
+          <div class="options-title">处理方式</div>
+
+          <div class="radio-option selected">
+            <div class="radio-label"><span class="radio-dot"></span>回退为未分配组织全局默认配置</div>
+            <div class="radio-desc">实例将按全局默认配置生效，原组织中不兼容的配置将替换为全局配置</div>
+            <div class="radio-link">查看配置差异</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>移交给同组织其他用户</div>
+            <div class="radio-select"><select><option>选择接手用户</option><option>bob@a.com</option><option>frank@a.com</option></select></div>
+            <div class="radio-desc">实例将转交给原组织内的其他用户，配置保持不变</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>允许用户自行处理</div>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" checked> 允许同组移交</label>
+              <label class="checkbox-item"><input type="checkbox" checked> 允许回退全局配置</label>
+            </div>
+            <div class="radio-desc">实例将自动关机，直到用户完成移交或回退后自动开机</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>归档关机</div>
+            <div class="radio-desc">实例保留在原组织名下，但会自动关机，可到 Agent 列表页做后续处理</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>删除实例</div>
+            <div class="radio-desc">跳转至 Agent 列表页批量删除</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-cancel">取消</button>
+    <button class="btn btn-primary">确认处理</button>
+  </div>
+</div>
+
+<!-- ===== 2.4c 特殊场景：3a/3b（未分配组织→加入新组织） ===== -->
+<h2>2.4c 特殊场景：未分配组织 → 加入新组织（场景 3a/3b）</h2>
+<h3>"移交给同组织其他用户"被禁用（无原组织），"允许用户自行处理"仅支持迁移</h3>
+
+<div class="dialog" style="max-width:640px">
+  <div class="dialog-header">
+    <h4>存量 Agent 实例处理</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <div class="info-banner">本次组织变更涉及以下存量 Agent 实例，请为每个原组织选择处理方式。</div>
+
+    <div class="user-section">
+      <div class="user-label">alice@a.com</div>
+      <div style="font-size:12px; color:#666; margin-bottom:12px; padding:8px 12px; background:#f8f9fa; border-radius:6px; line-height:1.8;">
+        原组织：<span style="color:#333; font-weight:500;">未分配组织</span><br>
+        现组织：<span style="color:#333; font-weight:500;">AI 组、后端研发同学</span>
+      </div>
+      <div class="group-card">
+        <div class="group-card-header"><span>原组织：未分配组织（全局配置）</span><span>2 个实例</span></div>
+        <div class="group-card-body">
+          <div class="instance-list">
+            <div class="instance-list-title">Agent 实例名称 / ID</div>
+            <div class="instance-item">通用助手 (claw-006)</div>
+            <div class="instance-item">日报生成器 (claw-007)</div>
+          </div>
+          <div class="options-title">处理方式</div>
+
+          <div class="radio-option selected">
+            <div class="radio-label"><span class="radio-dot"></span>随用户迁移到新组织</div>
+            <div class="radio-select"><select><option>AI 组</option><option>后端研发同学</option></select></div>
+            <div class="radio-desc">实例将按新组织配置生效，原全局配置中不兼容的部分将替换为新组织配置</div>
+            <div class="radio-link">查看配置差异</div>
+          </div>
+
+          <div class="radio-option disabled">
+            <div class="radio-label"><span class="radio-dot"></span>移交给同组织其他用户</div>
+            <div class="disabled-hint">无原组织同组用户可接手</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>允许用户自行处理</div>
+            <div class="checkbox-group">
+              <label class="checkbox-item" style="opacity:0.4"><input type="checkbox" disabled> 允许同组移交</label>
+              <label class="checkbox-item"><input type="checkbox" checked> 允许迁移到新组织</label>
+            </div>
+            <div class="radio-desc">实例将自动关机，直到用户完成迁移后自动开机</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>归档关机</div>
+            <div class="radio-desc">实例保留在原组织名下，但会自动关机，可到 Agent 列表页做后续处理</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>删除实例</div>
+            <div class="radio-desc">跳转至 Agent 列表页批量删除</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-cancel">取消</button>
+    <button class="btn btn-primary">确认处理</button>
+  </div>
+</div>
+
+<!-- ===== 2.5 简化弹窗（场景7） ===== -->
+<h2>2.5 简化弹窗（场景 7：修改上级组织）</h2>
+<h3>不区分用户，所有实例统一处理，只有"迁移"和"删除"两种方式</h3>
+
+<div class="dialog" style="max-width:780px">
+  <div class="dialog-header">
+    <h4>存量 Agent 实例处理</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <div class="info-banner">本次上级组织变更涉及以下存量 Agent 实例，请选择处理方式。</div>
+
+    <div style="font-size:12px; color:#666; margin-bottom:16px; padding:8px 12px; background:#f8f9fa; border-radius:6px; line-height:1.8;">
+      原组织：<span style="color:#333; font-weight:500;">A公司 / 技术部 / 前端组</span><br>
+      现组织：<span style="color:#333; font-weight:500;">A公司 / 产品部 / 前端组</span>
+    </div>
+
+    <div class="group-card">
+      <div class="group-card-header"><span>受影响实例</span><span>3 个实例</span></div>
+      <div class="group-card-body">
+        <div class="instance-list">
+          <div style="display:flex; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">
+            <span style="flex:1">用户 ID</span>
+            <span style="flex:1">Agent 实例名称 / ID</span>
+          </div>
+          <div class="instance-item" style="display:flex;">
+            <span style="flex:1">alice@a.com</span>
+            <span style="flex:1">代码助手 (claw-001)</span>
+          </div>
+          <div class="instance-item" style="display:flex;">
+            <span style="flex:1">alice@a.com</span>
+            <span style="flex:1">文档生成器 (claw-002)</span>
+          </div>
+          <div class="instance-item" style="display:flex;">
+            <span style="flex:1">frank@a.com</span>
+            <span style="flex:1">测试工具 (claw-005)</span>
+          </div>
+        </div>
+
+        <div class="options-title">处理方式</div>
+
+        <div class="radio-option selected">
+          <div class="radio-label"><span class="radio-dot"></span>随用户迁移到新组织</div>
+          <div class="radio-select"><select><option>A公司 / 产品部 / 前端组</option></select></div>
+          <div class="radio-desc">实例将按新组织配置生效，原组织中不兼容的配置将替换为新组织配置</div>
+          <div class="radio-link">查看配置差异</div>
+        </div>
+
+        <div class="radio-option">
+          <div class="radio-label"><span class="radio-dot"></span>删除实例</div>
+          <div class="radio-desc">跳转至 Agent 列表页批量删除</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 配置差异表格：点击"查看配置差异"后弹出，参考 2.4 的配置差异弹窗 -->
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-cancel">取消</button>
+    <button class="btn btn-primary">确认处理</button>
+  </div>
+</div>
+
+<!-- ===== 2.6 特殊场景：离职（场景5） ===== -->
+<h2>2.6 特殊场景：OneID 离职（场景 5）</h2>
+<h3>"迁移"和"允许用户自行处理"被禁用</h3>
+
+<div class="dialog" style="max-width:640px">
+  <div class="dialog-header">
+    <h4>存量 Agent 实例处理</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <div class="info-banner">本次组织架构同步涉及以下存量 Agent 实例，请为每个原组织选择处理方式。</div>
+
+    <div class="user-section">
+      <div class="user-label">henry@a.com（已离职）</div>
+      <div style="font-size:12px; color:#666; margin-bottom:12px; padding:8px 12px; background:#f8f9fa; border-radius:6px; line-height:1.8;">
+        原组织：<span style="color:#333; font-weight:500;">人力资源</span><br>
+        现组织：<span style="color:#e53e3e; font-weight:500;">已从组织中移除</span>
+      </div>
+      <div class="group-card">
+        <div class="group-card-header"><span>原组织：人力资源</span><span>2 个实例</span></div>
+        <div class="group-card-body">
+          <div class="instance-list">
+            <div class="instance-list-title">Agent 实例名称 / ID</div>
+            <div class="instance-item">招聘助手 (claw-010)</div>
+            <div class="instance-item">考勤工具 (claw-011)</div>
+          </div>
+          <div class="options-title">处理方式</div>
+
+          <div class="radio-option disabled">
+            <div class="radio-label"><span class="radio-dot"></span>随用户迁移到新组织</div>
+            <div class="disabled-hint">用户当前无可用组织</div>
+          </div>
+
+          <div class="radio-option selected">
+            <div class="radio-label"><span class="radio-dot"></span>移交给同组织其他用户</div>
+            <div class="radio-select"><select><option>选择接手用户</option><option>jack@a.com</option></select></div>
+            <div class="radio-desc">实例将转交给原组织内的其他用户，配置保持不变</div>
+          </div>
+
+          <div class="radio-option disabled">
+            <div class="radio-label"><span class="radio-dot"></span>允许用户自行处理</div>
+            <div class="disabled-hint">用户账号已禁用</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>归档关机</div>
+            <div class="radio-desc">实例保留在原组织名下，但会自动关机，可到 Agent 列表页做后续处理</div>
+          </div>
+
+          <div class="radio-option">
+            <div class="radio-label"><span class="radio-dot"></span>删除实例</div>
+            <div class="radio-desc">跳转至 Agent 列表页批量删除</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-cancel">取消</button>
+    <button class="btn btn-primary">确认处理</button>
+  </div>
+</div>
+
+<!-- ===== 3. Agent 列表页 ===== -->
+<h2>三、管控端 — Agent 列表页</h2>
+
+<div style="max-width:880px; margin:24px auto; background:white; border-radius:16px; padding:24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+  <h3 style="margin:0 0 16px; font-size:16px; color:#111;">Agent 列表</h3>
+
+  <!-- 顶部操作栏：选中实例后出现"组织处理"按钮 -->
+  <div class="action-bar" style="margin-bottom:12px;">
+    <span style="color:#666;">选中 2 个实例</span>
+    <button class="action-btn" style="background:#f0f7ff; border-color:#007AFF; color:#007AFF; font-weight:500;">组织处理 ▾</button>
+    <button class="action-btn">批量开机</button>
+    <button class="action-btn">批量关机</button>
+    <button class="action-btn" style="color:#e53e3e; border-color:#fecaca;">批量删除</button>
+  </div>
+
+  <!-- "组织处理"下拉菜单 -->
+  <div style="margin-left:90px; margin-bottom:16px;">
+    <div style="background:white; border:1px solid #e8e8e8; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.08); width:200px; overflow:hidden; font-size:13px;">
+      <div style="padding:8px 12px; cursor:pointer; hover:bg-gray-50;">迁移到新组织</div>
+      <div style="padding:8px 12px; border-top:1px solid #f0f0f0; cursor:pointer;">移交给同组织其他用户</div>
+    </div>
+  </div>
+  
+  <table class="agent-list-table">
+    <thead>
+      <tr>
+        <th>□</th>
+        <th>Agent 名称</th>
+        <th>用户 ID</th>
+        <th>
+          <span style="display:inline-flex; align-items:center; gap:4px;">
+            组织
+            <span style="display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; border-radius:3px; background:#f0f0f0; font-size:9px; cursor:pointer;">▾</span>
+          </span>
+        </th>
+        <th>状态</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>☑</td>
+        <td>代码助手</td>
+        <td>alice@a.com</td>
+        <td>
+          <span>前端组</span>
+          <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">用户已不在该组织</span>
+        </td>
+        <td><span class="status-badge warning">● 已关机</span></td>
+        <td>···</td>
+      </tr>
+      <tr>
+        <td>☑</td>
+        <td>文档生成器</td>
+        <td>alice@a.com</td>
+        <td>
+          <span>前端组</span>
+          <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;">待用户处理</span>
+        </td>
+        <td><span class="status-badge warning">● 已关机</span></td>
+        <td>···</td>
+      </tr>
+      <tr>
+        <td>□</td>
+        <td>API 网关</td>
+        <td>bob@a.com</td>
+        <td>AI 组</td>
+        <td><span class="status-badge running">● 运行中</span></td>
+        <td>···</td>
+      </tr>
+      <tr>
+        <td>□</td>
+        <td>测试工具</td>
+        <td>frank@a.com</td>
+        <td>
+          <span>前端组</span>
+          <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">用户已不在该组织</span>
+        </td>
+        <td><span class="status-badge running">● 运行中</span></td>
+        <td>···</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 组织列筛选下拉 -->
+  <h3 style="margin-top:24px;">组织列筛选（点击组织列标题旁 ▾ 弹出）</h3>
+  <div style="background:white; border:1px solid #e8e8e8; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.08); width:220px; overflow:hidden; font-size:13px; margin:8px 0;">
+    <div style="padding:8px 12px; font-weight:500; border-bottom:1px solid #f0f0f0; color:#666; font-size:11px; text-transform:uppercase;">筛选组织</div>
+    <div style="padding:8px 12px; cursor:pointer;">全部</div>
+    <div style="padding:8px 12px; cursor:pointer; border-top:1px solid #f8f8f8;">前端组</div>
+    <div style="padding:8px 12px; cursor:pointer; border-top:1px solid #f8f8f8;">AI 组</div>
+    <div style="padding:8px 12px; cursor:pointer; border-top:1px solid #f8f8f8;">后端研发同学</div>
+    <div style="padding:8px 12px; cursor:pointer; border-top:1px solid #f0f0f0; color:#ea580c; font-weight:500;">⚠ 用户已不在该组织</div>
+    <div style="padding:8px 12px; cursor:pointer; border-top:1px solid #f8f8f8; color:#2563eb; font-weight:500;">🔵 待用户处理</div>
+  </div>
+
+  <!-- hover 详情 -->
+  <h3 style="margin-top:24px;">组织标记 hover 详情</h3>
+  
+  <div class="tooltip-card">
+    <div class="tooltip-title" style="color:#ea580c;">⚠ 用户已不在该组织</div>
+    <div class="tooltip-row">原组织：前端组</div>
+    <div class="tooltip-row">变更时间：2025-09-15 14:30</div>
+    <div class="tooltip-row">用户当前组织：AI 组</div>
+  </div>
+  <div class="tooltip-card">
+    <div class="tooltip-title" style="color:#2563eb;">🔵 待用户处理</div>
+    <div class="tooltip-row">原组织：前端组</div>
+    <div class="tooltip-row">变更时间：2025-09-15 14:30</div>
+    <div class="tooltip-row">允许操作：同组移交、迁移到新组织</div>
+  </div>
+</div>
+
+<!-- ===== 4. 用户端 ===== -->
+<h2>四、用户端 — 「我的 Agent」页</h2>
+
+<h3>4.2 主动提醒弹窗（用户登录时检测，仅告知，不操作）</h3>
+
+<div class="dialog" style="max-width:720px">
+  <div class="dialog-header">
+    <h4>组织变更通知</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <div class="info-banner">您的组织已发生变更，以下是您的 Agent 实例受影响情况。待处理的实例请在「我的 Agent」中自行处理。</div>
+
+    <table class="diff-table" style="font-size:12px;">
+      <thead>
+        <tr>
+          <th>Agent 实例名称 / ID</th>
+          <th>原组织</th>
+          <th>新组织</th>
+          <th>处理方式</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>代码助手 (claw-001)</td>
+          <td>前端组</td>
+          <td>AI 组</td>
+          <td><span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0;">已迁移至新组织</span> <span style="font-size:10px; color:#007AFF; cursor:pointer;">查看配置差异</span></td>
+        </tr>
+        <tr>
+          <td>文档生成器 (claw-002)</td>
+          <td>前端组</td>
+          <td>AI 组</td>
+          <td><span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0;">已移交给 bob@a.com</span></td>
+        </tr>
+        <tr>
+          <td>测试工具 (claw-005)</td>
+          <td>前端组</td>
+          <td>—</td>
+          <td><span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">管理员已归档关机</span></td>
+        </tr>
+        <tr>
+          <td>日报工具 (claw-009)</td>
+          <td>前端组</td>
+          <td>—</td>
+          <td><span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#fef2f2; color:#dc2626; border:1px solid #fecaca;">管理员已删除</span></td>
+        </tr>
+        <tr>
+          <td>API 调试助手 (claw-003)</td>
+          <td>后端研发同学</td>
+          <td>AI 组</td>
+          <td><span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;">待处理</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="font-size:12px; color:#666; margin-top:12px;">💡 标记为「待处理」的实例已自动关机，请在「我的 Agent」中选择处理方式，处理完成后实例将自动开机。</div>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-primary">我知道了</button>
+  </div>
+</div>
+
+<!-- ===== 4.3 我的 Agent 列表 - 待用户处理 ===== -->
+<h3>4.3 「我的 Agent」列表 — 待用户处理的实例</h3>
+<h3 style="font-size:13px; color:#888; margin-top:4px;">实例关机，组织显示原组织+异常标记，卡片上展示处理方式入口</h3>
+
+<div style="max-width:440px; margin:16px auto;">
+  <!-- 待处理的实例卡片 -->
+  <div class="agent-card" style="border-color:#fed7aa; position:relative;">
+    <div class="agent-card-title">API 调试助手</div>
+    <div class="agent-card-id">claw-003</div>
+    <div style="font-size:12px; color:#666; margin:4px 0;">
+      组织：<span style="color:#333;">后端研发同学</span>
+      <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">已不在该组织</span>
+    </div>
+    <div class="agent-card-status"><span class="status-badge warning">● 已关机</span></div>
+    <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #e8e8e8;">
+      <div style="font-size:11px; color:#999; margin-bottom:6px;">请选择处理方式：</div>
+      <div style="display:flex; gap:8px;">
+        <button class="action-btn" style="font-size:11px; background:#f0f7ff; border-color:#007AFF; color:#007AFF;">迁移到新组织</button>
+        <button class="action-btn" style="font-size:11px;">移交给同组织其他用户</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 正常实例 -->
+  <div class="agent-card">
+    <div class="agent-card-title">代码助手</div>
+    <div class="agent-card-id">claw-001</div>
+    <div style="font-size:12px; color:#666; margin:4px 0;">组织：<span style="color:#333;">AI 组</span></div>
+    <div class="agent-card-status"><span class="status-badge running">● 运行中</span></div>
+  </div>
+
+  <!-- 移交中的实例（用户A视角） -->
+  <div class="agent-card" style="border-color:#bfdbfe;">
+    <div class="agent-card-title">文档生成器</div>
+    <div class="agent-card-id">claw-002</div>
+    <div style="font-size:12px; color:#666; margin:4px 0;">组织：<span style="color:#333;">前端组</span></div>
+    <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+      <div class="agent-card-status"><span class="status-badge warning">● 已关机</span></div>
+      <span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;">待对方确认</span>
+    </div>
+    <div style="font-size:11px; color:#999; margin-top:4px;">已发起移交给 bob@a.com，等待对方确认</div>
+  </div>
+</div>
+
+<!-- ===== 4.4 移交流程 ===== -->
+<h3>4.4 移交流程 — 接收方（用户 B）视角</h3>
+<h3 style="font-size:13px; color:#888; margin-top:4px;">用户 B 的「我的 Agent」中多出实例，卡片有蒙版，需确认接收/拒绝</h3>
+
+<div style="max-width:440px; margin:16px auto;">
+  <!-- 待接收的实例卡片（有蒙版） -->
+  <div class="agent-card" style="position:relative; overflow:hidden;">
+    <!-- 蒙版 -->
+    <div style="position:absolute; inset:0; background:rgba(255,255,255,0.92); z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px;">
+      <div style="font-size:13px; font-weight:500; color:#333; margin-bottom:4px;">实例移交确认</div>
+      <div style="font-size:12px; color:#666; margin-bottom:12px; text-align:center;">alice@a.com 将 Agent「文档生成器」移交给您，<br>是否确认接收？</div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-cancel" style="font-size:12px; padding:6px 16px;">拒绝</button>
+        <button class="btn btn-primary" style="font-size:12px; padding:6px 16px;">确认接收</button>
+      </div>
+      <div style="font-size:10px; color:#999; margin-top:8px;">超过 7 天未处理将自动拒绝</div>
+    </div>
+    <!-- 底层卡片内容（被蒙版遮住） -->
+    <div class="agent-card-title">文档生成器</div>
+    <div class="agent-card-id">claw-002</div>
+    <div style="font-size:12px; color:#666; margin:4px 0;">组织：<span style="color:#333;">前端组</span></div>
+    <div class="agent-card-status"><span class="status-badge warning">● 已关机</span></div>
+  </div>
+</div>
+
+<h3>4.4b 移交流程 — 发起方（用户 A）各状态</h3>
+<h3 style="font-size:13px; color:#888; margin-top:4px;">组织旁「已不在该组织」标签 + 右侧流程状态标签</h3>
+
+<div style="max-width:440px; margin:16px auto;">
+  <!-- 状态1：待对方确认 -->
+  <div class="agent-card" style="border-color:#bfdbfe;">
+    <div style="font-size:10px; color:#999; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">场景：待对方确认</div>
+    <div class="agent-card-title">文档生成器</div>
+    <div class="agent-card-id">claw-002</div>
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin:6px 0;">
+      <div style="font-size:12px; color:#666;">
+        组织：<span style="color:#333;">前端组</span>
+        <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">已不在该组织</span>
+      </div>
+      <span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;">待对方确认</span>
+    </div>
+    <div class="agent-card-status"><span class="status-badge warning">● 已关机</span></div>
+    <div style="font-size:11px; color:#999; margin-top:4px;">已发起移交给 bob@a.com，等待对方确认</div>
+  </div>
+
+  <!-- 状态2：移交中 -->
+  <div class="agent-card" style="border-color:#bfdbfe;">
+    <div style="font-size:10px; color:#999; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">场景：移交中</div>
+    <div class="agent-card-title">文档生成器</div>
+    <div class="agent-card-id">claw-002</div>
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin:6px 0;">
+      <div style="font-size:12px; color:#666;">
+        组织：<span style="color:#333;">前端组</span>
+        <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">已不在该组织</span>
+      </div>
+      <span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;">移交中</span>
+    </div>
+    <div class="agent-card-status"><span class="status-badge warning">● 已关机</span></div>
+    <div style="font-size:11px; color:#999; margin-top:4px;">bob@a.com 已确认接收，移交处理中</div>
+  </div>
+
+  <!-- 状态3：移交成功 → 实例消失，显示消息通知 -->
+  <div style="margin:12px 0;">
+    <div style="font-size:10px; color:#999; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">场景：移交成功（实例从列表消失，显示消息通知）</div>
+    <div class="notification-bar" style="font-size:12px;">您的 Agent「文档生成器」已成功移交给 bob@a.com。</div>
+  </div>
+
+  <!-- 状态4：对方已拒绝 -->
+  <div class="agent-card" style="border-color:#fecaca;">
+    <div style="font-size:10px; color:#999; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">场景：对方已拒绝</div>
+    <div class="agent-card-title">文档生成器</div>
+    <div class="agent-card-id">claw-002</div>
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin:6px 0;">
+      <div style="font-size:12px; color:#666;">
+        组织：<span style="color:#333;">前端组</span>
+        <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">已不在该组织</span>
+      </div>
+      <span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#fef2f2; color:#dc2626; border:1px solid #fecaca;">对方已拒绝</span>
+    </div>
+    <div class="agent-card-status"><span class="status-badge warning">● 已关机</span></div>
+    <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #e8e8e8;">
+      <div style="font-size:11px; color:#999; margin-bottom:6px;">bob@a.com 拒绝了接收，请重新选择处理方式：</div>
+      <div style="display:flex; gap:8px;">
+        <button class="action-btn" style="font-size:11px; background:#f0f7ff; border-color:#007AFF; color:#007AFF;">迁移到新组织</button>
+        <button class="action-btn" style="font-size:11px;">移交给其他用户</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态5：对方超时未处理 -->
+  <div class="agent-card" style="border-color:#fed7aa;">
+    <div style="font-size:10px; color:#999; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">场景：对方超时未处理</div>
+    <div class="agent-card-title">文档生成器</div>
+    <div class="agent-card-id">claw-002</div>
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin:6px 0;">
+      <div style="font-size:12px; color:#666;">
+        组织：<span style="color:#333;">前端组</span>
+        <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">已不在该组织</span>
+      </div>
+      <span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#fef2f2; color:#dc2626; border:1px solid #fecaca;">对方超时未处理</span>
+    </div>
+    <div class="agent-card-status"><span class="status-badge warning">● 已关机</span></div>
+    <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #e8e8e8;">
+      <div style="font-size:11px; color:#999; margin-bottom:6px;">bob@a.com 超过 7 天未处理，请重新选择处理方式：</div>
+      <div style="display:flex; gap:8px;">
+        <button class="action-btn" style="font-size:11px; background:#f0f7ff; border-color:#007AFF; color:#007AFF;">迁移到新组织</button>
+        <button class="action-btn" style="font-size:11px;">移交给其他用户</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态6：迁移至新组织中（用户选了迁移） -->
+  <div class="agent-card" style="border-color:#bfdbfe;">
+    <div style="font-size:10px; color:#999; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">场景：选择了迁移到新组织</div>
+    <div class="agent-card-title">API 调试助手</div>
+    <div class="agent-card-id">claw-003</div>
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin:6px 0;">
+      <div style="font-size:12px; color:#666;">
+        组织：<span style="color:#333;">后端研发同学</span>
+        <span style="display:inline-block; margin-left:4px; padding:1px 5px; border-radius:3px; font-size:10px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa;">已不在该组织</span>
+      </div>
+      <span style="padding:2px 6px; border-radius:3px; font-size:10px; background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;">迁移至新组织中</span>
+    </div>
+    <div class="agent-card-status"><span class="status-badge warning">● 已关机</span></div>
+    <div style="font-size:11px; color:#999; margin-top:4px;">正在迁移至「AI 组」，完成后将自动开机</div>
+  </div>
+</div>
+
+<!-- ===== 4.5 用户端顶部消息通知 ===== -->
+<h3>4.5 用户端 — 顶部消息通知</h3>
+<h3 style="font-size:13px; color:#888; margin-top:4px;">右上角铃铛图标点击后展开的通知列表</h3>
+
+<div style="max-width:400px; margin:16px auto; background:white; border-radius:12px; border:1px solid #e8e8e8; box-shadow:0 4px 16px rgba(0,0,0,0.1); overflow:hidden;">
+  <!-- 通知头部 -->
+  <div style="padding:12px 16px; border-bottom:1px solid #f0f0f0; display:flex; align-items:center; justify-content:space-between;">
+    <span style="font-size:14px; font-weight:600;">消息通知</span>
+    <div style="font-size:11px; color:#999;">
+      <span style="color:#007AFF; cursor:pointer;">全部删除</span>
+      <span style="margin:0 6px;">|</span>
+      <span style="color:#007AFF; cursor:pointer;">全部已读</span>
+    </div>
+  </div>
+  <!-- tab -->
+  <div style="padding:8px 16px 0; display:flex; gap:12px; border-bottom:1px solid #f0f0f0;">
+    <span style="font-size:12px; font-weight:500; color:#007AFF; padding-bottom:8px; border-bottom:2px solid #007AFF;">全部 8</span>
+    <span style="font-size:12px; color:#999; padding-bottom:8px;">通知 8</span>
+  </div>
+  <!-- 通知列表 -->
+  <div style="max-height:400px; overflow-y:auto;">
+    <!-- 通知1：管理员已迁移 -->
+    <div style="padding:12px 16px; border-bottom:1px solid #f8f8f8;">
+      <div style="font-size:12px; color:#333; line-height:1.5;">您的 Agent「代码助手」已迁移至新组织「AI 组」，部分配置已按新组织更新。</div>
+      <div style="font-size:10px; color:#999; margin-top:4px; display:flex; align-items:center; gap:6px;">
+        <span style="color:#2563eb;">● 通知</span>
+        <span>2026-05-26 09:30</span>
+      </div>
+    </div>
+    <!-- 通知2：管理员已移交 -->
+    <div style="padding:12px 16px; border-bottom:1px solid #f8f8f8;">
+      <div style="font-size:12px; color:#333; line-height:1.5;">您的 Agent「文档生成器」因组织变更，已由管理员移交给 bob@a.com。</div>
+      <div style="font-size:10px; color:#999; margin-top:4px; display:flex; align-items:center; gap:6px;">
+        <span style="color:#2563eb;">● 通知</span>
+        <span>2026-05-26 09:30</span>
+      </div>
+    </div>
+    <!-- 通知3：管理员已归档关机 -->
+    <div style="padding:12px 16px; border-bottom:1px solid #f8f8f8;">
+      <div style="font-size:12px; color:#333; line-height:1.5;">您的 Agent「测试工具」因组织变更，已被管理员归档关机。如有疑问请联系管理员。</div>
+      <div style="font-size:10px; color:#999; margin-top:4px; display:flex; align-items:center; gap:6px;">
+        <span style="color:#2563eb;">● 通知</span>
+        <span>2026-05-26 09:30</span>
+      </div>
+    </div>
+    <!-- 通知4：管理员已删除 -->
+    <div style="padding:12px 16px; border-bottom:1px solid #f8f8f8;">
+      <div style="font-size:12px; color:#333; line-height:1.5;">您的 Agent「日报工具」因组织变更，已被管理员删除。如有疑问请联系管理员。</div>
+      <div style="font-size:10px; color:#999; margin-top:4px; display:flex; align-items:center; gap:6px;">
+        <span style="color:#2563eb;">● 通知</span>
+        <span>2026-05-26 09:30</span>
+      </div>
+    </div>
+    <!-- 通知5：管理员让你自行处理 -->
+    <div style="padding:12px 16px; border-bottom:1px solid #f8f8f8;">
+      <div style="font-size:12px; color:#333; line-height:1.5;">您的 Agent「API 调试助手」因组织变更需要您自行处理，实例已自动关机。请前往「我的 Agent」选择迁移或移交。</div>
+      <div style="font-size:10px; color:#999; margin-top:4px; display:flex; align-items:center; gap:6px;">
+        <span style="color:#2563eb;">● 通知</span>
+        <span>2026-05-26 09:30</span>
+      </div>
+    </div>
+    <!-- 通知6：收到移交请求 -->
+    <div style="padding:12px 16px; border-bottom:1px solid #f8f8f8;">
+      <div style="font-size:12px; color:#333; line-height:1.5;">alice@a.com 向您移交了 Agent「文档生成器」，请前往「我的 Agent」确认是否接收。超过 7 天未处理将自动拒绝。</div>
+      <div style="font-size:10px; color:#999; margin-top:4px; display:flex; align-items:center; gap:6px;">
+        <span style="color:#2563eb;">● 通知</span>
+        <span>2026-05-26 10:15</span>
+      </div>
+    </div>
+    <!-- 通知7：移交成功（发起方收到） -->
+    <div style="padding:12px 16px; border-bottom:1px solid #f8f8f8;">
+      <div style="font-size:12px; color:#333; line-height:1.5;">您的 Agent「文档生成器」已成功移交给 bob@a.com。</div>
+      <div style="font-size:10px; color:#999; margin-top:4px; display:flex; align-items:center; gap:6px;">
+        <span style="color:#2563eb;">● 通知</span>
+        <span>2026-05-26 11:00</span>
+      </div>
+    </div>
+    <!-- 通知8：对方拒绝接收 -->
+    <div style="padding:12px 16px; border-bottom:1px solid #f8f8f8;">
+      <div style="font-size:12px; color:#333; line-height:1.5;">bob@a.com 拒绝接收您移交的 Agent「文档生成器」，请前往「我的 Agent」重新处理。</div>
+      <div style="font-size:10px; color:#999; margin-top:4px; display:flex; align-items:center; gap:6px;">
+        <span style="color:#2563eb;">● 通知</span>
+        <span>2026-05-26 11:30</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 4.6 用户端操作弹窗 ===== -->
+<h3>4.6 用户端 — 点击「迁移到新组织」后的弹窗</h3>
+
+<div class="dialog" style="max-width:560px">
+  <div class="dialog-header">
+    <h4>迁移到新组织</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <div style="font-size:13px; color:#666; margin-bottom:16px;">
+      将 Agent「<span style="font-weight:500; color:#333;">API 调试助手</span>」从原组织迁移至新组织，迁移后实例将按新组织配置生效并自动开机。
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:12px; color:#999; margin-bottom:6px;">目标组织</div>
+      <select style="width:100%; padding:8px 12px; border:1px solid #e0e0e0; border-radius:6px; font-size:13px;">
+        <option>AI 组</option>
+        <option>后端研发同学</option>
+      </select>
+    </div>
+
+    <div style="font-size:12px; color:#007AFF; cursor:pointer; margin-bottom:4px;">查看配置差异</div>
+    <div style="font-size:11px; color:#999;">原组织中不兼容的配置将替换为新组织配置</div>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-cancel">取消</button>
+    <button class="btn btn-primary">确认迁移</button>
+  </div>
+</div>
+
+<h3>4.7 用户端 — 点击「移交给同组织其他用户」后的弹窗</h3>
+
+<div class="dialog" style="max-width:560px">
+  <div class="dialog-header">
+    <h4>移交给同组织其他用户</h4>
+    <button class="dialog-close">×</button>
+  </div>
+  <div class="dialog-body">
+    <div style="font-size:13px; color:#666; margin-bottom:16px;">
+      将 Agent「<span style="font-weight:500; color:#333;">API 调试助手</span>」移交给原组织「<span style="font-weight:500; color:#333;">后端研发同学</span>」内的其他用户。移交后实例归属将变更为对方，配置保持不变。
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:12px; color:#999; margin-bottom:6px;">选择接手用户</div>
+      <select style="width:100%; padding:8px 12px; border:1px solid #e0e0e0; border-radius:6px; font-size:13px;">
+        <option value="">请选择</option>
+        <option>bob@a.com</option>
+        <option>carol@a.com</option>
+        <option>grace@a.com</option>
+      </select>
+    </div>
+
+    <div style="background:#f8f9fa; border-radius:6px; padding:10px 12px; font-size:12px; color:#666; line-height:1.6;">
+      <div>📋 移交说明：</div>
+      <div style="margin-top:4px;">• 对方确认接收后，实例将自动开机恢复运行</div>
+      <div>• 对方拒绝或超过 7 天未处理，实例将退回给您重新处理</div>
+      <div>• 移交期间实例保持关机状态</div>
+    </div>
+  </div>
+  <div class="dialog-footer">
+    <button class="btn btn-cancel">取消</button>
+    <button class="btn btn-primary">发起移交</button>
+  </div>
+</div>
+
+</body>
+</html>

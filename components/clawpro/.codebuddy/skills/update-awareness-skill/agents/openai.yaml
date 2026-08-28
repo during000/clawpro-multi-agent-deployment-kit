@@ -1,0 +1,7 @@
+interface:
+  display_name: "版本更新感知"
+  short_description: "先审核更新方案，再植入可执行组件并登记 Campaign"
+  default_prompt: "使用 $update-awareness 识别已完成的产品变更并输出审核方案；GuideAdminNotify 和 GuideUpdateBar 只做需求与文案审核交接。"
+
+policy:
+  allow_implicit_invocation: true

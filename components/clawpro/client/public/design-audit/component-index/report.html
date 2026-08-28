@@ -1,0 +1,2989 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OpenClaw · 组件 × 页面 交叉索引（个人草稿）</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --text: #111827;
+    --text-2: #4b5563;
+    --text-3: #9ca3af;
+    --primary: #2563eb;
+    --primary-soft: #dbeafe;
+    --p0: #dc2626;
+    --p0-bg: #fee2e2;
+    --p1: #d97706;
+    --p1-bg: #fef3c7;
+    --p2: #6b7280;
+    --p2-bg: #e5e7eb;
+    --green: #059669;
+    --green-bg: #d1fae5;
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif; font-size:14px; line-height:1.5; }
+  .container { max-width:1280px; margin:0 auto; padding:24px; }
+  header.page-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+  header.page-head h1 { font-size:20px; font-weight:600; margin:0; }
+  .draft-tag { background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:6px; font-size:12px; font-weight:500; }
+  .meta-line { color:var(--text-2); font-size:13px; margin-bottom:20px; }
+
+  /* tabs */
+  .tabs { display:flex; gap:4px; margin-bottom:16px; flex-wrap:wrap; }
+  .tab { padding:8px 14px; border-radius:8px; border:1px solid transparent; background:transparent; color:var(--text-2); font-size:13px; font-weight:500; cursor:pointer; user-select:none; }
+  .tab:hover { background:#fff; }
+  .tab.active { background:#1f2937; color:#fff; }
+
+  .toolbar { display:flex; gap:12px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+  .search { flex:1; min-width:240px; }
+  .search input { width:100%; padding:9px 12px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px; outline:none; background:#fff; }
+  .search input:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-soft); }
+  .total-line { color:var(--text-2); font-size:12px; }
+
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); margin-bottom:16px; overflow:hidden; }
+  .card-head { display:flex; align-items:center; gap:12px; padding:14px 18px; border-bottom:1px solid var(--border); flex-wrap:wrap; cursor:pointer; }
+  .card-head:hover { background:#fafafa; }
+  .card-head .name { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace; font-size:14px; font-weight:600; color:var(--text); }
+  .card-head .right { margin-left:auto; display:flex; gap:8px; align-items:center; }
+  .card-body { padding: 0 18px 16px; }
+  .card-body.collapsed { display:none; }
+
+  /* tags */
+  .tag { display:inline-flex; align-items:center; padding:2px 8px; border-radius:999px; font-size:12px; font-weight:500; }
+  .tag.p0 { background:var(--p0-bg); color:var(--p0); }
+  .tag.p1 { background:var(--p1-bg); color:var(--p1); }
+  .tag.p2 { background:var(--p2-bg); color:var(--p2); }
+  .tag.count { background:var(--primary-soft); color:var(--primary); font-weight:600; }
+  .tag.cat-top { background:#fef3c7; color:#92400e; }
+  .tag.cat-tenant { background:#dbeafe; color:#1e3a8a; }
+  .tag.cat-admin-top { background:#dcfce7; color:#14532d; }
+  .tag.cat-admin-sub { background:#ede9fe; color:#5b21b6; }
+  .tag.comp-chip { background:#f3f4f6; color:#374151; font-family: ui-monospace, monospace; font-size:11.5px; margin:2px 4px 2px 0; cursor:pointer; }
+  .tag.comp-chip:hover { background:var(--primary-soft); color:var(--primary); }
+
+  .note { background:#fff7ed; color:#9a3412; padding:10px 14px; border-radius:8px; border:1px solid #fed7aa; font-size:12.5px; margin: 8px 0 12px; line-height:1.6; }
+
+  /* table */
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  thead th { text-align:left; font-weight:500; color:var(--text-2); padding:10px 12px; border-bottom:1px solid var(--border); background:#fafafa; position:sticky; top:0; }
+  tbody td { padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top; color:var(--text); }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:hover { background:#fafafa; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12.5px; color:var(--text-2); }
+  .empty-hint { padding:40px 20px; text-align:center; color:var(--text-3); }
+
+  /* roadmap */
+  .stage-head { display:flex; align-items:center; gap:12px; margin: 24px 0 12px; }
+  .stage-head h2 { font-size:16px; font-weight:600; margin:0; }
+  .stage-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:12px; }
+  .stage-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:14px; box-shadow:var(--shadow); }
+  .stage-card h3 { font-family:ui-monospace, monospace; font-size:13.5px; margin:0 0 6px; display:flex; align-items:center; gap:8px; }
+  .stage-card .desc { font-size:12.5px; color:var(--text-2); line-height:1.6; }
+  .stage-card ul { padding-left: 18px; margin: 6px 0 0; color:var(--text-2); font-size:12.5px; }
+  .stage-card li { margin: 2px 0; }
+
+  /* quality */
+  .q-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; }
+  .q-card .q-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+  .q-card .q-head .severity { padding:2px 8px; border-radius:6px; font-size:12px; font-weight:600; }
+  .sev-critical { background:#fee2e2; color:#991b1b; }
+  .sev-high { background:#fef3c7; color:#92400e; }
+  .sev-med { background:#dbeafe; color:#1e40af; }
+  .q-card h3 { margin:0; font-size:14.5px; }
+  .q-card p { margin: 6px 0; color:var(--text-2); font-size:13px; }
+  .q-card .evidence { background:#f3f4f6; padding:8px 12px; border-radius:6px; font-family:ui-monospace, monospace; font-size:12px; color:var(--text); margin: 4px 0; }
+  .q-card .fix-list { color:var(--text-2); font-size:13px; padding-left: 18px; }
+  .q-card .fix-list li { margin: 4px 0; }
+
+  hr { border:none; border-top:1px solid var(--border); margin: 24px 0; }
+  .footer-note { color:var(--text-3); font-size:12px; text-align:center; margin: 24px 0 8px; }
+  a { color:var(--primary); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+
+  /* preview modal */
+  .preview-btn { padding:3px 10px; border-radius:6px; border:1px solid var(--border-strong); background:#fff; color:var(--primary); font-size:12px; font-weight:500; cursor:pointer; }
+  .preview-btn:hover { background:var(--primary-soft); border-color:var(--primary); }
+  .toggle-btn { padding:3px 10px; border-radius:6px; border:none; background:#f3f4f6; color:var(--text-2); font-size:12px; font-weight:500; cursor:pointer; }
+  .toggle-btn:hover { background:#e5e7eb; color:var(--text); }
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:9999; display:none; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:#fff; border-radius:12px; width:720px; max-width:90vw; height:80vh; max-height:80vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.2); overflow:hidden; }
+  .modal-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); }
+  .modal-header h3 { margin:0; font-size:15px; font-weight:600; }
+  .modal-close { width:28px; height:28px; border-radius:6px; border:none; background:#f3f4f6; cursor:pointer; font-size:16px; line-height:1; display:flex; align-items:center; justify-content:center; }
+  .modal-close:hover { background:#e5e7eb; }
+  .modal-body { flex:1; overflow:hidden; }
+  .modal-body iframe { width:100%; height:100%; border:none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="page-head">
+  <h1>🐾 OpenClaw · 组件 × 页面交叉索引</h1>
+  <span class="draft-tag">feature/design-addietang</span>
+</header>
+<div class="meta-line" id="metaLine">加载中…</div>
+
+<div class="tabs" id="tabs">
+  <button class="tab active" data-tab="c2p">📌 组件 → 页面</button>
+  <button class="tab" data-tab="p2c">📄 页面 → 组件</button>
+  <button class="tab" data-tab="road">🗺️ 改造路线图</button>
+  <button class="tab" data-tab="qa">🩺 质量诊断</button>
+</div>
+
+<div class="toolbar" id="searchBar">
+  <div class="search">
+    <input id="searchInput" placeholder="搜索组件名 / 页面名 / 路径..." />
+  </div>
+  <button class="toggle-btn" id="expandAllBtn">全部展开</button>
+  <button class="toggle-btn" id="collapseAllBtn">全部收起</button>
+  <div class="total-line" id="totalLine"></div>
+</div>
+
+<section id="view-c2p"></section>
+<section id="view-p2c" style="display:none"></section>
+<section id="view-road" style="display:none"></section>
+<section id="view-qa" style="display:none"></section>
+
+<div class="footer-note">数据生成时间：<span id="genTime"></span> · 重新生成：<code>node scripts/scan-components.mjs &amp;&amp; node scripts/build-component-index.mjs</code></div>
+
+</div>
+
+<script id="payload" type="application/json">{
+  "generatedAt": "2026-05-13T15:21:08.699Z",
+  "totals": {
+    "pages": 88,
+    "components": 53,
+    "byCategory": {
+      "顶级": 4,
+      "用户端": 8,
+      "管理端·顶级": 27,
+      "管理端·子组件": 49
+    }
+  },
+  "components": [
+    {
+      "name": "button",
+      "file": "button.tsx",
+      "usageCount": 69,
+      "usedBy": [
+        "client/src/pages/Home.tsx",
+        "client/src/pages/LandingPage.tsx",
+        "client/src/pages/NotFound.tsx",
+        "client/src/pages/SsoLoginDemo.tsx",
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/AuditLog.tsx",
+        "client/src/pages/admin/AuthSourceImportDialog.tsx",
+        "client/src/pages/admin/BasicInfo.tsx",
+        "client/src/pages/admin/ChannelConfig.tsx",
+        "client/src/pages/admin/DocManagement.tsx",
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemberManagement/GroupDialog.tsx",
+        "client/src/pages/admin/MemberManagement/GroupList.tsx",
+        "client/src/pages/admin/MemberManagement/GroupView.tsx",
+        "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+        "client/src/pages/admin/MemberManagement/OverrideCell.tsx",
+        "client/src/pages/admin/MemberManagement/SyncResultDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+        "client/src/pages/admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/FreeVersionCard.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProActivationDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProCloseDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProDashboard.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProServiceCard.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProVersionCard.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/OpsObservation.tsx",
+        "client/src/pages/admin/PlatformPolicy.tsx",
+        "client/src/pages/admin/SecurityGroupManagement.tsx",
+        "client/src/pages/admin/ServerManagement.tsx",
+        "client/src/pages/admin/SessionManagement.tsx",
+        "client/src/pages/admin/SkillConfig.tsx",
+        "client/src/pages/admin/SkillLibrary/AddCategoryDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/AddToPackageDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/BucketManagementTab.tsx",
+        "client/src/pages/admin/SkillLibrary/CategoryManagementTab.tsx",
+        "client/src/pages/admin/SkillLibrary/DistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EditCategoriesDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EditCategoryDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EditScopeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EnableCOSDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPAddDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginUploadDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/admin/TokensMonitor.tsx",
+        "client/src/pages/admin/standard/StandardBasicInfo.tsx",
+        "client/src/pages/tenant/ChatView.tsx",
+        "client/src/pages/tenant/FileSpace.tsx",
+        "client/src/pages/tenant/HelpDocs.tsx",
+        "client/src/pages/tenant/ModelQuota.tsx",
+        "client/src/pages/tenant/MyOpenClaw.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx",
+        "client/src/pages/tenant/ResetPassword.tsx",
+        "client/src/pages/tenant/SkillSquare.tsx"
+      ],
+      "distribution": {
+        "top": 4,
+        "tenant": 8,
+        "admin-top": 19,
+        "admin-sub": 38,
+        "other": 0
+      },
+      "priority": "P0",
+      "note": "覆盖最广，全场景基石",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-18",
+        "figma": "https://www.figma.com/design/c5aMwnTTrqTJbIf7FDSsPp/clawpro%E7%BB%84%E4%BB%B6%E8%A1%A5%E5%85%85?node-id=3-76",
+        "changes": "主按钮:黑蓝渐变+hover深蓝+active叠白+disabled半透明; 次按钮:白底#e5边+hover灰底+disabled文字30%透明; 尺寸统一40/36/32px; disabled加cursor-not-allowed; SmallIconStateButton(h-24px,px-2,rounded-4px,border-#D4D4D4,text-xs,icon+label,hover:border-#C9C9C9+bg-#FAFAFA,disabled:text-#A3A3A3); link-dark变体(黑色文字按钮,用于表格操作列):normal#020617/hover#525252/active下划线/disabled30%透明"
+      }
+    },
+    {
+      "name": "dialog",
+      "file": "dialog.tsx",
+      "usageCount": 49,
+      "usedBy": [
+        "client/src/pages/admin/AuditLog.tsx",
+        "client/src/pages/admin/AuthSourceImportDialog.tsx",
+        "client/src/pages/admin/ChannelConfig.tsx",
+        "client/src/pages/admin/DocManagement.tsx",
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemberManagement/GroupDialog.tsx",
+        "client/src/pages/admin/MemberManagement/GroupView.tsx",
+        "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+        "client/src/pages/admin/MemberManagement/SyncResultDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+        "client/src/pages/admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/FreeVersionCard.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProActivationDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProCloseDialog.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/OpsObservation.tsx",
+        "client/src/pages/admin/PlatformPolicy.tsx",
+        "client/src/pages/admin/SecurityGroupManagement.tsx",
+        "client/src/pages/admin/ServerManagement.tsx",
+        "client/src/pages/admin/SessionManagement.tsx",
+        "client/src/pages/admin/SkillLibrary/AddCategoryDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/AddToPackageDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/DistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EditCategoriesDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EditCategoryDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EnableCOSDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPAddDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginUploadDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/admin/TokensMonitor.tsx",
+        "client/src/pages/tenant/ChatView.tsx",
+        "client/src/pages/tenant/FileSpace.tsx",
+        "client/src/pages/tenant/MyOpenClaw.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx",
+        "client/src/pages/tenant/SkillSquare.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 5,
+        "admin-top": 16,
+        "admin-sub": 28,
+        "other": 0
+      },
+      "priority": "P0",
+      "note": "弹窗骨架，UI 一致性关键",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-18",
+        "figma": "TDesign Dialog 规范",
+        "changes": "圆角8px; 遮罩45%; 无分割线(参考AntDesign); Header pt-6 pb-3; Footer pt-4 pb-6 右对齐; 三层阴影; 标题16px 600 rgba(0,0,0,0.88); 关闭按钮20px"
+      }
+    },
+    {
+      "name": "input",
+      "file": "input.tsx",
+      "usageCount": 43,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/AuditLog.tsx",
+        "client/src/pages/admin/AuthSourceImportDialog.tsx",
+        "client/src/pages/admin/BasicInfo.tsx",
+        "client/src/pages/admin/ChannelConfig.tsx",
+        "client/src/pages/admin/DocManagement.tsx",
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+        "client/src/pages/admin/MemoryManagement/components/InstanceTable.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProCloseDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProDashboard.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/PlatformPolicy.tsx",
+        "client/src/pages/admin/SecurityGroupManagement.tsx",
+        "client/src/pages/admin/ServerManagement.tsx",
+        "client/src/pages/admin/SkillConfig.tsx",
+        "client/src/pages/admin/SkillLibrary/AddCategoryDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/DistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EditCategoryDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EnableCOSDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPAddDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginUploadDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/admin/standard/StandardBasicInfo.tsx",
+        "client/src/pages/tenant/FileSpace.tsx",
+        "client/src/pages/tenant/MyOpenClaw.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx",
+        "client/src/pages/tenant/ResetPassword.tsx",
+        "client/src/pages/tenant/SkillSquare.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 5,
+        "admin-top": 16,
+        "admin-sub": 22,
+        "other": 0
+      },
+      "priority": "P0",
+      "note": "表单核心",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-18",
+        "figma": "https://www.figma.com/design/1PraDigxMbE8KrBayR1bbb/ClawPro-%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1?node-id=478-6376",
+        "changes": "边框色 #d3d6db → hover/focus #355EF1；报错 #d42a1e；disabled 用 bg-[#f3f3f4] 不用 opacity；去掉 ring/shadow；placeholder #b0b6c3"
+      }
+    },
+    {
+      "name": "tooltip",
+      "file": "tooltip.tsx",
+      "usageCount": 37,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/AuthSourceImportDialog.tsx",
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemberManagement/GroupList.tsx",
+        "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+        "client/src/pages/admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+        "client/src/pages/admin/MemoryManagement/components/FreeVersionCard.tsx",
+        "client/src/pages/admin/MemoryManagement/components/InstanceTable.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProDashboard.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProServiceCard.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/PlatformPolicy.tsx",
+        "client/src/pages/admin/SecurityGroupManagement.tsx",
+        "client/src/pages/admin/SessionDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EditScopeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPAddDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillListTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/admin/TokensMonitor.tsx",
+        "client/src/pages/tenant/ChatView.tsx",
+        "client/src/pages/tenant/FileSpace.tsx",
+        "client/src/pages/tenant/ModelQuota.tsx",
+        "client/src/pages/tenant/MyOpenClaw.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx",
+        "client/src/pages/tenant/SkillSquare.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 6,
+        "admin-top": 12,
+        "admin-sub": 19,
+        "other": 0
+      },
+      "priority": "P0",
+      "note": "高频信息悬浮",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "bg-[#020617] text-white 圆角4px"
+      }
+    },
+    {
+      "name": "label",
+      "file": "label.tsx",
+      "usageCount": 23,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/AuthSourceImportDialog.tsx",
+        "client/src/pages/admin/BasicInfo.tsx",
+        "client/src/pages/admin/DocManagement.tsx",
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProCloseDialog.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/OpsObservation.tsx",
+        "client/src/pages/admin/SecurityGroupManagement.tsx",
+        "client/src/pages/admin/ServerManagement.tsx",
+        "client/src/pages/admin/SessionManagement.tsx",
+        "client/src/pages/admin/SkillLibrary/CategoryManagementTab.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPAddDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginUploadDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/admin/TokensMonitor.tsx",
+        "client/src/pages/admin/standard/StandardBasicInfo.tsx",
+        "client/src/pages/tenant/MyOpenClaw.tsx",
+        "client/src/pages/tenant/ResetPassword.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 2,
+        "admin-top": 14,
+        "admin-sub": 7,
+        "other": 0
+      },
+      "priority": "P0",
+      "note": "表单标签，与 input 配套"
+    },
+    {
+      "name": "select",
+      "file": "select.tsx",
+      "usageCount": 19,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/AuthSourceImportDialog.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProDashboard.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/SecurityGroupManagement.tsx",
+        "client/src/pages/admin/ServerManagement.tsx",
+        "client/src/pages/admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/CategoryManagementTab.tsx",
+        "client/src/pages/admin/SkillLibrary/DistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx",
+        "client/src/pages/tenant/SkillSquare.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 2,
+        "admin-top": 9,
+        "admin-sub": 8,
+        "other": 0
+      },
+      "priority": "P0",
+      "note": "下拉选择，高频表单组件",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-18",
+        "figma": "https://www.figma.com/design/1PraDigxMbE8KrBayR1bbb/ClawPro-%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1?node-id=478-6507",
+        "changes": "Trigger: 边框 #d3d6db → hover/open #355EF1；Content: 去 border 改双层阴影(0,0,2 + 0,4,16)；Item: 圆角6px 高32px hover bg-[#f3f3f4]；选中态蓝色文字+勾"
+      }
+    },
+    {
+      "name": "checkbox",
+      "file": "checkbox.tsx",
+      "usageCount": 17,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+        "client/src/pages/admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+        "client/src/pages/admin/MemoryManagement/components/InstanceTable.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/OpsObservation.tsx",
+        "client/src/pages/admin/SessionManagement.tsx",
+        "client/src/pages/admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/DistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EnableCOSDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/TokensMonitor.tsx",
+        "client/src/pages/admin/standard/StandardBasicInfo.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 7,
+        "admin-sub": 10,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "多选",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui Checkbox",
+        "changes": "边框#d3d6db; hover变蓝; checked态bg-[#355EF1]+白勾; disabled灰底; 去掉shadow-xs和opacity-50"
+      }
+    },
+    {
+      "name": "popover",
+      "file": "popover.tsx",
+      "usageCount": 17,
+      "usedBy": [
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+        "client/src/pages/admin/MemberManagement/OverrideCell.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/PlatformPolicy.tsx",
+        "client/src/pages/admin/SecurityGroupManagement.tsx",
+        "client/src/pages/admin/SkillLibrary/EditScopeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginUploadDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/admin/TokensMonitor.tsx",
+        "client/src/pages/admin/standard/StandardBasicInfo.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 9,
+        "admin-sub": 8,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "气泡浮层",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "圆角8px+border#e5e5e5+三层阴影"
+      }
+    },
+    {
+      "name": "switch",
+      "file": "switch.tsx",
+      "usageCount": 16,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/ChannelConfig.tsx",
+        "client/src/pages/admin/DocManagement.tsx",
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemoryManagement/components/FreeVersionCard.tsx",
+        "client/src/pages/admin/MemoryManagement/components/ProActivationDialog.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/ServerManagement.tsx",
+        "client/src/pages/admin/SkillLibrary/EnableCOSDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 10,
+        "admin-sub": 6,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "开关交互",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui Switch",
+        "changes": "h-5 w-9; checked态bg-[#355EF1]; unchecked态bg-[#d3d6db]; thumb白色4px圆; disabled opacity-50"
+      }
+    },
+    {
+      "name": "alert-dialog",
+      "file": "alert-dialog.tsx",
+      "usageCount": 10,
+      "usedBy": [
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/PlatformPolicy.tsx",
+        "client/src/pages/admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/DeleteSkillDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillListTab.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/tenant/ChatView.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 2,
+        "admin-top": 4,
+        "admin-sub": 4,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "确认弹窗",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "与Dialog一致:圆角8px+遮罩45%+三层阴影"
+      }
+    },
+    {
+      "name": "tabs",
+      "file": "tabs.tsx",
+      "usageCount": 10,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/EnterpriseSkillLibrary.tsx",
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/ServerManagement.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillDetail.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/TokensMonitor.tsx",
+        "client/src/pages/tenant/SkillSquare.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 1,
+        "admin-top": 5,
+        "admin-sub": 4,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "分页签",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "活跃态#355EF1+列表底色#f3f3f4"
+      }
+    },
+    {
+      "name": "textarea",
+      "file": "textarea.tsx",
+      "usageCount": 9,
+      "usedBy": [
+        "client/src/pages/admin/ModelConfig.tsx",
+        "client/src/pages/admin/SkillLibrary/AddCategoryDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/EditCategoryDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/MCPAddDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/PluginUploadDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 1,
+        "admin-top": 2,
+        "admin-sub": 6,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "多行输入",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "与Input一致:边框#d3d6db+hover/focus#355EF1"
+      }
+    },
+    {
+      "name": "badge",
+      "file": "badge.tsx",
+      "usageCount": 8,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/admin/DocManagement.tsx",
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+        "client/src/pages/admin/SkillLibrary/AddToPackageDialog.tsx",
+        "client/src/pages/admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "client/src/pages/admin/SkillRolesTab.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 4,
+        "admin-sub": 4,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "状态徽标（注意：现状大量被全局 .badge-* 类替代）",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "rounded-full+品牌色variants"
+      }
+    },
+    {
+      "name": "dropdown-menu",
+      "file": "dropdown-menu.tsx",
+      "usageCount": 7,
+      "usedBy": [
+        "client/src/pages/admin/MemberManagement.tsx",
+        "client/src/pages/admin/MemberManagement/GroupList.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx",
+        "client/src/pages/admin/SkillLibrary/SkillListTab.tsx",
+        "client/src/pages/tenant/ChatView.tsx",
+        "client/src/pages/tenant/FileSpace.tsx",
+        "client/src/pages/tenant/MyOpenClaw.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 3,
+        "admin-top": 2,
+        "admin-sub": 2,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "下拉菜单",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "圆角8px+三层阴影+hover bg-[#f5f5f5]"
+      }
+    },
+    {
+      "name": "card",
+      "file": "card.tsx",
+      "usageCount": 2,
+      "usedBy": [
+        "client/src/pages/NotFound.tsx",
+        "client/src/pages/admin/AgentMigration.tsx"
+      ],
+      "distribution": {
+        "top": 1,
+        "tenant": 0,
+        "admin-top": 1,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "卡片容器（注意：现状大量被手写伪 Card 替代，102 处）",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui Card 标准",
+        "changes": "圆角rounded-xl(12px); 边框统一#e5e5e5; 移除所有boxShadow(70+处); SurfaceCard同步对齐; 全站border-gray-100替换"
+      }
+    },
+    {
+      "name": "hover-card",
+      "file": "hover-card.tsx",
+      "usageCount": 2,
+      "usedBy": [
+        "client/src/pages/admin/MemberManagement/OverrideCell.tsx",
+        "client/src/pages/admin/OpenClawMonitor.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 1,
+        "admin-sub": 1,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "progress",
+      "file": "progress.tsx",
+      "usageCount": 2,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 1,
+        "admin-top": 1,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": "",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "轨道#f3f3f4+填充#355EF1"
+      }
+    },
+    {
+      "name": "radio-group",
+      "file": "radio-group.tsx",
+      "usageCount": 2,
+      "usedBy": [
+        "client/src/pages/admin/FileManagement.tsx",
+        "client/src/pages/admin/ImageManagement.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 2,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": "",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "边框#d3d6db+checked圆点#355EF1"
+      }
+    },
+    {
+      "name": "sheet",
+      "file": "sheet.tsx",
+      "usageCount": 2,
+      "usedBy": [
+        "client/src/pages/admin/MemberManagement/MemberDrawer.tsx",
+        "client/src/pages/tenant/OpenClawDetail.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 1,
+        "admin-top": 0,
+        "admin-sub": 1,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "抽屉",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "遮罩45%+去shadow"
+      }
+    },
+    {
+      "name": "collapsible",
+      "file": "collapsible.tsx",
+      "usageCount": 1,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 1,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": "树结构基础组件（GroupTree 基于此实现）",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-21",
+        "changes": "GroupTree标准化: 对齐shadcn FileTree色系; text-foreground=#09090b; accent=#f4f4f5; muted-foreground=#71717a; h-8 rounded-[4px]; 缩进16px/层; mx-3对齐搜索框; 去除所有blue色; 搜索框border-#E4E4E4+focus-#020617"
+      }
+    },
+    {
+      "name": "command",
+      "file": "command.tsx",
+      "usageCount": 1,
+      "usedBy": [
+        "client/src/pages/admin/SecurityGroupManagement.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 1,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "slider",
+      "file": "slider.tsx",
+      "usageCount": 1,
+      "usedBy": [
+        "client/src/pages/admin/SecurityGroupManagement.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 1,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": "",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "轨道#f3f3f4+填充#355EF1+把手白色border"
+      }
+    },
+    {
+      "name": "table",
+      "file": "table.tsx",
+      "usageCount": 1,
+      "usedBy": [
+        "client/src/pages/admin/AgentMigration.tsx"
+      ],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 1,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": "",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-22",
+        "changes": "新增TableActionCell组件:表格操作列专用单元格,内部Button自动强制应用link-dark黑色文字按钮样式(normal#020617/hover#525252/active下划线/disabled30%透明),无需手动指定variant"
+      }
+    },
+    {
+      "name": "accordion",
+      "file": "accordion.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": "",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "border#e5e5e5卡片式+去shadow"
+      }
+    },
+    {
+      "name": "alert",
+      "file": "alert.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "aspect-ratio",
+      "file": "aspect-ratio.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "avatar",
+      "file": "avatar.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "breadcrumb",
+      "file": "breadcrumb.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "button-group",
+      "file": "button-group.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "calendar",
+      "file": "calendar.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "carousel",
+      "file": "carousel.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "chart",
+      "file": "chart.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "context-menu",
+      "file": "context-menu.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "drawer",
+      "file": "drawer.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "empty",
+      "file": "empty.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "field",
+      "file": "field.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "form",
+      "file": "form.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "input-group",
+      "file": "input-group.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "input-otp",
+      "file": "input-otp.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "item",
+      "file": "item.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "kbd",
+      "file": "kbd.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "menubar",
+      "file": "menubar.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "navigation-menu",
+      "file": "navigation-menu.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "pagination",
+      "file": "pagination.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "resizable",
+      "file": "resizable.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "scroll-area",
+      "file": "scroll-area.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "separator",
+      "file": "separator.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P1",
+      "note": "分隔线",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "bg-[#e5e5e5]"
+      }
+    },
+    {
+      "name": "sidebar",
+      "file": "sidebar.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "skeleton",
+      "file": "skeleton.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": "",
+      "designRefresh": {
+        "status": "done",
+        "owner": "addietang",
+        "date": "2026-05-19",
+        "figma": "shadcn/ui + 品牌色#355EF1",
+        "changes": "bg-[#f3f3f4] animate-pulse"
+      }
+    },
+    {
+      "name": "sonner",
+      "file": "sonner.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "spinner",
+      "file": "spinner.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "toggle",
+      "file": "toggle.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    },
+    {
+      "name": "toggle-group",
+      "file": "toggle-group.tsx",
+      "usageCount": 0,
+      "usedBy": [],
+      "distribution": {
+        "top": 0,
+        "tenant": 0,
+        "admin-top": 0,
+        "admin-sub": 0,
+        "other": 0
+      },
+      "priority": "P2",
+      "note": ""
+    }
+  ],
+  "pages": [
+    {
+      "path": "client/src/pages/Home.tsx",
+      "name": "Home",
+      "category": "顶级",
+      "categoryKey": "top",
+      "components": [
+        "button"
+      ]
+    },
+    {
+      "path": "client/src/pages/LandingPage.tsx",
+      "name": "LandingPage",
+      "category": "顶级",
+      "categoryKey": "top",
+      "components": [
+        "button"
+      ]
+    },
+    {
+      "path": "client/src/pages/NotFound.tsx",
+      "name": "NotFound",
+      "category": "顶级",
+      "categoryKey": "top",
+      "components": [
+        "button",
+        "card"
+      ]
+    },
+    {
+      "path": "client/src/pages/SsoLoginDemo.tsx",
+      "name": "SsoLoginDemo",
+      "category": "顶级",
+      "categoryKey": "top",
+      "components": [
+        "button"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/AgentMigration.tsx",
+      "name": "AgentMigration",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "badge",
+        "button",
+        "card",
+        "checkbox",
+        "collapsible",
+        "input",
+        "label",
+        "progress",
+        "select",
+        "switch",
+        "table",
+        "tabs",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/AgentTemplate.tsx",
+      "name": "AgentTemplate",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/AgentToolLibrary.tsx",
+      "name": "AgentToolLibrary",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/ApiDocs.tsx",
+      "name": "ApiDocs",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/AuditLog.tsx",
+      "name": "AuditLog",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "dialog",
+        "input"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/AuthSourceImportDialog.tsx",
+      "name": "AuthSourceImportDialog",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "select",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/BasicInfo.tsx",
+      "name": "BasicInfo",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "input",
+        "label"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/ChannelConfig.tsx",
+      "name": "ChannelConfig",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "switch"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/CloudDevManagement.tsx",
+      "name": "CloudDevManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/DocManagement.tsx",
+      "name": "DocManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "badge",
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "switch"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/EnterpriseSkillLibrary.tsx",
+      "name": "EnterpriseSkillLibrary",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "tabs"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/FileManagement.tsx",
+      "name": "FileManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "alert-dialog",
+        "button",
+        "checkbox",
+        "dialog",
+        "input",
+        "label",
+        "popover",
+        "radio-group",
+        "switch",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/ImageManagement.tsx",
+      "name": "ImageManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog",
+        "input",
+        "label",
+        "popover",
+        "radio-group",
+        "select",
+        "switch",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemberManagement/GroupDialog.tsx",
+      "name": "GroupDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemberManagement/GroupList.tsx",
+      "name": "GroupList",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dropdown-menu",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemberManagement/GroupView.tsx",
+      "name": "GroupView",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemberManagement/MemberDrawer.tsx",
+      "name": "MemberDrawer",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "sheet"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+      "name": "NodeContentPanel",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "badge",
+        "button",
+        "checkbox",
+        "dialog",
+        "input",
+        "popover",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemberManagement/OverrideCell.tsx",
+      "name": "OverrideCell",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "hover-card",
+        "popover"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemberManagement/SyncResultDialog.tsx",
+      "name": "SyncResultDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemberManagement.tsx",
+      "name": "MemberManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "badge",
+        "button",
+        "dialog",
+        "dropdown-menu",
+        "input",
+        "label",
+        "popover",
+        "select",
+        "switch",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/MemoryManagement.tsx",
+      "name": "MemoryManagement",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/BenchmarkSection.tsx",
+      "name": "BenchmarkSection",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/BenchmarkTable.tsx",
+      "name": "BenchmarkTable",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/ComparisonTable.tsx",
+      "name": "ComparisonTable",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+      "name": "DefaultMemoryVersion",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+      "name": "DisableConfirmDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+      "name": "EnableConfirmDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/FeatureGrid.tsx",
+      "name": "FeatureGrid",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/FreeVersionCard.tsx",
+      "name": "FreeVersionCard",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "switch",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/InstanceTable.tsx",
+      "name": "InstanceTable",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "checkbox",
+        "input",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/OneClickUpgradeDialog.tsx",
+      "name": "OneClickUpgradeDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/OverviewStats.tsx",
+      "name": "OverviewStats",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/ProActivationDialog.tsx",
+      "name": "ProActivationDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "switch"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/ProCloseDialog.tsx",
+      "name": "ProCloseDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "label"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/ProDashboard.tsx",
+      "name": "ProDashboard",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "input",
+        "select",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/ProServiceCard.tsx",
+      "name": "ProServiceCard",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/ProVersionCard.tsx",
+      "name": "ProVersionCard",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/MemoryManagement/components/RadarWidget.tsx",
+      "name": "RadarWidget",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/ModelConfig.tsx",
+      "name": "ModelConfig",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "popover",
+        "select",
+        "switch",
+        "tabs",
+        "textarea",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/OpenClawMonitor.tsx",
+      "name": "OpenClawMonitor",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "alert-dialog",
+        "button",
+        "checkbox",
+        "dialog",
+        "dropdown-menu",
+        "hover-card",
+        "input",
+        "popover",
+        "select",
+        "switch",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/OpsObservation.tsx",
+      "name": "OpsObservation",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog",
+        "label"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/PlatformPolicy.tsx",
+      "name": "PlatformPolicy",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "alert-dialog",
+        "button",
+        "dialog",
+        "input",
+        "popover",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SecurityGroupManagement.tsx",
+      "name": "SecurityGroupManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "command",
+        "dialog",
+        "input",
+        "label",
+        "popover",
+        "select",
+        "slider",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SecurityManagement.tsx",
+      "name": "SecurityManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/ServerManagement.tsx",
+      "name": "ServerManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "select",
+        "switch",
+        "tabs"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SessionDetail.tsx",
+      "name": "SessionDetail",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SessionManagement.tsx",
+      "name": "SessionManagement",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog",
+        "label"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillConfig.tsx",
+      "name": "SkillConfig",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "input"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillDetailPage.tsx",
+      "name": "SkillDetailPage",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": []
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/AddCategoryDialog.tsx",
+      "name": "AddCategoryDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "textarea"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/AddToPackageDialog.tsx",
+      "name": "AddToPackageDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "badge",
+        "button",
+        "dialog"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/BatchDistributeDialog.tsx",
+      "name": "BatchDistributeDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "alert-dialog",
+        "button",
+        "checkbox",
+        "dialog",
+        "input",
+        "select",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/BucketManagementTab.tsx",
+      "name": "BucketManagementTab",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/CategoryManagementTab.tsx",
+      "name": "CategoryManagementTab",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "label",
+        "select"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/DeleteSkillDialog.tsx",
+      "name": "DeleteSkillDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "alert-dialog"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/DistributeDialog.tsx",
+      "name": "DistributeDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog",
+        "input",
+        "select"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/EditCategoriesDialog.tsx",
+      "name": "EditCategoriesDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/EditCategoryDialog.tsx",
+      "name": "EditCategoryDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "textarea"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/EditScopeDialog.tsx",
+      "name": "EditScopeDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "popover",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/EnableCOSDialog.tsx",
+      "name": "EnableCOSDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog",
+        "input",
+        "switch"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/MCPAddDialog.tsx",
+      "name": "MCPAddDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "textarea",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/MCPDetail.tsx",
+      "name": "MCPDetail",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "select",
+        "tabs",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/MCPListTab.tsx",
+      "name": "MCPListTab",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/PluginDetail.tsx",
+      "name": "PluginDetail",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "select",
+        "tabs",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/PluginListTab.tsx",
+      "name": "PluginListTab",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/PluginUploadDialog.tsx",
+      "name": "PluginUploadDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "popover",
+        "textarea"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+      "name": "PublicSkillLibraryTab",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "badge",
+        "button",
+        "input"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/SkillDetail.tsx",
+      "name": "SkillDetail",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "alert-dialog",
+        "button",
+        "dialog",
+        "input",
+        "select",
+        "tabs",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx",
+      "name": "SkillInitialPackageTab",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "badge",
+        "button",
+        "dialog",
+        "input",
+        "popover",
+        "select",
+        "switch",
+        "tabs",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/SkillListTab.tsx",
+      "name": "SkillListTab",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "alert-dialog",
+        "button",
+        "dialog",
+        "dropdown-menu",
+        "input",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx",
+      "name": "SkillUpdateDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog",
+        "input",
+        "label",
+        "popover",
+        "switch",
+        "textarea",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx",
+      "name": "SkillUploadDialog",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog",
+        "input",
+        "label",
+        "popover",
+        "switch",
+        "textarea",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/SkillRolesTab.tsx",
+      "name": "SkillRolesTab",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "alert-dialog",
+        "badge",
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "popover",
+        "select",
+        "switch",
+        "textarea",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/TokensMonitor.tsx",
+      "name": "TokensMonitor",
+      "category": "管理端·顶级",
+      "categoryKey": "admin-top",
+      "components": [
+        "button",
+        "checkbox",
+        "dialog",
+        "label",
+        "popover",
+        "tabs",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/admin/standard/StandardBasicInfo.tsx",
+      "name": "StandardBasicInfo",
+      "category": "管理端·子组件",
+      "categoryKey": "admin-sub",
+      "components": [
+        "button",
+        "checkbox",
+        "input",
+        "label",
+        "popover"
+      ]
+    },
+    {
+      "path": "client/src/pages/tenant/ChatView.tsx",
+      "name": "ChatView",
+      "category": "用户端",
+      "categoryKey": "tenant",
+      "components": [
+        "alert-dialog",
+        "button",
+        "dialog",
+        "dropdown-menu",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/tenant/FileSpace.tsx",
+      "name": "FileSpace",
+      "category": "用户端",
+      "categoryKey": "tenant",
+      "components": [
+        "button",
+        "dialog",
+        "dropdown-menu",
+        "input",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/tenant/HelpDocs.tsx",
+      "name": "HelpDocs",
+      "category": "用户端",
+      "categoryKey": "tenant",
+      "components": [
+        "button"
+      ]
+    },
+    {
+      "path": "client/src/pages/tenant/ModelQuota.tsx",
+      "name": "ModelQuota",
+      "category": "用户端",
+      "categoryKey": "tenant",
+      "components": [
+        "button",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/tenant/MyOpenClaw.tsx",
+      "name": "MyOpenClaw",
+      "category": "用户端",
+      "categoryKey": "tenant",
+      "components": [
+        "button",
+        "dialog",
+        "dropdown-menu",
+        "input",
+        "label",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "name": "OpenClawDetail",
+      "category": "用户端",
+      "categoryKey": "tenant",
+      "components": [
+        "alert-dialog",
+        "button",
+        "dialog",
+        "input",
+        "progress",
+        "select",
+        "sheet",
+        "textarea",
+        "tooltip"
+      ]
+    },
+    {
+      "path": "client/src/pages/tenant/ResetPassword.tsx",
+      "name": "ResetPassword",
+      "category": "用户端",
+      "categoryKey": "tenant",
+      "components": [
+        "button",
+        "input",
+        "label"
+      ]
+    },
+    {
+      "path": "client/src/pages/tenant/SkillSquare.tsx",
+      "name": "SkillSquare",
+      "category": "用户端",
+      "categoryKey": "tenant",
+      "components": [
+        "button",
+        "dialog",
+        "input",
+        "select",
+        "tabs",
+        "tooltip"
+      ]
+    }
+  ]
+}</script>
+<script>
+(function () {
+  const DATA = JSON.parse(document.getElementById("payload").textContent);
+  const { totals, components, pages, generatedAt } = DATA;
+
+  document.getElementById("genTime").textContent = new Date(generatedAt).toLocaleString("zh-CN");
+  const cat = totals.byCategory;
+  document.getElementById("metaLine").innerHTML =
+    `共 <b>${totals.components}</b> 个 UI 组件 · <b>${totals.pages}</b> 个页面（` +
+    `顶级 ${cat["顶级"]} · 用户端 ${cat["用户端"]} · 管理端·顶级 ${cat["管理端·顶级"]} · 管理端·子组件 ${cat["管理端·子组件"]}）`;
+
+  // ---- Tabs --------------------------------------------------------------
+  const tabsEl = document.getElementById("tabs");
+  const views = {
+    c2p: document.getElementById("view-c2p"),
+    p2c: document.getElementById("view-p2c"),
+    road: document.getElementById("view-road"),
+    qa: document.getElementById("view-qa"),
+  };
+  const searchBar = document.getElementById("searchBar");
+  let currentTab = "c2p";
+
+  tabsEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".tab");
+    if (!btn) return;
+    tabsEl.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    btn.classList.add("active");
+    currentTab = btn.dataset.tab;
+    Object.entries(views).forEach(([k, v]) => (v.style.display = k === currentTab ? "" : "none"));
+    searchBar.style.display = (currentTab === "road" || currentTab === "qa") ? "none" : "";
+    document.getElementById("searchInput").value = "";
+    renderCurrent();
+  });
+
+  // ---- Helpers -----------------------------------------------------------
+  const catKeyToLabel = {
+    top: "顶级", tenant: "用户端", "admin-top": "管理端·顶级", "admin-sub": "管理端·子组件",
+  };
+  const catKeyToClass = {
+    top: "cat-top", tenant: "cat-tenant", "admin-top": "cat-admin-top", "admin-sub": "cat-admin-sub",
+  };
+  function pageCategoryKey(path) {
+    const rest = path.replace(/^client\/src\/pages\//, "");
+    const segs = rest.split("/");
+    if (segs.length === 1) return "top";
+    if (segs[0] === "tenant") return "tenant";
+    if (segs[0] === "admin") return segs.length === 2 ? "admin-top" : "admin-sub";
+    return "other";
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  // ---- View: 组件 → 页面 -------------------------------------------------
+  function renderC2P(filter) {
+    const kw = (filter || "").trim().toLowerCase();
+    const list = components.filter((c) => {
+      if (!kw) return true;
+      if (c.name.includes(kw)) return true;
+      return c.usedBy.some((p) => p.toLowerCase().includes(kw));
+    });
+    document.getElementById("totalLine").textContent = `共 ${list.length} / ${components.length} 个组件`;
+
+    if (list.length === 0) {
+      views.c2p.innerHTML = `<div class="empty-hint">没有匹配的组件</div>`;
+      return;
+    }
+    views.c2p.innerHTML = list.map((c) => {
+      const collapsedDefault = c.usageCount === 0;
+      const pTag = `<span class="tag ${c.priority.toLowerCase()}">${c.priority}${c.priority === "P0" ? " 必改" : ""}</span>`;
+      const refreshTag = c.designRefresh && c.designRefresh.status === "done"
+        ? `<span class="tag" style="background:#dcfce7;color:#166534;border-color:#86efac">✅ 已完成 by ${escapeHtml(c.designRefresh.owner)} (${c.designRefresh.date})</span>`
+        : "";
+      const note = c.note ? `<div class="note">💡 ${escapeHtml(c.note)}</div>` : "";
+      const changesHtml = c.designRefresh && c.designRefresh.changes
+        ? `<div class="note" style="margin-top:8px;font-size:12px;color:#4b5563;">📐 <b>设计变更:</b> ${escapeHtml(c.designRefresh.changes)}</div>`
+        : "";
+      const inlinePreview = c.name === "button"
+        ? `<div style="margin-top:12px;padding:16px;background:#fafafa;border:1px solid #e5e7eb;border-radius:8px;">
+             <div style="font-size:12px;font-weight:600;color:#111;margin-bottom:10px;">SmallIconStateButton 预览（owner: miekoyychen）</div>
+             <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+               <button style="display:inline-flex;height:24px;align-items:center;justify-content:center;gap:6px;white-space:nowrap;border-radius:4px;border:1px solid #D4D4D4;padding:0 8px;font-size:12px;font-weight:500;background:#fff;color:#0A0A0A;cursor:pointer;" onmouseover="this.style.borderColor='#C9C9C9';this.style.background='#FAFAFA'" onmouseout="this.style.borderColor='#D4D4D4';this.style.background='#fff'">
+                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                 <span>添加</span>
+               </button>
+               <button style="display:inline-flex;height:24px;align-items:center;justify-content:center;gap:6px;white-space:nowrap;border-radius:4px;border:1px solid #D4D4D4;padding:0 8px;font-size:12px;font-weight:500;background:#fff;color:#0A0A0A;cursor:pointer;" onmouseover="this.style.borderColor='#C9C9C9';this.style.background='#FAFAFA'" onmouseout="this.style.borderColor='#D4D4D4';this.style.background='#fff'">
+                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                 <span>移除</span>
+               </button>
+               <button style="display:inline-flex;height:24px;align-items:center;justify-content:center;gap:6px;white-space:nowrap;border-radius:4px;border:1px solid #D4D4D4;padding:0 8px;font-size:12px;font-weight:500;background:#fff;color:#A3A3A3;cursor:not-allowed;" disabled>
+                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                 <span>已添加 (disabled)</span>
+               </button>
+             </div>
+             <div style="margin-top:8px;font-size:11px;color:#9ca3af;">h-6(24px) · px-2 · rounded-[4px] · border-[#D4D4D4] · text-xs · icon w-3 h-3 + gap-1.5</div>
+           </div>`
+        : c.name === "collapsible"
+        ? `<div style="margin-top:12px;padding:16px;background:#fafafa;border:1px solid #e5e7eb;border-radius:8px;">
+             <div style="font-size:12px;font-weight:600;color:#111;margin-bottom:10px;">GroupTree 树结构预览（对齐 shadcn FileTree）</div>
+             <div style="font-family:-apple-system,sans-serif;font-size:14px;">
+               <div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:4px;background:#f4f4f5;color:#09090b;font-weight:500;cursor:pointer;">
+                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                 <span>产品组</span><span style="font-size:11px;color:#a1a1aa;">(3)</span>
+               </div>
+               <div style="display:flex;align-items:center;gap:6px;height:32px;padding-left:28px;padding-right:12px;border-radius:4px;color:#09090b;cursor:pointer;" onmouseover="this.style.background='#f4f4f5'" onmouseout="this.style.background='transparent'">
+                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                 <span>研发组</span><span style="font-size:11px;color:#a1a1aa;">(9)</span>
+               </div>
+               <div style="display:flex;align-items:center;gap:6px;height:32px;padding-left:44px;padding-right:12px;border-radius:4px;color:#09090b;cursor:pointer;" onmouseover="this.style.background='#f4f4f5'" onmouseout="this.style.background='transparent'">
+                 <span style="width:16px;height:16px;display:inline-block;"></span>
+                 <span>设计组</span><span style="font-size:11px;color:#a1a1aa;">(2)</span>
+               </div>
+             </div>
+             <div style="margin-top:8px;font-size:11px;color:#9ca3af;">h-8(32px) · rounded-[4px] · text-foreground:#09090b · accent:#f4f4f5 · muted-fg:#71717a · indent:16px/层 · mx-3</div>
+           </div>`
+        : "";
+      const dist = c.distribution;
+      const distStr = `<span class="mono">分布：顶级 ${dist.top || 0} · 用户端 ${dist.tenant || 0} · 管理端·顶级 ${dist["admin-top"] || 0} · 管理端·子组件 ${dist["admin-sub"] || 0}</span>`;
+
+      const rows = c.usedBy.map((p) => {
+        const k = pageCategoryKey(p);
+        const fileName = p.split("/").pop();
+        return `<tr>
+          <td><span class="mono">${escapeHtml(fileName)}</span></td>
+          <td><span class="mono">${escapeHtml(p)}</span></td>
+          <td><span class="tag ${catKeyToClass[k]}">${catKeyToLabel[k]}</span></td>
+        </tr>`;
+      }).join("");
+
+      const body = c.usedBy.length === 0
+        ? `<div class="empty-hint">⚠️ 该组件未被任何页面使用（可能是死代码 / 间接依赖）</div>`
+        : `${note}${changesHtml}${inlinePreview}${distStr}
+           <table style="margin-top:10px">
+             <thead><tr><th>文件名</th><th>路径</th><th>类别</th></tr></thead>
+             <tbody>${rows}</tbody>
+           </table>`;
+
+      return `<div class="card">
+        <div class="card-head" data-toggle>
+          <span class="mono">${escapeHtml(c.file)}</span>
+          ${pTag}
+          ${refreshTag}
+          <div class="right">
+            <button class="preview-btn" data-component="${c.name}">预览</button>
+            <span class="tag count">被 ${c.usageCount} 个页面引用</span>
+          </div>
+        </div>
+        <div class="card-body ${collapsedDefault ? "collapsed" : ""}">${body}</div>
+      </div>`;
+    }).join("");
+
+    // 折叠交互
+    views.c2p.querySelectorAll("[data-toggle]").forEach((h) => {
+      h.addEventListener("click", () => {
+        const body = h.parentElement.querySelector(".card-body");
+        body.classList.toggle("collapsed");
+      });
+    });
+  }
+
+  // ---- View: 页面 → 组件 -------------------------------------------------
+  function renderP2C(filter) {
+    const kw = (filter || "").trim().toLowerCase();
+    const groups = [
+      { key: "top", label: "🏠 顶级 / Demo", emoji: "📌" },
+      { key: "tenant", label: "👤 用户端", emoji: "📌" },
+      { key: "admin-top", label: "🛠️ 管理端·顶级页面", emoji: "📌" },
+      { key: "admin-sub", label: "🧩 管理端·子组件", emoji: "📌" },
+    ];
+
+    const filtered = pages.filter((p) => {
+      if (!kw) return true;
+      if (p.path.toLowerCase().includes(kw)) return true;
+      if (p.name.toLowerCase().includes(kw)) return true;
+      return p.components.some((c) => c.includes(kw));
+    });
+
+    document.getElementById("totalLine").textContent = `共 ${filtered.length} / ${pages.length} 个页面`;
+    if (filtered.length === 0) {
+      views.p2c.innerHTML = `<div class="empty-hint">没有匹配的页面</div>`;
+      return;
+    }
+
+    views.p2c.innerHTML = groups.map((g) => {
+      const items = filtered.filter((p) => p.categoryKey === g.key);
+      if (items.length === 0) return "";
+      const rows = items.map((p) => {
+        const chips = p.components.length
+          ? p.components.map((c) => `<span class="tag comp-chip">${escapeHtml(c)}</span>`).join("")
+          : `<span class="mono" style="color:#9ca3af">（未使用 UI 组件）</span>`;
+        return `<tr>
+          <td><span class="mono" style="font-weight:600;color:#111">${escapeHtml(p.name)}</span></td>
+          <td><span class="mono">${escapeHtml(p.path)}</span></td>
+          <td><span class="tag count">${p.components.length}</span></td>
+          <td>${chips}</td>
+        </tr>`;
+      }).join("");
+      return `<div class="card">
+        <div class="card-head"><span style="font-weight:600">${g.label}</span><span class="tag count">${items.length} 个</span></div>
+        <div class="card-body">
+          <table>
+            <thead><tr><th>页面</th><th>路径</th><th>组件数</th><th>用了哪些组件</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  // ---- View: 改造路线图 --------------------------------------------------
+  function renderRoadmap() {
+    const p0 = components.filter((c) => c.priority === "P0");
+    const p1 = components.filter((c) => c.priority === "P1");
+    const p2 = components.filter((c) => c.priority === "P2" && c.usageCount > 0);
+    const dead = components.filter((c) => c.usageCount === 0);
+    const totalUsed = pages.filter((p) => p.components.some((c) => p0.find((x) => x.name === c))).length;
+    const coverage = ((totalUsed / pages.length) * 100).toFixed(0);
+
+    const renderCard = (c) => `<div class="stage-card">
+      <h3><span class="mono">${escapeHtml(c.file)}</span> <span class="tag count">${c.usageCount} 引用</span></h3>
+      ${c.note ? `<div class="desc">💡 ${escapeHtml(c.note)}</div>` : ""}
+    </div>`;
+
+    views.road.innerHTML = `
+      <div class="card">
+        <div class="card-head"><span style="font-weight:600">📋 改造总览</span></div>
+        <div class="card-body">
+          <p style="color:var(--text-2)">项目共 <b>${totals.components}</b> 个 shadcn UI 组件 + <b>${totals.pages}</b> 个页面。下面按 <b>"改这个收益最大"</b> 的优先级排序。</p>
+          <div class="note" style="background:#ecfdf5;color:#065f46;border-color:#a7f3d0">
+            ✅ 关键策略：把 P0 ${p0.length} 个基石改完后，立刻沉淀 3 个页面模板（列表页 / 表单页 / 详情页），后续新增页面拼装即可，UI 风格自然统一。
+          </div>
+          <div style="margin-top:12px">
+            <b>三条纪律</b>（设计搭档定的，照搬）：
+            <ul style="color:var(--text-2)">
+              <li><span style="color:var(--green)">✅ 可以改</span>：className 里的 Tailwind 类、cva 的 variant 定义、组件结构调整</li>
+              <li><span style="color:#d97706">⚠️ 慎改</span>：组件 Props 接口（改了所有引用页都要跟着改）</li>
+              <li><span style="color:#dc2626">❌ 不要改</span>：@radix-ui/* 的行为属性、asChild、Slot，否则破坏键盘导航/无障碍</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-head">
+        <h2>🔥 第一阶段 · P0 基石（必改）</h2>
+        <span class="tag p0">${p0.length} 个组件</span>
+      </div>
+      <p style="color:var(--text-2);font-size:13px">覆盖 <b>${coverage}%+</b> 页面，先改它们 = 整体 UI 立刻焕新一半。预计工作量：每个组件 0.5-1 天。</p>
+      <div class="stage-grid">${p0.map(renderCard).join("")}</div>
+
+      <div class="stage-head">
+        <h2>⚡ 第二阶段 · P1 高频（建议改）</h2>
+        <span class="tag p1">${p1.length} 个组件</span>
+      </div>
+      <p style="color:var(--text-2);font-size:13px">配合 P0 一起做体验更连贯。</p>
+      <div class="stage-grid">${p1.map(renderCard).join("")}</div>
+
+      <div class="stage-head">
+        <h2>🌿 第三阶段 · P2 锦上添花</h2>
+        <span class="tag p2">${p2.length} 个组件</span>
+      </div>
+      <p style="color:var(--text-2);font-size:13px">使用频次较低，可在 P0/P1 完工后视情况打磨。</p>
+      <div class="stage-grid">${p2.map(renderCard).join("")}</div>
+
+      ${dead.length ? `
+      <div class="stage-head">
+        <h2>💀 未被使用的组件</h2>
+        <span class="tag p2">${dead.length} 个</span>
+      </div>
+      <p style="color:var(--text-2);font-size:13px">这些 shadcn 组件已经安装但项目里没引用，可能是预留 / 死代码。改造时可以跳过，发版前考虑清理。</p>
+      <div class="stage-grid">${dead.map(renderCard).join("")}</div>
+      ` : ""}
+    `;
+  }
+
+  // ---- View: 质量诊断 ----------------------------------------------------
+  function renderQA() {
+    views.qa.innerHTML = `
+      <div class="q-card">
+        <div class="q-head">
+          <span class="severity sev-critical">🔴 严重</span>
+          <h3>① 大量"伪 Card"手写代码，没用 &lt;Card&gt; 组件</h3>
+        </div>
+        <p>项目里 <b>&lt;Card&gt; 组件只用了 4 次</b>，但通过 <code>className="rounded-xl border bg-card ..."</code> 手写的"伪卡片"有 <b>102 处</b>。</p>
+        <div class="evidence">grep -rE 'rounded-(xl|lg).*border.*bg-' client/src --include="*.tsx" → 102 处命中</div>
+        <p><b>后果</b>：圆角 / 阴影 / 间距各处不一致，design token 改了之后这些手写的不跟随。<b>这是"线上效果差"的最直接根因。</b></p>
+        <b>修复方向</b>
+        <ul class="fix-list">
+          <li>给 <code>card.tsx</code> 增加 <code>variant: plain | elevated | inset | ghost</code> 等 variant</li>
+          <li>给 <code>padding</code>、<code>gap</code> 加可控 props，覆盖业务里的各种用法</li>
+          <li>逐步把 102 处手写伪卡片替换回 <code>&lt;Card&gt;</code></li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="severity sev-critical">🔴 严重</span>
+          <h3>② 状态徽标完全没用 &lt;Badge&gt; 组件，硬编码颜色</h3>
+        </div>
+        <p>项目里 <code>&lt;Badge&gt;</code> 只用了 11 次，状态徽标基本都走了 <code>index.css</code> 里的全局类 <code>.badge-running / .badge-loading / .badge-stopped</code> 等。</p>
+        <div class="evidence">index.css line 188-217：badge-running / badge-loading / badge-stopped / badge-pending / badge-shutdown / badge-purple</div>
+        <p><b>问题</b>：写死了 hex 颜色（#1a8c3a、#c0392b、#007AFF...），没走 design token，<b>不支持深色模式</b>，主题色改了也不跟随。</p>
+        <b>修复方向</b>
+        <ul class="fix-list">
+          <li>给 <code>badge.tsx</code> 扩展 <code>variant: success | warning | info | destructive | neutral | purple</code></li>
+          <li>颜色全部用 oklch token，删除 index.css 里的 .badge-* 全局类</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="severity sev-high">🟠 高</span>
+          <h3>③ index.css 里全局类 vs 组件库混用</h3>
+        </div>
+        <p><code>.glass-card</code>、<code>.nav-item</code>、<code>.btn-primary-glow</code>、<code>.badge-*</code> 这类全局类绕过了组件系统，造成同一种交互有多种实现。</p>
+        <b>修复方向</b>
+        <ul class="fix-list">
+          <li>把 <code>.nav-item</code> 收敛进 <code>sidebar.tsx</code> 或新建 <code>nav-item.tsx</code></li>
+          <li>把 <code>.glass-card</code> 收敛为 <code>&lt;Card variant="glass"&gt;</code></li>
+          <li>把 <code>.btn-primary-glow</code> 收敛为 <code>&lt;Button glow&gt;</code> prop</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="severity sev-high">🟠 高</span>
+          <h3>④ 颜色定义双轨：oklch token + 硬编码 hex / rgba 共存</h3>
+        </div>
+        <p>一边用 <code>oklch()</code> 现代色彩空间，一边硬编码 <code>rgba(0, 122, 255, 0.18)</code>、<code>#007AFF</code>、<code>#5856D6</code>。改主题色得改 N 个地方。</p>
+        <b>修复方向</b>
+        <ul class="fix-list">
+          <li>建立"语义颜色层"：success / warning / info / neutral，全部用 token</li>
+          <li>把硬编码 rgba 全部替换为 <code>oklch / lch + 透明度</code></li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="severity sev-med">🟡 中</span>
+          <h3>⑤ 缺失关键 design token（设计走查没抓手）</h3>
+        </div>
+        <p>当前 <code>:root</code> 只有 colors + radius，缺少：<b>间距系统、阴影系统（仅 shadow-sm 一种）、字号/字重/行高、动效时长/缓动、z-index 分层</b>。</p>
+        <b>修复方向</b>
+        <ul class="fix-list">
+          <li>在 <code>index.css</code> 的 <code>@theme inline</code> 里补齐 <code>--spacing-* / --shadow-* / --text-* / --duration-* / --z-*</code></li>
+          <li>有了 token 后，设计稿的"卡片阴影"就能落到一个变量，不需要每次 hardcode</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="severity sev-med">🟡 中</span>
+          <h3>⑥ shadcn 组件未做品牌化定制，"像 demo 不像产品"</h3>
+        </div>
+        <p>例如 <code>button.tsx</code> 的 default variant 完全是 shadcn 原版，没有体现 OpenClaw 自己的品牌特征（圆角、阴影、微交互）。</p>
+        <b>修复方向</b>
+        <ul class="fix-list">
+          <li>定义 OpenClaw 自己的"品牌按钮"：micro-interaction、阴影、focus ring、loading 状态等</li>
+          <li>同样思路应用到 Dialog（弹窗骨架）、Input（输入框）等高频组件</li>
+        </ul>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="severity sev-med">🟡 中</span>
+          <h3>⑦ 业务组件目录命名混乱</h3>
+        </div>
+        <p><code>client/src/components/</code> 同层堆了 Layout（布局）、MemoryCard（业务卡片）、OpenClawCombobox（业务下拉）等，没有分层。</p>
+        <b>修复方向</b>
+        <ul class="fix-list">
+          <li>建议分子目录：<code>layout/</code>（AdminLayout / TenantLayout）、<code>business/</code>（业务组件）、保留 <code>ui/</code>（shadcn 原子）</li>
+          <li>这条不紧急，可在 P0/P1 完成后再 cleanup</li>
+        </ul>
+      </div>
+    `;
+  }
+
+  // ---- 搜索 --------------------------------------------------------------
+  const searchInput = document.getElementById("searchInput");
+  let timer;
+  searchInput.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(renderCurrent, 100);
+  });
+
+  function renderCurrent() {
+    const kw = searchInput.value;
+    if (currentTab === "c2p") renderC2P(kw);
+    else if (currentTab === "p2c") renderP2C(kw);
+    else if (currentTab === "road") renderRoadmap();
+    else if (currentTab === "qa") renderQA();
+  }
+
+  // 初始渲染
+  renderCurrent();
+
+  // ---- Expand / Collapse All ----
+  document.getElementById("expandAllBtn").addEventListener("click", () => {
+    document.querySelectorAll("#view-c2p .card-body, #view-p2c .card-body").forEach((el) => el.classList.remove("collapsed"));
+  });
+  document.getElementById("collapseAllBtn").addEventListener("click", () => {
+    document.querySelectorAll("#view-c2p .card-body, #view-p2c .card-body").forEach((el) => el.classList.add("collapsed"));
+  });
+
+  // ---- Preview Modal ----
+  const PREVIEW_BASE = "http://localhost:5188/component-preview/";
+  const supportedPreviews = ["input", "select"];
+
+  const modalOverlay = document.createElement("div");
+  modalOverlay.className = "modal-overlay";
+  modalOverlay.innerHTML = `
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-title">组件预览</h3>
+        <button class="modal-close" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <iframe id="preview-iframe" src="about:blank"></iframe>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modalOverlay);
+
+  const previewIframe = document.getElementById("preview-iframe");
+  const modalTitle = document.getElementById("modal-title");
+
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+  document.getElementById("modal-close-btn").addEventListener("click", closeModal);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+  function openModal(name) {
+    modalTitle.textContent = name + ".tsx 预览";
+    previewIframe.src = PREVIEW_BASE + name;
+    modalOverlay.classList.add("open");
+  }
+  function closeModal() {
+    modalOverlay.classList.remove("open");
+    previewIframe.src = "about:blank";
+  }
+
+  // 委托点击事件给预览按钮
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".preview-btn");
+    if (!btn || btn.closest("#searchBar")) return;
+    e.stopPropagation();
+    openModal(btn.dataset.component);
+  });
+})();
+</script>
+</body>
+</html>

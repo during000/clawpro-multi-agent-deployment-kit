@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管控端 StatusTag 使用现状</title>
+  <style>
+    :root {
+      --brand: #1447E6;
+      --black: #020617;
+      --text: #0A0A0A;
+      --slate: #334155;
+      --muted: #737373;
+      --weak: #A3A3A3;
+      --line: #E5E5E5;
+      --line-blue: #E2E8F0;
+      --bg-soft: #F5F5F5;
+      --card-shadow: 0px 1px 4px rgba(0,0,0,0.05), 0px 0px 2px rgba(0,0,0,0.1);
+      --segment-shadow: 0px 1.11px 2.22px rgba(0,0,0,0.05);
+      --green-bg: #E9F8EB;
+      --green: #008236;
+      --blue-bg: #E8ECFE;
+      --blue: #1447E6;
+      --gray-bg: #F5F5F5;
+      --gray: #0A0A0A;
+      --red-bg: #FEF2F2;
+      --red: #DC2626;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 1200px;
+      font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
+      -webkit-font-smoothing: antialiased;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 64px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 0 40px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line-blue);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; color: var(--black); font-size: 14px; font-weight: 600; }
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #1447E6, #2563EB);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .tabs {
+      justify-self: center;
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 4px;
+      background: var(--bg-soft);
+    }
+    .tabs a {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 3px;
+      color: var(--slate);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 22px;
+      white-space: nowrap;
+    }
+    .tabs a.active { background: #fff; color: var(--black); font-weight: 500; box-shadow: var(--segment-shadow); }
+    .meta-top { justify-self: end; color: var(--muted); font-size: 12px; }
+    .page { max-width: 1920px; min-height: calc(100vh - 64px); margin: 0 auto; display: flex; }
+    .rail { width: 80px; flex: 0 0 80px; }
+    .content {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      padding: 32px 42px 75px;
+      border-left: 1px solid var(--line-blue);
+      border-right: 1px solid var(--line-blue);
+    }
+    .content::before,
+    .content::after {
+      content: "";
+      position: absolute;
+      top: 170px;
+      bottom: 75px;
+      width: calc((100vw - 100%) / 2);
+      pointer-events: none;
+      background-image: radial-gradient(circle, #DFE2E5 1px, transparent 1.1px);
+      background-size: 12px 12px;
+    }
+    .content::before { right: 100%; }
+    .content::after { left: 100%; }
+    .hero { padding-bottom: 30px; margin-bottom: 32px; border-bottom: 1px solid var(--line-blue); }
+    .eyebrow { margin: 0 0 8px; color: var(--brand); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
+    h1 {
+      margin: 0;
+      width: fit-content;
+      font-size: 26px;
+      line-height: 35.56px;
+      font-weight: 500;
+      letter-spacing: -0.0427em;
+      background: linear-gradient(90deg, #0A0A0A 0%, #1447E6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-desc { max-width: 980px; margin: 12px 0 0; color: var(--slate); font-size: 14px; line-height: 1.8; }
+    .quick-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .stat-card, .card { border-radius: 4px; background: #fff; box-shadow: var(--card-shadow); }
+    .stat-card { padding: 18px 20px; }
+    .stat-value {
+      font-family: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif;
+      color: var(--black);
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-label { margin-top: 10px; color: var(--text); font-size: 14px; font-weight: 500; }
+    .stat-desc { margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .section { margin-bottom: 40px; }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+    .section-head h2 { margin: 0; font-size: 18px; line-height: 1.4; font-weight: 500; color: var(--text); }
+    .section-head p { max-width: 760px; margin: 6px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .card { padding: 22px; }
+    .grid-2 { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 16px; }
+    .variant-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .variant-card { padding: 16px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+    .variant-title { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 20px;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 12px;
+      line-height: 12px;
+      letter-spacing: 0.18px;
+      white-space: nowrap;
+    }
+    .tag-dot { width: 6px; height: 6px; border-radius: 9999px; flex: 0 0 auto; }
+    .tag.green { color: var(--green); background: var(--green-bg); }
+    .tag.green .tag-dot { background: var(--green); }
+    .tag.blue { color: var(--blue); background: var(--blue-bg); }
+    .tag.blue .tag-dot { background: var(--blue); }
+    .tag.gray { color: var(--gray); background: var(--gray-bg); }
+    .tag.gray .tag-dot { background: var(--gray); }
+    .tag.red { color: var(--red); background: var(--red-bg); }
+    .tag.red .tag-dot { background: var(--red); }
+    .rule-list { display: grid; gap: 10px; }
+    .rule-item {
+      display: grid;
+      grid-template-columns: 220px 190px minmax(0, 1fr);
+      align-items: center;
+      gap: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+    }
+    .rule-scene { color: var(--text); font-size: 13px; font-weight: 500; }
+    .rule-note { color: var(--muted); font-size: 12px; line-height: 1.6; }
+    code {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 3px;
+      padding: 2px 6px;
+      color: var(--slate);
+      background: #F8FAFC;
+      font-family: Menlo, Consolas, "Courier New", monospace;
+      font-size: 12px;
+    }
+    .table-wrap { overflow: hidden; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      height: 42px;
+      padding: 0 14px;
+      color: var(--muted);
+      background: #FAFAFA;
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: left;
+      white-space: nowrap;
+    }
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--slate);
+      font-size: 13px;
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #FAFAFA; }
+    .module-name { color: var(--text); font-weight: 500; }
+    .path { color: var(--brand); text-decoration: none; font-family: Menlo, Consolas, "Courier New", monospace; font-size: 12px; }
+    .path:hover { text-decoration: underline; }
+    .file { max-width: 360px; color: var(--muted); font-family: Menlo, Consolas, "Courier New", monospace; font-size: 12px; word-break: break-all; }
+    .count { color: var(--black); font-family: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif; font-size: 18px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+    .summary-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .summary-list li { position: relative; padding-left: 14px; color: var(--slate); font-size: 14px; line-height: 1.7; }
+    .summary-list li::before { content: ""; position: absolute; left: 0; top: 11px; width: 4px; height: 4px; border-radius: 999px; background: var(--brand); }
+    .callout { border: 1px solid #BFDBFE; border-radius: 4px; padding: 14px 16px; background: #EFF6FF; color: #1D4ED8; font-size: 13px; line-height: 1.7; }
+    .footer { color: var(--muted); font-size: 12px; line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">ST</span><span>ClawPro 管控端 StatusTag 审计</span></div>
+    <nav class="tabs" aria-label="页面导航">
+      <a class="active" href="#overview">概览</a>
+      <a href="#rules">统一规则</a>
+      <a href="#modules">模块清单</a>
+      <a href="#variants">组件样式</a>
+    </nav>
+    <div class="meta-top">统计时间：2026-05-25</div>
+  </header>
+
+  <main class="page">
+    <div class="rail" aria-hidden="true"></div>
+    <div class="content">
+      <section class="hero" id="overview">
+        <p class="eyebrow">STATUS TAG USAGE AUDIT</p>
+        <h1>管控端 StatusTag 使用现状</h1>
+        <p class="hero-desc">本页把管控端所有使用 `StatusTag` 的模块集中拉出，用于快速查看当前组件覆盖范围、语义使用方式，以及后续统一样式和使用方法的参考规则。</p>
+        <div class="quick-stats">
+          <div class="stat-card"><div class="stat-value">19</div><div class="stat-label">管控端模块</div><div class="stat-desc">来自 `client/src/pages/admin/**/*.tsx`</div></div>
+          <div class="stat-card"><div class="stat-value">84</div><div class="stat-label">组件实例</div><div class="stat-desc">统计 `<StatusTag` 出现次数</div></div>
+          <div class="stat-card"><div class="stat-value">4</div><div class="stat-label">现有变体</div><div class="stat-desc">green / blue / gray / red</div></div>
+          <div class="stat-card"><div class="stat-value">20</div><div class="stat-label">最高频模块</div><div class="stat-desc">技能配置相关 Tab 与弹窗</div></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>当前结论</h2>
+            <p>现有使用已经基本收敛到四类语义色，主要需要统一的是 dot 的使用边界，以及状态标签和信息标签的职责区分。</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <ul class="summary-list">
+              <li>管控端共 <strong>19 个模块 / 84 处</strong> 使用 `StatusTag`。</li>
+              <li>使用最集中：技能配置、成员管理、OpenClaw 监控、镜像管理。</li>
+              <li>当前变体覆盖 `green / blue / gray / red`，暂不需要新增黄/紫等颜色。</li>
+              <li>信息标签如版本号、范围、组织数量不建议使用 mode="dot"。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="callout">建议先在使用规范上达成一致：真实状态使用 mode="dot"；辅助信息使用 mode="fill"。后续再逐步把高频枚举沉淀为模块内的 `STATUS_TAG_MAP`，减少散落判断。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="rules">
+        <div class="section-head">
+          <div>
+            <h2>推荐统一规则</h2>
+            <p>按“真实状态”和“信息标签”拆分，避免把 dot 当作装饰使用。</p>
+          </div>
+        </div>
+        <div class="rule-list">
+          <div class="rule-item"><div class="rule-scene">成功 / 正常 / 开启 / 生效</div><div><span class="tag green"><span class="tag-dot"></span>正常</span></div><div class="rule-note"><code>variant="green" dot</code>，真实状态，建议使用 mode="dot"。</div></div>
+          <div class="rule-item"><div class="rule-scene">进行中 / 创建中 / 加载中</div><div><span class="tag blue"><span class="tag-dot"></span>创建中</span></div><div class="rule-note"><code>variant="blue" dot</code>，真实进行态，建议使用 mode="dot"。</div></div>
+          <div class="rule-item"><div class="rule-scene">失败 / 异常 / 加载失败</div><div><span class="tag red"><span class="tag-dot"></span>失败</span></div><div class="rule-note"><code>variant="red" dot</code>，真实异常态，必须使用 mode="dot"。</div></div>
+          <div class="rule-item"><div class="rule-scene">关闭 / 禁用 / 待处理 / 维护中</div><div><span class="tag gray"><span class="tag-dot"></span>禁用</span></div><div class="rule-note"><code>variant="gray" dot</code>，真实状态，建议使用 mode="dot"。</div></div>
+          <div class="rule-item"><div class="rule-scene">全部用户 / 公共 / 推荐 / 限免</div><div><span class="tag blue">全部用户</span></div><div class="rule-note"><code>variant="blue"</code>，信息标签，使用 mode="fill"。</div></div>
+          <div class="rule-item"><div class="rule-scene">版本号 / 组织名 / 路径 / +N</div><div><span class="tag gray">v1.2.0</span></div><div class="rule-note"><code>variant="gray"</code>，信息标签，使用 mode="fill"。</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="modules">
+        <div class="section-head">
+          <div>
+            <h2>管控端模块清单</h2>
+            <p>点击路由可在当前项目中打开对应页面查看实际使用效果。</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 180px;">模块</th>
+                <th style="width: 210px;">路由 / 入口</th>
+                <th>文件</th>
+                <th style="width: 90px; text-align: right;">数量</th>
+                <th style="width: 360px;">当前用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="module-name">OpenClaw 监控</td><td><a class="path" href="/admin/openclaw-monitor" target="_blank">/admin/openclaw-monitor</a></td><td class="file">client/src/pages/admin/OpenClawMonitor.tsx</td><td class="count">12</td><td>实例生命周期、异常/处理中状态、路径、服务状态、主备模型</td></tr>
+              <tr><td class="module-name">成员管理</td><td><a class="path" href="/admin/members" target="_blank">/admin/members</a></td><td class="file">client/src/pages/admin/MemberManagement.tsx</td><td class="count">12</td><td>组织/部门摘要、角色、账号正常/禁用、配置项摘要</td></tr>
+              <tr><td class="module-name">技能配置 - 初始包</td><td><a class="path" href="/admin/skill-config" target="_blank">/admin/skill-config</a></td><td class="file">client/src/pages/admin/SkillLibrary/SkillInitialPackageTab.tsx</td><td class="count">11</td><td>已添加、版本号、应用范围、来源、生效中</td></tr>
+              <tr><td class="module-name">技能配置 - 角色设定</td><td><a class="path" href="/admin/skill-config" target="_blank">/admin/skill-config</a></td><td class="file">client/src/pages/admin/SkillRolesTab.tsx</td><td class="count">9</td><td>来源、已添加、版本号、应用范围</td></tr>
+              <tr><td class="module-name">镜像管理 - Agent 类型表</td><td><a class="path" href="/admin/image-management" target="_blank">/admin/image-management</a> / <a class="path" href="/admin/agent-types" target="_blank">/admin/agent-types</a></td><td class="file">client/src/pages/admin/ImageManagement/AgentTypesTable.tsx</td><td class="count">4</td><td>用户端首选、自定义内核、兼容版本、数量</td></tr>
+              <tr><td class="module-name">镜像管理</td><td><a class="path" href="/admin/image-management" target="_blank">/admin/image-management</a></td><td class="file">client/src/pages/admin/ImageManagement.tsx</td><td class="count">3</td><td>应用范围、组织数量</td></tr>
+              <tr><td class="module-name">模型配置</td><td><a class="path" href="/admin/model-config" target="_blank">/admin/model-config</a></td><td class="file">client/src/pages/admin/ModelConfig.tsx</td><td class="count">4</td><td>全部用户、组织范围、更多数量</td></tr>
+              <tr><td class="module-name">平台策略</td><td><a class="path" href="/admin/platform-policy" target="_blank">/admin/platform-policy</a></td><td class="file">client/src/pages/admin/PlatformPolicy.tsx</td><td class="count">4</td><td>当前策略值、开启/关闭</td></tr>
+              <tr><td class="module-name">安全组</td><td><a class="path" href="/admin/security-group" target="_blank">/admin/security-group</a></td><td class="file">client/src/pages/admin/SecurityGroupManagement.tsx</td><td class="count">4</td><td>云端/本地规则启停</td></tr>
+              <tr><td class="module-name">基础信息</td><td><a class="path" href="/admin/basic-info" target="_blank">/admin/basic-info</a></td><td class="file">client/src/pages/admin/BasicInfo.tsx</td><td class="count">3</td><td>已完成、待完成、配置类型</td></tr>
+              <tr><td class="module-name">基础信息（标准模式）</td><td><a class="path" href="/admin/basic-info" target="_blank">/admin/basic-info</a></td><td class="file">client/src/pages/admin/standard/StandardBasicInfo.tsx</td><td class="count">3</td><td>已完成、待完成、配置类型</td></tr>
+              <tr><td class="module-name">审计日志</td><td><a class="path" href="/admin/audit-log" target="_blank">/admin/audit-log</a></td><td class="file">client/src/pages/admin/AuditLog.tsx</td><td class="count">2</td><td>成功 / 失败</td></tr>
+              <tr><td class="module-name">Agent 工具库</td><td><a class="path" href="/admin/agent-tool-library" target="_blank">/admin/agent-tool-library</a></td><td class="file">client/src/pages/admin/AgentToolLibrary.tsx</td><td class="count">2</td><td>未开通、试用中</td></tr>
+              <tr><td class="module-name">批量升级提醒</td><td><a class="path" href="/admin/openclaw-monitor" target="_blank">/admin/openclaw-monitor</a></td><td class="file">client/src/pages/admin/BatchUpdateNotice.tsx</td><td class="count">2</td><td>新版本上线、正在提醒员工更新</td></tr>
+              <tr><td class="module-name">文件管理</td><td><a class="path" href="/admin/file-management" target="_blank">/admin/file-management</a></td><td class="file">client/src/pages/admin/FileManagement.tsx</td><td class="count">2</td><td>免费、未启用</td></tr>
+              <tr><td class="module-name">技能详情</td><td><a class="path" href="/admin/skill-detail/1" target="_blank">/admin/skill-detail/1</a></td><td class="file">client/src/pages/admin/SkillLibrary/SkillDetail.tsx</td><td class="count">2</td><td>未检测、检测中</td></tr>
+              <tr><td class="module-name">技能更新弹窗</td><td><a class="path" href="/admin/skill-config" target="_blank">/admin/skill-config</a></td><td class="file">client/src/pages/admin/SkillLibrary/SkillUpdateDialog.tsx</td><td class="count">2</td><td>限免、未开通</td></tr>
+              <tr><td class="module-name">技能上传弹窗</td><td><a class="path" href="/admin/skill-config" target="_blank">/admin/skill-config</a></td><td class="file">client/src/pages/admin/SkillLibrary/SkillUploadDialog.tsx</td><td class="count">2</td><td>限免、未开通</td></tr>
+              <tr><td class="module-name">Tokens 监控</td><td><a class="path" href="/admin/tokens-monitor" target="_blank">/admin/tokens-monitor</a></td><td class="file">client/src/pages/admin/TokensMonitor.tsx</td><td class="count">1</td><td>当前版本</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="variants">
+        <div class="section-head">
+          <div>
+            <h2>当前 StatusTag 样式</h2>
+            <p>对齐 `client/src/components/ui/status-tag.tsx`：高度 20px、圆角 full、12px 文字、6px dot。</p>
+          </div>
+        </div>
+        <div class="variant-grid">
+          <div class="variant-card"><p class="variant-title">green</p><span class="tag green"><span class="tag-dot"></span>运行中</span><p class="rule-note">成功、正常、开启、生效</p></div>
+          <div class="variant-card"><p class="variant-title">blue</p><span class="tag blue"><span class="tag-dot"></span>进行中</span><p class="rule-note">进行中、全部用户、推荐/提示</p></div>
+          <div class="variant-card"><p class="variant-title">gray</p><span class="tag gray"><span class="tag-dot"></span>待完成</span><p class="rule-note">待处理、关闭、版本、范围</p></div>
+          <div class="variant-card"><p class="variant-title">red</p><span class="tag red"><span class="tag-dot"></span>异常</span><p class="rule-note">失败、异常、风险</p></div>
+        </div>
+      </section>
+
+      <p class="footer">来源文档：`client/public/research/admin-status-tag-usage-audit.md`。本 HTML 只用于视觉化查看审计结果，后续如统一组件 API，请以 `client/src/components/ui/status-tag.tsx` 为准。</p>
+    </div>
+    <div class="rail" aria-hidden="true"></div>
+  </main>
+</body>
+</html>

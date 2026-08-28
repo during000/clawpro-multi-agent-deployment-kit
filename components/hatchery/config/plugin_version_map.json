@@ -1,0 +1,91 @@
+{
+  "_comment": "与 scripts/restore_post_reinstall.sh 中的 PLUGIN_SPECS 保持同步，key 为 openclaw 版本号",
+  "2026.3.28": {
+    "plugins": {
+      "openclaw-qqbot": {
+        "version": "1.6.7",
+        "display_name": "QQ机器人",
+        "npm_pkg": "@tencent-connect/openclaw-qqbot"
+      },
+      "ddingtalk": {
+        "version": "2.0.1",
+        "display_name": "钉钉",
+        "npm_pkg": "@largezhou/ddingtalk"
+      },
+      "wecom": {
+        "version": "2026.3.24",
+        "display_name": "企业微信",
+        "npm_pkg": "@mocrane/wecom"
+      },
+      "openclaw-plugin-yuanbao": {
+        "version": "2.4.0",
+        "display_name": "元宝",
+        "npm_pkg": "openclaw-plugin-yuanbao"
+      },
+      "openclaw-weixin": {
+        "version": "2.1.1",
+        "display_name": "微信",
+        "npm_pkg": "@tencent-weixin/openclaw-weixin"
+      },
+      "lightclawbot": {
+        "version": "1.1.2",
+        "display_name": "LightClawBot",
+        "npm_pkg": "lightclawbot"
+      },
+      "adp-openclaw": {
+        "version": "0.0.77",
+        "display_name": "ADP",
+        "npm_pkg": "adp-openclaw"
+      },
+      "memory-tdai": {
+        "version": "0.1.2",
+        "display_name": "记忆(TDAI)",
+        "npm_pkg": "@tdai/memory-tdai"
+      }
+    }
+  },
+  "2026.3.24": {
+    "plugins": {
+      "openclaw-qqbot": {
+        "version": "1.6.5",
+        "display_name": "QQ机器人",
+        "npm_pkg": "@tencent-connect/openclaw-qqbot"
+      },
+      "ddingtalk": {
+        "version": "2.0.1",
+        "display_name": "钉钉",
+        "npm_pkg": "@largezhou/ddingtalk"
+      },
+      "wecom": {
+        "version": "2026.3.24",
+        "display_name": "企业微信",
+        "npm_pkg": "@mocrane/wecom"
+      },
+      "openclaw-plugin-yuanbao": {
+        "version": "2.1.0",
+        "display_name": "元宝",
+        "npm_pkg": "openclaw-plugin-yuanbao"
+      },
+      "openclaw-weixin": {
+        "version": "2.0.1",
+        "display_name": "微信",
+        "npm_pkg": "@tencent-weixin/openclaw-weixin"
+      },
+      "lightclawbot": {
+        "version": "1.1.2",
+        "display_name": "LightClawBot",
+        "npm_pkg": "lightclawbot"
+      },
+      "adp-openclaw": {
+        "version": "0.0.71",
+        "display_name": "ADP",
+        "npm_pkg": "adp-openclaw"
+      },
+      "memory-tdai": {
+        "version": "0.1.2",
+        "display_name": "记忆(TDAI)",
+        "npm_pkg": "@tdai/memory-tdai"
+      }
+    }
+  }
+}

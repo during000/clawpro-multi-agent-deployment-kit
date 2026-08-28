@@ -1,0 +1,29 @@
+{
+  "version": "1.3",
+  "task_id": "",
+  "task_slug": "",
+  "run_mode": "auto",
+  "runtime_mode": "ide",
+  "size_class": "unknown",
+  "current_stage": "PHASE-0",
+  "next_target": "PHASE-0",
+  "last_event": "workflow_initialized",
+  "last_error": null,
+  "workspace": {
+    "repository_url": "",
+    "branch": "",
+    "root": "",
+    "default_branch": "main",
+    "worktree_status": "unknown"
+  },
+  "artifacts_dir": "",
+  "created_at": "",
+  "updated_at": "",
+  "stages": {},
+  "decisions": [],
+  "summary": {
+    "status": "not_started",
+    "report": "workflow-summary.md",
+    "completed_at": null
+  }
+}

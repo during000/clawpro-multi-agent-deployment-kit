@@ -1,0 +1,481 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "返回首页" [ref=e7] [cursor=pointer]:
+            - /url: /
+            - img [ref=e8]
+            - generic [ref=e13]:
+              - paragraph [ref=e14]: 管控端
+              - paragraph [ref=e15]: ClawPro Admin
+          - button "收起导航" [ref=e16] [cursor=pointer]:
+            - img [ref=e17]
+        - link "前往用户端" [ref=e20] [cursor=pointer]:
+          - /url: /my-openclaw
+          - img [ref=e22]
+          - generic [ref=e24]: 前往用户端
+      - navigation "管理后台导航" [ref=e25]:
+        - generic [ref=e26]:
+          - button "基础信息" [ref=e27] [cursor=pointer]:
+            - generic [ref=e28]: 基础信息
+            - img [ref=e29]
+          - list [ref=e31]:
+            - listitem [ref=e32]:
+              - link "基础信息配置" [ref=e33] [cursor=pointer]:
+                - /url: /admin/basic-info
+                - img [ref=e34]
+                - generic [ref=e35]: 基础信息配置
+            - listitem [ref=e36]:
+              - link "平台策略" [ref=e37] [cursor=pointer]:
+                - /url: /admin/platform-policy
+                - img [ref=e38]
+                - generic [ref=e39]: 平台策略
+            - listitem [ref=e40]:
+              - link "用户管理" [ref=e41] [cursor=pointer]:
+                - /url: /admin/members
+                - img [ref=e42]
+                - generic [ref=e43]: 用户管理
+        - generic [ref=e44]:
+          - button "Agent 配置" [ref=e45] [cursor=pointer]:
+            - generic [ref=e46]: Agent 配置
+            - img [ref=e47]
+          - list [ref=e49]:
+            - listitem [ref=e50]:
+              - link "模型配置" [ref=e51] [cursor=pointer]:
+                - /url: /admin/model-config
+                - img [ref=e52]
+                - generic [ref=e53]: 模型配置
+            - listitem [ref=e54]:
+              - link "通道配置" [ref=e55] [cursor=pointer]:
+                - /url: /admin/channel-config
+                - img [ref=e56]
+                - generic [ref=e57]: 通道配置
+            - listitem [ref=e58]:
+              - link "技能配置 New" [ref=e59] [cursor=pointer]:
+                - /url: /admin/skill-config
+                - img [ref=e60]
+                - generic [ref=e61]: 技能配置
+                - generic [ref=e62]: New
+            - listitem [ref=e63]:
+              - link "Agent 工具库 New" [ref=e64] [cursor=pointer]:
+                - /url: /admin/agent-tool-library
+                - img [ref=e65]
+                - generic [ref=e66]: Agent 工具库
+                - generic [ref=e67]: New
+            - listitem [ref=e68]:
+              - button "收起Agent 启动配置" [expanded] [ref=e69] [cursor=pointer]:
+                - img [ref=e70]
+                - generic [ref=e71]: Agent 启动配置
+                - img [ref=e72]
+            - listitem [ref=e73]:
+              - link "Agent 类型 原镜像管理" [ref=e74] [cursor=pointer]:
+                - /url: /admin/agent-types
+                - generic [ref=e75]: Agent 类型
+                - generic [ref=e76]: 原镜像管理
+            - listitem [ref=e77]:
+              - link "资源管理" [ref=e78] [cursor=pointer]:
+                - /url: /admin/agent-template
+                - generic [ref=e79]: 资源管理
+            - listitem [ref=e80]:
+              - link "网络管理" [ref=e81] [cursor=pointer]:
+                - /url: /admin/security-group
+                - generic [ref=e82]: 网络管理
+        - generic [ref=e83]:
+          - button "运维与观测" [ref=e84] [cursor=pointer]:
+            - generic [ref=e85]: 运维与观测
+            - img [ref=e86]
+          - list [ref=e88]:
+            - listitem [ref=e89]:
+              - link "Agent 列表" [ref=e90] [cursor=pointer]:
+                - /url: /admin/openclaw-monitor
+                - img [ref=e91]
+                - generic [ref=e92]: Agent 列表
+            - listitem [ref=e93]:
+              - link "Tokens 监控" [ref=e94] [cursor=pointer]:
+                - /url: /admin/tokens-monitor
+                - img [ref=e95]
+                - generic [ref=e96]: Tokens 监控
+            - listitem [ref=e97]:
+              - link "运维观测 New" [ref=e98] [cursor=pointer]:
+                - /url: /admin/ops-observation
+                - img [ref=e99]
+                - generic [ref=e100]: 运维观测
+                - generic [ref=e101]: New
+        - generic [ref=e102]:
+          - button "Agent 服务" [ref=e103] [cursor=pointer]:
+            - generic [ref=e104]: Agent 服务
+            - img [ref=e105]
+          - list [ref=e107]:
+            - listitem [ref=e108]:
+              - link "记忆管理" [ref=e109] [cursor=pointer]:
+                - /url: /admin/memory-management
+                - img [ref=e110]
+                - generic [ref=e111]: 记忆管理
+            - listitem [ref=e112]:
+              - link "网盘管理" [ref=e113] [cursor=pointer]:
+                - /url: /admin/file-management
+                - img [ref=e114]
+                - generic [ref=e115]: 网盘管理
+            - listitem [ref=e116]:
+              - link "云开发管理 即将开放" [ref=e117] [cursor=pointer]:
+                - /url: /admin/cloud-dev
+                - img [ref=e118]
+                - generic [ref=e119]: 云开发管理
+                - generic [ref=e120]: 即将开放
+        - generic [ref=e121]:
+          - button "安全审计" [ref=e122] [cursor=pointer]:
+            - generic [ref=e123]: 安全审计
+            - img [ref=e124]
+          - list [ref=e126]:
+            - listitem [ref=e127]:
+              - link "AI Agent 安全 New" [ref=e128] [cursor=pointer]:
+                - /url: /admin/security-management
+                - img [ref=e129]
+                - generic [ref=e130]: AI Agent 安全
+                - generic [ref=e131]: New
+            - listitem [ref=e132]:
+              - link "会话管理 New" [ref=e133] [cursor=pointer]:
+                - /url: /admin/session-management
+                - img [ref=e134]
+                - generic [ref=e135]: 会话管理
+                - generic [ref=e136]: New
+            - listitem [ref=e137]:
+              - link "操作记录" [ref=e138] [cursor=pointer]:
+                - /url: /admin/audit-log
+                - img [ref=e139]
+                - generic [ref=e140]: 操作记录
+      - generic [ref=e141]:
+        - generic [ref=e142]:
+          - generic [ref=e143]: J
+          - generic [ref=e144]:
+            - paragraph [ref=e145]: jingsujiang
+            - paragraph [ref=e146]: 管理员
+        - button "更多管理操作" [ref=e147] [cursor=pointer]:
+          - img [ref=e148]
+    - main [ref=e152]:
+      - alert [ref=e154]:
+        - generic [ref=e155]:
+          - img [ref=e529]
+          - generic [ref=e161]: 产品动态
+        - generic [ref=e163]: OpenClaw v2.3.0 已发布：技能配置全面升级，支持公共技能库浏览、收藏与批量分发至指定用户或全体成员。
+        - generic [ref=e166]:
+          - button "上一条" [ref=e167] [cursor=pointer]:
+            - img [ref=e168]
+          - generic [ref=e170]: 5/5
+          - button "下一条" [ref=e171] [cursor=pointer]:
+            - img [ref=e172]
+      - generic [ref=e176]:
+        - generic [ref=e177]:
+          - generic [ref=e178]:
+            - heading "Agent 列表" [level=1] [ref=e180]
+            - paragraph [ref=e181]: 查看和管理所有企业用户创建的 Agent 云服务器。
+          - generic [ref=e183]:
+            - button "选择日期" [ref=e184] [cursor=pointer]:
+              - generic [ref=e185]: 选择日期
+              - img [ref=e186]
+            - generic [ref=e189]: —
+            - button "选择日期" [ref=e190] [cursor=pointer]:
+              - generic [ref=e191]: 选择日期
+              - img [ref=e192]
+            - button "刷新列表" [ref=e195] [cursor=pointer]:
+              - img
+        - generic [ref=e196]:
+          - button "总数 24" [ref=e197] [cursor=pointer]:
+            - generic [ref=e198]:
+              - img [ref=e199]
+              - generic [ref=e201]: 总数
+            - paragraph [ref=e202]: "24"
+          - button "运行中 18" [ref=e203] [cursor=pointer]:
+            - generic [ref=e204]:
+              - img [ref=e205]
+              - generic [ref=e207]: 运行中
+            - paragraph [ref=e208]: "18"
+          - button "已关机 1" [ref=e209] [cursor=pointer]:
+            - generic [ref=e210]:
+              - img [ref=e211]
+              - generic [ref=e213]: 已关机
+            - paragraph [ref=e214]: "1"
+          - button "其他 5" [ref=e215] [cursor=pointer]:
+            - generic [ref=e216]:
+              - img [ref=e217]
+              - generic [ref=e219]: 其他
+            - paragraph [ref=e220]: "5"
+        - generic [ref=e221]:
+          - generic [ref=e223]:
+            - img [ref=e224]
+            - textbox "搜索名称、ID 或创建人" [ref=e227]
+          - button "有 3 个新版本" [ref=e228] [cursor=pointer]:
+            - img [ref=e229]
+            - generic [ref=e232]: 有 3 个新版本
+            - img [ref=e233]
+          - button "批量更新" [disabled] [ref=e236]:
+            - img
+            - text: 批量更新
+          - button "批量删除" [disabled] [ref=e238]:
+            - img
+            - text: 批量删除
+          - button "命令下发" [ref=e239] [cursor=pointer]:
+            - img
+            - text: 命令下发
+            - img
+          - button "配置默认标签" [ref=e240] [cursor=pointer]:
+            - img
+            - text: 配置默认标签
+          - link "智能体迁移" [ref=e241] [cursor=pointer]:
+            - /url: /admin/agent-migration
+            - button "智能体迁移" [ref=e242]:
+              - img
+              - text: 智能体迁移
+        - generic [ref=e243]:
+          - table [ref=e246]:
+            - rowgroup [ref=e247]:
+              - row "全选 名称 / ID 当前状态 创建人 组织 创建时间 Agent类型 Agent 版本 操作" [ref=e248]:
+                - columnheader "全选" [ref=e249]:
+                  - checkbox "全选" [ref=e251] [cursor=pointer]
+                - columnheader "名称 / ID" [ref=e252]
+                - columnheader "当前状态" [ref=e253]:
+                  - button "当前状态" [ref=e254] [cursor=pointer]:
+                    - generic [ref=e255]: 当前状态
+                    - img [ref=e256]
+                - columnheader "创建人" [ref=e258]
+                - columnheader "组织" [ref=e259]:
+                  - button "组织" [ref=e260] [cursor=pointer]:
+                    - generic [ref=e261]: 组织
+                    - img [ref=e262]
+                - columnheader "创建时间" [ref=e264]
+                - columnheader "Agent类型" [ref=e265]:
+                  - button "Agent类型" [ref=e266] [cursor=pointer]:
+                    - generic [ref=e267]: Agent类型
+                    - img [ref=e268]
+                - columnheader "Agent 版本" [ref=e270]
+                - columnheader "操作" [ref=e271]
+            - rowgroup [ref=e272]:
+              - row "GPULab产品线专属AI智能运营分析与决策支持系统 ins-e25z9taq 运行中 product-ops-admin@enterprise-acompany.com — 2026-05-02 10:30:00 Hermes Agent 2026.4.2 终端 关机 删除 更多" [ref=e273] [cursor=pointer]:
+                - cell [ref=e274]:
+                  - checkbox [ref=e275]
+                - cell "GPULab产品线专属AI智能运营分析与决策支持系统 ins-e25z9taq" [ref=e276]:
+                  - generic [ref=e278]:
+                    - generic [ref=e279]: GPULab产品线专属AI智能运营分析与决策支持系统
+                    - button "ins-e25z9taq" [ref=e280]
+                - cell "运行中" [ref=e281]:
+                  - generic [ref=e283]: 运行中
+                - cell "product-ops-admin@enterprise-acompany.com" [ref=e284]:
+                  - generic [ref=e285]: product-ops-admin@enterprise-acompany.com
+                - cell "—" [ref=e286]
+                - cell "2026-05-02 10:30:00" [ref=e287]
+                - cell "Hermes Agent" [ref=e288]
+                - cell "2026.4.2" [ref=e289]
+                - cell "终端 关机 删除 更多" [ref=e290]:
+                  - generic [ref=e291]:
+                    - button "终端" [ref=e292]
+                    - button "关机" [ref=e293]
+                    - button "删除" [ref=e294]
+                    - button "更多" [ref=e295]
+              - row "这是一个名称非常非常长的智能助手用来测试超长文本截断效果 ins-d14y8szp 运行中 longname-user@very-long-domain-example.com — 2026-05-01 09:00:00 OpenClaw 2026.4.2 终端 关机 删除 更多" [ref=e296] [cursor=pointer]:
+                - cell [ref=e297]:
+                  - checkbox [ref=e298]
+                - cell "这是一个名称非常非常长的智能助手用来测试超长文本截断效果 ins-d14y8szp" [ref=e299]:
+                  - generic [ref=e301]:
+                    - generic [ref=e302]: 这是一个名称非常非常长的智能助手用来测试超长文本截断效果
+                    - button "ins-d14y8szp" [ref=e303]
+                - cell "运行中" [ref=e304]:
+                  - generic [ref=e306]: 运行中
+                - cell "longname-user@very-long-domain-example.com" [ref=e307]:
+                  - generic [ref=e308]: longname-user@very-long-domain-example.com
+                - cell "—" [ref=e309]
+                - cell "2026-05-01 09:00:00" [ref=e310]
+                - cell "OpenClaw" [ref=e311]
+                - cell "2026.4.2" [ref=e312]
+                - cell "终端 关机 删除 更多" [ref=e313]:
+                  - generic [ref=e314]:
+                    - button "终端" [ref=e315]
+                    - button "关机" [ref=e316]
+                    - button "删除" [ref=e317]
+                    - button "更多" [ref=e318]
+              - row "Victor的技术助手 ins-c03x7ryo 运行中 victor@acompany.com — 2026-03-21 10:00:00 OpenClaw 2026.3.28 终端 关机 删除 更多" [ref=e319] [cursor=pointer]:
+                - cell [ref=e320]:
+                  - checkbox [ref=e321]
+                - cell "Victor的技术助手 ins-c03x7ryo" [ref=e322]:
+                  - generic [ref=e324]:
+                    - generic [ref=e325]: Victor的技术助手
+                    - button "ins-c03x7ryo" [ref=e326]
+                - cell "运行中" [ref=e327]:
+                  - generic [ref=e329]: 运行中
+                - cell "victor@acompany.com" [ref=e330]:
+                  - generic [ref=e331]: victor@acompany.com
+                - cell "—" [ref=e332]
+                - cell "2026-03-21 10:00:00" [ref=e333]
+                - cell "OpenClaw" [ref=e334]
+                - cell "2026.3.28" [ref=e335]
+                - cell "终端 关机 删除 更多" [ref=e336]:
+                  - generic [ref=e337]:
+                    - button "终端" [ref=e338]
+                    - button "关机" [ref=e339]
+                    - button "删除" [ref=e340]
+                    - button "更多" [ref=e341]
+              - row "Uma的设计助手 ins-b92w6qxn 运行中 uma@acompany.com — 2026-03-20 09:30:00 Hermes Agent 2026.4.2 终端 关机 删除 更多" [ref=e342] [cursor=pointer]:
+                - cell [ref=e343]:
+                  - checkbox [ref=e344]
+                - cell "Uma的设计助手 ins-b92w6qxn" [ref=e345]:
+                  - generic [ref=e347]:
+                    - generic [ref=e348]: Uma的设计助手
+                    - button "ins-b92w6qxn" [ref=e349]
+                - cell "运行中" [ref=e350]:
+                  - generic [ref=e352]: 运行中
+                - cell "uma@acompany.com" [ref=e353]:
+                  - generic [ref=e354]: uma@acompany.com
+                - cell "—" [ref=e355]
+                - cell "2026-03-20 09:30:00" [ref=e356]
+                - cell "Hermes Agent" [ref=e357]
+                - cell "2026.4.2" [ref=e358]
+                - cell "终端 关机 删除 更多" [ref=e359]:
+                  - generic [ref=e360]:
+                    - button "终端" [ref=e361]
+                    - button "关机" [ref=e362]
+                    - button "删除" [ref=e363]
+                    - button "更多" [ref=e364]
+              - row "Tina的客服助手 ins-a81v5pwm 运行中 tina@acompany.com — 2026-03-19 15:00:00 OpenClaw 2026.3.28 终端 关机 删除 更多" [ref=e365] [cursor=pointer]:
+                - cell [ref=e366]:
+                  - checkbox [ref=e367]
+                - cell "Tina的客服助手 ins-a81v5pwm" [ref=e368]:
+                  - generic [ref=e370]:
+                    - generic [ref=e371]: Tina的客服助手
+                    - button "ins-a81v5pwm" [ref=e372]
+                - cell "运行中" [ref=e373]:
+                  - generic [ref=e375]: 运行中
+                - cell "tina@acompany.com" [ref=e376]:
+                  - generic [ref=e377]: tina@acompany.com
+                - cell "—" [ref=e378]
+                - cell "2026-03-19 15:00:00" [ref=e379]
+                - cell "OpenClaw" [ref=e380]
+                - cell "2026.3.28" [ref=e381]
+                - cell "终端 关机 删除 更多" [ref=e382]:
+                  - generic [ref=e383]:
+                    - button "终端" [ref=e384]
+                    - button "关机" [ref=e385]
+                    - button "删除" [ref=e386]
+                    - button "更多" [ref=e387]
+              - row "Sam的产品助手 ins-z70u4ovl 运行中 sam@acompany.com — 2026-03-18 14:30:00 LightClaw ACE 2026.4.2 终端 关机 删除 更多" [ref=e388] [cursor=pointer]:
+                - cell [ref=e389]:
+                  - checkbox [ref=e390]
+                - cell "Sam的产品助手 ins-z70u4ovl" [ref=e391]:
+                  - generic [ref=e393]:
+                    - generic [ref=e394]: Sam的产品助手
+                    - button "ins-z70u4ovl" [ref=e395]
+                - cell "运行中" [ref=e396]:
+                  - generic [ref=e398]: 运行中
+                - cell "sam@acompany.com" [ref=e399]:
+                  - generic [ref=e400]: sam@acompany.com
+                - cell "—" [ref=e401]
+                - cell "2026-03-18 14:30:00" [ref=e402]
+                - cell "LightClaw ACE" [ref=e403]
+                - cell "2026.4.2" [ref=e404]
+                - cell "终端 关机 删除 更多" [ref=e405]:
+                  - generic [ref=e406]:
+                    - button "终端" [ref=e407]
+                    - button "关机" [ref=e408]
+                    - button "删除" [ref=e409]
+                    - button "更多" [ref=e410]
+              - row "Rachel的HR助手 ins-y69t3nuk 运行中 rachel@acompany.com — 2026-03-17 13:10:00 OpenClaw 2026.3.28 终端 关机 删除 更多" [ref=e411] [cursor=pointer]:
+                - cell [ref=e412]:
+                  - checkbox [ref=e413]
+                - cell "Rachel的HR助手 ins-y69t3nuk" [ref=e414]:
+                  - generic [ref=e416]:
+                    - generic [ref=e417]: Rachel的HR助手
+                    - button "ins-y69t3nuk" [ref=e418]
+                - cell "运行中" [ref=e419]:
+                  - generic [ref=e421]: 运行中
+                - cell "rachel@acompany.com" [ref=e422]:
+                  - generic [ref=e423]: rachel@acompany.com
+                - cell "—" [ref=e424]
+                - cell "2026-03-17 13:10:00" [ref=e425]
+                - cell "OpenClaw" [ref=e426]
+                - cell "2026.3.28" [ref=e427]
+                - cell "终端 关机 删除 更多" [ref=e428]:
+                  - generic [ref=e429]:
+                    - button "终端" [ref=e430]
+                    - button "关机" [ref=e431]
+                    - button "删除" [ref=e432]
+                    - button "更多" [ref=e433]
+              - row "Quinn的法务助手 ins-x58s2mtj 运行中 quinn@acompany.com 产品运营与市场推广团队 2026-03-16 11:45:00 Hermes Agent 2026.4.2 终端 关机 删除 更多" [ref=e434] [cursor=pointer]:
+                - cell [ref=e435]:
+                  - checkbox [ref=e436]
+                - cell "Quinn的法务助手 ins-x58s2mtj" [ref=e437]:
+                  - generic [ref=e439]:
+                    - generic [ref=e440]: Quinn的法务助手
+                    - button "ins-x58s2mtj" [ref=e441]
+                - cell "运行中" [ref=e442]:
+                  - generic [ref=e444]: 运行中
+                - cell "quinn@acompany.com" [ref=e445]:
+                  - generic [ref=e446]: quinn@acompany.com
+                - cell "产品运营与市场推广团队" [ref=e447]:
+                  - generic [ref=e448]: 产品运营与市场推广团队
+                - cell "2026-03-16 11:45:00" [ref=e449]
+                - cell "Hermes Agent" [ref=e450]
+                - cell "2026.4.2" [ref=e451]
+                - cell "终端 关机 删除 更多" [ref=e452]:
+                  - generic [ref=e453]:
+                    - button "终端" [ref=e454]
+                    - button "关机" [ref=e455]
+                    - button "删除" [ref=e456]
+                    - button "更多" [ref=e457]
+              - row "Peter的财务助手 ins-w47r1lsi 运行中 peter@acompany.com — 2026-03-15 10:20:00 OpenClaw 2026.3.28 终端 关机 删除 更多" [ref=e458] [cursor=pointer]:
+                - cell [ref=e459]:
+                  - checkbox [ref=e460]
+                - cell "Peter的财务助手 ins-w47r1lsi" [ref=e461]:
+                  - generic [ref=e463]:
+                    - generic [ref=e464]: Peter的财务助手
+                    - button "ins-w47r1lsi" [ref=e465]
+                - cell "运行中" [ref=e466]:
+                  - generic [ref=e468]: 运行中
+                - cell "peter@acompany.com" [ref=e469]:
+                  - generic [ref=e470]: peter@acompany.com
+                - cell "—" [ref=e471]
+                - cell "2026-03-15 10:20:00" [ref=e472]
+                - cell "OpenClaw" [ref=e473]
+                - cell "2026.3.28" [ref=e474]
+                - cell "终端 关机 删除 更多" [ref=e475]:
+                  - generic [ref=e476]:
+                    - button "终端" [ref=e477]
+                    - button "关机" [ref=e478]
+                    - button "删除" [ref=e479]
+                    - button "更多" [ref=e480]
+              - row "Olivia的运营助手 ins-v36q0krh 运行中 olivia@acompany.com 产品运营与市场推广团队 2026-03-14 09:00:00 LightClaw ACE 2026.4.2 终端 关机 删除 更多" [ref=e481] [cursor=pointer]:
+                - cell [ref=e482]:
+                  - checkbox [ref=e483]
+                - cell "Olivia的运营助手 ins-v36q0krh" [ref=e484]:
+                  - generic [ref=e486]:
+                    - generic [ref=e487]: Olivia的运营助手
+                    - button "ins-v36q0krh" [ref=e488]
+                - cell "运行中" [ref=e489]:
+                  - generic [ref=e491]: 运行中
+                - cell "olivia@acompany.com" [ref=e492]:
+                  - generic [ref=e493]: olivia@acompany.com
+                - cell "产品运营与市场推广团队" [ref=e494]:
+                  - generic [ref=e495]: 产品运营与市场推广团队
+                - cell "2026-03-14 09:00:00" [ref=e496]
+                - cell "LightClaw ACE" [ref=e497]
+                - cell "2026.4.2" [ref=e498]
+                - cell "终端 关机 删除 更多" [ref=e499]:
+                  - generic [ref=e500]:
+                    - button "终端" [ref=e501]
+                    - button "关机" [ref=e502]
+                    - button "删除" [ref=e503]
+                    - button "更多" [ref=e504]
+          - navigation "pagination" [ref=e506]:
+            - generic [ref=e507]: 共 24 条记录
+            - list [ref=e509]:
+              - listitem [ref=e510]:
+                - button "上一页" [disabled] [ref=e511]:
+                  - img [ref=e512]
+              - listitem [ref=e514]:
+                - button "1" [ref=e515] [cursor=pointer]
+              - listitem [ref=e516]:
+                - button "2" [ref=e517] [cursor=pointer]
+              - listitem [ref=e518]:
+                - button "3" [ref=e519] [cursor=pointer]
+              - listitem [ref=e520]:
+                - button "下一页" [ref=e521] [cursor=pointer]:
+                  - img [ref=e522]
+  - region "Notifications alt+T"

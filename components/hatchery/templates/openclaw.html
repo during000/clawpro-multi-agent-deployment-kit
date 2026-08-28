@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的实例 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "home_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <h1 class="text-[16px] font-semibold text-gray-800">我的实例</h1>
+                    <div class="flex items-center space-x-3">
+                        <button hx-get="/openclaw/list" hx-target="#instance-list" hx-swap="innerHTML"
+                            class="h-9 w-9 flex items-center justify-center border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors duration-200 text-gray-500 hover:text-[#0052d9]"
+                            title="刷新列表">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M4 9a9 9 0 0115.36-5.36L20 4M20 15a9 9 0 01-15.36 5.36L4 20"/></svg>
+                        </button>
+        <button onclick="openCreateModal()"
+                            class="h-9 bg-[#0052d9] text-white px-4 rounded hover:bg-[#0034b5] transition-colors duration-200 font-medium text-[14px]">
+                            新建实例
+                        </button>
+                    </div>
+                </div>
+
+                <div id="instance-list" class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden"
+                    hx-get="/openclaw/list" hx-trigger="load" hx-swap="innerHTML">
+                    <div class="py-16 text-center">
+                        <p class="text-[14px] text-gray-400">加载中...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create Instance Modal -->
+    <div id="create-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="absolute inset-0 bg-black/40" onclick="document.getElementById('create-modal').classList.add('hidden')"></div>
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="text-[16px] font-semibold text-gray-800">新建实例</h3>
+                <button onclick="document.getElementById('create-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <form hx-post="/openclaw/create" hx-target="#create-result" hx-swap="innerHTML"
+                hx-on::before-request="var b=document.getElementById('create-btn');b.disabled=true;b.dataset.orig=b.textContent;b.textContent='创建中...'"
+                hx-on::after-request="var b=document.getElementById('create-btn');b.disabled=false;b.textContent=b.dataset.orig">
+                <div class="mb-4">
+                    <label class="block text-[14px] font-medium text-gray-700 mb-2">实例名称</label>
+                    <input type="text" id="create-name" name="name" required maxlength="128"
+                        class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                        placeholder="请输入实例名称">
+                </div>
+                <div class="mb-5">
+                    <label class="block text-[14px] font-medium text-gray-700 mb-2">智能体类型</label>
+                    <select id="create-agent-type" name="agent_type"
+                        class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors bg-white">
+                        <option value="">加载中...</option>
+                    </select>
+                    <p class="mt-1 text-[12px] text-gray-400">不同类型对应不同的镜像和功能</p>
+                </div>
+                <div id="create-result"></div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="document.getElementById('create-modal').classList.add('hidden')"
+                        class="h-9 px-4 text-[14px] font-medium text-gray-600 border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors">
+                        取消
+                    </button>
+                    <button type="submit" id="create-btn"
+                        class="h-9 px-4 text-[14px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                        创建
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{template "home_scripts" .}}
+    <script>
+    function copyKey(key, btn) {
+        navigator.clipboard.writeText(key).then(function() {
+            var orig = btn.innerHTML;
+            btn.innerHTML = '<span class="text-green-600">已复制</span>';
+            setTimeout(function() { btn.innerHTML = orig; }, 1500);
+        });
+    }
+    var loadedServiceStatus = new Set();
+    function loadServiceStatus(id) {
+        if (loadedServiceStatus.has(id)) return;
+        loadedServiceStatus.add(id);
+        var cell = document.querySelector('.service-status[data-instance-id="' + id + '"]');
+        var versionCell = document.querySelector('.service-version[data-instance-id="' + id + '"]');
+        if (!cell) return;
+        cell.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[12px] text-gray-400 bg-gray-50">加载中...</span>';
+        fetch('/openclaw/service-status?id=' + encodeURIComponent(id))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    cell.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[12px] text-red-700 bg-red-50 cursor-default" title="' + data.error + '">查询失败</span>';
+                } else if (data.gateway && data.gateway.reachable) {
+                    cell.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[12px] text-green-700 bg-green-50">正常</span>';
+                } else {
+                    var errMsg = (data.gateway && data.gateway.error) || '未知错误';
+                    cell.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[12px] text-red-700 bg-red-50 cursor-default" title="' + errMsg + '">异常</span>';
+                }
+                var version = data.gateway && data.gateway.self && data.gateway.self.version;
+                if (versionCell) {
+                    versionCell.innerHTML = version
+                        ? '<span class="text-[14px] text-gray-600">' + version + '</span>'
+                        : '<span class="text-[12px] text-gray-400">-</span>';
+                }
+            })
+            .catch(function() {
+                cell.innerHTML = '<span class="inline-block px-2 py-0.5 rounded text-[12px] text-red-700 bg-red-50">请求失败</span>';
+            });
+    }
+    function checkInstanceState(cell) {
+        var span = cell.querySelector('span[data-state]');
+        if (span && span.getAttribute('data-state') === 'RUNNING') {
+            loadServiceStatus(cell.getAttribute('data-instance-id'));
+        }
+    }
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            // instance-list 整体被替换时（刷新/重启/删除），清空去重集合
+            if (m.target.id === 'instance-list') {
+                loadedServiceStatus.clear();
+            }
+            if (m.target.classList && m.target.classList.contains('instance-status')) {
+                checkInstanceState(m.target);
+            } else {
+                m.target.querySelectorAll && m.target.querySelectorAll('.instance-status').forEach(checkInstanceState);
+            }
+        });
+    });
+    observer.observe(document.getElementById('instance-list'), { childList: true, subtree: true });
+
+    // Terminal feature: check config and denied-actions
+    var terminalEnabled = false;
+
+    function checkTerminalConfig() {
+        fetch('/site')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                terminalEnabled = !!data.terminal_enabled;
+                if (terminalEnabled) {
+                    showTerminalButtons();
+                }
+            })
+            .catch(function() {});
+    }
+
+    function showTerminalButtons() {
+        var btns = document.querySelectorAll('.user-terminal-btn');
+        btns.forEach(function(btn) {
+            // Only show for instances that have an InstanceId (CVM)
+            if (btn.getAttribute('data-instance-id')) {
+                btn.classList.remove('hidden');
+            }
+        });
+        checkUserDeniedActions();
+    }
+
+    function checkUserDeniedActions() {
+        var btns = document.querySelectorAll('.user-terminal-btn:not(.hidden)');
+        if (btns.length === 0) return;
+        var ids = [];
+        btns.forEach(function(b) { ids.push(parseInt(b.getAttribute('data-id'))); });
+        fetch('/openclaw/denied-actions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: ids })
+        })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error || !data.instances) return;
+                data.instances.forEach(function(inst) {
+                    var btn = document.getElementById('user-terminal-btn-' + inst.id);
+                    if (!btn) return;
+                    if (inst.denied_actions && inst.denied_actions.length > 0) {
+                        btn.disabled = true;
+                        btn.title = '终端不可用：' + inst.denied_actions[0].message;
+                    } else {
+                        btn.disabled = false;
+                        btn.title = '打开终端';
+                    }
+                });
+            })
+            .catch(function() {});
+    }
+
+    function openUserTerminal(id, btn) {
+        if (btn.disabled) return;
+        var origText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = '打开中...';
+        var form = new FormData();
+        form.append('id', id);
+        fetch('/openclaw/terminal-url', { method: 'POST', body: form })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    alert(data.error + (data.detail ? '\n' + data.detail : ''));
+                } else if (data.login_url) {
+                    window.open(data.login_url, '_blank');
+                }
+            })
+            .catch(function() { alert('请求失败'); })
+            .finally(function() {
+                btn.disabled = false;
+                btn.textContent = origText;
+            });
+    }
+
+    // 加载可用智能体类型列表（用于创建实例弹窗）
+    function loadAgentTypes() {
+        var select = document.getElementById('create-agent-type');
+        if (!select) return;
+        fetch('/api/user/agent-types', { headers: { 'Accept': 'application/json' } })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var defaultType = (data.default_agent_type) || 'openclaw';
+                var agentTypes = data.agent_types || [];
+                select.innerHTML = '';
+                var hasOptions = false;
+                agentTypes.forEach(function(t) {
+                    var opt = document.createElement('option');
+                    opt.value = t.code;
+                    opt.textContent = t.name;
+                    if (t.code === defaultType) opt.selected = true;
+                    select.appendChild(opt);
+                    hasOptions = true;
+                });
+                if (!hasOptions) {
+                    select.innerHTML = '<option value="">暂无可用类型</option>';
+                }
+            })
+            .catch(function() {
+                select.innerHTML = '<option value="openclaw">OpenClaw</option>';
+            });
+    }
+
+    function openCreateModal() {
+        document.getElementById('create-modal').classList.remove('hidden');
+        loadAgentTypes();
+    }
+
+    // Check terminal config on page load
+    checkTerminalConfig();
+
+    // Re-check after instance list is refreshed
+    var origObserverCallback = observer._callback;
+    var terminalObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            if (m.target.id === 'instance-list') {
+                // After instance list refresh, re-check terminal if enabled
+                if (terminalEnabled) {
+                    setTimeout(showTerminalButtons, 100);
+                }
+            }
+        });
+    });
+    terminalObserver.observe(document.getElementById('instance-list'), { childList: true, subtree: true });
+    </script>
+</body>
+</html>
+
+{{define "instance_list"}}
+{{if .ErrorMessage}}
+<div class="px-5 py-3 border-b border-red-200 bg-red-50 text-[13px] text-red-600">
+    {{.ErrorMessage}}
+</div>
+{{end}}
+<div class="px-5 py-3 border-b border-[#e3e6eb] bg-[#f5f6fa] text-[13px] text-gray-500">
+    实例数量：{{.InstanceCount}} / {{.InstanceQuota}}
+</div>
+{{if .Items}}
+<table class="w-full">
+    <thead>
+        <tr class="border-b border-[#e3e6eb] bg-[#f5f6fa]">
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">名称</th>
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">实例 ID</th>
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">智能体类型</th>
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">实例状态</th>
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">服务状态</th>
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">版本</th>
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">绑定模型</th>
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">创建时间</th>
+            <th class="text-left px-5 py-3 text-[13px] font-medium text-gray-500">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Items}}
+        <tr class="border-b border-[#e3e6eb] hover:bg-[#f9fafb] transition-colors">
+            <td class="px-5 py-3">
+                <a href="/openclaw/detail?id={{.ID}}" class="text-[14px] text-[#0052d9] hover:underline">{{.Name}}</a>
+            </td>
+            <td class="px-5 py-3 text-[14px] text-gray-600">{{.InstanceId}}</td>
+            <td class="px-5 py-3">
+                {{if eq .AgentType "openclaw"}}
+                <span class="inline-block px-2 py-0.5 rounded text-[12px] font-medium bg-blue-50 text-[#0052d9]">OpenClaw</span>
+                {{else if eq .AgentType "hermes"}}
+                <span class="inline-block px-2 py-0.5 rounded text-[12px] font-medium bg-purple-50 text-purple-700">Hermes</span>
+                {{else if eq .AgentType "lightclawace"}}
+                <span class="inline-block px-2 py-0.5 rounded text-[12px] font-medium bg-orange-50 text-orange-700">LightclawACE</span>
+                {{else if .AgentType}}
+                <span class="inline-block px-2 py-0.5 rounded text-[12px] font-medium bg-gray-50 text-gray-600">{{.AgentType}}</span>
+                {{else}}
+                <span class="inline-block px-2 py-0.5 rounded text-[12px] font-medium bg-blue-50 text-[#0052d9]">OpenClaw</span>
+                {{end}}
+            </td>
+            <td class="px-5 py-3 instance-status" data-instance-id="{{.ID}}"
+                hx-get="/openclaw/status?id={{.ID}}"
+                hx-trigger="load"
+                hx-swap="innerHTML">
+                <span class="inline-block px-2 py-0.5 rounded text-[12px] text-gray-400 bg-gray-50">加载中...</span>
+            </td>
+            <td class="px-5 py-3 service-status" data-instance-id="{{.ID}}">
+                <span class="text-[12px] text-gray-400">-</span>
+            </td>
+            <td class="px-5 py-3 service-version" data-instance-id="{{.ID}}">
+                <span class="text-[12px] text-gray-400">-</span>
+            </td>
+            <td class="px-5 py-3">
+                {{if .AIModelDisplay}}
+                <span class="text-[13px] text-gray-700 font-mono">{{.AIModelDisplay}}</span>
+                {{else}}
+                <span class="text-[12px] text-gray-400">未绑定</span>
+                {{end}}
+            </td>
+            <td class="px-5 py-3 text-[14px] text-gray-500">{{.CreatedAt.Format "2006-01-02 15:04:05"}}</td>
+            <td class="px-5 py-3">
+                <div class="flex items-center space-x-3">
+                    <button id="user-terminal-btn-{{.ID}}" data-id="{{.ID}}" data-instance-id="{{.InstanceId}}" onclick="openUserTerminal({{.ID}}, this)"
+                        class="hidden text-[13px] text-[#0052d9] hover:text-[#0034b5] transition-colors disabled:text-gray-300 disabled:cursor-not-allowed user-terminal-btn"
+                        disabled title="检查权限中...">终端</button>
+                    <button hx-post="/openclaw/reboot" hx-vals='{"id":"{{.ID}}"}' hx-target="#instance-list" hx-swap="innerHTML" hx-confirm="确定要重启该实例吗？" class="text-[13px] text-[#0052d9] hover:text-[#0034b5] transition-colors">重启</button>
+                    <button hx-post="/openclaw/reset" hx-vals='{"id":"{{.ID}}"}' hx-target="#instance-list" hx-swap="innerHTML" hx-confirm="重装将会丢失所有数据，并更新镜像到最新版本，确定要继续吗？" class="text-[13px] text-[#0052d9] hover:text-[#0034b5] transition-colors">重装</button>
+                    <button hx-post="/openclaw/delete" hx-vals='{"id":"{{.ID}}"}' hx-target="#instance-list" hx-swap="innerHTML" hx-confirm="确定要删除该实例吗？" class="text-[13px] text-[#0052d9] hover:text-[#0034b5] transition-colors">删除</button>
+                </div>
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{else}}
+<div class="py-16 text-center">
+    <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+    <p class="text-[14px] text-gray-400">暂无实例</p>
+    <p class="text-[13px] text-gray-300 mt-1">点击"新建实例"创建你的第一个 OpenClaw</p>
+</div>
+{{end}}
+{{end}}

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <div class="bg-white p-6 rounded shadow-sm border border-gray-100 mb-5">
+                    <h2 class="text-[14px] font-semibold text-gray-800 mb-4">创建用户</h2>
+                    <div class="flex items-end">
+                    <form hx-post="/admin/create" hx-target="#user-list" hx-swap="innerHTML" class="flex items-end space-x-4">
+                        <div>
+                            <label class="block text-[14px] font-medium text-gray-700 mb-2">用户名</label>
+                            <input type="text" name="username" required
+                                class="h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                placeholder="用户名">
+                        </div>
+                        <div>
+                            <label class="block text-[14px] font-medium text-gray-700 mb-2">密码</label>
+                            <input type="password" name="password" required
+                                class="h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                placeholder="密码">
+                        </div>
+                        <div>
+                            <label class="block text-[14px] font-medium text-gray-700 mb-2">邮箱（填写则发送密码）</label>
+                            <input type="email" name="email"
+                                class="h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                placeholder="用户邮箱">
+                        </div>
+                        <div>
+                            <label class="block text-[14px] font-medium text-gray-700 mb-2">实例配额</label>
+                            <input type="number" name="instance_quota" min="0" max="999" value="1"
+                                class="h-10 w-24 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                placeholder="0=不限">
+                        </div>
+                        <button type="submit"
+                            class="h-10 bg-[#0052d9] text-white px-5 rounded hover:bg-[#0034b5] transition-colors duration-200 font-medium text-[14px]">
+                            创建
+                        </button>
+                    </form>
+                    <button onclick="exportTokens(this)"
+                        class="h-10 px-5 text-[14px] text-[#0052d9] font-medium border border-[#0052d9] rounded hover:bg-[#f2f6fc] transition-colors duration-200 flex items-center space-x-1.5 ml-auto">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>导出 Token</span>
+                    </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-3 border-b border-gray-100">
+                        <span class="text-[14px] text-gray-500">共 {{.Total}} 个用户</span>
+                    </div>
+                    <div id="user-list">
+                        {{block "user_list" .}}
+                        {{if .Error}}
+                        <div class="text-[#f64041] font-medium text-[14px] px-6 py-3 bg-red-50 border-b border-red-100">{{.Error}}</div>
+                        {{end}}
+                        {{if .Success}}
+                        <div class="text-green-600 font-medium text-[14px] px-6 py-3 bg-green-50 border-b border-green-100">{{.Success}}</div>
+                        {{end}}
+                        <table class="w-full text-[14px] text-left">
+                            <thead class="bg-[#f5f6fa] text-gray-500 text-[12px]">
+                                <tr>
+                                    <th class="px-6 py-3.5 font-medium">ID</th>
+                                    <th class="px-6 py-3.5 font-medium">用户名</th>
+                                    <th class="px-6 py-3.5 font-medium">角色</th>
+                                    <th class="px-6 py-3.5 font-medium">实例配额</th>
+                                    <th class="px-6 py-3.5 font-medium">Token 日配额</th>
+                                    <th class="px-6 py-3.5 font-medium">状态</th>
+                                    <th class="px-6 py-3.5 font-medium">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                {{range .Users}}
+                                <tr class="hover:bg-[#f9fafb] {{if .DeletedAt.Valid}}text-gray-400{{end}}">
+                                    <td class="px-6 py-3.5">{{.ID}}</td>
+                                    <td class="px-6 py-3.5 font-medium">{{.Username}}</td>
+                                    <td class="px-6 py-3.5">
+                                        {{if eq .Role "admin"}}
+                                        <span class="text-[12px] bg-[#0052d9] text-white px-2 py-1 rounded font-medium">管理员</span>
+                                        {{else}}
+                                        <span class="text-[12px] bg-gray-100 text-gray-500 px-2 py-1 rounded">普通用户</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        <span class="text-[14px]">{{.InstanceQuota}}</span>
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        {{if eq .TokenQuotaDay -1}}
+                                        <span class="text-[12px] text-gray-400">不限</span>
+                                        {{else}}
+                                        <span class="text-[14px]">{{.TokenQuotaDay}}</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        {{if .DeletedAt.Valid}}
+                                        <span class="text-[12px] text-yellow-600 bg-yellow-50 border border-yellow-200 px-2 py-1 rounded">已禁用</span>
+                                        {{else}}
+                                        <span class="text-[12px] text-green-600 bg-green-50 border border-green-200 px-2 py-1 rounded">正常</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        {{if eq .ID 1}}
+                                        <span class="text-[14px] text-gray-400">-</span>
+                                        {{else if .DeletedAt.Valid}}
+                                        <div class="flex items-center space-x-3">
+                                            <button hx-post="/admin/restore?id={{.ID}}" hx-target="#user-list" hx-swap="innerHTML"
+                                                class="text-[14px] text-[#0052d9] hover:text-[#0034b5] font-medium h-8 px-4 border border-[#0052d9] rounded hover:bg-[#f2f6fc] transition-colors">
+                                                恢复
+                                            </button>
+                                            <button hx-post="/admin/hard-delete?id={{.ID}}" hx-target="#user-list" hx-swap="innerHTML"
+                                                hx-confirm="确定要永久删除该用户吗？此操作不可恢复。"
+                                                class="text-[14px] text-red-500 hover:text-red-600 font-medium h-8 px-4 border border-red-300 rounded hover:bg-red-50 transition-colors">
+                                                永久删除
+                                            </button>
+                                        </div>
+                                        {{else}}
+                                        <div class="flex items-center space-x-3">
+                                            <button hx-post="/admin/delete?id={{.ID}}" hx-target="#user-list" hx-swap="innerHTML"
+                                                hx-confirm="确定要禁用该用户吗？"
+                                                class="text-[14px] text-yellow-600 hover:text-yellow-700 font-medium h-8 px-4 border border-yellow-300 rounded hover:bg-yellow-50 transition-colors">
+                                                禁用
+                                            </button>
+                                            <button hx-post="/admin/hard-delete?id={{.ID}}" hx-target="#user-list" hx-swap="innerHTML"
+                                                hx-confirm="确定要永久删除该用户吗？此操作不可恢复。"
+                                                class="text-[14px] text-red-500 hover:text-red-600 font-medium h-8 px-4 border border-red-300 rounded hover:bg-red-50 transition-colors">
+                                                永久删除
+                                            </button>
+                                            <form hx-post="/admin/reset-password?id={{.ID}}" hx-target="#user-list" hx-swap="innerHTML"
+                                                class="flex items-center space-x-2">
+                                                <input type="password" name="password" required placeholder="新密码"
+                                                    class="w-32 h-8 px-2.5 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9]">
+                                                <input type="email" name="email" placeholder="邮箱（填写则发送）"
+                                                    class="w-44 h-8 px-2.5 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9]">
+                                                <button type="submit"
+                                                    class="text-[14px] text-[#0052d9] hover:text-[#0034b5] font-medium h-8 px-4 border border-[#0052d9] rounded hover:bg-[#f2f6fc] transition-colors">
+                                                    重置密码
+                                                </button>
+                                            </form>
+                                            <form hx-post="/admin/update-user?id={{.ID}}" hx-target="#user-list" hx-swap="innerHTML"
+                                                class="flex items-center space-x-2">
+                                                <input type="number" name="instance_quota" min="0" max="999" placeholder="配额" value="{{.InstanceQuota}}"
+                                                    class="w-20 h-8 px-2.5 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9]">
+                                                <button type="submit"
+                                                    class="text-[14px] text-[#0052d9] hover:text-[#0034b5] font-medium h-8 px-4 border border-[#0052d9] rounded hover:bg-[#f2f6fc] transition-colors">
+                                                    设置配额
+                                                </button>
+                                            </form>
+                                            <form hx-post="/admin/update-user?id={{.ID}}" hx-target="#user-list" hx-swap="innerHTML"
+                                                class="flex items-center space-x-2">
+                                                <input type="number" name="token_quota_day" min="-1" placeholder="Token日配额" value="{{.TokenQuotaDay}}"
+                                                    class="w-28 h-8 px-2.5 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9]">
+                                                <button type="submit"
+                                                    class="text-[14px] text-[#0052d9] hover:text-[#0034b5] font-medium h-8 px-4 border border-[#0052d9] rounded hover:bg-[#f2f6fc] transition-colors">
+                                                    设置Token配额
+                                                </button>
+                                            </form>
+                                        </div>
+                                        {{end}}
+                                    </td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+
+                        {{if gt .TotalPages 1}}
+                        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                            <div class="text-[14px] text-gray-500">
+                                第 {{.Page}} / {{.TotalPages}} 页
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                {{if gt .Page 1}}
+                                <a href="/admin/users?page={{sub .Page 1}}&page_size={{.PageSize}}"
+                                    class="h-8 px-3 text-[14px] border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors flex items-center">
+                                    上一页
+                                </a>
+                                {{end}}
+                                {{if lt .Page .TotalPages}}
+                                <a href="/admin/users?page={{add .Page 1}}&page_size={{.PageSize}}"
+                                    class="h-8 px-3 text-[14px] border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors flex items-center">
+                                    下一页
+                                </a>
+                                {{end}}
+                            </div>
+                        </div>
+                        {{end}}
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {{template "admin_scripts" .}}
+    <script>
+    function exportTokens(btn) {
+        btn.disabled = true;
+        btn.querySelector('span').textContent = '导出中...';
+        fetch('/admin/export-tokens', {
+            method: 'POST',
+            headers: {'Accept': 'application/json'}
+        })
+        .then(function(resp) {
+            if (!resp.ok) return resp.json().then(function(j) { throw new Error(j.error || '导出失败'); });
+            return resp.json();
+        })
+        .then(function(data) {
+            var csv = 'ID,用户名,Token\n';
+            data.forEach(function(row) {
+                csv += row.id + ',' + row.username + ',' + row.token + '\n';
+            });
+            var blob = new Blob(['\uFEFF' + csv], {type: 'text/csv;charset=utf-8;'});
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'tokens.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        })
+        .catch(function(err) {
+            alert(err.message);
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.querySelector('span').textContent = '导出 Token';
+        });
+    }
+    </script>
+</body>
+</html>

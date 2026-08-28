@@ -1,0 +1,2853 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-02T05:54:12.988Z",
+  "source": {
+    "portable_react_dir": "clawpro-portable-design-skill/portable/react",
+    "portable_css_dir": "clawpro-portable-design-skill/portable/css"
+  },
+  "summary": {
+    "react_files": 33,
+    "css_files": 34,
+    "cp_classes": 429
+  },
+  "react": [
+    {
+      "id": "admin-sidebar-with-tooltip",
+      "file": "clawpro-portable-design-skill/portable/react/admin-sidebar-with-tooltip.tsx",
+      "defaultExport": null,
+      "exports": [
+        "AdminSidebar",
+        "AdminSidebarBadge",
+        "AdminSidebarBrand",
+        "AdminSidebarContent",
+        "AdminSidebarFooter",
+        "AdminSidebarFooterAction",
+        "AdminSidebarGroup",
+        "AdminSidebarGroupContent",
+        "AdminSidebarGroupLabel",
+        "AdminSidebarGroupTrigger",
+        "AdminSidebarHeader",
+        "AdminSidebarHeaderAction",
+        "AdminSidebarHeaderWithTooltip",
+        "AdminSidebarInset",
+        "AdminSidebarLogo",
+        "AdminSidebarMenu",
+        "AdminSidebarMenuButton",
+        "AdminSidebarMenuButtonWithTooltip",
+        "AdminSidebarMenuItem",
+        "AdminSidebarProvider",
+        "AdminSidebarTrigger",
+        "AdminSidebarUser",
+        "AdminSidebarUserWithHoverCard",
+        "App",
+        "HoverCard",
+        "SidebarCollapseIcon",
+        "Tooltip"
+      ],
+      "classNames": [
+        "cp-admin-sidebar-avatar-bg",
+        "cp-admin-sidebar-avatar-fg",
+        "cp-admin-sidebar-fg",
+        "cp-admin-sidebar-logo-box",
+        "cp-admin-sidebar-muted",
+        "cp-brand-blue",
+        "cp-text-brand"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "admin-sidebar",
+      "file": "clawpro-portable-design-skill/portable/react/admin-sidebar.tsx",
+      "defaultExport": null,
+      "exports": [
+        "AdminSidebar",
+        "AdminSidebarBadge",
+        "AdminSidebarBrand",
+        "AdminSidebarContent",
+        "AdminSidebarFooter",
+        "AdminSidebarFooterAction",
+        "AdminSidebarGroup",
+        "AdminSidebarGroupContent",
+        "AdminSidebarGroupLabel",
+        "AdminSidebarGroupTrigger",
+        "AdminSidebarHeader",
+        "AdminSidebarHeaderAction",
+        "AdminSidebarInset",
+        "AdminSidebarLogo",
+        "AdminSidebarMenu",
+        "AdminSidebarMenuButton",
+        "AdminSidebarMenuItem",
+        "AdminSidebarProvider",
+        "AdminSidebarTrigger",
+        "AdminSidebarUser",
+        "SidebarCollapseIcon"
+      ],
+      "classNames": [
+        "cp-admin-sidebar",
+        "cp-admin-sidebar-action-bg",
+        "cp-admin-sidebar-action-border",
+        "cp-admin-sidebar-avatar-bg",
+        "cp-admin-sidebar-avatar-fg",
+        "cp-admin-sidebar-bg",
+        "cp-admin-sidebar-border",
+        "cp-admin-sidebar-fg",
+        "cp-admin-sidebar-footer-h",
+        "cp-admin-sidebar-header-h",
+        "cp-admin-sidebar-icon",
+        "cp-admin-sidebar-item-h",
+        "cp-admin-sidebar-item-r",
+        "cp-admin-sidebar-logo-a",
+        "cp-admin-sidebar-logo-b",
+        "cp-admin-sidebar-logo-box",
+        "cp-admin-sidebar-logo-c",
+        "cp-admin-sidebar-muted",
+        "cp-admin-sidebar-subitem-button",
+        "cp-admin-sidebar-w",
+        "cp-admin-sidebar-w-collapsed",
+        "cp-brand-blue",
+        "cp-scrollbar-on-hover"
+      ],
+      "inline_style_count": 1,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "alert",
+      "file": "clawpro-portable-design-skill/portable/react/alert.tsx",
+      "defaultExport": null,
+      "exports": [
+        "AdminNoticeAlert",
+        "Alert",
+        "AlertDescription",
+        "AlertErrorIcon",
+        "AlertInfoIcon",
+        "AlertOperationInfoIcon",
+        "AlertProductNewsIcon",
+        "AlertSuccessIcon",
+        "AlertTitle",
+        "AlertWarningIcon"
+      ],
+      "classNames": [
+        "cp-alert",
+        "cp-alert--with-action",
+        "cp-alert__action",
+        "cp-alert__description",
+        "cp-alert__icon",
+        "cp-alert__title",
+        "cp-notice",
+        "cp-notice__content",
+        "cp-notice__controls",
+        "cp-notice__tag",
+        "cp-notice__tag-icon"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "avatar",
+      "file": "clawpro-portable-design-skill/portable/react/avatar.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableAvatar",
+        "PortableAvatarGroup"
+      ],
+      "classNames": [
+        "cp-avatar",
+        "cp-avatar-group",
+        "cp-avatar-group__more",
+        "cp-avatar__fallback",
+        "cp-avatar__img",
+        "cp-bg-subtle",
+        "cp-text-muted"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "badges",
+      "file": "clawpro-portable-design-skill/portable/react/badges.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableBadge"
+      ],
+      "classNames": [
+        "cp-badge",
+        "cp-badge--color"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "batch-actions-bar",
+      "file": "clawpro-portable-design-skill/portable/react/batch-actions-bar.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableBatchActionsBar"
+      ],
+      "classNames": [
+        "cp-batch-action",
+        "cp-batch-action--clear",
+        "cp-batch-action--danger",
+        "cp-batch-actions",
+        "cp-batch-bar",
+        "cp-batch-bar--all",
+        "cp-batch-summary",
+        "cp-batch-summary__link"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "breadcrumb",
+      "file": "clawpro-portable-design-skill/portable/react/breadcrumb.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableBreadcrumb"
+      ],
+      "classNames": [
+        "cp-breadcrumb",
+        "cp-breadcrumb__link",
+        "cp-breadcrumb__page",
+        "cp-breadcrumb__sep"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "button",
+      "file": "clawpro-portable-design-skill/portable/react/button.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableButton"
+      ],
+      "classNames": [
+        "cp-btn"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "card",
+      "file": "clawpro-portable-design-skill/portable/react/card.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableSurfaceCard",
+        "PortableSurfaceConfig",
+        "PortableSurfaceInner",
+        "PortableTenantCard"
+      ],
+      "classNames": [
+        "cp-surface--pad-lg",
+        "cp-surface--pad-md",
+        "cp-surface--pad-none",
+        "cp-surface--pad-sm",
+        "cp-surface-card",
+        "cp-surface-config",
+        "cp-surface-inner",
+        "cp-tenant-card"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "chart-stat",
+      "file": "clawpro-portable-design-skill/portable/react/chart-stat.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableChartCard",
+        "PortableChartDelta",
+        "PortableChartLegend",
+        "PortableChartTooltip"
+      ],
+      "classNames": [
+        "cp-border-control",
+        "cp-brand-blue",
+        "cp-chart",
+        "cp-chart-1",
+        "cp-chart-card",
+        "cp-chart-card__actions",
+        "cp-chart-card__chart",
+        "cp-chart-card__explanation",
+        "cp-chart-card__header",
+        "cp-chart-card__heading",
+        "cp-chart-card__subtitle",
+        "cp-chart-card__title",
+        "cp-chart-delta",
+        "cp-chart-legend",
+        "cp-chart-legend__item",
+        "cp-chart-legend__item--muted",
+        "cp-chart-legend__swatch",
+        "cp-chart-legend__value",
+        "cp-chart-state",
+        "cp-chart-state__action",
+        "cp-chart-state__desc",
+        "cp-chart-state__title",
+        "cp-chart-tooltip",
+        "cp-chart-tooltip__dot",
+        "cp-chart-tooltip__label",
+        "cp-chart-tooltip__num",
+        "cp-chart-tooltip__row",
+        "cp-chart-tooltip__series",
+        "cp-spin"
+      ],
+      "inline_style_count": 1,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "date-picker",
+      "file": "clawpro-portable-design-skill/portable/react/date-picker.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableDatePicker"
+      ],
+      "classNames": [
+        "cp-date-picker",
+        "cp-date-picker__day",
+        "cp-date-picker__day--active",
+        "cp-date-picker__grid",
+        "cp-date-picker__header",
+        "cp-date-picker__nav",
+        "cp-date-picker__panel",
+        "cp-date-picker__suffix",
+        "cp-date-picker__trigger",
+        "cp-date-picker__trigger--open",
+        "cp-date-picker__trigger--tenant",
+        "cp-date-picker__value",
+        "cp-date-picker__value--placeholder"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "dialog-drawer",
+      "file": "clawpro-portable-design-skill/portable/react/dialog-drawer.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableAlertDialog",
+        "PortableDialog",
+        "PortableDialogFooter",
+        "PortableDrawer"
+      ],
+      "classNames": [
+        "cp-dialog",
+        "cp-dialog-footer",
+        "cp-dialog-overlay",
+        "cp-dialog-positioner",
+        "cp-dialog__body",
+        "cp-dialog__desc",
+        "cp-dialog__header",
+        "cp-dialog__title",
+        "cp-dialog__title--danger",
+        "cp-drawer",
+        "cp-drawer__body",
+        "cp-drawer__header",
+        "cp-text-danger",
+        "cp-text-title"
+      ],
+      "inline_style_count": 3,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "empty-state",
+      "file": "clawpro-portable-design-skill/portable/react/empty-state.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableEmpty",
+        "PortableTableEmpty"
+      ],
+      "classNames": [
+        "cp-empty",
+        "cp-empty--bordered",
+        "cp-empty__action",
+        "cp-empty__body",
+        "cp-empty__desc",
+        "cp-empty__media",
+        "cp-empty__title",
+        "cp-table-empty",
+        "cp-table-empty__text",
+        "cp-text-title",
+        "cp-text-weak"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "file-browser",
+      "file": "clawpro-portable-design-skill/portable/react/file-browser.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableFileBrowser"
+      ],
+      "classNames": [],
+      "inline_style_count": 2,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "form-controls",
+      "file": "clawpro-portable-design-skill/portable/react/form-controls.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableFieldError",
+        "PortableFieldGroup",
+        "PortableFieldRow",
+        "PortableHelperText",
+        "PortableLabel"
+      ],
+      "classNames": [
+        "cp-field-error",
+        "cp-field-group",
+        "cp-field-row",
+        "cp-helper-text",
+        "cp-label",
+        "cp-label__required"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "input-select",
+      "file": "clawpro-portable-design-skill/portable/react/input-select.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableField",
+        "PortableInput",
+        "PortableSelect"
+      ],
+      "classNames": [
+        "cp-border",
+        "cp-field",
+        "cp-field__helper",
+        "cp-field__helper--danger",
+        "cp-field__label",
+        "cp-field__required",
+        "cp-input",
+        "cp-select",
+        "cp-select__check",
+        "cp-select__chevron",
+        "cp-select__empty",
+        "cp-select__item",
+        "cp-select__item--selected",
+        "cp-select__panel",
+        "cp-select__trigger",
+        "cp-select__value",
+        "cp-text-weak"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "loading-progress",
+      "file": "clawpro-portable-design-skill/portable/react/loading-progress.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableProgress",
+        "PortableSkeleton",
+        "PortableSpinner",
+        "PortableTableSkeleton"
+      ],
+      "classNames": [
+        "cp-progress",
+        "cp-progress__bar",
+        "cp-skeleton",
+        "cp-spinner",
+        "cp-spinner--muted",
+        "cp-table-skeleton",
+        "cp-table-skeleton__cell",
+        "cp-table-skeleton__cell--a",
+        "cp-table-skeleton__cell--b",
+        "cp-table-skeleton__cell--c",
+        "cp-table-skeleton__row"
+      ],
+      "inline_style_count": 2,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "number-card",
+      "file": "clawpro-portable-design-skill/portable/react/number-card.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PORTABLE_ICONS",
+        "PortableGradientIcon",
+        "PortableInputTokensIcon",
+        "PortableNumberCard",
+        "PortableOutputTokensIcon",
+        "PortableRequestsIcon",
+        "PortableStatNumber",
+        "PortableTotalTokensIcon"
+      ],
+      "classNames": [
+        "cp-number-card",
+        "cp-number-card__footer",
+        "cp-number-card__header",
+        "cp-number-card__icon",
+        "cp-number-card__label",
+        "cp-number-card__value-row",
+        "cp-stat-number",
+        "cp-stat-number--shrink",
+        "cp-text-title"
+      ],
+      "inline_style_count": 2,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "page-header",
+      "file": "clawpro-portable-design-skill/portable/react/page-header.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortablePageHeader"
+      ],
+      "classNames": [
+        "cp-page-header",
+        "cp-page-header--has-actions",
+        "cp-page-header--loose",
+        "cp-page-header__actions",
+        "cp-page-header__content",
+        "cp-page-header__desc",
+        "cp-page-header__title",
+        "cp-page-header__title-row"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "pagination",
+      "file": "clawpro-portable-design-skill/portable/react/pagination.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortablePagination"
+      ],
+      "classNames": [
+        "cp-pagination",
+        "cp-pagination__btn",
+        "cp-pagination__btn--active",
+        "cp-pagination__btn--sm",
+        "cp-pagination__ellipsis",
+        "cp-pagination__ellipsis--sm",
+        "cp-pagination__list",
+        "cp-pagination__simple",
+        "cp-pagination__simple--sm",
+        "cp-pagination__total",
+        "cp-text-muted"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "popover-menu",
+      "file": "clawpro-portable-design-skill/portable/react/popover-menu.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableDropdownMenu",
+        "PortablePopover"
+      ],
+      "classNames": [
+        "cp-menu",
+        "cp-menu__empty",
+        "cp-menu__item",
+        "cp-menu__item--danger",
+        "cp-menu__item-icon",
+        "cp-menu__panel",
+        "cp-menu__separator",
+        "cp-menu__trigger",
+        "cp-popover",
+        "cp-popover__panel",
+        "cp-popover__panel--end"
+      ],
+      "inline_style_count": 2,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "search-filter-bar",
+      "file": "clawpro-portable-design-skill/portable/react/search-filter-bar.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableSearchFilterBar"
+      ],
+      "classNames": [
+        "cp-search-filter-bar",
+        "cp-search-filter-bar__actions",
+        "cp-search-filter-bar__chip",
+        "cp-search-filter-bar__chip-remove",
+        "cp-search-filter-bar__chips",
+        "cp-search-filter-bar__clear-chips",
+        "cp-search-filter-bar__filter",
+        "cp-search-filter-bar__input",
+        "cp-search-filter-bar__left",
+        "cp-search-filter-bar__refresh",
+        "cp-search-filter-bar__search",
+        "cp-search-filter-bar__search-icon"
+      ],
+      "inline_style_count": 2,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "searchable-select",
+      "file": "clawpro-portable-design-skill/portable/react/searchable-select.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableSearchableSelect"
+      ],
+      "classNames": [
+        "cp-input",
+        "cp-input-search",
+        "cp-input-search__icon",
+        "cp-searchable-select",
+        "cp-searchable-select__actions",
+        "cp-searchable-select__check",
+        "cp-searchable-select__chevron",
+        "cp-searchable-select__clear",
+        "cp-searchable-select__count",
+        "cp-searchable-select__empty",
+        "cp-searchable-select__list",
+        "cp-searchable-select__option",
+        "cp-searchable-select__option--selected",
+        "cp-searchable-select__panel",
+        "cp-searchable-select__search",
+        "cp-searchable-select__search-input",
+        "cp-searchable-select__trigger",
+        "cp-searchable-select__trigger--disabled",
+        "cp-searchable-select__trigger--open",
+        "cp-select__value"
+      ],
+      "inline_style_count": 1,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "segment-showcase",
+      "file": "clawpro-portable-design-skill/portable/react/segment-showcase.tsx",
+      "defaultExport": null,
+      "exports": [
+        "SegmentShowcase"
+      ],
+      "classNames": [],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "segment",
+      "file": "clawpro-portable-design-skill/portable/react/segment.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableAdminSegment",
+        "PortableAdminSegmentGroup",
+        "PortableAdminSegmentItem",
+        "PortableAdminSegmentOption",
+        "PortableTenantSegment",
+        "PortableTenantSegmentGroup",
+        "PortableTenantSegmentItem",
+        "PortableTenantSegmentOption"
+      ],
+      "classNames": [
+        "cp-segment",
+        "cp-segment--admin",
+        "cp-segment--tenant",
+        "cp-segment__item",
+        "cp-segment__item--active"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "selection-controls",
+      "file": "clawpro-portable-design-skill/portable/react/selection-controls.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableCheckbox",
+        "PortableRadio",
+        "PortableRadioGroup",
+        "PortableSwitch"
+      ],
+      "classNames": [
+        "cp-border",
+        "cp-border-control",
+        "cp-checkbox",
+        "cp-checkbox--disabled",
+        "cp-checkbox__box",
+        "cp-checkbox__box--checked",
+        "cp-checkbox__input",
+        "cp-checkbox__label",
+        "cp-radio",
+        "cp-radio--disabled",
+        "cp-radio-group",
+        "cp-radio-group--horizontal",
+        "cp-radio-group--vertical",
+        "cp-radio__circle",
+        "cp-radio__circle--checked",
+        "cp-radio__dot",
+        "cp-radio__input",
+        "cp-radio__label",
+        "cp-switch",
+        "cp-switch--disabled",
+        "cp-switch__input",
+        "cp-switch__thumb",
+        "cp-switch__thumb--on",
+        "cp-switch__track",
+        "cp-switch__track--on"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "status-tag",
+      "file": "clawpro-portable-design-skill/portable/react/status-tag.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableStatusTag"
+      ],
+      "classNames": [
+        "cp-status-tag",
+        "cp-status-tag__icon"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "table",
+      "file": "clawpro-portable-design-skill/portable/react/table.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableAdminTable",
+        "PortableDataTable",
+        "PortableTable",
+        "PortableTableActions",
+        "PortableTableBody",
+        "PortableTableCell",
+        "PortableTableHead",
+        "PortableTableHeader",
+        "PortableTableRow",
+        "PortableTableStatus"
+      ],
+      "classNames": [
+        "cp-bg-subtle",
+        "cp-col-center",
+        "cp-col-right",
+        "cp-table",
+        "cp-table--compact",
+        "cp-table-action",
+        "cp-table-actions",
+        "cp-table-empty",
+        "cp-table-empty-row",
+        "cp-table-footer",
+        "cp-table-footer__pager",
+        "cp-table-footer__total",
+        "cp-table-scroll",
+        "cp-table-shell",
+        "cp-table-status",
+        "cp-text-muted"
+      ],
+      "inline_style_count": 10,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "tabs",
+      "file": "clawpro-portable-design-skill/portable/react/tabs.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableLineTabs",
+        "PortableLineTabsContent",
+        "PortableLineTabsList",
+        "PortableLineTabsTrigger",
+        "PortableTabs",
+        "PortableTabsContent",
+        "PortableTabsList",
+        "PortableTabsTrigger"
+      ],
+      "classNames": [
+        "cp-tabs__badge",
+        "cp-tabs__content",
+        "cp-tabs__content--hidden",
+        "cp-tabs__list",
+        "cp-tabs__trigger",
+        "cp-tabs__trigger--active",
+        "cp-text-emphasis",
+        "cp-text-secondary"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "tooltip",
+      "file": "clawpro-portable-design-skill/portable/react/tooltip.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableTooltip"
+      ],
+      "classNames": [
+        "cp-tooltip",
+        "cp-tooltip__content"
+      ],
+      "inline_style_count": 0,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "transfer",
+      "file": "clawpro-portable-design-skill/portable/react/transfer.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableTransfer"
+      ],
+      "classNames": [
+        "cp-bg-subtle",
+        "cp-border",
+        "cp-transfer",
+        "cp-transfer__actions",
+        "cp-transfer__body",
+        "cp-transfer__cell",
+        "cp-transfer__checkbox",
+        "cp-transfer__clear",
+        "cp-transfer__count",
+        "cp-transfer__empty",
+        "cp-transfer__footer",
+        "cp-transfer__header",
+        "cp-transfer__move-btn",
+        "cp-transfer__pager",
+        "cp-transfer__pager-btn",
+        "cp-transfer__panel",
+        "cp-transfer__remove",
+        "cp-transfer__row",
+        "cp-transfer__row--disabled",
+        "cp-transfer__search",
+        "cp-transfer__search-icon",
+        "cp-transfer__search-input",
+        "cp-transfer__title"
+      ],
+      "inline_style_count": 1,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "tree-select",
+      "file": "clawpro-portable-design-skill/portable/react/tree-select.tsx",
+      "defaultExport": "PortableTreeSelect",
+      "exports": [
+        "PortableTreeSelect"
+      ],
+      "classNames": [
+        "cp-control-accent",
+        "cp-tree-select",
+        "cp-tree-select__arrow",
+        "cp-tree-select__arrow--open",
+        "cp-tree-select__arrow--placeholder",
+        "cp-tree-select__btn",
+        "cp-tree-select__btn--cancel",
+        "cp-tree-select__btn--confirm",
+        "cp-tree-select__check",
+        "cp-tree-select__chevron",
+        "cp-tree-select__children",
+        "cp-tree-select__filter-icon",
+        "cp-tree-select__filter-icon--active",
+        "cp-tree-select__filter-trigger",
+        "cp-tree-select__footer",
+        "cp-tree-select__footer-actions",
+        "cp-tree-select__footer-label",
+        "cp-tree-select__label",
+        "cp-tree-select__list",
+        "cp-tree-select__list--button",
+        "cp-tree-select__list--filter",
+        "cp-tree-select__node",
+        "cp-tree-select__panel",
+        "cp-tree-select__row",
+        "cp-tree-select__row--selected",
+        "cp-tree-select__search",
+        "cp-tree-select__search-box",
+        "cp-tree-select__search-icon",
+        "cp-tree-select__search-input",
+        "cp-tree-select__section-label",
+        "cp-tree-select__trigger-btn",
+        "cp-tree-select__trigger-btn--open",
+        "cp-tree-select__trigger-label"
+      ],
+      "inline_style_count": 2,
+      "header_excerpt": "/**"
+    },
+    {
+      "id": "tree",
+      "file": "clawpro-portable-design-skill/portable/react/tree.tsx",
+      "defaultExport": null,
+      "exports": [
+        "PortableTree"
+      ],
+      "classNames": [
+        "cp-tree",
+        "cp-tree__arrow",
+        "cp-tree__arrow--open",
+        "cp-tree__arrow--placeholder",
+        "cp-tree__children",
+        "cp-tree__count",
+        "cp-tree__icon",
+        "cp-tree__label",
+        "cp-tree__node",
+        "cp-tree__row",
+        "cp-tree__row--active",
+        "cp-tree__row--disabled"
+      ],
+      "inline_style_count": 1,
+      "header_excerpt": "/**"
+    }
+  ],
+  "css": [
+    {
+      "id": "admin-sidebar-style",
+      "file": "clawpro-portable-design-skill/portable/css/admin-sidebar-style.css",
+      "selector_count": 21,
+      "root_selectors": [
+        ".cp-admin-sidebar-collapsed-subgroup-active",
+        ".cp-admin-sidebar-icon",
+        ".cp-admin-sidebar-logo-box",
+        ".cp-admin-sidebar-subitem-button",
+        ".cp-scrollbar-on-hover"
+      ],
+      "bytes": 42090
+    },
+    {
+      "id": "alert",
+      "file": "clawpro-portable-design-skill/portable/css/alert.css",
+      "selector_count": 22,
+      "root_selectors": [
+        ".cp-alert",
+        ".cp-notice",
+        ".cp-notice-stack",
+        ".cp-notice-stage"
+      ],
+      "bytes": 6830
+    },
+    {
+      "id": "avatar",
+      "file": "clawpro-portable-design-skill/portable/css/avatar.css",
+      "selector_count": 9,
+      "root_selectors": [
+        ".cp-avatar",
+        ".cp-avatar-group"
+      ],
+      "bytes": 1874
+    },
+    {
+      "id": "badge",
+      "file": "clawpro-portable-design-skill/portable/css/badge.css",
+      "selector_count": 9,
+      "root_selectors": [
+        ".cp-badge"
+      ],
+      "bytes": 2188
+    },
+    {
+      "id": "batch-actions-bar",
+      "file": "clawpro-portable-design-skill/portable/css/batch-actions-bar.css",
+      "selector_count": 8,
+      "root_selectors": [
+        ".cp-batch-action",
+        ".cp-batch-actions",
+        ".cp-batch-bar",
+        ".cp-batch-summary"
+      ],
+      "bytes": 3613
+    },
+    {
+      "id": "breadcrumb",
+      "file": "clawpro-portable-design-skill/portable/css/breadcrumb.css",
+      "selector_count": 5,
+      "root_selectors": [
+        ".cp-breadcrumb"
+      ],
+      "bytes": 1187
+    },
+    {
+      "id": "button",
+      "file": "clawpro-portable-design-skill/portable/css/button.css",
+      "selector_count": 10,
+      "root_selectors": [
+        ".cp-btn"
+      ],
+      "bytes": 3615
+    },
+    {
+      "id": "card",
+      "file": "clawpro-portable-design-skill/portable/css/card.css",
+      "selector_count": 8,
+      "root_selectors": [
+        ".cp-surface-card",
+        ".cp-surface-config",
+        ".cp-surface-inner",
+        ".cp-tenant-card"
+      ],
+      "bytes": 1585
+    },
+    {
+      "id": "chart-stat",
+      "file": "clawpro-portable-design-skill/portable/css/chart-stat.css",
+      "selector_count": 27,
+      "root_selectors": [
+        ".cp-chart-card",
+        ".cp-chart-delta",
+        ".cp-chart-legend",
+        ".cp-chart-state",
+        ".cp-chart-tooltip"
+      ],
+      "bytes": 4685
+    },
+    {
+      "id": "dark-veil",
+      "file": "clawpro-portable-design-skill/portable/css/dark-veil.css",
+      "selector_count": 3,
+      "root_selectors": [
+        ".cp-darkveil-hero"
+      ],
+      "bytes": 2261
+    },
+    {
+      "id": "date-picker",
+      "file": "clawpro-portable-design-skill/portable/css/date-picker.css",
+      "selector_count": 13,
+      "root_selectors": [
+        ".cp-date-picker"
+      ],
+      "bytes": 2393
+    },
+    {
+      "id": "dialog-drawer",
+      "file": "clawpro-portable-design-skill/portable/css/dialog-drawer.css",
+      "selector_count": 12,
+      "root_selectors": [
+        ".cp-dialog",
+        ".cp-dialog-footer",
+        ".cp-dialog-overlay",
+        ".cp-dialog-positioner",
+        ".cp-drawer"
+      ],
+      "bytes": 1897
+    },
+    {
+      "id": "empty-state",
+      "file": "clawpro-portable-design-skill/portable/css/empty-state.css",
+      "selector_count": 9,
+      "root_selectors": [
+        ".cp-empty",
+        ".cp-table-empty"
+      ],
+      "bytes": 1386
+    },
+    {
+      "id": "file-browser",
+      "file": "clawpro-portable-design-skill/portable/css/file-browser.css",
+      "selector_count": 0,
+      "root_selectors": [],
+      "bytes": 7064
+    },
+    {
+      "id": "form-controls",
+      "file": "clawpro-portable-design-skill/portable/css/form-controls.css",
+      "selector_count": 7,
+      "root_selectors": [
+        ".cp-field",
+        ".cp-field-error",
+        ".cp-field-group",
+        ".cp-field-row",
+        ".cp-helper-text",
+        ".cp-label"
+      ],
+      "bytes": 1262
+    },
+    {
+      "id": "globals",
+      "file": "clawpro-portable-design-skill/portable/css/globals.css",
+      "selector_count": 0,
+      "root_selectors": [],
+      "bytes": 2985
+    },
+    {
+      "id": "input",
+      "file": "clawpro-portable-design-skill/portable/css/input.css",
+      "selector_count": 32,
+      "root_selectors": [
+        ".cp-field",
+        ".cp-input",
+        ".cp-input-search",
+        ".cp-searchable-select",
+        ".cp-select"
+      ],
+      "bytes": 9014
+    },
+    {
+      "id": "loading-progress",
+      "file": "clawpro-portable-design-skill/portable/css/loading-progress.css",
+      "selector_count": 13,
+      "root_selectors": [
+        ".cp-progress",
+        ".cp-skeleton",
+        ".cp-spinner",
+        ".cp-table-skeleton"
+      ],
+      "bytes": 2287
+    },
+    {
+      "id": "number-card",
+      "file": "clawpro-portable-design-skill/portable/css/number-card.css",
+      "selector_count": 8,
+      "root_selectors": [
+        ".cp-number-card",
+        ".cp-stat-number"
+      ],
+      "bytes": 1276
+    },
+    {
+      "id": "page-header",
+      "file": "clawpro-portable-design-skill/portable/css/page-header.css",
+      "selector_count": 8,
+      "root_selectors": [
+        ".cp-page-header"
+      ],
+      "bytes": 1342
+    },
+    {
+      "id": "pagination",
+      "file": "clawpro-portable-design-skill/portable/css/pagination.css",
+      "selector_count": 10,
+      "root_selectors": [
+        ".cp-pagination"
+      ],
+      "bytes": 2165
+    },
+    {
+      "id": "popover-menu",
+      "file": "clawpro-portable-design-skill/portable/css/popover-menu.css",
+      "selector_count": 13,
+      "root_selectors": [
+        ".cp-menu",
+        ".cp-popover"
+      ],
+      "bytes": 2936
+    },
+    {
+      "id": "portable",
+      "file": "clawpro-portable-design-skill/portable/css/portable.css",
+      "selector_count": 0,
+      "root_selectors": [],
+      "bytes": 1195
+    },
+    {
+      "id": "search-filter-bar",
+      "file": "clawpro-portable-design-skill/portable/css/search-filter-bar.css",
+      "selector_count": 12,
+      "root_selectors": [
+        ".cp-search-filter-bar"
+      ],
+      "bytes": 4148
+    },
+    {
+      "id": "segment",
+      "file": "clawpro-portable-design-skill/portable/css/segment.css",
+      "selector_count": 5,
+      "root_selectors": [
+        ".cp-segment"
+      ],
+      "bytes": 2842
+    },
+    {
+      "id": "selection-controls",
+      "file": "clawpro-portable-design-skill/portable/css/selection-controls.css",
+      "selector_count": 23,
+      "root_selectors": [
+        ".cp-checkbox",
+        ".cp-radio",
+        ".cp-radio-group",
+        ".cp-switch"
+      ],
+      "bytes": 2789
+    },
+    {
+      "id": "status-tag",
+      "file": "clawpro-portable-design-skill/portable/css/status-tag.css",
+      "selector_count": 7,
+      "root_selectors": [
+        ".cp-status-tag"
+      ],
+      "bytes": 974
+    },
+    {
+      "id": "table",
+      "file": "clawpro-portable-design-skill/portable/css/table.css",
+      "selector_count": 23,
+      "root_selectors": [
+        ".cp-col-center",
+        ".cp-col-right",
+        ".cp-num",
+        ".cp-pager",
+        ".cp-pagination",
+        ".cp-table",
+        ".cp-table-action",
+        ".cp-table-actions",
+        ".cp-table-empty",
+        ".cp-table-empty-row",
+        ".cp-table-footer",
+        ".cp-table-scroll",
+        ".cp-table-shell",
+        ".cp-table-status"
+      ],
+      "bytes": 5108
+    },
+    {
+      "id": "tabs",
+      "file": "clawpro-portable-design-skill/portable/css/tabs.css",
+      "selector_count": 6,
+      "root_selectors": [],
+      "bytes": 1367
+    },
+    {
+      "id": "tokens",
+      "file": "clawpro-portable-design-skill/portable/css/tokens.css",
+      "selector_count": 0,
+      "root_selectors": [],
+      "bytes": 2629
+    },
+    {
+      "id": "tooltip",
+      "file": "clawpro-portable-design-skill/portable/css/tooltip.css",
+      "selector_count": 6,
+      "root_selectors": [
+        ".cp-tooltip"
+      ],
+      "bytes": 1294
+    },
+    {
+      "id": "transfer",
+      "file": "clawpro-portable-design-skill/portable/css/transfer.css",
+      "selector_count": 21,
+      "root_selectors": [
+        ".cp-transfer"
+      ],
+      "bytes": 5124
+    },
+    {
+      "id": "tree-select",
+      "file": "clawpro-portable-design-skill/portable/css/tree-select.css",
+      "selector_count": 35,
+      "root_selectors": [
+        ".cp-tree-select"
+      ],
+      "bytes": 7018
+    },
+    {
+      "id": "tree",
+      "file": "clawpro-portable-design-skill/portable/css/tree.css",
+      "selector_count": 11,
+      "root_selectors": [
+        ".cp-tree"
+      ],
+      "bytes": 1996
+    }
+  ],
+  "classOwners": {
+    "cp-admin-sidebar-collapsed-subgroup-active": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-subitem-button": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-logo-box": [
+      "admin-sidebar-style"
+    ],
+    "cp-scrollbar-on-hover": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--basic-info": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--platform-policy": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--user-management": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--model-config": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--channel-config": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--skill-config": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--agent-tool-library": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--agent-startup-config": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--agent-list": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--tokens-monitor": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--ops-observation": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--ai-agent-security": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--session-management": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--audit-log": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--clawpro-logo": [
+      "admin-sidebar-style"
+    ],
+    "cp-admin-sidebar-icon--group-collapse-arrow": [
+      "admin-sidebar-style"
+    ],
+    "cp-alert": [
+      "alert"
+    ],
+    "cp-alert__icon": [
+      "alert"
+    ],
+    "cp-alert__title": [
+      "alert"
+    ],
+    "cp-alert__description": [
+      "alert"
+    ],
+    "cp-alert--with-action": [
+      "alert"
+    ],
+    "cp-alert__action": [
+      "alert"
+    ],
+    "cp-alert--info": [
+      "alert"
+    ],
+    "cp-alert--operation-info": [
+      "alert"
+    ],
+    "cp-alert--warning": [
+      "alert"
+    ],
+    "cp-alert--product-news": [
+      "alert"
+    ],
+    "cp-alert--success": [
+      "alert"
+    ],
+    "cp-alert--error": [
+      "alert"
+    ],
+    "cp-notice-stage": [
+      "alert"
+    ],
+    "cp-notice-stack": [
+      "alert"
+    ],
+    "cp-notice": [
+      "alert"
+    ],
+    "cp-notice__tag": [
+      "alert"
+    ],
+    "cp-notice__tag-icon": [
+      "alert"
+    ],
+    "cp-notice__content": [
+      "alert"
+    ],
+    "cp-notice__controls": [
+      "alert"
+    ],
+    "cp-notice--product-news": [
+      "alert"
+    ],
+    "cp-notice--pending-config": [
+      "alert"
+    ],
+    "cp-notice--resource-alert": [
+      "alert"
+    ],
+    "cp-avatar": [
+      "avatar"
+    ],
+    "cp-avatar__img": [
+      "avatar"
+    ],
+    "cp-avatar__fallback": [
+      "avatar"
+    ],
+    "cp-avatar--sm": [
+      "avatar"
+    ],
+    "cp-avatar--md": [
+      "avatar"
+    ],
+    "cp-avatar--lg": [
+      "avatar"
+    ],
+    "cp-avatar--xl": [
+      "avatar"
+    ],
+    "cp-avatar-group": [
+      "avatar"
+    ],
+    "cp-avatar-group__more": [
+      "avatar"
+    ],
+    "cp-badge": [
+      "badge"
+    ],
+    "cp-badge--default": [
+      "badge"
+    ],
+    "cp-badge--secondary": [
+      "badge"
+    ],
+    "cp-badge--outline": [
+      "badge"
+    ],
+    "cp-badge--destructive": [
+      "badge"
+    ],
+    "cp-badge--color-blue": [
+      "badge"
+    ],
+    "cp-badge--color-green": [
+      "badge"
+    ],
+    "cp-badge--color-purple": [
+      "badge"
+    ],
+    "cp-badge--color-red": [
+      "badge"
+    ],
+    "cp-batch-bar": [
+      "batch-actions-bar"
+    ],
+    "cp-batch-bar--all": [
+      "batch-actions-bar"
+    ],
+    "cp-batch-summary": [
+      "batch-actions-bar"
+    ],
+    "cp-batch-summary__link": [
+      "batch-actions-bar"
+    ],
+    "cp-batch-actions": [
+      "batch-actions-bar"
+    ],
+    "cp-batch-action": [
+      "batch-actions-bar"
+    ],
+    "cp-batch-action--danger": [
+      "batch-actions-bar"
+    ],
+    "cp-batch-action--clear": [
+      "batch-actions-bar"
+    ],
+    "cp-breadcrumb": [
+      "breadcrumb"
+    ],
+    "cp-breadcrumb__link": [
+      "breadcrumb"
+    ],
+    "cp-breadcrumb__page": [
+      "breadcrumb"
+    ],
+    "cp-breadcrumb__sep": [
+      "breadcrumb"
+    ],
+    "cp-breadcrumb__ellipsis": [
+      "breadcrumb"
+    ],
+    "cp-btn": [
+      "button"
+    ],
+    "cp-btn--sm": [
+      "button"
+    ],
+    "cp-btn--md": [
+      "button"
+    ],
+    "cp-btn--lg": [
+      "button"
+    ],
+    "cp-btn--claw-primary": [
+      "button"
+    ],
+    "cp-btn--claw-outline": [
+      "button"
+    ],
+    "cp-btn--destructive": [
+      "button"
+    ],
+    "cp-btn--outline-destructive": [
+      "button"
+    ],
+    "cp-btn--link": [
+      "button"
+    ],
+    "cp-btn--dialog-confirm": [
+      "button"
+    ],
+    "cp-surface--pad-none": [
+      "card"
+    ],
+    "cp-surface--pad-sm": [
+      "card"
+    ],
+    "cp-surface--pad-md": [
+      "card"
+    ],
+    "cp-surface--pad-lg": [
+      "card"
+    ],
+    "cp-surface-card": [
+      "card"
+    ],
+    "cp-surface-inner": [
+      "card"
+    ],
+    "cp-surface-config": [
+      "card"
+    ],
+    "cp-tenant-card": [
+      "card"
+    ],
+    "cp-chart-card": [
+      "chart-stat"
+    ],
+    "cp-chart-card__header": [
+      "chart-stat"
+    ],
+    "cp-chart-card__heading": [
+      "chart-stat"
+    ],
+    "cp-chart-card__title": [
+      "chart-stat"
+    ],
+    "cp-chart-card__subtitle": [
+      "chart-stat"
+    ],
+    "cp-chart-card__actions": [
+      "chart-stat"
+    ],
+    "cp-chart-card__chart": [
+      "chart-stat"
+    ],
+    "cp-chart-legend": [
+      "chart-stat"
+    ],
+    "cp-chart-legend__item": [
+      "chart-stat"
+    ],
+    "cp-chart-legend__item--muted": [
+      "chart-stat"
+    ],
+    "cp-chart-legend__swatch": [
+      "chart-stat"
+    ],
+    "cp-chart-legend__value": [
+      "chart-stat"
+    ],
+    "cp-chart-card__explanation": [
+      "chart-stat"
+    ],
+    "cp-chart-tooltip": [
+      "chart-stat"
+    ],
+    "cp-chart-tooltip__label": [
+      "chart-stat"
+    ],
+    "cp-chart-tooltip__row": [
+      "chart-stat"
+    ],
+    "cp-chart-tooltip__series": [
+      "chart-stat"
+    ],
+    "cp-chart-tooltip__dot": [
+      "chart-stat"
+    ],
+    "cp-chart-tooltip__num": [
+      "chart-stat"
+    ],
+    "cp-chart-state": [
+      "chart-stat"
+    ],
+    "cp-chart-state__title": [
+      "chart-stat"
+    ],
+    "cp-chart-state__desc": [
+      "chart-stat"
+    ],
+    "cp-chart-state__action": [
+      "chart-stat"
+    ],
+    "cp-chart-delta": [
+      "chart-stat"
+    ],
+    "cp-chart-delta--up": [
+      "chart-stat"
+    ],
+    "cp-chart-delta--down": [
+      "chart-stat"
+    ],
+    "cp-chart-delta--flat": [
+      "chart-stat"
+    ],
+    "cp-darkveil-hero": [
+      "dark-veil"
+    ],
+    "cp-darkveil-hero__bg": [
+      "dark-veil"
+    ],
+    "cp-darkveil-hero__content": [
+      "dark-veil"
+    ],
+    "cp-date-picker": [
+      "date-picker"
+    ],
+    "cp-date-picker__trigger": [
+      "date-picker"
+    ],
+    "cp-date-picker__trigger--tenant": [
+      "date-picker"
+    ],
+    "cp-date-picker__trigger--open": [
+      "date-picker"
+    ],
+    "cp-date-picker__value": [
+      "date-picker"
+    ],
+    "cp-date-picker__value--placeholder": [
+      "date-picker"
+    ],
+    "cp-date-picker__suffix": [
+      "date-picker"
+    ],
+    "cp-date-picker__panel": [
+      "date-picker"
+    ],
+    "cp-date-picker__header": [
+      "date-picker"
+    ],
+    "cp-date-picker__nav": [
+      "date-picker"
+    ],
+    "cp-date-picker__grid": [
+      "date-picker"
+    ],
+    "cp-date-picker__day": [
+      "date-picker"
+    ],
+    "cp-date-picker__day--active": [
+      "date-picker"
+    ],
+    "cp-dialog-overlay": [
+      "dialog-drawer"
+    ],
+    "cp-dialog-positioner": [
+      "dialog-drawer"
+    ],
+    "cp-dialog": [
+      "dialog-drawer"
+    ],
+    "cp-dialog__header": [
+      "dialog-drawer"
+    ],
+    "cp-dialog__title": [
+      "dialog-drawer"
+    ],
+    "cp-dialog__title--danger": [
+      "dialog-drawer"
+    ],
+    "cp-dialog__desc": [
+      "dialog-drawer"
+    ],
+    "cp-dialog__body": [
+      "dialog-drawer"
+    ],
+    "cp-drawer": [
+      "dialog-drawer"
+    ],
+    "cp-drawer__header": [
+      "dialog-drawer"
+    ],
+    "cp-drawer__body": [
+      "dialog-drawer"
+    ],
+    "cp-dialog-footer": [
+      "dialog-drawer"
+    ],
+    "cp-empty": [
+      "empty-state"
+    ],
+    "cp-empty--bordered": [
+      "empty-state"
+    ],
+    "cp-empty__media": [
+      "empty-state"
+    ],
+    "cp-empty__body": [
+      "empty-state"
+    ],
+    "cp-empty__title": [
+      "empty-state"
+    ],
+    "cp-empty__desc": [
+      "empty-state"
+    ],
+    "cp-empty__action": [
+      "empty-state"
+    ],
+    "cp-table-empty": [
+      "empty-state",
+      "table"
+    ],
+    "cp-table-empty__text": [
+      "empty-state"
+    ],
+    "cp-field": [
+      "form-controls",
+      "input"
+    ],
+    "cp-label": [
+      "form-controls"
+    ],
+    "cp-label__required": [
+      "form-controls"
+    ],
+    "cp-field-group": [
+      "form-controls"
+    ],
+    "cp-field-row": [
+      "form-controls"
+    ],
+    "cp-helper-text": [
+      "form-controls"
+    ],
+    "cp-field-error": [
+      "form-controls"
+    ],
+    "cp-input": [
+      "input"
+    ],
+    "cp-input-search__icon": [
+      "input"
+    ],
+    "cp-input-search": [
+      "input"
+    ],
+    "cp-select": [
+      "input"
+    ],
+    "cp-select__trigger": [
+      "input"
+    ],
+    "cp-select__value": [
+      "input"
+    ],
+    "cp-select__chevron": [
+      "input"
+    ],
+    "cp-select__panel": [
+      "input"
+    ],
+    "cp-select__empty": [
+      "input"
+    ],
+    "cp-select__item": [
+      "input"
+    ],
+    "cp-select__item--selected": [
+      "input"
+    ],
+    "cp-select__check": [
+      "input"
+    ],
+    "cp-field__label": [
+      "input"
+    ],
+    "cp-field__required": [
+      "input"
+    ],
+    "cp-field__helper": [
+      "input"
+    ],
+    "cp-field__helper--danger": [
+      "input"
+    ],
+    "cp-searchable-select": [
+      "input"
+    ],
+    "cp-searchable-select__trigger": [
+      "input"
+    ],
+    "cp-searchable-select__trigger--disabled": [
+      "input"
+    ],
+    "cp-searchable-select__trigger--open": [
+      "input"
+    ],
+    "cp-searchable-select__chevron": [
+      "input"
+    ],
+    "cp-searchable-select__clear": [
+      "input"
+    ],
+    "cp-searchable-select__panel": [
+      "input"
+    ],
+    "cp-searchable-select__search": [
+      "input"
+    ],
+    "cp-searchable-select__search-input": [
+      "input"
+    ],
+    "cp-searchable-select__list": [
+      "input"
+    ],
+    "cp-searchable-select__option": [
+      "input"
+    ],
+    "cp-searchable-select__option--selected": [
+      "input"
+    ],
+    "cp-searchable-select__check": [
+      "input"
+    ],
+    "cp-searchable-select__empty": [
+      "input"
+    ],
+    "cp-searchable-select__count": [
+      "input"
+    ],
+    "cp-spinner": [
+      "loading-progress"
+    ],
+    "cp-spinner--sm": [
+      "loading-progress"
+    ],
+    "cp-spinner--md": [
+      "loading-progress"
+    ],
+    "cp-spinner--muted": [
+      "loading-progress"
+    ],
+    "cp-skeleton": [
+      "loading-progress"
+    ],
+    "cp-progress": [
+      "loading-progress"
+    ],
+    "cp-progress__bar": [
+      "loading-progress"
+    ],
+    "cp-table-skeleton": [
+      "loading-progress"
+    ],
+    "cp-table-skeleton__row": [
+      "loading-progress"
+    ],
+    "cp-table-skeleton__cell": [
+      "loading-progress"
+    ],
+    "cp-table-skeleton__cell--a": [
+      "loading-progress"
+    ],
+    "cp-table-skeleton__cell--b": [
+      "loading-progress"
+    ],
+    "cp-table-skeleton__cell--c": [
+      "loading-progress"
+    ],
+    "cp-number-card": [
+      "number-card"
+    ],
+    "cp-number-card__header": [
+      "number-card"
+    ],
+    "cp-number-card__icon": [
+      "number-card"
+    ],
+    "cp-number-card__label": [
+      "number-card"
+    ],
+    "cp-number-card__value-row": [
+      "number-card"
+    ],
+    "cp-number-card__footer": [
+      "number-card"
+    ],
+    "cp-stat-number": [
+      "number-card"
+    ],
+    "cp-stat-number--shrink": [
+      "number-card"
+    ],
+    "cp-page-header": [
+      "page-header"
+    ],
+    "cp-page-header--loose": [
+      "page-header"
+    ],
+    "cp-page-header__content": [
+      "page-header"
+    ],
+    "cp-page-header--has-actions": [
+      "page-header"
+    ],
+    "cp-page-header__title-row": [
+      "page-header"
+    ],
+    "cp-page-header__title": [
+      "page-header"
+    ],
+    "cp-page-header__desc": [
+      "page-header"
+    ],
+    "cp-page-header__actions": [
+      "page-header"
+    ],
+    "cp-pagination": [
+      "pagination",
+      "table"
+    ],
+    "cp-pagination__total": [
+      "pagination"
+    ],
+    "cp-pagination__list": [
+      "pagination"
+    ],
+    "cp-pagination__btn": [
+      "pagination"
+    ],
+    "cp-pagination__btn--active": [
+      "pagination"
+    ],
+    "cp-pagination__btn--sm": [
+      "pagination"
+    ],
+    "cp-pagination__ellipsis": [
+      "pagination"
+    ],
+    "cp-pagination__ellipsis--sm": [
+      "pagination"
+    ],
+    "cp-pagination__simple": [
+      "pagination"
+    ],
+    "cp-pagination__simple--sm": [
+      "pagination"
+    ],
+    "cp-menu": [
+      "popover-menu"
+    ],
+    "cp-menu__trigger": [
+      "popover-menu"
+    ],
+    "cp-menu__panel": [
+      "popover-menu"
+    ],
+    "cp-menu__panel--end": [
+      "popover-menu"
+    ],
+    "cp-menu__panel--start": [
+      "popover-menu"
+    ],
+    "cp-menu__item": [
+      "popover-menu"
+    ],
+    "cp-menu__item--danger": [
+      "popover-menu"
+    ],
+    "cp-menu__item-icon": [
+      "popover-menu"
+    ],
+    "cp-menu__separator": [
+      "popover-menu"
+    ],
+    "cp-menu__empty": [
+      "popover-menu"
+    ],
+    "cp-popover": [
+      "popover-menu"
+    ],
+    "cp-popover__panel": [
+      "popover-menu"
+    ],
+    "cp-popover__panel--end": [
+      "popover-menu"
+    ],
+    "cp-search-filter-bar": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__left": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__search": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__search-icon": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__input": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__filter": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__refresh": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__actions": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__chips": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__chip": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__chip-remove": [
+      "search-filter-bar"
+    ],
+    "cp-search-filter-bar__clear-chips": [
+      "search-filter-bar"
+    ],
+    "cp-segment--admin": [
+      "segment"
+    ],
+    "cp-segment__item": [
+      "segment"
+    ],
+    "cp-segment__item--active": [
+      "segment"
+    ],
+    "cp-segment--tenant": [
+      "segment"
+    ],
+    "cp-segment": [
+      "segment"
+    ],
+    "cp-switch": [
+      "selection-controls"
+    ],
+    "cp-switch--disabled": [
+      "selection-controls"
+    ],
+    "cp-switch__input": [
+      "selection-controls"
+    ],
+    "cp-switch__track": [
+      "selection-controls"
+    ],
+    "cp-switch__track--on": [
+      "selection-controls"
+    ],
+    "cp-switch__thumb": [
+      "selection-controls"
+    ],
+    "cp-switch__thumb--on": [
+      "selection-controls"
+    ],
+    "cp-checkbox": [
+      "selection-controls"
+    ],
+    "cp-checkbox--disabled": [
+      "selection-controls"
+    ],
+    "cp-checkbox__input": [
+      "selection-controls"
+    ],
+    "cp-checkbox__box": [
+      "selection-controls"
+    ],
+    "cp-checkbox__box--checked": [
+      "selection-controls"
+    ],
+    "cp-checkbox__label": [
+      "selection-controls"
+    ],
+    "cp-radio": [
+      "selection-controls"
+    ],
+    "cp-radio--disabled": [
+      "selection-controls"
+    ],
+    "cp-radio__input": [
+      "selection-controls"
+    ],
+    "cp-radio__circle": [
+      "selection-controls"
+    ],
+    "cp-radio__circle--checked": [
+      "selection-controls"
+    ],
+    "cp-radio__dot": [
+      "selection-controls"
+    ],
+    "cp-radio__label": [
+      "selection-controls"
+    ],
+    "cp-radio-group": [
+      "selection-controls"
+    ],
+    "cp-radio-group--vertical": [
+      "selection-controls"
+    ],
+    "cp-radio-group--horizontal": [
+      "selection-controls"
+    ],
+    "cp-status-tag": [
+      "status-tag"
+    ],
+    "cp-status-tag__icon": [
+      "status-tag"
+    ],
+    "cp-status-tag--blue": [
+      "status-tag"
+    ],
+    "cp-status-tag--green": [
+      "status-tag"
+    ],
+    "cp-status-tag--red": [
+      "status-tag"
+    ],
+    "cp-status-tag--orange": [
+      "status-tag"
+    ],
+    "cp-status-tag--gray": [
+      "status-tag"
+    ],
+    "cp-table-shell": [
+      "table"
+    ],
+    "cp-table-shell--white": [
+      "table"
+    ],
+    "cp-table": [
+      "table"
+    ],
+    "cp-table-scroll": [
+      "table"
+    ],
+    "cp-table--compact": [
+      "table"
+    ],
+    "cp-col-right": [
+      "table"
+    ],
+    "cp-col-center": [
+      "table"
+    ],
+    "cp-num": [
+      "table"
+    ],
+    "cp-table-status": [
+      "table"
+    ],
+    "cp-table-status--info": [
+      "table"
+    ],
+    "cp-table-status--success": [
+      "table"
+    ],
+    "cp-table-status--danger": [
+      "table"
+    ],
+    "cp-table-status--warning": [
+      "table"
+    ],
+    "cp-table-status--muted": [
+      "table"
+    ],
+    "cp-table-actions": [
+      "table"
+    ],
+    "cp-table-action": [
+      "table"
+    ],
+    "cp-table-empty-row": [
+      "table"
+    ],
+    "cp-table-footer": [
+      "table"
+    ],
+    "cp-table-footer__total": [
+      "table"
+    ],
+    "cp-table-footer__pager": [
+      "table"
+    ],
+    "cp-pager": [
+      "table"
+    ],
+    "cp-tabs__list": [
+      "tabs"
+    ],
+    "cp-tabs__trigger": [
+      "tabs"
+    ],
+    "cp-tabs__trigger--active": [
+      "tabs"
+    ],
+    "cp-tabs__badge": [
+      "tabs"
+    ],
+    "cp-tabs__content": [
+      "tabs"
+    ],
+    "cp-tabs__content--hidden": [
+      "tabs"
+    ],
+    "cp-tooltip": [
+      "tooltip"
+    ],
+    "cp-tooltip__content": [
+      "tooltip"
+    ],
+    "cp-tooltip__content--top": [
+      "tooltip"
+    ],
+    "cp-tooltip__content--bottom": [
+      "tooltip"
+    ],
+    "cp-tooltip__content--left": [
+      "tooltip"
+    ],
+    "cp-tooltip__content--right": [
+      "tooltip"
+    ],
+    "cp-transfer": [
+      "transfer"
+    ],
+    "cp-transfer__panel": [
+      "transfer"
+    ],
+    "cp-transfer__header": [
+      "transfer"
+    ],
+    "cp-transfer__title": [
+      "transfer"
+    ],
+    "cp-transfer__count": [
+      "transfer"
+    ],
+    "cp-transfer__clear": [
+      "transfer"
+    ],
+    "cp-transfer__search": [
+      "transfer"
+    ],
+    "cp-transfer__search-icon": [
+      "transfer"
+    ],
+    "cp-transfer__search-input": [
+      "transfer"
+    ],
+    "cp-transfer__body": [
+      "transfer"
+    ],
+    "cp-transfer__row": [
+      "transfer"
+    ],
+    "cp-transfer__row--disabled": [
+      "transfer"
+    ],
+    "cp-transfer__checkbox": [
+      "transfer"
+    ],
+    "cp-transfer__cell": [
+      "transfer"
+    ],
+    "cp-transfer__remove": [
+      "transfer"
+    ],
+    "cp-transfer__empty": [
+      "transfer"
+    ],
+    "cp-transfer__footer": [
+      "transfer"
+    ],
+    "cp-transfer__pager": [
+      "transfer"
+    ],
+    "cp-transfer__pager-btn": [
+      "transfer"
+    ],
+    "cp-transfer__actions": [
+      "transfer"
+    ],
+    "cp-transfer__move-btn": [
+      "transfer"
+    ],
+    "cp-tree-select": [
+      "tree-select"
+    ],
+    "cp-tree-select__trigger-btn": [
+      "tree-select"
+    ],
+    "cp-tree-select__trigger-btn--open": [
+      "tree-select"
+    ],
+    "cp-tree-select__trigger-label": [
+      "tree-select"
+    ],
+    "cp-tree-select__chevron": [
+      "tree-select"
+    ],
+    "cp-tree-select__filter-trigger": [
+      "tree-select"
+    ],
+    "cp-tree-select__filter-icon": [
+      "tree-select"
+    ],
+    "cp-tree-select__filter-icon--active": [
+      "tree-select"
+    ],
+    "cp-tree-select__panel": [
+      "tree-select"
+    ],
+    "cp-tree-select__panel--start": [
+      "tree-select"
+    ],
+    "cp-tree-select__panel--end": [
+      "tree-select"
+    ],
+    "cp-tree-select__panel--center": [
+      "tree-select"
+    ],
+    "cp-tree-select__search": [
+      "tree-select"
+    ],
+    "cp-tree-select__search-box": [
+      "tree-select"
+    ],
+    "cp-tree-select__search-icon": [
+      "tree-select"
+    ],
+    "cp-tree-select__search-input": [
+      "tree-select"
+    ],
+    "cp-tree-select__list": [
+      "tree-select"
+    ],
+    "cp-tree-select__list--button": [
+      "tree-select"
+    ],
+    "cp-tree-select__list--filter": [
+      "tree-select"
+    ],
+    "cp-tree-select__section-label": [
+      "tree-select"
+    ],
+    "cp-tree-select__node": [
+      "tree-select"
+    ],
+    "cp-tree-select__children": [
+      "tree-select"
+    ],
+    "cp-tree-select__row": [
+      "tree-select"
+    ],
+    "cp-tree-select__row--selected": [
+      "tree-select"
+    ],
+    "cp-tree-select__arrow": [
+      "tree-select"
+    ],
+    "cp-tree-select__arrow--open": [
+      "tree-select"
+    ],
+    "cp-tree-select__arrow--placeholder": [
+      "tree-select"
+    ],
+    "cp-tree-select__label": [
+      "tree-select"
+    ],
+    "cp-tree-select__check": [
+      "tree-select"
+    ],
+    "cp-tree-select__footer": [
+      "tree-select"
+    ],
+    "cp-tree-select__footer-label": [
+      "tree-select"
+    ],
+    "cp-tree-select__footer-actions": [
+      "tree-select"
+    ],
+    "cp-tree-select__btn": [
+      "tree-select"
+    ],
+    "cp-tree-select__btn--cancel": [
+      "tree-select"
+    ],
+    "cp-tree-select__btn--confirm": [
+      "tree-select"
+    ],
+    "cp-tree": [
+      "tree"
+    ],
+    "cp-tree__row": [
+      "tree"
+    ],
+    "cp-tree__row--active": [
+      "tree"
+    ],
+    "cp-tree__row--disabled": [
+      "tree"
+    ],
+    "cp-tree__arrow": [
+      "tree"
+    ],
+    "cp-tree__arrow--open": [
+      "tree"
+    ],
+    "cp-tree__arrow--placeholder": [
+      "tree"
+    ],
+    "cp-tree__icon": [
+      "tree"
+    ],
+    "cp-tree__label": [
+      "tree"
+    ],
+    "cp-tree__count": [
+      "tree"
+    ],
+    "cp-tree__children": [
+      "tree"
+    ]
+  },
+  "cp_classes": [
+    "cp-admin-sidebar",
+    "cp-admin-sidebar-action-bg",
+    "cp-admin-sidebar-action-border",
+    "cp-admin-sidebar-avatar-bg",
+    "cp-admin-sidebar-avatar-fg",
+    "cp-admin-sidebar-bg",
+    "cp-admin-sidebar-border",
+    "cp-admin-sidebar-collapsed-subgroup-active",
+    "cp-admin-sidebar-fg",
+    "cp-admin-sidebar-footer-h",
+    "cp-admin-sidebar-header-h",
+    "cp-admin-sidebar-icon",
+    "cp-admin-sidebar-icon--agent-list",
+    "cp-admin-sidebar-icon--agent-startup-config",
+    "cp-admin-sidebar-icon--agent-tool-library",
+    "cp-admin-sidebar-icon--ai-agent-security",
+    "cp-admin-sidebar-icon--audit-log",
+    "cp-admin-sidebar-icon--basic-info",
+    "cp-admin-sidebar-icon--channel-config",
+    "cp-admin-sidebar-icon--clawpro-logo",
+    "cp-admin-sidebar-icon--group-collapse-arrow",
+    "cp-admin-sidebar-icon--model-config",
+    "cp-admin-sidebar-icon--ops-observation",
+    "cp-admin-sidebar-icon--platform-policy",
+    "cp-admin-sidebar-icon--session-management",
+    "cp-admin-sidebar-icon--skill-config",
+    "cp-admin-sidebar-icon--tokens-monitor",
+    "cp-admin-sidebar-icon--user-management",
+    "cp-admin-sidebar-item-h",
+    "cp-admin-sidebar-item-r",
+    "cp-admin-sidebar-logo-a",
+    "cp-admin-sidebar-logo-b",
+    "cp-admin-sidebar-logo-box",
+    "cp-admin-sidebar-logo-c",
+    "cp-admin-sidebar-muted",
+    "cp-admin-sidebar-subitem-button",
+    "cp-admin-sidebar-w",
+    "cp-admin-sidebar-w-collapsed",
+    "cp-alert",
+    "cp-alert--error",
+    "cp-alert--info",
+    "cp-alert--operation-info",
+    "cp-alert--product-news",
+    "cp-alert--success",
+    "cp-alert--warning",
+    "cp-alert--with-action",
+    "cp-alert__action",
+    "cp-alert__description",
+    "cp-alert__icon",
+    "cp-alert__title",
+    "cp-avatar",
+    "cp-avatar--lg",
+    "cp-avatar--md",
+    "cp-avatar--sm",
+    "cp-avatar--xl",
+    "cp-avatar-group",
+    "cp-avatar-group__more",
+    "cp-avatar__fallback",
+    "cp-avatar__img",
+    "cp-badge",
+    "cp-badge--color",
+    "cp-badge--color-blue",
+    "cp-badge--color-green",
+    "cp-badge--color-purple",
+    "cp-badge--color-red",
+    "cp-badge--default",
+    "cp-badge--destructive",
+    "cp-badge--outline",
+    "cp-badge--secondary",
+    "cp-batch-action",
+    "cp-batch-action--clear",
+    "cp-batch-action--danger",
+    "cp-batch-actions",
+    "cp-batch-bar",
+    "cp-batch-bar--all",
+    "cp-batch-summary",
+    "cp-batch-summary__link",
+    "cp-bg-subtle",
+    "cp-border",
+    "cp-border-control",
+    "cp-brand-blue",
+    "cp-breadcrumb",
+    "cp-breadcrumb__ellipsis",
+    "cp-breadcrumb__link",
+    "cp-breadcrumb__page",
+    "cp-breadcrumb__sep",
+    "cp-btn",
+    "cp-btn--claw-outline",
+    "cp-btn--claw-primary",
+    "cp-btn--destructive",
+    "cp-btn--dialog-confirm",
+    "cp-btn--lg",
+    "cp-btn--link",
+    "cp-btn--md",
+    "cp-btn--outline-destructive",
+    "cp-btn--sm",
+    "cp-chart",
+    "cp-chart-1",
+    "cp-chart-card",
+    "cp-chart-card__actions",
+    "cp-chart-card__chart",
+    "cp-chart-card__explanation",
+    "cp-chart-card__header",
+    "cp-chart-card__heading",
+    "cp-chart-card__subtitle",
+    "cp-chart-card__title",
+    "cp-chart-delta",
+    "cp-chart-delta--down",
+    "cp-chart-delta--flat",
+    "cp-chart-delta--up",
+    "cp-chart-legend",
+    "cp-chart-legend__item",
+    "cp-chart-legend__item--muted",
+    "cp-chart-legend__swatch",
+    "cp-chart-legend__value",
+    "cp-chart-state",
+    "cp-chart-state__action",
+    "cp-chart-state__desc",
+    "cp-chart-state__title",
+    "cp-chart-tooltip",
+    "cp-chart-tooltip__dot",
+    "cp-chart-tooltip__label",
+    "cp-chart-tooltip__num",
+    "cp-chart-tooltip__row",
+    "cp-chart-tooltip__series",
+    "cp-checkbox",
+    "cp-checkbox--disabled",
+    "cp-checkbox__box",
+    "cp-checkbox__box--checked",
+    "cp-checkbox__input",
+    "cp-checkbox__label",
+    "cp-col-center",
+    "cp-col-right",
+    "cp-control-accent",
+    "cp-darkveil-hero",
+    "cp-darkveil-hero__bg",
+    "cp-darkveil-hero__content",
+    "cp-date-picker",
+    "cp-date-picker__day",
+    "cp-date-picker__day--active",
+    "cp-date-picker__grid",
+    "cp-date-picker__header",
+    "cp-date-picker__nav",
+    "cp-date-picker__panel",
+    "cp-date-picker__suffix",
+    "cp-date-picker__trigger",
+    "cp-date-picker__trigger--open",
+    "cp-date-picker__trigger--tenant",
+    "cp-date-picker__value",
+    "cp-date-picker__value--placeholder",
+    "cp-dialog",
+    "cp-dialog-footer",
+    "cp-dialog-overlay",
+    "cp-dialog-positioner",
+    "cp-dialog__body",
+    "cp-dialog__desc",
+    "cp-dialog__header",
+    "cp-dialog__title",
+    "cp-dialog__title--danger",
+    "cp-drawer",
+    "cp-drawer__body",
+    "cp-drawer__header",
+    "cp-empty",
+    "cp-empty--bordered",
+    "cp-empty__action",
+    "cp-empty__body",
+    "cp-empty__desc",
+    "cp-empty__media",
+    "cp-empty__title",
+    "cp-field",
+    "cp-field-error",
+    "cp-field-group",
+    "cp-field-row",
+    "cp-field__helper",
+    "cp-field__helper--danger",
+    "cp-field__label",
+    "cp-field__required",
+    "cp-helper-text",
+    "cp-input",
+    "cp-input-search",
+    "cp-input-search__icon",
+    "cp-label",
+    "cp-label__required",
+    "cp-menu",
+    "cp-menu__empty",
+    "cp-menu__item",
+    "cp-menu__item--danger",
+    "cp-menu__item-icon",
+    "cp-menu__panel",
+    "cp-menu__panel--end",
+    "cp-menu__panel--start",
+    "cp-menu__separator",
+    "cp-menu__trigger",
+    "cp-notice",
+    "cp-notice--pending-config",
+    "cp-notice--product-news",
+    "cp-notice--resource-alert",
+    "cp-notice-stack",
+    "cp-notice-stage",
+    "cp-notice__content",
+    "cp-notice__controls",
+    "cp-notice__tag",
+    "cp-notice__tag-icon",
+    "cp-num",
+    "cp-number-card",
+    "cp-number-card__footer",
+    "cp-number-card__header",
+    "cp-number-card__icon",
+    "cp-number-card__label",
+    "cp-number-card__value-row",
+    "cp-page-header",
+    "cp-page-header--has-actions",
+    "cp-page-header--loose",
+    "cp-page-header__actions",
+    "cp-page-header__content",
+    "cp-page-header__desc",
+    "cp-page-header__title",
+    "cp-page-header__title-row",
+    "cp-pager",
+    "cp-pagination",
+    "cp-pagination__btn",
+    "cp-pagination__btn--active",
+    "cp-pagination__btn--sm",
+    "cp-pagination__ellipsis",
+    "cp-pagination__ellipsis--sm",
+    "cp-pagination__list",
+    "cp-pagination__simple",
+    "cp-pagination__simple--sm",
+    "cp-pagination__total",
+    "cp-popover",
+    "cp-popover__panel",
+    "cp-popover__panel--end",
+    "cp-progress",
+    "cp-progress__bar",
+    "cp-radio",
+    "cp-radio--disabled",
+    "cp-radio-group",
+    "cp-radio-group--horizontal",
+    "cp-radio-group--vertical",
+    "cp-radio__circle",
+    "cp-radio__circle--checked",
+    "cp-radio__dot",
+    "cp-radio__input",
+    "cp-radio__label",
+    "cp-scrollbar-on-hover",
+    "cp-search-filter-bar",
+    "cp-search-filter-bar__actions",
+    "cp-search-filter-bar__chip",
+    "cp-search-filter-bar__chip-remove",
+    "cp-search-filter-bar__chips",
+    "cp-search-filter-bar__clear-chips",
+    "cp-search-filter-bar__filter",
+    "cp-search-filter-bar__input",
+    "cp-search-filter-bar__left",
+    "cp-search-filter-bar__refresh",
+    "cp-search-filter-bar__search",
+    "cp-search-filter-bar__search-icon",
+    "cp-searchable-select",
+    "cp-searchable-select__actions",
+    "cp-searchable-select__check",
+    "cp-searchable-select__chevron",
+    "cp-searchable-select__clear",
+    "cp-searchable-select__count",
+    "cp-searchable-select__empty",
+    "cp-searchable-select__list",
+    "cp-searchable-select__option",
+    "cp-searchable-select__option--selected",
+    "cp-searchable-select__panel",
+    "cp-searchable-select__search",
+    "cp-searchable-select__search-input",
+    "cp-searchable-select__trigger",
+    "cp-searchable-select__trigger--disabled",
+    "cp-searchable-select__trigger--open",
+    "cp-segment",
+    "cp-segment--admin",
+    "cp-segment--tenant",
+    "cp-segment__item",
+    "cp-segment__item--active",
+    "cp-select",
+    "cp-select__check",
+    "cp-select__chevron",
+    "cp-select__empty",
+    "cp-select__item",
+    "cp-select__item--selected",
+    "cp-select__panel",
+    "cp-select__trigger",
+    "cp-select__value",
+    "cp-skeleton",
+    "cp-spin",
+    "cp-spinner",
+    "cp-spinner--md",
+    "cp-spinner--muted",
+    "cp-spinner--sm",
+    "cp-stat-number",
+    "cp-stat-number--shrink",
+    "cp-status-tag",
+    "cp-status-tag--blue",
+    "cp-status-tag--gray",
+    "cp-status-tag--green",
+    "cp-status-tag--orange",
+    "cp-status-tag--red",
+    "cp-status-tag__icon",
+    "cp-surface--pad-lg",
+    "cp-surface--pad-md",
+    "cp-surface--pad-none",
+    "cp-surface--pad-sm",
+    "cp-surface-card",
+    "cp-surface-config",
+    "cp-surface-inner",
+    "cp-switch",
+    "cp-switch--disabled",
+    "cp-switch__input",
+    "cp-switch__thumb",
+    "cp-switch__thumb--on",
+    "cp-switch__track",
+    "cp-switch__track--on",
+    "cp-table",
+    "cp-table--compact",
+    "cp-table-action",
+    "cp-table-actions",
+    "cp-table-empty",
+    "cp-table-empty-row",
+    "cp-table-empty__text",
+    "cp-table-footer",
+    "cp-table-footer__pager",
+    "cp-table-footer__total",
+    "cp-table-scroll",
+    "cp-table-shell",
+    "cp-table-shell--white",
+    "cp-table-skeleton",
+    "cp-table-skeleton__cell",
+    "cp-table-skeleton__cell--a",
+    "cp-table-skeleton__cell--b",
+    "cp-table-skeleton__cell--c",
+    "cp-table-skeleton__row",
+    "cp-table-status",
+    "cp-table-status--danger",
+    "cp-table-status--info",
+    "cp-table-status--muted",
+    "cp-table-status--success",
+    "cp-table-status--warning",
+    "cp-tabs__badge",
+    "cp-tabs__content",
+    "cp-tabs__content--hidden",
+    "cp-tabs__list",
+    "cp-tabs__trigger",
+    "cp-tabs__trigger--active",
+    "cp-tenant-card",
+    "cp-text-brand",
+    "cp-text-danger",
+    "cp-text-emphasis",
+    "cp-text-muted",
+    "cp-text-secondary",
+    "cp-text-title",
+    "cp-text-weak",
+    "cp-tooltip",
+    "cp-tooltip__content",
+    "cp-tooltip__content--bottom",
+    "cp-tooltip__content--left",
+    "cp-tooltip__content--right",
+    "cp-tooltip__content--top",
+    "cp-transfer",
+    "cp-transfer__actions",
+    "cp-transfer__body",
+    "cp-transfer__cell",
+    "cp-transfer__checkbox",
+    "cp-transfer__clear",
+    "cp-transfer__count",
+    "cp-transfer__empty",
+    "cp-transfer__footer",
+    "cp-transfer__header",
+    "cp-transfer__move-btn",
+    "cp-transfer__pager",
+    "cp-transfer__pager-btn",
+    "cp-transfer__panel",
+    "cp-transfer__remove",
+    "cp-transfer__row",
+    "cp-transfer__row--disabled",
+    "cp-transfer__search",
+    "cp-transfer__search-icon",
+    "cp-transfer__search-input",
+    "cp-transfer__title",
+    "cp-tree",
+    "cp-tree-select",
+    "cp-tree-select__arrow",
+    "cp-tree-select__arrow--open",
+    "cp-tree-select__arrow--placeholder",
+    "cp-tree-select__btn",
+    "cp-tree-select__btn--cancel",
+    "cp-tree-select__btn--confirm",
+    "cp-tree-select__check",
+    "cp-tree-select__chevron",
+    "cp-tree-select__children",
+    "cp-tree-select__filter-icon",
+    "cp-tree-select__filter-icon--active",
+    "cp-tree-select__filter-trigger",
+    "cp-tree-select__footer",
+    "cp-tree-select__footer-actions",
+    "cp-tree-select__footer-label",
+    "cp-tree-select__label",
+    "cp-tree-select__list",
+    "cp-tree-select__list--button",
+    "cp-tree-select__list--filter",
+    "cp-tree-select__node",
+    "cp-tree-select__panel",
+    "cp-tree-select__panel--center",
+    "cp-tree-select__panel--end",
+    "cp-tree-select__panel--start",
+    "cp-tree-select__row",
+    "cp-tree-select__row--selected",
+    "cp-tree-select__search",
+    "cp-tree-select__search-box",
+    "cp-tree-select__search-icon",
+    "cp-tree-select__search-input",
+    "cp-tree-select__section-label",
+    "cp-tree-select__trigger-btn",
+    "cp-tree-select__trigger-btn--open",
+    "cp-tree-select__trigger-label",
+    "cp-tree__arrow",
+    "cp-tree__arrow--open",
+    "cp-tree__arrow--placeholder",
+    "cp-tree__children",
+    "cp-tree__count",
+    "cp-tree__icon",
+    "cp-tree__label",
+    "cp-tree__node",
+    "cp-tree__row",
+    "cp-tree__row--active",
+    "cp-tree__row--disabled"
+  ]
+}

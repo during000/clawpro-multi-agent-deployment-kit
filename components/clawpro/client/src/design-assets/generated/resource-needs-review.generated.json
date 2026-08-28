@@ -1,0 +1,2551 @@
+{
+  "$schema": "clawpro-resource-needs-review",
+  "stage": 3,
+  "generatedAt": "2026-07-20T04:06:04.341Z",
+  "note": "未分类 / 待确认清单：扫描+规则无法确定性判断的资源，集中交设计团队确认。不删除、不替换、不进入 skill-map 候选（canUseInSkillMap=false）。",
+  "summary": {
+    "total": 169,
+    "byPrimaryCategory": {
+      "inline-svg": 163,
+      "own-svg": 4,
+      "business-image": 2
+    }
+  },
+  "items": [
+    {
+      "id": "public__onboarding-demo__b1871f56",
+      "displayName": "onboarding-demo",
+      "type": "png",
+      "source": "public",
+      "scanScope": "include",
+      "sourcePath": "client/public/assets/onboarding-demo.png",
+      "definedIn": null,
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "business-image",
+      "reasons": [
+        "栅格业务图标 PNG：待确认是否纳入 / 是否已被同名 SVG 取代"
+      ]
+    },
+    {
+      "id": "public____c230ffbd",
+      "displayName": "用户端浮窗示例图",
+      "type": "png",
+      "source": "public",
+      "scanScope": "include",
+      "sourcePath": "client/public/assets/用户端浮窗示例图.png",
+      "definedIn": null,
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "business-image",
+      "reasons": [
+        "栅格业务图标 PNG：待确认是否纳入 / 是否已被同名 SVG 取代"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-admin-admindoctorchatdialog-tsx__1",
+      "displayName": "AdminDoctorChatDialog.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/admin/AdminDoctorChatDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-admin-admindoctorchatdialog-tsx__2",
+      "displayName": "AdminDoctorChatDialog.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/admin/AdminDoctorChatDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-admin-admindoctorchatdialog-tsx__3",
+      "displayName": "AdminDoctorChatDialog.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/admin/AdminDoctorChatDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-admin-admindoctorchatdialog-tsx__4",
+      "displayName": "AdminDoctorChatDialog.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/admin/AdminDoctorChatDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-admin-admindoctorchatdialog-tsx__5",
+      "displayName": "AdminDoctorChatDialog.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/admin/AdminDoctorChatDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-adminlayout-tsx__1",
+      "displayName": "AdminLayout.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/AdminLayout.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-adminlayout-tsx__2",
+      "displayName": "AdminLayout.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/AdminLayout.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-adminnoticebar-tsx__1",
+      "displayName": "AdminNoticeBar.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/AdminNoticeBar.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-adminnoticebar-tsx__2",
+      "displayName": "AdminNoticeBar.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/AdminNoticeBar.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-agentcard-tsx__1",
+      "displayName": "AgentCard.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/AgentCard.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-agentcard-tsx__2",
+      "displayName": "AgentCard.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/AgentCard.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-agentcard-tsx__3",
+      "displayName": "AgentCard.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/AgentCard.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-agentcard-tsx__4",
+      "displayName": "AgentCard.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/AgentCard.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-statusbadge-tsx__1",
+      "displayName": "StatusBadge.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/StatusBadge.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-statusbadge-tsx__2",
+      "displayName": "StatusBadge.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/StatusBadge.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-statusbadge-tsx__3",
+      "displayName": "StatusBadge.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/StatusBadge.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-statusbadge-tsx__4",
+      "displayName": "StatusBadge.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/StatusBadge.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-statusbadge-tsx__5",
+      "displayName": "StatusBadge.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/StatusBadge.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-statusbadge-tsx__6",
+      "displayName": "StatusBadge.tsx inline-svg #6",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/StatusBadge.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-statusbadge-tsx__7",
+      "displayName": "StatusBadge.tsx inline-svg #7",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/StatusBadge.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-agent-statusbadge-tsx__8",
+      "displayName": "StatusBadge.tsx inline-svg #8",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/agent/StatusBadge.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-memorypreview-tsx__1",
+      "displayName": "MemoryPreview.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/MemoryPreview.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-memorypreview-tsx__2",
+      "displayName": "MemoryPreview.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/MemoryPreview.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-memorypreview-tsx__3",
+      "displayName": "MemoryPreview.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/MemoryPreview.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-memorypreview-tsx__4",
+      "displayName": "MemoryPreview.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/MemoryPreview.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guideadminnotify-tsx__1",
+      "displayName": "GuideAdminNotify.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuideAdminNotify.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guideglobalmodal-tsx__1",
+      "displayName": "GuideGlobalModal.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuideGlobalModal.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guideglobalmodal-tsx__2",
+      "displayName": "GuideGlobalModal.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuideGlobalModal.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guideglobalmodal-tsx__3",
+      "displayName": "GuideGlobalModal.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuideGlobalModal.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guidemodulefloat-tsx__1",
+      "displayName": "GuideModuleFloat.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuideModuleFloat.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guidenavbubble-tsx__1",
+      "displayName": "GuideNavBubble.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuideNavBubble.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guidepointbubble-tsx__1",
+      "displayName": "GuidePointBubble.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuidePointBubble.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guidepointbubble-tsx__2",
+      "displayName": "GuidePointBubble.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuidePointBubble.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guidepointbubble-tsx__3",
+      "displayName": "GuidePointBubble.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuidePointBubble.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guidepointbubble-tsx__4",
+      "displayName": "GuidePointBubble.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuidePointBubble.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-onboarding-guidepointbubble-tsx__5",
+      "displayName": "GuidePointBubble.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/onboarding/GuidePointBubble.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__1",
+      "displayName": "SsoLoginDialog.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__10",
+      "displayName": "SsoLoginDialog.tsx inline-svg #10",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__11",
+      "displayName": "SsoLoginDialog.tsx inline-svg #11",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__12",
+      "displayName": "SsoLoginDialog.tsx inline-svg #12",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__13",
+      "displayName": "SsoLoginDialog.tsx inline-svg #13",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__14",
+      "displayName": "SsoLoginDialog.tsx inline-svg #14",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__15",
+      "displayName": "SsoLoginDialog.tsx inline-svg #15",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__16",
+      "displayName": "SsoLoginDialog.tsx inline-svg #16",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__2",
+      "displayName": "SsoLoginDialog.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__3",
+      "displayName": "SsoLoginDialog.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__4",
+      "displayName": "SsoLoginDialog.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__5",
+      "displayName": "SsoLoginDialog.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__6",
+      "displayName": "SsoLoginDialog.tsx inline-svg #6",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__7",
+      "displayName": "SsoLoginDialog.tsx inline-svg #7",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__8",
+      "displayName": "SsoLoginDialog.tsx inline-svg #8",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ssologindialog-tsx__9",
+      "displayName": "SsoLoginDialog.tsx inline-svg #9",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/SsoLoginDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-topnav-navicons-tsx__1",
+      "displayName": "NavIcons.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/topnav/NavIcons.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-topnav-navicons-tsx__2",
+      "displayName": "NavIcons.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/topnav/NavIcons.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-topnav-navicons-tsx__3",
+      "displayName": "NavIcons.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/topnav/NavIcons.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-topnav-navicons-tsx__4",
+      "displayName": "NavIcons.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/topnav/NavIcons.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-admin-notice-alert-tsx__1",
+      "displayName": "admin-notice-alert.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/admin-notice-alert.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-admin-notice-alert-tsx__2",
+      "displayName": "admin-notice-alert.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/admin-notice-alert.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-admin-sidebar-tsx__1",
+      "displayName": "admin-sidebar.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/admin-sidebar.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-admin-sidebar-tsx__2",
+      "displayName": "admin-sidebar.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/admin-sidebar.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-admin-sidebar-tsx__3",
+      "displayName": "admin-sidebar.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/admin-sidebar.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-alert-tsx__1",
+      "displayName": "alert.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/alert.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-date-picker-tsx__1",
+      "displayName": "date-picker.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/date-picker.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-date-time-picker-tsx__1",
+      "displayName": "date-time-picker.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/date-time-picker.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-number-card-tsx__1",
+      "displayName": "number-card.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/number-card.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-radio-card-tsx__1",
+      "displayName": "radio-card.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/radio-card.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-status-tag-tsx__1",
+      "displayName": "status-tag.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/status-tag.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-status-tag-tsx__2",
+      "displayName": "status-tag.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/status-tag.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-toast-tsx__1",
+      "displayName": "toast.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/toast.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-toast-tsx__2",
+      "displayName": "toast.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/toast.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-toast-tsx__3",
+      "displayName": "toast.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/toast.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-toast-tsx__4",
+      "displayName": "toast.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/toast.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-components-ui-toast-tsx__5",
+      "displayName": "toast.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/components/ui/toast.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-channelconfig-tsx__1",
+      "displayName": "ChannelConfig.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/ChannelConfig.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-filemanagement-tsx__1",
+      "displayName": "FileManagement.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/FileManagement.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-filemanagement-tsx__2",
+      "displayName": "FileManagement.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/FileManagement.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-filemanagement-tsx__3",
+      "displayName": "FileManagement.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/FileManagement.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-membermanagement-nodecontentpanel-tsx__1",
+      "displayName": "NodeContentPanel.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/MemberManagement/NodeContentPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-memorymanagement-components-radarwidget-tsx__1",
+      "displayName": "RadarWidget.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/MemoryManagement/components/RadarWidget.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-memorymanagement-components-radarwidget-tsx__2",
+      "displayName": "RadarWidget.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/MemoryManagement/components/RadarWidget.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-openclawmonitor-tsx__1",
+      "displayName": "OpenClawMonitor.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/OpenClawMonitor.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-opsobservation-tsx__1",
+      "displayName": "OpsObservation.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/OpsObservation.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-opsobservation-tsx__2",
+      "displayName": "OpsObservation.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/OpsObservation.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-opsobservation-tsx__3",
+      "displayName": "OpsObservation.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/OpsObservation.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-security-aiagent-overview-tsx__1",
+      "displayName": "Overview.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/Security/AIAgent/Overview.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-security-aiagent-overview-tsx__2",
+      "displayName": "Overview.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/Security/AIAgent/Overview.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-security-aiagent-overview-tsx__3",
+      "displayName": "Overview.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/Security/AIAgent/Overview.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-sessionmanagement-tsx__1",
+      "displayName": "SessionManagement.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/SessionManagement.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-sessionmanagement-tsx__2",
+      "displayName": "SessionManagement.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/SessionManagement.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-sessionmanagement-tsx__3",
+      "displayName": "SessionManagement.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/SessionManagement.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-sessionmanagement-tsx__4",
+      "displayName": "SessionManagement.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/SessionManagement.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-skillconfig-tsx__1",
+      "displayName": "SkillConfig.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/SkillConfig.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-skilllibrary-distributedialog-tsx__1",
+      "displayName": "DistributeDialog.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/SkillLibrary/DistributeDialog.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-admin-skilllibrary-publicskillpackagetab-tsx__1",
+      "displayName": "PublicSkillPackageTab.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/admin/SkillLibrary/PublicSkillPackageTab.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-designsystemcomponents-tsx__1",
+      "displayName": "DesignSystemComponents.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/DesignSystemComponents.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-designsystemcomponents-tsx__2",
+      "displayName": "DesignSystemComponents.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/DesignSystemComponents.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-preview-emptystatepreview-tsx__1",
+      "displayName": "EmptyStatePreview.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/preview/EmptyStatePreview.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-preview-emptystatespecverify-tsx__1",
+      "displayName": "EmptyStateSpecVerify.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/preview/EmptyStateSpecVerify.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-preview-skillmapabdemo-tsx__1",
+      "displayName": "SkillMapAbDemo.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/preview/SkillMapAbDemo.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-agentchat-tsx__1",
+      "displayName": "AgentChat.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/AgentChat.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-agentchat-tsx__2",
+      "displayName": "AgentChat.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/AgentChat.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-agentchat-tsx__3",
+      "displayName": "AgentChat.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/AgentChat.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-agentchat-tsx__4",
+      "displayName": "AgentChat.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/AgentChat.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__1",
+      "displayName": "FileSpace.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__10",
+      "displayName": "FileSpace.tsx inline-svg #10",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__11",
+      "displayName": "FileSpace.tsx inline-svg #11",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__12",
+      "displayName": "FileSpace.tsx inline-svg #12",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__13",
+      "displayName": "FileSpace.tsx inline-svg #13",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__14",
+      "displayName": "FileSpace.tsx inline-svg #14",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__15",
+      "displayName": "FileSpace.tsx inline-svg #15",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__16",
+      "displayName": "FileSpace.tsx inline-svg #16",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__17",
+      "displayName": "FileSpace.tsx inline-svg #17",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__18",
+      "displayName": "FileSpace.tsx inline-svg #18",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__19",
+      "displayName": "FileSpace.tsx inline-svg #19",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__2",
+      "displayName": "FileSpace.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__20",
+      "displayName": "FileSpace.tsx inline-svg #20",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__3",
+      "displayName": "FileSpace.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__4",
+      "displayName": "FileSpace.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__5",
+      "displayName": "FileSpace.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__6",
+      "displayName": "FileSpace.tsx inline-svg #6",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__7",
+      "displayName": "FileSpace.tsx inline-svg #7",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__8",
+      "displayName": "FileSpace.tsx inline-svg #8",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-filespace-tsx__9",
+      "displayName": "FileSpace.tsx inline-svg #9",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/FileSpace.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-modelquota-tsx__1",
+      "displayName": "ModelQuota.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ModelQuota.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-modelquota-tsx__2",
+      "displayName": "ModelQuota.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ModelQuota.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-modelquota-tsx__3",
+      "displayName": "ModelQuota.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ModelQuota.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-modelquota-tsx__4",
+      "displayName": "ModelQuota.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ModelQuota.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-modelquota-tsx__5",
+      "displayName": "ModelQuota.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ModelQuota.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__1",
+      "displayName": "OpenClawDetail.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__10",
+      "displayName": "OpenClawDetail.tsx inline-svg #10",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__11",
+      "displayName": "OpenClawDetail.tsx inline-svg #11",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__12",
+      "displayName": "OpenClawDetail.tsx inline-svg #12",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__13",
+      "displayName": "OpenClawDetail.tsx inline-svg #13",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__2",
+      "displayName": "OpenClawDetail.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__3",
+      "displayName": "OpenClawDetail.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__4",
+      "displayName": "OpenClawDetail.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__5",
+      "displayName": "OpenClawDetail.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__6",
+      "displayName": "OpenClawDetail.tsx inline-svg #6",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__7",
+      "displayName": "OpenClawDetail.tsx inline-svg #7",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__8",
+      "displayName": "OpenClawDetail.tsx inline-svg #8",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetail-tsx__9",
+      "displayName": "OpenClawDetail.tsx inline-svg #9",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetail.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetailguide-tsx__1",
+      "displayName": "OpenClawDetailGuide.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetailGuide.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetailguide-tsx__2",
+      "displayName": "OpenClawDetailGuide.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetailGuide.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetailguide-tsx__3",
+      "displayName": "OpenClawDetailGuide.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetailGuide.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetailguide-tsx__4",
+      "displayName": "OpenClawDetailGuide.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetailGuide.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetailguide-tsx__5",
+      "displayName": "OpenClawDetailGuide.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetailGuide.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetailguide-tsx__6",
+      "displayName": "OpenClawDetailGuide.tsx inline-svg #6",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetailGuide.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-openclawdetailguide-tsx__7",
+      "displayName": "OpenClawDetailGuide.tsx inline-svg #7",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/OpenClawDetailGuide.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-skillsquare-tsx__1",
+      "displayName": "SkillSquare.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/SkillSquare.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-skillsquare-tsx__2",
+      "displayName": "SkillSquare.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/SkillSquare.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-skillsquare-tsx__3",
+      "displayName": "SkillSquare.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/SkillSquare.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-skillsquare-tsx__4",
+      "displayName": "SkillSquare.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/SkillSquare.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-skillsquare-tsx__5",
+      "displayName": "SkillSquare.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/SkillSquare.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-skillsquare-tsx__6",
+      "displayName": "SkillSquare.tsx inline-svg #6",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/SkillSquare.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__1",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #1",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__2",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #2",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__3",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #3",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__4",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #4",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__5",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #5",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__6",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #6",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__7",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #7",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__8",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #8",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "inline-svg__client-src-pages-tenant-toolsmcppanel-tsx__9",
+      "displayName": "ToolsMcpPanel.tsx inline-svg #9",
+      "type": "inline-svg",
+      "source": "inline-svg",
+      "scanScope": "include",
+      "sourcePath": null,
+      "definedIn": "client/src/pages/tenant/ToolsMcpPanel.tsx",
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "inline-svg",
+      "reasons": [
+        "inline SVG：治理对象，需判断抽为资源 / 替换为已有图标 / 保留组件私有"
+      ]
+    },
+    {
+      "id": "public__admin-cloud-dev-stat-file__ecb667d2",
+      "displayName": "stat-file",
+      "type": "svg",
+      "source": "public",
+      "scanScope": "include",
+      "sourcePath": "client/public/assets/admin-cloud-dev/stat-file.svg",
+      "definedIn": null,
+      "usageCount": 0,
+      "dynamicDirReferenced": true,
+      "guessPrimaryCategory": "own-svg",
+      "reasons": [
+        "自有 SVG：目录语义未确定性映射到使用场景枚举，需设计确认主场景"
+      ]
+    },
+    {
+      "id": "public__admin-cloud-dev-stat-function__88095ffa",
+      "displayName": "stat-function",
+      "type": "svg",
+      "source": "public",
+      "scanScope": "include",
+      "sourcePath": "client/public/assets/admin-cloud-dev/stat-function.svg",
+      "definedIn": null,
+      "usageCount": 0,
+      "dynamicDirReferenced": true,
+      "guessPrimaryCategory": "own-svg",
+      "reasons": [
+        "自有 SVG：目录语义未确定性映射到使用场景枚举，需设计确认主场景"
+      ]
+    },
+    {
+      "id": "public__admin-platform-policy-allow-local-client__c1117db2",
+      "displayName": "allow-local-client",
+      "type": "svg",
+      "source": "public",
+      "scanScope": "include",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-local-client.svg",
+      "definedIn": null,
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "own-svg",
+      "reasons": [
+        "自有 SVG：目录语义未确定性映射到使用场景枚举，需设计确认主场景"
+      ]
+    },
+    {
+      "id": "public__admin-platform-policy-allow-share-agent__41b077fb",
+      "displayName": "allow-share-agent",
+      "type": "svg",
+      "source": "public",
+      "scanScope": "include",
+      "sourcePath": "client/public/assets/admin-platform-policy/allow-share-agent.svg",
+      "definedIn": null,
+      "usageCount": 1,
+      "dynamicDirReferenced": false,
+      "guessPrimaryCategory": "own-svg",
+      "reasons": [
+        "自有 SVG：目录语义未确定性映射到使用场景枚举，需设计确认主场景"
+      ]
+    }
+  ]
+}

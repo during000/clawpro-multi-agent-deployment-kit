@@ -1,0 +1,20 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="36" height="36" rx="8" fill="url(#bg_sa)"/>
+<g transform="translate(9 9)" stroke="url(#icon_sa)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+  <circle cx="15" cy="4" r="2.5"/>
+  <circle cx="3" cy="9" r="2.5"/>
+  <circle cx="15" cy="14" r="2.5"/>
+  <line x1="5.3" y1="10.2" x2="12.7" y2="12.8"/>
+  <line x1="12.7" y1="5.2" x2="5.3" y2="7.8"/>
+</g>
+<defs>
+<linearGradient id="bg_sa" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+<stop stop-color="#10D4EA" stop-opacity="0.08"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="icon_sa" x1="3" y1="1.5" x2="15" y2="16.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#10B0EA"/>
+<stop offset="1" stop-color="#202020"/>
+</linearGradient>
+</defs>
+</svg>

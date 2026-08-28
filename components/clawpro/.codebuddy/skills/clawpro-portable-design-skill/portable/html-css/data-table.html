@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Data Table</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+      .cp-shell {
+        max-width: 1240px;
+        margin: 0 auto;
+      }
+      .cp-header {
+        margin-bottom: 24px;
+      }
+      .cp-header h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-header p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-stack {
+        display: grid;
+        gap: 24px;
+      }
+      .cp-demo-block {
+        display: grid;
+        gap: 12px;
+      }
+      .cp-demo-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-demo-note {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-surface {
+        overflow: hidden;
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+      }
+      .cp-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px;
+        border-bottom: 1px solid var(--cp-border);
+        background: white;
+      }
+      .cp-toolbar__main,
+      .cp-toolbar__actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+      .cp-search {
+        position: relative;
+        width: min(320px, 100%);
+        min-width: 220px;
+      }
+      .cp-search svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        width: 16px;
+        height: 16px;
+        transform: translateY(-50%);
+        color: var(--cp-text-weak);
+      }
+      .cp-search input,
+      .cp-filter-btn,
+      .cp-size-select,
+      .cp-page-btn,
+      .cp-primary-btn,
+      .cp-ghost-btn {
+        height: 32px;
+        border-radius: 4px;
+      }
+      .cp-search input {
+        width: 100%;
+        border: 1px solid var(--cp-border);
+        background: white;
+        padding: 0 12px 0 36px;
+        font-size: 12px;
+        color: var(--cp-text-body);
+      }
+      .cp-search input::placeholder {
+        color: var(--cp-text-weak);
+      }
+      .cp-filter-btn,
+      .cp-size-select,
+      .cp-page-btn,
+      .cp-ghost-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--cp-border);
+        background: white;
+        padding: 0 12px;
+        font-size: 12px;
+        line-height: 1;
+        color: var(--cp-text-body);
+        white-space: nowrap;
+      }
+      .cp-filter-btn svg,
+      .cp-page-btn svg,
+      .cp-ghost-btn svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+      .cp-filter-btn {
+        gap: 6px;
+      }
+      .cp-filter-btn.is-active {
+        color: var(--cp-text-brand);
+        border-color: rgba(20, 71, 230, 0.22);
+        background: rgba(20, 71, 230, 0.04);
+      }
+      .cp-primary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--cp-brand-black);
+        background: var(--cp-brand-black);
+        color: white;
+        padding: 0 14px;
+        font-size: 12px;
+        line-height: 1;
+        white-space: nowrap;
+      }
+      .cp-ghost-btn {
+        gap: 6px;
+      }
+      .cp-table-shell {
+        position: relative;
+      }
+      .cp-table-wrap {
+        overflow-x: auto;
+      }
+      .cp-table {
+        width: 100%;
+        min-width: 1120px;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 12px;
+      }
+      .cp-table th,
+      .cp-table td {
+        position: relative;
+        padding: 0 16px;
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--cp-border);
+        white-space: nowrap;
+      }
+      .cp-table th {
+        height: 40px;
+        background: var(--cp-bg-subtle);
+        color: var(--cp-text-muted);
+        font-weight: 500;
+      }
+      .cp-table td {
+        height: 54px;
+        background: white;
+        color: var(--cp-text-body);
+      }
+      .cp-table tbody tr:hover td {
+        background: var(--bg-grey-normal);
+      }
+      .cp-table tbody tr.is-selected td {
+        background: var(--bg-grey-normal);
+      }
+      .cp-table tbody tr.is-selected:hover td {
+        background: var(--bg-grey-normal);
+      }
+      .cp-cell-fixed-left,
+      .cp-head-fixed-left {
+        position: sticky;
+        left: 0;
+        z-index: 3;
+      }
+      .cp-cell-fixed-right,
+      .cp-head-fixed-right {
+        position: sticky;
+        right: 0;
+        z-index: 3;
+      }
+      .cp-head-fixed-left,
+      .cp-head-fixed-right {
+        z-index: 6;
+        background: var(--cp-bg-subtle);
+      }
+      .cp-cell-fixed-left,
+      .cp-cell-fixed-right {
+        background: inherit;
+      }
+      .cp-head-fixed-left::after,
+      .cp-cell-fixed-left::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: -1px;
+        width: 6px;
+        transform: translateX(100%);
+        pointer-events: none;
+        background: linear-gradient(to right, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0));
+        z-index: 5;
+      }
+      .cp-head-fixed-right::before,
+      .cp-cell-fixed-right::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: -1px;
+        width: 6px;
+        transform: translateX(-100%);
+        pointer-events: none;
+        background: linear-gradient(to left, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0));
+        z-index: 5;
+      }
+      .cp-col-check {
+        width: 48px;
+        padding-right: 0 !important;
+      }
+      .cp-col-id { width: 148px; }
+      .cp-col-name { width: 244px; }
+      .cp-col-type { width: 140px; }
+      .cp-col-status { width: 120px; }
+      .cp-col-hosts { width: 120px; }
+      .cp-col-updated { width: 192px; }
+      .cp-col-actions { width: 160px; }
+      .cp-cell-right,
+      .cp-head-right {
+        text-align: right !important;
+      }
+      .cp-checkbox {
+        display: inline-flex;
+        width: 16px;
+        height: 16px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--cp-border-control);
+        border-radius: 4px;
+        background: white;
+      }
+      .cp-checkbox svg {
+        display: none;
+        width: 10px;
+        height: 10px;
+        color: white;
+      }
+      .cp-checkbox.is-checked,
+      .cp-checkbox.is-indeterminate {
+        border-color: var(--cp-brand-blue);
+        background: var(--cp-brand-blue);
+      }
+      .cp-checkbox.is-checked svg {
+        display: block;
+      }
+      .cp-checkbox.is-indeterminate::before {
+        content: "";
+        width: 8px;
+        height: 2px;
+        border-radius: 999px;
+        background: white;
+      }
+      .cp-checkbox.is-disabled {
+        border-color: var(--cp-border);
+        background: #F8FAFC;
+      }
+      .cp-check-wrap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+      }
+      .cp-head-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cp-sort-icon,
+      .cp-filter-icon {
+        display: inline-flex;
+        color: var(--cp-text-weak);
+      }
+      .cp-sort-icon.is-active,
+      .cp-filter-icon.is-active {
+        color: var(--cp-text-brand);
+      }
+      .cp-name-cell {
+        display: grid;
+        gap: 2px;
+      }
+      .cp-name-cell strong {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--cp-text-title);
+      }
+      .cp-name-cell span {
+        font-size: 12px;
+        color: var(--cp-text-muted);
+      }
+      .cp-status-tag {
+        display: inline-flex;
+        height: 22px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        padding: 0 8px;
+        font-size: 12px;
+        line-height: 1;
+      }
+      .cp-status-tag--green {
+        color: #008236;
+        background: #E9F8EB;
+        border-color: #BFE8C8;
+      }
+      .cp-status-tag--gray {
+        color: #0A0A0A;
+        background: #F5F5F5;
+        border-color: #E5E7EB;
+      }
+      .cp-status-tag--blue {
+        color: #1447E6;
+        background: #E8ECFE;
+        border-color: #C7D7FE;
+      }
+      .cp-num {
+        font-family: var(--cp-font-din);
+        font-variant-numeric: tabular-nums;
+      }
+      .cp-action-links {
+        display: inline-flex;
+        align-items: center;
+        gap: 24px;
+      }
+      .cp-action-links a {
+        color: var(--cp-text-brand);
+        text-decoration: none;
+      }
+      .cp-action-links a:hover {
+        text-decoration: underline;
+      }
+      .cp-pagination-bar {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 16px;
+        padding: 8px 16px;
+        border-top: 1px solid var(--cp-border);
+        background: white;
+      }
+      .cp-pagination-summary {
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-pagination-controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+      .cp-size-select {
+        min-width: 92px;
+        color: var(--cp-text-secondary);
+      }
+      .cp-page-list {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .cp-page-btn {
+        min-width: 32px;
+        padding: 0 8px;
+        color: var(--cp-text-secondary);
+      }
+      .cp-page-btn.is-current {
+        border-color: var(--cp-brand-blue);
+        color: var(--cp-text-brand);
+      }
+      .cp-page-btn.is-disabled {
+        color: var(--cp-text-weak);
+        background: #FBFCFE;
+      }
+      .cp-loading-mask {
+        position: absolute;
+        inset: 0 0 49px;
+        z-index: 12;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.64);
+        backdrop-filter: blur(1px);
+      }
+      .cp-spinner {
+        width: 24px;
+        height: 24px;
+        border: 2px solid var(--cp-border-control);
+        border-top-color: var(--cp-brand-blue);
+        border-radius: 999px;
+        animation: cp-spin 0.9s linear infinite;
+      }
+      @keyframes cp-spin {
+        to { transform: rotate(360deg); }
+      }
+      .cp-empty-cell {
+        height: auto !important;
+        padding: 0 !important;
+        background: white !important;
+      }
+      .cp-empty {
+        display: grid;
+        place-items: center;
+        padding: 40px 16px;
+        text-align: center;
+      }
+      .cp-empty strong {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-empty span {
+        display: block;
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-weak);
+      }
+      .cp-inline-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-inline-note::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--cp-text-weak);
+      }
+      .cp-footnote {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: #FAFAFA;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--cp-text-muted);
+      }
+      .cp-footnote p {
+        margin: 0;
+      }
+      .cp-footnote p + p {
+        margin-top: 4px;
+      }
+      @media (max-width: 860px) {
+        body {
+          padding: 16px;
+        }
+        .cp-pagination-bar {
+          grid-template-columns: 1fr;
+        }
+        .cp-pagination-controls {
+          justify-content: flex-start;
+        }
+        .cp-toolbar {
+          align-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>DataTable</h1>
+        <p>根据 <code>component-specs/data-table.md</code> 生成的列表页样板。这里用一组虚构的策略数据，覆盖标准列表、loading mask 和 empty 三种核心状态。</p>
+      </header>
+
+      <div class="cp-stack">
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">标准列表页</h2>
+          <p class="cp-demo-note">包含搜索、筛选、跨页保留选择、排序列、分页区和左右固定列的静态示意。</p>
+          <div class="cp-surface">
+            <div class="cp-toolbar">
+              <div class="cp-toolbar__main">
+                <label class="cp-search">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"></circle>
+                    <path d="M11 11 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                  </svg>
+                  <input type="text" value="策略" aria-label="搜索关键字" />
+                </label>
+                <button class="cp-filter-btn is-active" type="button">
+                  状态: 已启用
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <button class="cp-filter-btn" type="button">
+                  类型: 全部
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <span class="cp-inline-note">已选 2 项，跨页保留开启</span>
+              </div>
+              <div class="cp-toolbar__actions">
+                <button class="cp-ghost-btn" type="button">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13.2 8A5.2 5.2 0 1 1 8 2.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M10.6 2.8H13.2V5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  刷新
+                </button>
+                <button class="cp-primary-btn" type="button">新建策略</button>
+              </div>
+            </div>
+            <div class="cp-table-shell">
+              <div class="cp-table-wrap">
+                <table class="cp-table" aria-label="策略列表示例">
+                  <thead>
+                    <tr>
+                      <th class="cp-col-check cp-head-fixed-left"><span class="cp-check-wrap"><span class="cp-checkbox is-indeterminate" aria-hidden="true"></span></span></th>
+                      <th class="cp-col-id"><span class="cp-head-label">策略 ID</span></th>
+                      <th class="cp-col-name"><span class="cp-head-label">策略名称</span></th>
+                      <th class="cp-col-type"><span class="cp-head-label">类型</span></th>
+                      <th class="cp-col-status"><span class="cp-head-label">状态 <span class="cp-filter-icon is-active" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 4H13L9.2 8.5V12L6.8 10.8V8.5L3 4Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg></span></span></th>
+                      <th class="cp-col-hosts cp-head-right"><span class="cp-head-label">关联主机</span></th>
+                      <th class="cp-col-updated"><span class="cp-head-label">更新时间 <span class="cp-sort-icon is-active" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3 11 6H5L8 3Z" fill="currentColor"></path><path d="M8 13 5 10H11L8 13Z" fill="currentColor" opacity="0.35"></path></svg></span></span></th>
+                      <th class="cp-col-actions cp-head-fixed-right">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="is-selected">
+                      <td class="cp-col-check cp-cell-fixed-left">
+                        <span class="cp-check-wrap">
+                          <span class="cp-checkbox is-checked" aria-hidden="true">
+                            <svg viewBox="0 0 12 12" fill="none"><path d="M2.4 6.2 4.9 8.7 9.6 3.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="cp-col-id"><span class="cp-num">pol-001</span></td>
+                      <td class="cp-col-name">
+                        <div class="cp-name-cell">
+                          <strong>生产环境访问基线</strong>
+                          <span>覆盖高风险命令与敏感出口地址</span>
+                        </div>
+                      </td>
+                      <td class="cp-col-type">命令管控</td>
+                      <td class="cp-col-status"><span class="cp-status-tag cp-status-tag--green">已启用</span></td>
+                      <td class="cp-col-hosts cp-cell-right"><span class="cp-num">128</span></td>
+                      <td class="cp-col-updated">2026-06-09 10:20</td>
+                      <td class="cp-col-actions cp-cell-fixed-right">
+                        <div class="cp-action-links">
+                          <a href="#">查看</a>
+                          <a href="#">编辑</a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="is-selected">
+                      <td class="cp-col-check cp-cell-fixed-left">
+                        <span class="cp-check-wrap">
+                          <span class="cp-checkbox is-checked" aria-hidden="true">
+                            <svg viewBox="0 0 12 12" fill="none"><path d="M2.4 6.2 4.9 8.7 9.6 3.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                          </span>
+                        </span>
+                      </td>
+                      <td class="cp-col-id"><span class="cp-num">pol-002</span></td>
+                      <td class="cp-col-name">
+                        <div class="cp-name-cell">
+                          <strong>办公网 DNS 收敛</strong>
+                          <span>限制到企业白名单域名与出口解析器</span>
+                        </div>
+                      </td>
+                      <td class="cp-col-type">IP/DNS 管控</td>
+                      <td class="cp-col-status"><span class="cp-status-tag cp-status-tag--green">已启用</span></td>
+                      <td class="cp-col-hosts cp-cell-right"><span class="cp-num">64</span></td>
+                      <td class="cp-col-updated">2026-06-09 09:40</td>
+                      <td class="cp-col-actions cp-cell-fixed-right">
+                        <div class="cp-action-links">
+                          <a href="#">查看</a>
+                          <a href="#">编辑</a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cp-col-check cp-cell-fixed-left">
+                        <span class="cp-check-wrap"><span class="cp-checkbox" aria-hidden="true"></span></span>
+                      </td>
+                      <td class="cp-col-id"><span class="cp-num">pol-003</span></td>
+                      <td class="cp-col-name">
+                        <div class="cp-name-cell">
+                          <strong>镜像拉取临时放行</strong>
+                          <span>用于版本发布窗口的短时策略</span>
+                        </div>
+                      </td>
+                      <td class="cp-col-type">IP/DNS 管控</td>
+                      <td class="cp-col-status"><span class="cp-status-tag cp-status-tag--blue">审批中</span></td>
+                      <td class="cp-col-hosts cp-cell-right"><span class="cp-num">16</span></td>
+                      <td class="cp-col-updated">2026-06-08 18:15</td>
+                      <td class="cp-col-actions cp-cell-fixed-right">
+                        <div class="cp-action-links">
+                          <a href="#">查看</a>
+                          <a href="#">催办</a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cp-col-check cp-cell-fixed-left">
+                        <span class="cp-check-wrap"><span class="cp-checkbox is-disabled" aria-hidden="true"></span></span>
+                      </td>
+                      <td class="cp-col-id"><span class="cp-num">pol-004</span></td>
+                      <td class="cp-col-name">
+                        <div class="cp-name-cell">
+                          <strong>历史兼容策略</strong>
+                          <span>该策略已停用，当前页禁止再选中</span>
+                        </div>
+                      </td>
+                      <td class="cp-col-type">命令管控</td>
+                      <td class="cp-col-status"><span class="cp-status-tag cp-status-tag--gray">已停用</span></td>
+                      <td class="cp-col-hosts cp-cell-right"><span class="cp-num">203</span></td>
+                      <td class="cp-col-updated">2026-06-07 14:32</td>
+                      <td class="cp-col-actions cp-cell-fixed-right">
+                        <div class="cp-action-links">
+                          <a href="#">查看</a>
+                          <a href="#">复制</a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cp-col-check cp-cell-fixed-left">
+                        <span class="cp-check-wrap"><span class="cp-checkbox" aria-hidden="true"></span></span>
+                      </td>
+                      <td class="cp-col-id"><span class="cp-num">pol-005</span></td>
+                      <td class="cp-col-name">
+                        <div class="cp-name-cell">
+                          <strong>第三方 API 调用约束</strong>
+                          <span>按业务组分配外部访问额度与来源域</span>
+                        </div>
+                      </td>
+                      <td class="cp-col-type">IP/DNS 管控</td>
+                      <td class="cp-col-status"><span class="cp-status-tag cp-status-tag--green">已启用</span></td>
+                      <td class="cp-col-hosts cp-cell-right"><span class="cp-num">38</span></td>
+                      <td class="cp-col-updated">2026-06-07 11:08</td>
+                      <td class="cp-col-actions cp-cell-fixed-right">
+                        <div class="cp-action-links">
+                          <a href="#">查看</a>
+                          <a href="#">编辑</a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="cp-pagination-bar">
+                <div class="cp-pagination-summary">1-10 共 48 条</div>
+                <div class="cp-pagination-controls">
+                  <button class="cp-size-select" type="button">10 / 页</button>
+                  <div class="cp-page-list">
+                    <button class="cp-page-btn is-disabled" type="button" aria-label="上一页">
+                      <svg viewBox="0 0 16 16" fill="none"><path d="M9.5 4 5.5 8 9.5 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </button>
+                    <button class="cp-page-btn is-current" type="button">1</button>
+                    <button class="cp-page-btn" type="button">2</button>
+                    <button class="cp-page-btn" type="button">3</button>
+                    <button class="cp-page-btn" type="button">4</button>
+                    <button class="cp-page-btn" type="button" aria-label="下一页">
+                      <svg viewBox="0 0 16 16" fill="none"><path d="M6.5 4 10.5 8 6.5 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">Loading 状态</h2>
+          <p class="cp-demo-note">有数据时 loading 叠在 tbody 上，表头和分页区仍然保留，不锁整页。</p>
+          <div class="cp-surface">
+            <div class="cp-table-shell">
+              <div class="cp-table-wrap">
+                <table class="cp-table" aria-label="加载中列表示例">
+                  <thead>
+                    <tr>
+                      <th class="cp-col-check cp-head-fixed-left"><span class="cp-check-wrap"><span class="cp-checkbox" aria-hidden="true"></span></span></th>
+                      <th class="cp-col-id">策略 ID</th>
+                      <th class="cp-col-name">策略名称</th>
+                      <th class="cp-col-type">类型</th>
+                      <th class="cp-col-status">状态</th>
+                      <th class="cp-col-hosts cp-head-right">关联主机</th>
+                      <th class="cp-col-updated">更新时间</th>
+                      <th class="cp-col-actions cp-head-fixed-right">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="cp-col-check cp-cell-fixed-left"><span class="cp-check-wrap"><span class="cp-checkbox" aria-hidden="true"></span></span></td>
+                      <td class="cp-col-id"><span class="cp-num">pol-021</span></td>
+                      <td class="cp-col-name"><div class="cp-name-cell"><strong>生产网络基线</strong><span>正在刷新最新执行结果</span></div></td>
+                      <td class="cp-col-type">命令管控</td>
+                      <td class="cp-col-status"><span class="cp-status-tag cp-status-tag--green">已启用</span></td>
+                      <td class="cp-col-hosts cp-cell-right"><span class="cp-num">88</span></td>
+                      <td class="cp-col-updated">2026-06-09 11:12</td>
+                      <td class="cp-col-actions cp-cell-fixed-right"><div class="cp-action-links"><a href="#">查看</a><a href="#">编辑</a></div></td>
+                    </tr>
+                    <tr>
+                      <td class="cp-col-check cp-cell-fixed-left"><span class="cp-check-wrap"><span class="cp-checkbox" aria-hidden="true"></span></span></td>
+                      <td class="cp-col-id"><span class="cp-num">pol-022</span></td>
+                      <td class="cp-col-name"><div class="cp-name-cell"><strong>出网 DNS 约束</strong><span>策略命中数正在计算中</span></div></td>
+                      <td class="cp-col-type">IP/DNS 管控</td>
+                      <td class="cp-col-status"><span class="cp-status-tag cp-status-tag--blue">同步中</span></td>
+                      <td class="cp-col-hosts cp-cell-right"><span class="cp-num">45</span></td>
+                      <td class="cp-col-updated">2026-06-09 11:05</td>
+                      <td class="cp-col-actions cp-cell-fixed-right"><div class="cp-action-links"><a href="#">查看</a><a href="#">催办</a></div></td>
+                    </tr>
+                    <tr>
+                      <td class="cp-col-check cp-cell-fixed-left"><span class="cp-check-wrap"><span class="cp-checkbox" aria-hidden="true"></span></span></td>
+                      <td class="cp-col-id"><span class="cp-num">pol-023</span></td>
+                      <td class="cp-col-name"><div class="cp-name-cell"><strong>发布窗口临时策略</strong><span>列表仍显示旧数据，等待后端回填</span></div></td>
+                      <td class="cp-col-type">命令管控</td>
+                      <td class="cp-col-status"><span class="cp-status-tag cp-status-tag--green">已启用</span></td>
+                      <td class="cp-col-hosts cp-cell-right"><span class="cp-num">12</span></td>
+                      <td class="cp-col-updated">2026-06-09 10:58</td>
+                      <td class="cp-col-actions cp-cell-fixed-right"><div class="cp-action-links"><a href="#">查看</a><a href="#">编辑</a></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="cp-loading-mask" aria-hidden="true"><span class="cp-spinner"></span></div>
+              <div class="cp-pagination-bar">
+                <div class="cp-pagination-summary">21-30 共 48 条</div>
+                <div class="cp-pagination-controls">
+                  <button class="cp-size-select" type="button">10 / 页</button>
+                  <div class="cp-page-list">
+                    <button class="cp-page-btn" type="button">2</button>
+                    <button class="cp-page-btn is-current" type="button">3</button>
+                    <button class="cp-page-btn" type="button">4</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">Empty 状态</h2>
+          <p class="cp-demo-note">空态放在表体内的 <code>td colSpan</code> 中，不额外挂插画，不把分页区拆出表壳。</p>
+          <div class="cp-surface">
+            <div class="cp-toolbar">
+              <div class="cp-toolbar__main">
+                <label class="cp-search">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"></circle>
+                    <path d="M11 11 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                  </svg>
+                  <input type="text" value="北区" aria-label="搜索区域" />
+                </label>
+                <button class="cp-filter-btn is-active" type="button">状态: 已停用</button>
+                <button class="cp-filter-btn is-active" type="button">标签: 存档策略</button>
+              </div>
+              <div class="cp-toolbar__actions">
+                <button class="cp-ghost-btn" type="button">重置筛选</button>
+              </div>
+            </div>
+            <div class="cp-table-shell">
+              <div class="cp-table-wrap">
+                <table class="cp-table" aria-label="空态列表示例">
+                  <thead>
+                    <tr>
+                      <th class="cp-col-check cp-head-fixed-left"><span class="cp-check-wrap"><span class="cp-checkbox" aria-hidden="true"></span></span></th>
+                      <th class="cp-col-id">策略 ID</th>
+                      <th class="cp-col-name">策略名称</th>
+                      <th class="cp-col-type">类型</th>
+                      <th class="cp-col-status">状态</th>
+                      <th class="cp-col-hosts cp-head-right">关联主机</th>
+                      <th class="cp-col-updated">更新时间</th>
+                      <th class="cp-col-actions cp-head-fixed-right">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="cp-empty-cell" colspan="8">
+                        <div class="cp-empty">
+                          <div>
+                            <strong>暂无数据</strong>
+                            <span>尝试调整筛选条件，或新建一条策略记录。</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="cp-pagination-bar">
+                <div class="cp-pagination-summary">0 条记录</div>
+                <div class="cp-pagination-controls">
+                  <button class="cp-size-select" type="button">10 / 页</button>
+                  <div class="cp-page-list">
+                    <button class="cp-page-btn is-current" type="button">1</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cp-footnote" aria-label="验证说明">
+          <p>验证口径 1：新文件已放进 portable skill，并登记到 <code>MANIFEST.json</code> 与 <code>INDEX.md</code>。</p>
+          <p>验证口径 2：预览页覆盖了 DataTable 规范里的标准列表、loading mask、empty、rowSelection、分页区同壳、表头灰底和 12px 密度。</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

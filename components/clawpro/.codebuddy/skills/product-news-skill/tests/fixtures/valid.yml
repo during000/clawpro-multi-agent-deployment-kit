@@ -1,0 +1,59 @@
+# 正常示例：覆盖功能上线 + 操作指南 + 体验优化 3 种典型场景
+changes:
+  - id: "feat-skill-delivery-20260705"
+    title: "Skill 管理新增下发和更新能力"
+    type: "功能上线"
+    date: "2026-07-05"
+    endpoint: "管控端"
+    description: "支持管理员按租户下发 Skill 到指定 Agent 实例，并支持版本更新管理和回滚操作。影响管控端 Skill 管理页面和 Agent 实例配置。"
+    version: "v2.7.0"
+    sort_order: 10
+    source:
+      type: "repo_skill"
+      mr_id: "!1234"
+      commit: "abc1234def5678"
+      author_gongfeng_id: "hawkechen"
+    related_campaign:
+      update_id: "update-awareness-skill-delivery-2026-07-05"
+    needs_guide: true
+    guide:
+      doc_type: "operation_guide"
+      feature_name: "Skill 下发管理"
+      feature_url: "https://clawpro.woa.com/admin/skills/delivery"
+      endpoint: "管控端"
+    auto_publish: false
+    display_components:
+      banner:
+        enabled: true
+        duration_days: 14
+      floating_window:
+        enabled: false
+
+  - id: "impr-agent-card-button-20260705"
+    title: "用户端 Agent 卡片新增对话视图按钮"
+    type: "体验优化"
+    date: "2026-07-05"
+    endpoint: "用户端"
+    description: "在用户端 Agent 列表卡片中新增「开始对话」快捷按钮，用户无需进入详情页即可直接发起对话。影响用户端 Agent 列表页。"
+    needs_guide: false
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: true
+        duration_days: 14
+
+  - id: "feat-model-config-20260703"
+    title: "模型配置新增高级参数设置"
+    type: "功能上线"
+    date: "2026-07-03"
+    endpoint: "管控端"
+    description: "支持在模型配置页面设置 temperature、top_p、max_tokens 等高级参数，并支持按模型粒度覆盖全局默认值。影响管控端模型配置页面和 API 调用行为。"
+    version: "v2.6.5"
+    needs_guide: false
+    auto_publish: true
+    display_components:
+      banner:
+        enabled: false
+      floating_window:
+        enabled: false

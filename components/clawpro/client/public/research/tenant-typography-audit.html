@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>用户端字体层级整理</title>
+  <style>
+    :root {
+      --brand: #1447E6;
+      --black: #020617;
+      --text: #0A0A0A;
+      --slate: #334155;
+      --muted: #737373;
+      --weak: #A3A3A3;
+      --line: #E5E5E5;
+      --line-blue: #E2E8F0;
+      --bg-soft: #F5F5F5;
+      --bg-faint: #FAFAFA;
+      --card-shadow: 0px 1px 4px rgba(0,0,0,0.05), 0px 0px 2px rgba(0,0,0,0.1);
+      --segment-shadow: 0px 1.11px 2.22px rgba(0,0,0,0.05);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 1200px;
+      font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
+      -webkit-font-smoothing: antialiased;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 64px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 0 40px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line-blue);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--black); }
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, #1447E6, #2563EB);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .tabs {
+      justify-self: center;
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 4px;
+      background: var(--bg-soft);
+    }
+    .tabs a {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 3px;
+      color: var(--slate);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 22px;
+      white-space: nowrap;
+    }
+    .tabs a.active { background: #fff; color: var(--black); font-weight: 500; box-shadow: var(--segment-shadow); }
+    .meta-top { justify-self: end; color: var(--muted); font-size: 12px; }
+    .page {
+      max-width: 1920px;
+      min-height: calc(100vh - 64px);
+      margin: 0 auto;
+      display: flex;
+    }
+    .rail { width: 80px; flex: 0 0 80px; }
+    .content {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      padding: 32px 42px 75px;
+      border-left: 1px solid var(--line-blue);
+      border-right: 1px solid var(--line-blue);
+    }
+    .content::before,
+    .content::after {
+      content: "";
+      position: absolute;
+      top: 170px;
+      bottom: 75px;
+      width: calc((100vw - 100%) / 2);
+      pointer-events: none;
+      background-image: radial-gradient(circle, #DFE2E5 1px, transparent 1.1px);
+      background-size: 12px 12px;
+    }
+    .content::before { right: 100%; }
+    .content::after { left: 100%; }
+    .hero {
+      position: relative;
+      padding-bottom: 30px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--line-blue);
+    }
+    .eyebrow { margin: 0 0 8px; color: var(--brand); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
+    h1 {
+      margin: 0;
+      width: fit-content;
+      font-size: 26px;
+      line-height: 35.56px;
+      font-weight: 500;
+      letter-spacing: -0.0427em;
+      background: linear-gradient(90deg, #0A0A0A 0%, #1447E6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-desc { max-width: 920px; margin: 12px 0 0; color: var(--slate); font-size: 14px; line-height: 1.8; }
+    .quick-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .stat-card,
+    .card {
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: var(--card-shadow);
+    }
+    .stat-card { padding: 18px 20px; }
+    .stat-value {
+      font-family: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif;
+      color: var(--black);
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-label { margin-top: 10px; color: var(--text); font-size: 14px; font-weight: 500; }
+    .stat-desc { margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .section { margin-bottom: 40px; }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+    .section-head h2 { margin: 0; font-size: 18px; line-height: 1.4; font-weight: 500; color: var(--text); }
+    .section-head p { max-width: 760px; margin: 6px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 2px;
+      color: var(--brand);
+      background: #EFF6FF;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { overflow: hidden; }
+    .card-head { padding: 16px 20px; border-bottom: 1px solid var(--line); background: #fff; }
+    .card-head h3 { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 600; color: var(--text); }
+    .card-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .card-body { padding: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      padding: 12px 14px;
+      text-align: left;
+      color: var(--muted);
+      background: var(--bg-faint);
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px;
+      color: var(--slate);
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    code,
+    .code {
+      font-family: Menlo, Consolas, "Courier New", monospace;
+      color: var(--slate);
+      font-size: 12px;
+    }
+    .path-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .path {
+      max-width: 100%;
+      padding: 3px 6px;
+      border-radius: 2px;
+      color: var(--slate);
+      background: var(--bg-soft);
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sample-list { display: grid; gap: 12px; }
+    .sample-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 220px;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 16px;
+      border: 1px solid #F0F0F0;
+      border-radius: 4px;
+      background: #fff;
+    }
+    .sample-meta strong { display: block; color: var(--black); font-size: 13px; font-weight: 600; }
+    .sample-meta span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .sample-use { color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .t-hero { font-size: 26px; line-height: 35.56px; font-weight: 500; letter-spacing: -0.0427em; color: var(--text); }
+    .t-page { font-size: 24px; line-height: 1.4; font-weight: 500; color: var(--text); }
+    .t-doc { font-size: 20px; line-height: 1.4; font-weight: 600; color: var(--text); }
+    .t-section { font-size: 18px; line-height: 1.4; font-weight: 500; color: var(--text); }
+    .t-panel { font-size: 16px; line-height: 1.4; font-weight: 600; color: var(--text); }
+    .t-card { font-size: 14px; line-height: 1.5; font-weight: 500; color: var(--text); }
+    .t-body { font-size: 14px; line-height: 1.5; font-weight: 400; color: var(--slate); }
+    .t-body-medium { font-size: 14px; line-height: 1.5; font-weight: 500; color: var(--black); }
+    .t-meta { font-size: 12px; line-height: 1.5; font-weight: 400; color: var(--muted); }
+    .t-tiny { font-family: "Open Sans", "Helvetica Neue", sans-serif; font-size: 10px; line-height: 1; font-weight: 600; color: var(--muted); letter-spacing: 0.02em; }
+    .t-stat { font-family: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif; font-size: 24px; line-height: 1; font-weight: 700; color: var(--black); font-variant-numeric: tabular-nums; }
+    .t-number { font-family: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif; font-size: 14px; line-height: 1.5; color: var(--slate); font-variant-numeric: tabular-nums; }
+    .t-code { font-family: Menlo, Consolas, "Courier New", monospace; font-size: 12px; line-height: 1.5; color: var(--slate); }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--slate); background: #fff; font-size: 12px; }
+    .warning {
+      display: flex;
+      gap: 10px;
+      padding: 14px 16px;
+      border: 1px solid #FDE68A;
+      border-radius: 4px;
+      background: #FFFBEB;
+      color: #92400E;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .migration { counter-reset: step; display: grid; gap: 12px; }
+    .migration li {
+      counter-increment: step;
+      list-style: none;
+      position: relative;
+      padding: 14px 16px 14px 48px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: var(--card-shadow);
+      color: var(--slate);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .migration li::before {
+      content: counter(step);
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(90deg, #020617 70%, #1447E6 100%);
+      font-family: Menlo, Consolas, monospace;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .footer-line { height: 1px; margin-top: 32px; background: var(--line-blue); }
+    .footer-note { margin-top: 18px; color: var(--weak); font-size: 12px; line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div class="brand"><span class="brand-mark">T</span><span>Tenant Typography Audit</span></div>
+    <div class="tabs">
+      <a class="active" href="#overview">现状</a>
+      <a href="#hierarchy">层级</a>
+      <a href="#mapping">映射</a>
+      <a href="#migration">落地</a>
+    </div>
+    <div class="meta-top">OpenClaw 用户端 · 2026-05-21</div>
+  </nav>
+
+  <main class="page">
+    <div class="rail" aria-hidden="true"></div>
+    <div class="content">
+      <header class="hero" id="overview">
+        <p class="eyebrow">TYPOGRAPHY SYSTEM</p>
+        <h1>用户端文字层级整理与基础组件定义</h1>
+        <p class="hero-desc">
+          基于当前用户端页面与组件的字号、字重、字体族使用情况，重新归纳一套可落地的基础 Typography 组件层级，目标是替代散落的 Tailwind 原子类，统一标题、正文、辅助信息、数字与代码文本的表达。
+        </p>
+        <div class="quick-stats">
+          <div class="stat-card">
+            <div class="stat-value">26</div>
+            <div class="stat-label">覆盖文件</div>
+            <div class="stat-desc">tenant 页面、TopNav、TenantLayout、Agent 组件</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">335</div>
+            <div class="stat-label">text-xs</div>
+            <div class="stat-desc">当前最高频字号，用于说明、时间、ID、Tooltip</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">217</div>
+            <div class="stat-label">text-sm</div>
+            <div class="stat-desc">正文、按钮、Tab、表单、表格内容的主字号</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">13</div>
+            <div class="stat-label">建议组件</div>
+            <div class="stat-desc">T1-T10 + N1/N2 + C1，覆盖用户端主要文字场景</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>1. 当前用户端文字使用现状</h2>
+            <p>现状显示：`text-xs` 与 `text-sm` 承载了过多语义，需要用组件层级拆分；`text-[26px]`、`text-[10px]` 等任意值应收敛到明确场景。</p>
+          </div>
+          <span class="badge">Audit Result</span>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head">
+              <h3>字号分布</h3>
+              <p>按用户端相关源码中的文字 class 统计。</p>
+            </div>
+            <div class="card-body">
+              <table>
+                <thead><tr><th>字号</th><th>频率</th><th>主要场景</th></tr></thead>
+                <tbody>
+                  <tr><td><code>text-xs</code> / 12px</td><td class="t-number">335</td><td>辅助说明、时间、ID、Tooltip、标签、表头、空状态</td></tr>
+                  <tr><td><code>text-sm</code> / 14px</td><td class="t-number">217</td><td>正文、按钮、Tab、表单 Label、表格内容、导航</td></tr>
+                  <tr><td><code>text-base</code> / 16px</td><td class="t-number">40</td><td>卡片标题、Sheet/Dialog 标题、区块标题</td></tr>
+                  <tr><td><code>text-2xl</code> / 24px</td><td class="t-number">9</td><td>页面标题、统计大数字、帮助文档一级标题</td></tr>
+                  <tr><td><code>text-xl</code> / 20px</td><td class="t-number">5</td><td>帮助文档标题、少量页面标题</td></tr>
+                  <tr><td><code>text-lg</code> / 18px</td><td class="t-number">5</td><td>弹窗标题、重置密码页标题、局部标题</td></tr>
+                  <tr><td><code>text-[26px]</code></td><td class="t-number">少量</td><td>用户端 Hero 标题，如模型额度、技能广场</td></tr>
+                  <tr><td><code>text-[10px]/[11px]</code></td><td class="t-number">少量</td><td>极小 Badge、时间戳、通知角标</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <h3>字重与字体族</h3>
+              <p>当前字体 token 基础方向正确，但页面内仍有散落的 inline fontFamily。</p>
+            </div>
+            <div class="card-body">
+              <table>
+                <thead><tr><th>类型</th><th>当前频率 / 用途</th><th>建议</th></tr></thead>
+                <tbody>
+                  <tr><td><code>font-medium</code></td><td class="t-number">187</td><td>用于 Tab 选中、按钮、Label、列表主信息</td></tr>
+                  <tr><td><code>font-semibold</code></td><td class="t-number">72</td><td>用于卡片标题、模块标题、表头强调</td></tr>
+                  <tr><td><code>font-bold</code></td><td class="t-number">26</td><td>保留给统计数字、文档大标题等少数强强调</td></tr>
+                  <tr><td><code>PingFang SC</code></td><td>中文 UI 主字体</td><td>标题、正文默认字体</td></tr>
+                  <tr><td><code>DIN Alternate</code></td><td>数字字体</td><td>统计、配额、Token 数统一使用</td></tr>
+                  <tr><td><code>Menlo</code></td><td>等宽字体</td><td>ID、Token、路径、命令、Step 标识</td></tr>
+                  <tr><td><code>Open Sans</code></td><td>英文字体</td><td>New、Beta 等英文 Badge</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="hierarchy">
+        <div class="section-head">
+          <div>
+            <h2>2. 建议定义的基础 Typography 层级</h2>
+            <p>将“大小 + 字重 + 字体 + 使用场景”绑定为语义组件，避免同一个 `text-sm` 在按钮、正文、Tab、表格中含义不清。</p>
+          </div>
+          <span class="badge">T1-T10 / N1-N2 / C1</span>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="sample-list">
+              <div class="sample-row"><div class="sample-meta"><strong>T1 · TenantHeroTitle</strong><span>26px / Medium / 35.56px</span></div><div class="t-hero">用户端 Hero 标题</div><div class="sample-use">模型额度、技能广场等入口型顶部标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T2 · TenantPageTitle</strong><span>24px / Medium / 1.4</span></div><div class="t-page">页面主标题</div><div class="sample-use">详情页标题、普通业务页标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T3 · TenantDocTitle</strong><span>20px / Semibold / 1.4</span></div><div class="t-doc">帮助文档标题</div><div class="sample-use">文章标题、帮助文档当前标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T4 · SectionTitle</strong><span>18px / Medium / 1.4</span></div><div class="t-section">大模块标题</div><div class="sample-use">复杂表单分区、页面内一级模块</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T5 · PanelTitle</strong><span>16px / Semibold / 1.4</span></div><div class="t-panel">面板标题</div><div class="sample-use">Sheet、Dialog、表格区块、卡片组标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T6 · CardTitle</strong><span>14px / Medium / 1.5</span></div><div class="t-card">Agent 卡片标题</div><div class="sample-use">Agent 名、技能卡标题、模型名、列表项标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T7 · BodyText</strong><span>14px / Regular / 1.5</span></div><div class="t-body">这是一段普通正文，用于说明、表格内容和描述文字。</div><div class="sample-use">正文、表格内容、说明段落</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T8 · BodyMedium</strong><span>14px / Medium / 1.5</span></div><div class="t-body-medium">表单 Label / 按钮 / Tab 文字</div><div class="sample-use">交互文字、表单 Label、列表主字段</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T9 · MetaText</strong><span>12px / Regular / 1.5</span></div><div class="t-meta">更新时间 2026-05-21 21:14 · ID: ins-g71c6vud</div><div class="sample-use">时间、ID、Tooltip、辅助说明、空状态</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>T10 · TinyText</strong><span>10px / Medium / Open Sans</span></div><div class="t-tiny">NEW / BETA / 99+</div><div class="sample-use">极小 Badge、角标，禁止进入正文系统</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>N1 · StatNumber</strong><span>24px / Bold / DIN</span></div><div class="t-stat">128,000</div><div class="sample-use">统计卡数字、额度总量、大数字</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>N2 · InlineNumber</strong><span>14px / DIN / tabular</span></div><div class="t-number">12,480 tokens · 86.5%</div><div class="sample-use">表格内 Token 数、请求数、百分比</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>C1 · CodeText</strong><span>12px / Menlo</span></div><div class="t-code">ins-g71c6vud / hk-xxxx / /api/quota/data</div><div class="sample-use">实例 ID、Token、路径、命令、代码片段</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="mapping">
+        <div class="section-head">
+          <div>
+            <h2>3. 场景映射表</h2>
+            <p>业务写页面时优先按场景选组件，而不是先想字号。这样可以减少“同字号不同语义”的漂移。</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <table>
+              <thead><tr><th>使用场景</th><th>推荐组件</th><th>颜色建议</th><th>备注</th></tr></thead>
+              <tbody>
+                <tr><td>用户端 Hero 标题</td><td><code>TenantHeroTitle</code></td><td><code>#0A0A0A</code> / 可用标题渐变</td><td>仅用于入口型标题，不泛化到普通模块</td></tr>
+                <tr><td>页面标题 / 详情页主标题</td><td><code>TenantPageTitle</code></td><td><code>#0A0A0A</code></td><td>替代散落的 <code>text-2xl font-bold</code></td></tr>
+                <tr><td>帮助文档文章标题</td><td><code>TenantDocTitle</code></td><td><code>#0A0A0A</code></td><td>文档内容可有独立 Markdown 映射</td></tr>
+                <tr><td>页面内大模块标题</td><td><code>SectionTitle</code></td><td><code>#0A0A0A</code></td><td>复杂配置页、组织区块使用</td></tr>
+                <tr><td>Sheet / Dialog / 卡片区块标题</td><td><code>PanelTitle</code></td><td><code>#0A0A0A</code></td><td>当前 TopNav Sheet 标题已接近此规则</td></tr>
+                <tr><td>Agent 卡片名、技能卡标题、模型名</td><td><code>CardTitle</code></td><td><code>#0A0A0A</code></td><td>用户端卡片标题保持 14px medium，提高密度</td></tr>
+                <tr><td>普通说明、正文、表格内容</td><td><code>BodyText</code></td><td><code>#334155</code></td><td>承接当前大部分 <code>text-sm</code> 正文</td></tr>
+                <tr><td>Tab、按钮、Label、列表主字段</td><td><code>BodyMedium</code></td><td><code>#020617</code></td><td>交互文字与正文区分</td></tr>
+                <tr><td>时间、ID、描述、Tooltip、空状态</td><td><code>MetaText</code></td><td><code>#737373</code> / <code>#A3A3A3</code></td><td>承接当前大部分 <code>text-xs</code></td></tr>
+                <tr><td>New / Beta / 小角标</td><td><code>TinyText</code></td><td><code>#1447E6</code> / 语义色</td><td>10/11px 只用于极小标签</td></tr>
+                <tr><td>统计卡数字、额度数字</td><td><code>StatNumber</code></td><td><code>#020617</code></td><td>必须使用 <code>font-din</code> 与 <code>tabular-nums</code></td></tr>
+                <tr><td>实例 ID、Token、路径、命令</td><td><code>CodeText</code></td><td><code>#334155</code></td><td>必须使用 <code>font-mono</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>4. 代表文件与问题点</h2>
+            <p>这些文件是后续落地 Typography 组件时优先迁移的入口。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-head"><h3>高频业务页</h3><p>text-xs/text-sm 使用密集。</p></div>
+            <div class="card-body path-list">
+              <span class="path">pages/tenant/OpenClawDetail.tsx</span>
+              <span class="path">pages/tenant/OpenClawDetailGuide.tsx</span>
+              <span class="path">pages/tenant/MyOpenClaw.tsx</span>
+              <span class="path">pages/tenant/ModelQuota.tsx</span>
+              <span class="path">pages/tenant/SkillSquare.tsx</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>导航与浮层</h3><p>14px 导航文字、12px 通知正文。</p></div>
+            <div class="card-body path-list">
+              <span class="path">components/topnav/CenterTabs.tsx</span>
+              <span class="path">components/topnav/NavIconButton.tsx</span>
+              <span class="path">components/topnav/NotificationPanel.tsx</span>
+              <span class="path">components/topnav/HelpPanel.tsx</span>
+              <span class="path">components/TenantLayout.tsx</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Agent 复用组件</h3><p>存在较多 inline fontFamily。</p></div>
+            <div class="card-body path-list">
+              <span class="path">components/agent/HeroBanner.tsx</span>
+              <span class="path">components/agent/AgentCard.tsx</span>
+              <span class="path">components/agent/QuickStartGuide.tsx</span>
+              <span class="path">components/agent/StatusBadge.tsx</span>
+            </div>
+          </div>
+        </div>
+        <div style="height:16px"></div>
+        <div class="warning">
+          <strong>需要统一：</strong>
+          <span>1）减少 `text-gray-*`，迁移到 v2 色阶；2）任意值字号收敛到 T1/T10 等明确组件；3）inline `fontFamily` 改为 `font-sans/font-din/font-mono/font-en`；4）`text-xs` 与 `text-sm` 按语义拆分，不再作为万能字号。</span>
+        </div>
+      </section>
+
+      <section class="section" id="migration">
+        <div class="section-head">
+          <div>
+            <h2>5. 落地建议</h2>
+            <p>建议先新增基础组件，再按用户端核心路径渐进替换，避免一次性全量重构。</p>
+          </div>
+        </div>
+        <ol class="migration">
+          <li><strong>新增基础组件：</strong>创建 <code>client/src/components/ui/Typography.tsx</code>，定义 <code>TenantHeroTitle</code>、<code>TenantPageTitle</code>、<code>PanelTitle</code>、<code>BodyText</code>、<code>MetaText</code>、<code>StatNumber</code> 等组件。</li>
+          <li><strong>先迁移共享组件：</strong>从 <code>components/topnav/**</code>、<code>components/agent/**</code> 开始，收益最大且能带动页面统一。</li>
+          <li><strong>再迁移核心页面：</strong>优先处理 <code>MyOpenClaw</code>、<code>OpenClawDetailGuide</code>、<code>SkillSquare</code>、<code>ModelQuota</code> 等用户高频路径。</li>
+          <li><strong>保留特殊场景：</strong>帮助文档 Markdown 可用单独的 prose 映射；聊天内容区可保留内容型排版规则，但标题、按钮、Meta 信息仍接入组件。</li>
+          <li><strong>建立检查清单：</strong>新增页面禁止裸写大段 <code>text-sm/text-xs</code>，除非能明确映射为某个 Typography 组件的变体。</li>
+        </ol>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>6. 建议组件 API 草案</h2>
+            <p>组件 API 保持轻量，允许通过 <code>as</code> 控制标签，通过 <code>className</code> 做少量布局补充。</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <pre class="code" style="margin:0; white-space:pre-wrap; line-height:1.8;">&lt;TenantHeroTitle&gt;模型额度&lt;/TenantHeroTitle&gt;
+&lt;TenantPageTitle&gt;Agent 详情&lt;/TenantPageTitle&gt;
+&lt;PanelTitle as="h2"&gt;模型使用汇总&lt;/PanelTitle&gt;
+&lt;CardTitle&gt;Alice 的技术助手&lt;/CardTitle&gt;
+&lt;BodyText&gt;用于说明当前模块的普通正文。&lt;/BodyText&gt;
+&lt;BodyMedium&gt;创建 Agent&lt;/BodyMedium&gt;
+&lt;MetaText&gt;更新于 2026-05-21 21:14&lt;/MetaText&gt;
+&lt;TinyText&gt;NEW&lt;/TinyText&gt;
+&lt;StatNumber&gt;128,000&lt;/StatNumber&gt;
+&lt;CodeText&gt;ins-g71c6vud&lt;/CodeText&gt;</pre>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-line"></div>
+      <p class="footer-note">
+        数据来源：用户端相关源码静态扫描与设计系统规范整理。建议后续以该页面作为 Typography 组件实现和页面迁移的对照基准。
+      </p>
+    </div>
+    <div class="rail" aria-hidden="true"></div>
+  </main>
+</body>
+</html>

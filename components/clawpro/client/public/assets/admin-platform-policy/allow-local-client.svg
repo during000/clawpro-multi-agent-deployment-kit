@@ -1,0 +1,20 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="36" height="36" rx="8" fill="url(#bg_lc)"/>
+<g transform="translate(9 9)" stroke="url(#icon_lc)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+  <path d="M12 2v5"/>
+  <path d="M6 2v5"/>
+  <path d="M6 7h6a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/>
+  <path d="M9 12v2"/>
+  <path d="M6 16h6"/>
+</g>
+<defs>
+<linearGradient id="bg_lc" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+<stop stop-color="#10D4EA" stop-opacity="0.08"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="icon_lc" x1="4" y1="2" x2="14" y2="16" gradientUnits="userSpaceOnUse">
+<stop stop-color="#10B0EA"/>
+<stop offset="1" stop-color="#202020"/>
+</linearGradient>
+</defs>
+</svg>

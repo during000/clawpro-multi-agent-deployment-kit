@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ClawPro 组件图鉴 · 产品 × 设计 × 前端通用</title>
+<style>
+  /* ============================================================
+     ClawPro Design System v2 — 组件图鉴 · 总览索引
+     ============================================================ */
+  :root{
+    --primary:#1447E6;
+    --brand-tint:#EFF6FF;
+    --secondary:#F5F5F5;
+    --border:#E5E5E5;
+
+    --fg:#0A0A0A;
+    --fg-strong:#020617;
+    --fg-2:#334155;
+    --fg-3:#737373;
+    --fg-4:#A3A3A3;
+
+    --bg:linear-gradient(180deg,#FFFFFF 0%,#F5F5F5 100%);
+    --card:#FFFFFF;
+
+    --shadow-card:0px 1px 4px rgba(0,0,0,.05),0px 0px 2px rgba(0,0,0,.1);
+    --shadow-config:0px 2px 8px -1px rgba(0,0,0,.05),0px 2px 4px 2px rgba(0,0,0,.05);
+
+    --claw-primary-bg:linear-gradient(90deg,#020617 70%,#1447E6 100%);
+  }
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;padding:0;background:var(--bg);background-attachment:fixed;
+    color:var(--fg);
+    font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased
+  }
+  code,.mono{font-family:"Menlo","Consolas","Courier New",monospace;font-size:12px}
+  a{color:inherit;text-decoration:none}
+
+  .page{max-width:1200px;margin:0 auto;padding:48px 32px 96px}
+
+  /* ===== Hero ===== */
+  .hero{
+    background:var(--card);border-radius:4px;padding:40px 44px;
+    box-shadow:var(--shadow-card);position:relative;overflow:hidden;
+  }
+  .hero::before{
+    content:"";position:absolute;right:-100px;top:-100px;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(20,71,230,.08) 0%,transparent 70%);
+    pointer-events:none
+  }
+  .hero .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:.16em;color:var(--primary);font-weight:500;
+    background:var(--brand-tint);padding:5px 10px;border-radius:9999px;
+    font-family:"Open Sans",sans-serif;text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .hero h1{margin:0 0 12px;font-size:34px;font-weight:700;letter-spacing:-.02em;color:var(--fg)}
+  .hero .lead{margin:0;color:var(--fg-2);max-width:760px;font-size:15px;line-height:1.7}
+  .hero .lead b{color:var(--fg)}
+  .hero .lead code{
+    background:#F5F5F5;border:1px solid var(--border);
+    padding:1px 6px;border-radius:2px;color:var(--fg-strong);
+    font-family:"Menlo",monospace
+  }
+
+  /* ===== Spec strip ===== */
+  .spec-strip{
+    margin-top:20px;display:flex;flex-wrap:wrap;gap:6px;position:relative;z-index:1
+  }
+  .spec-strip .chip{
+    background:#F5F5F5;border:1px solid var(--border);
+    padding:4px 10px;border-radius:9999px;font-size:11px;color:var(--fg-2);
+    font-family:"Menlo",monospace;
+  }
+  .spec-strip .chip b{color:var(--fg);font-weight:500}
+  .spec-strip .chip.brand{
+    background:var(--brand-tint);border-color:#D8E1FF;color:var(--primary)
+  }
+
+  /* ===== Section ===== */
+  .section{margin-top:48px}
+  .section-head{
+    display:flex;align-items:flex-end;gap:14px;margin:0 0 18px;
+    border-bottom:1px solid var(--border);padding-bottom:14px;
+  }
+  .section-head .num{
+    width:32px;height:32px;border-radius:4px;
+    background:var(--claw-primary-bg);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:13px;font-family:"Menlo",monospace;flex-shrink:0
+  }
+  .section-head h2{margin:0;font-size:20px;font-weight:600;letter-spacing:-.01em;color:var(--fg)}
+  .section-head .sub{color:var(--fg-3);font-size:13px;margin-left:auto}
+
+  /* ===== Component Grid ===== */
+  .grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  }
+  @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:680px){.grid{grid-template-columns:1fr}}
+
+  /* ===== Component Card ===== */
+  .ccard{
+    position:relative;display:flex;flex-direction:column;
+    background:var(--card);border-radius:4px;overflow:hidden;
+    box-shadow:var(--shadow-card);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .ccard:hover{transform:translateY(-2px);box-shadow:var(--shadow-config)}
+  .ccard.disabled{opacity:.55;cursor:default}
+  .ccard.disabled:hover{transform:none;box-shadow:var(--shadow-card)}
+
+  .ccard .preview{
+    height:140px;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:linear-gradient(180deg,#FAFAFA 0%,#FFFFFF 100%);
+    border-bottom:1px solid #F5F5F5;position:relative;
+  }
+  .ccard .body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:6px}
+  .ccard .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .ccard h3{margin:0;font-size:16px;font-weight:600;color:var(--fg)}
+  .ccard .desc{margin:0;color:var(--fg-3);font-size:12px;line-height:1.6}
+  .ccard .meta{
+    margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    font-size:11px;color:var(--fg-3);
+  }
+  .ccard .meta .src{font-family:"Menlo",monospace;color:var(--fg-2)}
+  .ccard .arrow{
+    color:var(--fg-3);font-size:13px;transition:transform .2s,color .2s;
+  }
+  .ccard:hover:not(.disabled) .arrow{color:var(--primary);transform:translateX(2px)}
+
+  /* tags */
+  .tag{
+    display:inline-flex;align-items:center;gap:4px;
+    font-size:10px;line-height:1;letter-spacing:.04em;font-weight:500;
+    padding:3px 8px;border-radius:9999px;
+    font-family:"Open Sans",sans-serif;
+  }
+  .tag.live{background:rgba(22,163,74,.12);color:#15803D}
+  .tag.live .dot{width:6px;height:6px;border-radius:50%;background:#16A34A}
+  .tag.v1{background:#FEF3C7;color:#92400E}
+  .tag.soon{background:#F5F5F5;color:var(--fg-3);border:1px dashed var(--border)}
+  .tag.brand{background:var(--brand-tint);color:var(--primary)}
+
+  /* ===== preview demo styles (lightweight, only for cards) ===== */
+  .demo-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    height:36px;padding:0 18px;border-radius:4px;font-size:13px;font-weight:500;
+    cursor:default;border:0;font-family:inherit;
+  }
+  .demo-btn.primary{background:var(--claw-primary-bg);color:#fff}
+  .demo-btn.outline{
+    background:#fff;border:1px solid var(--border);color:var(--fg-strong);font-weight:400
+  }
+  .demo-input{
+    width:200px;height:36px;border:1px solid #D3D6DB;border-radius:4px;
+    padding:0 12px;font-size:13px;background:#fff;color:var(--fg);
+    font-family:inherit;outline:none;
+  }
+  .demo-input.focus{
+    border-color:#355EF1
+  }
+  .demo-swatch{
+    display:flex;gap:6px;align-items:center;
+  }
+  .demo-swatch .sw{
+    width:32px;height:32px;border-radius:4px;border:1px solid var(--border);
+  }
+  .demo-tab{
+    display:inline-flex;align-items:center;gap:4px;padding:4px;
+    background:#F5F5F5;border-radius:4px;
+  }
+  .demo-tab .tabi{
+    padding:6px 12px;font-size:12px;border-radius:3px;color:var(--fg-3)
+  }
+  .demo-tab .tabi.on{
+    background:#fff;color:var(--fg);font-weight:500;
+    box-shadow:0 1.11px 2.22px rgba(0,0,0,.05);
+  }
+  .demo-switch{
+    position:relative;width:36px;height:20px;border-radius:9999px;background:var(--primary)
+  }
+  .demo-switch::after{
+    content:"";position:absolute;top:2px;left:18px;width:16px;height:16px;
+    border-radius:9999px;background:#fff
+  }
+  .demo-card{
+    width:200px;padding:14px 16px;background:#fff;border-radius:4px;
+    box-shadow:var(--shadow-card);
+  }
+  .demo-card .t{font-size:12px;font-weight:500;color:var(--fg);margin-bottom:6px}
+  .demo-card .v{font-size:18px;font-weight:700;color:var(--fg-strong);font-family:"DIN Alternate",sans-serif}
+  .demo-dialog{
+    width:240px;padding:16px;background:#fff;border-radius:4px;
+    box-shadow:var(--shadow-config);
+  }
+  .demo-dialog .t{font-size:13px;font-weight:600;color:var(--fg);margin-bottom:6px}
+  .demo-dialog .b{font-size:11px;color:var(--fg-3);margin-bottom:10px}
+  .demo-dialog .row{display:flex;justify-content:flex-end;gap:6px}
+  .demo-dialog .b1{height:28px;padding:0 12px;border-radius:4px;font-size:11px;background:#F5F5F5;color:var(--fg-2);border:0}
+  .demo-dialog .b2{height:28px;padding:0 12px;border-radius:4px;font-size:11px;background:var(--claw-primary-bg);color:#fff;border:0}
+  .demo-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:2px;font-size:11px}
+  .demo-badge.run{background:rgba(52,199,89,.12);color:#1a8c3a}
+  .demo-badge.run .d{width:6px;height:6px;border-radius:50%;background:#16A34A}
+  .demo-badge.new{background:var(--primary);color:#fff;font-family:"Open Sans",sans-serif;font-size:10px;padding:1px 6px}
+
+  /* ===== Footer ===== */
+  footer{
+    margin-top:64px;color:var(--fg-3);font-size:12px;text-align:center;line-height:1.8
+  }
+  footer code{
+    background:#fff;border:1px solid var(--border);padding:2px 6px;border-radius:2px;
+    font-family:"Menlo",monospace
+  }
+  footer a{color:var(--primary)}
+  footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ Hero ============ -->
+  <header class="hero">
+    <span class="eyebrow">ClawPro Design System v2</span>
+    <h1>组件图鉴</h1>
+    <p class="lead">
+      给产品 / 设计 / 前端三方对齐用的"<b>组件说明书</b>"。每个组件都讲清三件事：
+      <b>什么场景用</b>、<b>长这样</b>、<b>叫什么名字</b>。
+      提需求时直接说"用 <code>claw-primary</code>"或"<code>claw-outline</code> 的 <code>claw-square</code>"，
+      前端就知道要的样式，不用反复对图。
+    </p>
+
+    <div class="spec-strip">
+      <span class="chip brand">主色 <b>#1447E6</b></span>
+      <span class="chip">CTA 渐变 <b>#020617 → #1447E6</b></span>
+      <span class="chip">圆角 <b>≤ 4px</b></span>
+      <span class="chip">阴影 token <b>shadow-card</b></span>
+      <span class="chip">背景 <b>白→灰渐变</b></span>
+      <span class="chip">字体 <b>PingFang SC + Menlo + DIN</b></span>
+    </div>
+  </header>
+
+  <!-- ============ 1. 已发布组件 ============ -->
+  <section class="section">
+    <div class="section-head">
+      <span class="num">01</span>
+      <h2>已发布组件</h2>
+      <span class="sub">点卡片进入详情页</span>
+    </div>
+
+    <div class="grid">
+
+      <!-- Button -->
+      <a class="ccard" href="./pm.html">
+        <div class="preview">
+          <button class="demo-btn primary">创建 Agent</button>
+          <button class="demo-btn outline">详细配置</button>
+        </div>
+        <div class="body">
+          <div class="row">
+            <h3>Button 按钮</h3>
+            <span class="tag live"><span class="dot"></span>v2</span>
+          </div>
+          <p class="desc">主按钮 / 次按钮 / 危险 / 链接 · 8 种 variant + 10 种 size</p>
+          <div class="meta">
+            <span class="src">button.tsx · Figma 317:1051</span>
+            <span class="arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Input -->
+      <a class="ccard" href="./input.html">
+        <div class="preview">
+          <input class="demo-input focus" placeholder="请输入内容…" readonly />
+        </div>
+        <div class="body">
+          <div class="row">
+            <h3>Input 输入框</h3>
+            <span class="tag live"><span class="dot"></span>v2</span>
+          </div>
+          <p class="desc">单行 / 复合 / 校验 / 只读 · 含 InputGroup 组合容器</p>
+          <div class="meta">
+            <span class="src">input.tsx · input-group.tsx · textarea.tsx</span>
+            <span class="arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+    <p style="margin:12px 2px 0;font-size:11px;color:var(--fg-3);font-family:'Menlo',monospace">
+      ※ Design Tokens 单一事实源 = <code style="background:#F5F5F5;border:1px solid var(--border);padding:1px 6px;border-radius:2px">clawpro-skill/SKILL.md</code> · 各组件详情页底部均带 Token 索引
+    </p>
+  </section>
+
+  <!-- ============ 2. 规划中组件 ============ -->
+  <section class="section">
+    <div class="section-head">
+      <span class="num">02</span>
+      <h2>规划中</h2>
+      <span class="sub">按使用频率优先排</span>
+    </div>
+
+    <div class="grid">
+
+      <!-- Tab -->
+      <div class="ccard disabled">
+        <div class="preview">
+          <div class="demo-tab">
+            <span class="tabi on">全部</span>
+            <span class="tabi">我创建的</span>
+            <span class="tabi">已停用</span>
+          </div>
+        </div>
+        <div class="body">
+          <div class="row">
+            <h3>Tab 分段切换</h3>
+            <span class="tag soon">规划中</span>
+          </div>
+          <p class="desc">Segmented Control · 灰底白滑块 · shadow-segment</p>
+          <div class="meta">
+            <span class="src">SKILL §8.6</span>
+            <span class="arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Switch -->
+      <div class="ccard disabled">
+        <div class="preview">
+          <span class="demo-switch"></span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <h3>Switch 开关</h3>
+            <span class="tag soon">规划中</span>
+          </div>
+          <p class="desc">28×16 胶囊 · 开启 #1447E6 · 关闭 #E5E5E5</p>
+          <div class="meta">
+            <span class="src">SKILL §8.7</span>
+            <span class="arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card / Surface -->
+      <div class="ccard disabled">
+        <div class="preview">
+          <div class="demo-card">
+            <div class="t">总请求数</div>
+            <div class="v">2,186</div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="row">
+            <h3>Surface 卡片体系</h3>
+            <span class="tag soon">规划中</span>
+          </div>
+          <p class="desc">L1 表层 / L2 内嵌 / L3 浮层 / L4 高亮 / L5 滑块 五档</p>
+          <div class="meta">
+            <span class="src">Surface.tsx · §5</span>
+            <span class="arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dialog -->
+      <div class="ccard disabled">
+        <div class="preview">
+          <div class="demo-dialog">
+            <div class="t">确认删除？</div>
+            <div class="b">该操作不可撤销</div>
+            <div class="row">
+              <button class="b1">取消</button>
+              <button class="b2">确认</button>
+            </div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="row">
+            <h3>Dialog 对话框</h3>
+            <span class="tag soon">规划中</span>
+          </div>
+          <p class="desc">圆角 4px · shadow-overlay · 4 档宽度</p>
+          <div class="meta">
+            <span class="src">SKILL §8.12</span>
+            <span class="arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badge -->
+      <div class="ccard disabled">
+        <div class="preview" style="gap:10px">
+          <span class="demo-badge run"><span class="d"></span>运行中</span>
+          <span class="demo-badge new">New</span>
+        </div>
+        <div class="body">
+          <div class="row">
+            <h3>Badge 状态徽章</h3>
+            <span class="tag soon">规划中</span>
+          </div>
+          <p class="desc">运行 / 停止 / 待处理 / New / Beta · 圆角 2px</p>
+          <div class="meta">
+            <span class="src">SKILL §8.2</span>
+            <span class="arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="ccard disabled">
+        <div class="preview">
+          <svg width="160" height="80" viewBox="0 0 160 80" fill="none">
+            <rect x="0" y="0" width="160" height="20" rx="2" fill="#FAFAFA"/>
+            <rect x="8" y="6" width="40" height="8" rx="2" fill="#A3A3A3"/>
+            <rect x="64" y="6" width="32" height="8" rx="2" fill="#A3A3A3"/>
+            <rect x="112" y="6" width="40" height="8" rx="2" fill="#A3A3A3"/>
+            <rect x="0" y="24" width="160" height="1" fill="#E5E5E5"/>
+            <rect x="8" y="32" width="56" height="6" rx="2" fill="#334155"/>
+            <rect x="72" y="32" width="36" height="6" rx="2" fill="#737373"/>
+            <rect x="116" y="32" width="36" height="6" rx="2" fill="#1447E6"/>
+            <rect x="0" y="50" width="160" height="1" fill="#E5E5E5"/>
+            <rect x="8" y="58" width="48" height="6" rx="2" fill="#334155"/>
+            <rect x="72" y="58" width="36" height="6" rx="2" fill="#737373"/>
+            <rect x="116" y="58" width="32" height="6" rx="2" fill="#1447E6"/>
+          </svg>
+        </div>
+        <div class="body">
+          <div class="row">
+            <h3>Table 数据表格</h3>
+            <span class="tag soon">规划中</span>
+          </div>
+          <p class="desc">原生 table · 表头灰底 · hover 行高亮</p>
+          <div class="meta">
+            <span class="src">SKILL §8.9</span>
+            <span class="arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    Source · <code>openclaw-enterprise/docs/button-tokens/</code><br/>
+    Spec · <a href="https://github.com/" onclick="return false">ClawPro Design System v2</a> ·
+    本页是组件总览，可作为整套图鉴的起始入口
+  </footer>
+
+</div>
+</body>
+</html>

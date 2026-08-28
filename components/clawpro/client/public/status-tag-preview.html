@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>StatusTag · 全状态预览（mode=text only）</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+    --border-strong: #d4d4d8;
+    --text: #0a0a0a;
+    --text-muted: #525252;
+    --text-subtle: #737373;
+
+    --st-blue:   #1447E6;
+    --st-green:  #008236;
+    --st-red:    #DC2626;
+    --st-orange: #B45309;
+    --st-gray:   #0A0A0A;
+
+    --code-bg: #f5f5f5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1080px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  header.hero {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+  }
+  header.hero h1 {
+    margin: 0 0 8px; font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
+  }
+  header.hero p { margin: 0; color: var(--text-muted); font-size: 13px; }
+  header.hero .meta {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px;
+  }
+  header.hero .pill {
+    font-size: 12px; padding: 3px 10px; border-radius: 9999px;
+    background: #f4f4f5; color: #3f3f46; border: 1px solid var(--border);
+  }
+  header.hero .pill.warn { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+  header.hero .pill.ok { background: #DCFCE7; color: #166534; border-color: #BBF7D0; }
+
+  section.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  section.card h2 {
+    margin: 0 0 4px; font-size: 16px; font-weight: 600;
+  }
+  section.card .sub {
+    color: var(--text-muted); font-size: 12.5px; margin-bottom: 18px;
+  }
+
+  .row { display: flex; flex-wrap: wrap; gap: 24px 32px; align-items: center; }
+  .col-lbl {
+    min-width: 76px; font-size: 12px; color: var(--text-subtle);
+  }
+
+  /* ============== StatusTag 唯一形态 ============== */
+  .status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    /* no padding / no bg / no border / no radius */
+  }
+  .st-blue   { color: var(--st-blue); }
+  .st-green  { color: var(--st-green); }
+  .st-red    { color: var(--st-red); }
+  .st-orange { color: var(--st-orange); }
+  .st-gray   { color: var(--st-gray); }
+
+  .status-tag svg {
+    width: 12px; height: 12px; flex-shrink: 0;
+  }
+
+  /* ============== 色板表 ============== */
+  table.palette {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 12.5px;
+  }
+  table.palette th, table.palette td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.palette th {
+    color: var(--text-subtle);
+    font-weight: 500;
+    background: #fafafa;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  table.palette tr:last-child td { border-bottom: none; }
+  table.palette code {
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .swatch {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    vertical-align: -2px;
+    margin-right: 8px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  /* ============== 表格示例 ============== */
+  table.demo {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table.demo th, table.demo td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.demo th {
+    background: #fafafa;
+    color: var(--text-subtle);
+    font-weight: 500;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  table.demo tr:last-child td { border-bottom: none; }
+  table.demo td.mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--text-muted);
+  }
+
+  /* ============== 反例 ============== */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .compare .pane {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    background: #fff;
+  }
+  .compare .pane.bad { border-color: #FECACA; background: #FEF2F2; }
+  .compare .pane.good { border-color: #BBF7D0; background: #F0FDF4; }
+  .compare .pane h4 {
+    margin: 0 0 10px; font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .compare .pane.bad h4 { color: #991B1B; }
+  .compare .pane.good h4 { color: #166534; }
+  .compare .pane .ex {
+    display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center;
+    margin-bottom: 6px;
+  }
+  .compare .pane .note {
+    margin-top: 10px; font-size: 11.5px; color: var(--text-muted);
+  }
+
+  /* 反例：旧形态视觉重现（仅用于"❌"对比，不可复用） */
+  .legacy-fill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 10px; border-radius: 9999px;
+    font-size: 14px; font-weight: 500;
+  }
+  .legacy-fill.l-green { background: #DCFCE7; color: #166534; }
+  .legacy-fill.l-red   { background: #FEE2E2; color: #991B1B; }
+  .legacy-fill.l-blue  { background: #DBEAFE; color: #1E40AF; }
+  .legacy-soft {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 6px;
+    font-size: 14px; font-weight: 500;
+    background: #F5F3FF; color: #6D28D9; border: 1px solid #DDD6FE;
+  }
+  .legacy-fourteen {
+    font-size: 14px; font-weight: 500; color: var(--st-green);
+  }
+  .legacy-dot {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; font-weight: 500; color: var(--st-green);
+  }
+  .legacy-dot::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 9999px;
+    background: var(--st-green);
+  }
+
+  /* ruler */
+  .ruler {
+    display: flex; align-items: flex-end; gap: 24px;
+    padding: 12px 14px; background: #fafafa;
+    border: 1px dashed var(--border-strong); border-radius: 8px;
+    font-size: 11px; color: var(--text-subtle);
+  }
+  .ruler .item { display: flex; flex-direction: column; gap: 6px; }
+  .ruler .item .h {
+    height: 18px; display: inline-flex; align-items: center;
+    border-left: 1px dashed #a3a3a3; padding-left: 6px;
+  }
+
+  code.inline {
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* utility */
+  .row.tight { gap: 14px 22px; }
+  .label { font-size: 12px; color: var(--text-subtle); margin-right: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <h1>StatusTag · 全状态预览</h1>
+    <p>唯一形态 = <code class="inline">mode="text"</code>（不再有 fill / soft / role / dot）。字号 12px / Medium，与 12px 数据列对齐。</p>
+    <div class="meta">
+      <span class="pill ok">5 主语义色：blue / green / red / orange / gray</span>
+      <span class="pill">font-size 12px · medium</span>
+      <span class="pill">no bg · no border · no radius</span>
+      <span class="pill warn">扩展色一律退回 gray</span>
+    </div>
+  </header>
+
+  <!-- 1. 5 主语义色 -->
+  <section class="card">
+    <h2>1. 5 主语义色（不可扩展）</h2>
+    <div class="sub">仅彩色文字，无底色 / 无边框 / 无圆点。找不到合适色 → 退回 <code class="inline">gray</code>。</div>
+
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col-lbl">blue</div>
+      <span class="status-tag st-blue">进行中</span>
+      <span class="status-tag st-blue">处理中</span>
+      <span class="status-tag st-blue">全部用户</span>
+      <span class="status-tag st-blue">已接入</span>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col-lbl">green</div>
+      <span class="status-tag st-green">运行中</span>
+      <span class="status-tag st-green">已完成</span>
+      <span class="status-tag st-green">在线</span>
+      <span class="status-tag st-green">健康</span>
+      <span class="status-tag st-green">已发布</span>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col-lbl">red</div>
+      <span class="status-tag st-red">异常</span>
+      <span class="status-tag st-red">失败</span>
+      <span class="status-tag st-red">离线</span>
+      <span class="status-tag st-red">已禁用</span>
+      <span class="status-tag st-red">严重</span>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col-lbl">orange</div>
+      <span class="status-tag st-orange">即将到期</span>
+      <span class="status-tag st-orange">需关注</span>
+      <span class="status-tag st-orange">待审核</span>
+      <span class="status-tag st-orange">低配额</span>
+    </div>
+    <div class="row" style="margin-bottom: 24px;">
+      <div class="col-lbl">gray</div>
+      <span class="status-tag st-gray">未启用</span>
+      <span class="status-tag st-gray">未开始</span>
+      <span class="status-tag st-gray">草稿</span>
+      <span class="status-tag st-gray">默认</span>
+    </div>
+
+    <table class="palette">
+      <thead>
+        <tr>
+          <th style="width: 16%;">Variant</th>
+          <th style="width: 22%;">语义</th>
+          <th style="width: 18%;">Hex</th>
+          <th>典型词</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="swatch" style="background:var(--st-blue);"></span><code>blue</code></td>
+          <td>信息 / 进行中 / 处理中</td>
+          <td><code>#1447E6</code></td>
+          <td>进行中、处理中、全部用户、已接入</td>
+        </tr>
+        <tr>
+          <td><span class="swatch" style="background:var(--st-green);"></span><code>green</code></td>
+          <td>成功 / 已完成 / 在线 / 健康</td>
+          <td><code>#008236</code></td>
+          <td>运行中、已完成、在线、健康、已发布</td>
+        </tr>
+        <tr>
+          <td><span class="swatch" style="background:var(--st-red);"></span><code>red</code></td>
+          <td>失败 / 错误 / 危险 / 离线</td>
+          <td><code>#DC2626</code></td>
+          <td>异常、失败、离线、已禁用、严重</td>
+        </tr>
+        <tr>
+          <td><span class="swatch" style="background:var(--st-orange);"></span><code>orange</code></td>
+          <td>警告 / 即将到期 / 需关注（amber 系）</td>
+          <td><code>#B45309</code></td>
+          <td>即将到期、需关注、待审核、低配额</td>
+        </tr>
+        <tr>
+          <td><span class="swatch" style="background:var(--st-gray);"></span><code>gray</code></td>
+          <td>中性 / 默认 / 未启用 / 未开始</td>
+          <td><code>#0A0A0A</code></td>
+          <td>未启用、未开始、草稿、默认</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 2. 带 Icon -->
+  <section class="card">
+    <h2>2. 带 Icon（可选 · 12×12 currentColor · gap 4px）</h2>
+    <div class="sub">图标 size 锁 12px，颜色随文字 currentColor，与文字 4px 间距。</div>
+
+    <div class="row tight">
+      <span class="status-tag st-green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        已接入
+      </span>
+      <span class="status-tag st-red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        失败
+      </span>
+      <span class="status-tag st-orange">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        即将到期
+      </span>
+      <span class="status-tag st-blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        进行中
+      </span>
+      <span class="status-tag st-gray">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        未启用
+      </span>
+    </div>
+  </section>
+
+  <!-- 3. 表格行内场景 -->
+  <section class="card">
+    <h2>3. 表格状态列（最高频场景）</h2>
+    <div class="sub">12px 数据列字号 · 12px StatusTag 字号，整列只有彩色文字，没有色块密集排列。</div>
+
+    <table class="demo">
+      <thead>
+        <tr>
+          <th style="width: 26%;">实例 ID</th>
+          <th style="width: 22%;">名称</th>
+          <th style="width: 18%;">状态</th>
+          <th style="width: 22%;">最近更新</th>
+          <th>到期</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">ins-9f3a21</td>
+          <td>生产 · 主集群</td>
+          <td><span class="status-tag st-green">运行中</span></td>
+          <td>2 分钟前</td>
+          <td><span class="status-tag st-gray">永久</span></td>
+        </tr>
+        <tr>
+          <td class="mono">ins-7c12bd</td>
+          <td>预发 · A 区</td>
+          <td><span class="status-tag st-blue">进行中</span></td>
+          <td>4 分钟前</td>
+          <td>2027-01-14</td>
+        </tr>
+        <tr>
+          <td class="mono">ins-3e88a0</td>
+          <td>测试 · 临时</td>
+          <td><span class="status-tag st-orange">即将到期</span></td>
+          <td>11 分钟前</td>
+          <td><span class="status-tag st-orange">7 天后</span></td>
+        </tr>
+        <tr>
+          <td class="mono">ins-1a2b3c</td>
+          <td>灰度 · canary</td>
+          <td><span class="status-tag st-red">异常</span></td>
+          <td>34 分钟前</td>
+          <td>2026-12-30</td>
+        </tr>
+        <tr>
+          <td class="mono">ins-0042ee</td>
+          <td>已下线 · old-staging</td>
+          <td><span class="status-tag st-gray">未启用</span></td>
+          <td>3 天前</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. 行内 / 详情语境 -->
+  <section class="card">
+    <h2>4. 行内文字 · 详情区</h2>
+    <div class="sub">嵌入正文时跟随父行高，<code class="inline">whitespace-nowrap</code> 不换行；截断由父级 max-w 负责。</div>
+
+    <div style="display: flex; flex-direction: column; gap: 14px; font-size: 13px; color: var(--text-muted);">
+      <div>当前部署状态 <span class="status-tag st-green">运行中</span> · 最近一次发布 5 分钟前。</div>
+      <div>实例审核 <span class="status-tag st-orange">待审核</span>，预计在 2 小时内完成。</div>
+      <div>API Key <span class="status-tag st-red">已禁用</span>，请联系管理员重新启用。</div>
+      <div>同步任务 <span class="status-tag st-blue">进行中</span> · 完成度 64%。</div>
+      <div>该模型当前 <span class="status-tag st-gray">未启用</span>，启用后将占用 1 张 GPU。</div>
+    </div>
+  </section>
+
+  <!-- 5. 几何参考 -->
+  <section class="card">
+    <h2>5. 几何参考</h2>
+    <div class="sub">高度跟随父行高（line-height 1.5 → 约 18px），无 padding / 无 border / 无 radius。</div>
+    <div class="ruler">
+      <div class="item">
+        <span class="h"><span class="status-tag st-green">运行中</span></span>
+        <span>line-height 1.5 · 12px Medium · ~18px 视高</span>
+      </div>
+      <div class="item">
+        <span class="h">
+          <span class="status-tag st-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            已接入
+          </span>
+        </span>
+        <span>icon 12×12 · gap 4px · currentColor</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 禁止用法 -->
+  <section class="card">
+    <h2>6. 禁止用法（旧 API 反例对照）</h2>
+    <div class="sub">下列形态全部已删除，老代码迁移时一律重写为 <code class="inline">&lt;StatusTag variant="*"&gt;</code>。</div>
+
+    <div class="compare">
+      <div class="pane bad">
+        <h4>❌ mode="fill" · 浅底彩色胶囊</h4>
+        <div class="ex">
+          <span class="legacy-fill l-green">运行中</span>
+          <span class="legacy-fill l-red">异常</span>
+          <span class="legacy-fill l-blue">全部用户</span>
+        </div>
+        <div class="note">语义混在状态/分类之间，整列色块密度过高。</div>
+      </div>
+      <div class="pane good">
+        <h4>✅ 状态 → StatusTag text；分类 → Badge</h4>
+        <div class="ex">
+          <span class="status-tag st-green">运行中</span>
+          <span class="status-tag st-red">异常</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:9999px;background:#E8ECFE;color:#1447E6;font-size:12px;line-height:1;">全部用户</span>
+        </div>
+        <div class="note">"全部用户" 是分类，走 Badge color="blue"。</div>
+      </div>
+    </div>
+
+    <div class="compare" style="margin-top: 16px;">
+      <div class="pane bad">
+        <h4>❌ mode="soft" · 浅底+浅边框胶囊</h4>
+        <div class="ex">
+          <span class="legacy-soft">企业技能</span>
+          <span class="legacy-soft" style="background:#FEF3C7;color:#92400E;border-color:#FDE68A;">实验技能</span>
+        </div>
+        <div class="note">"企业技能 / 实验技能" 是分类，不是状态。</div>
+      </div>
+      <div class="pane good">
+        <h4>✅ 改用 Badge 或宿主 Tag</h4>
+        <div class="ex">
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:9999px;background:#F3E8FF;color:#7E22CE;font-size:12px;line-height:1;">企业技能</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:9999px;background:#FFEDD5;color:#9A3412;font-size:12px;line-height:1;">实验</span>
+        </div>
+        <div class="note">分类语义 → Badge color="purple|orange"；不允许用 StatusTag 拼装。</div>
+      </div>
+    </div>
+
+    <div class="compare" style="margin-top: 16px;">
+      <div class="pane bad">
+        <h4>❌ 14px / dot 旧形态</h4>
+        <div class="ex">
+          <span class="legacy-fourteen">运行中</span>
+          <span class="legacy-dot">运行中</span>
+        </div>
+        <div class="note">14px 与表格 12px 数据列不齐；dot 已废弃。</div>
+      </div>
+      <div class="pane good">
+        <h4>✅ 12px Medium · 仅彩色文字</h4>
+        <div class="ex">
+          <span class="status-tag st-green">运行中</span>
+          <span class="status-tag st-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            运行中
+          </span>
+        </div>
+        <div class="note">需要 dot 语义 → 套外层 1.5px 圆点，组件本体不渲染圆点。</div>
+      </div>
+    </div>
+
+    <div class="compare" style="margin-top: 16px;">
+      <div class="pane bad">
+        <h4>❌ 用 StatusTag 表达版本 / 范围 / 分类</h4>
+        <div class="ex">
+          <span class="status-tag st-gray">v2.1.0</span>
+          <span class="status-tag st-blue">企业版</span>
+          <span class="status-tag st-green">公共</span>
+        </div>
+        <div class="note">这些都是"标签"语义，不是"状态"。</div>
+      </div>
+      <div class="pane good">
+        <h4>✅ 用 Badge 表达"标签"</h4>
+        <div class="ex">
+          <span style="display:inline-flex;align-items:center;padding:2px 10px;border-radius:9999px;border:1px solid #e5e7eb;color:#0a0a0a;background:#fff;font-size:12px;line-height:1;">v2.1.0</span>
+          <span style="display:inline-flex;align-items:center;padding:2px 10px;border-radius:9999px;background:#f4f4f5;color:#3f3f46;font-size:12px;line-height:1;">企业版</span>
+          <span style="display:inline-flex;align-items:center;padding:2px 10px;border-radius:9999px;background:#E8ECFE;color:#1447E6;font-size:12px;line-height:1;">公共</span>
+        </div>
+        <div class="note">用户语义里出现"标签 / 版本 / 分类" → 一律 Badge。</div>
+      </div>
+    </div>
+
+    <div class="compare" style="margin-top: 16px;">
+      <div class="pane bad">
+        <h4>❌ 给 StatusTag 加底色 / 圆角</h4>
+        <div class="ex">
+          <span class="status-tag st-green" style="background:#DCFCE7;padding:2px 8px;border-radius:9999px;">运行中</span>
+          <span class="status-tag st-red" style="border:1px solid #FECACA;padding:2px 8px;border-radius:6px;">失败</span>
+        </div>
+        <div class="note">破坏唯一形态。想要"色块" → 直接换 Badge。</div>
+      </div>
+      <div class="pane good">
+        <h4>✅ 保持纯文本</h4>
+        <div class="ex">
+          <span class="status-tag st-green">运行中</span>
+          <span class="status-tag st-red">失败</span>
+        </div>
+        <div class="note">StatusTag = 12px 彩色文字 + 可选 12px icon。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 语义路由速查 -->
+  <section class="card">
+    <h2>7. 语义路由速查（用户/PRD 用词 → 命中组件）</h2>
+    <table class="palette">
+      <thead>
+        <tr>
+          <th style="width: 38%;">用户/PRD 措辞</th>
+          <th style="width: 20%;">命中组件</th>
+          <th>判断要点</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>"运行中" / "已停止" / "异常" / "在线" / "已完成" / "失败" / "进行中"</td><td><code>StatusTag</code></td><td>动词性 · 表达"运行 / 进度 / 信息态"</td></tr>
+        <tr><td>"待审核" / "即将到期" / "未启用" / "需关注"</td><td><code>StatusTag</code></td><td>状态语义</td></tr>
+        <tr><td>"标签 / tag / 角标 / 分类"</td><td><code>Badge</code></td><td>名词性 · 给一段内容打分类标签</td></tr>
+        <tr><td>"v2.1.0" / "Beta" / "Alpha" / "Pro" / "AI" / "企业版" / "公共版"</td><td><code>Badge</code></td><td>版本 / 范围 / 类别</td></tr>
+        <tr><td>"管理员 / 用户 / 访客" 等角色身份</td><td><code>RoleTag</code> / 宿主 RolePreset</td><td>不再由 StatusTag 承担</td></tr>
+        <tr><td>用户自建 · 可关闭 · 可点选</td><td><code>Tag</code></td><td>交互型，参见 tag-label.md</td></tr>
+        <tr><td>"红点 / 99+ / 通知数字"</td><td>NumberIndicator（宿主）</td><td>纯计数器，不复用 Badge</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+</body>
+</html>

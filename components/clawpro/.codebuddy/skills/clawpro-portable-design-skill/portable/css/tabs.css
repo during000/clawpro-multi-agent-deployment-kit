@@ -1,0 +1,63 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable LineTabs — ClawPro
+ * 下划线一级 Tab：容器 border-b #dbe6ff；active 黑色 2px 下划线压住底边。
+ * ⚠ active 下划线不要换成品牌蓝（蓝色是按钮主操作色）。
+ * 配套：portable/react/tabs.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-tabs__list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid #dbe6ff;
+}
+
+.cp-tabs__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--cp-text-secondary);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 150ms ease;
+}
+.cp-tabs__trigger:hover:not(:disabled) {
+  color: var(--cp-text-emphasis);
+}
+
+.cp-tabs__trigger--active {
+  color: var(--cp-text-emphasis);
+  border-bottom: 2px solid #0A0A0A;
+  margin-bottom: -1px;
+}
+
+.cp-tabs__trigger:disabled {
+  cursor: not-allowed;
+  color: var(--cp-text-weak);
+}
+
+/* "即将开放" outline 胶囊 Badge */
+.cp-tabs__badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid var(--cp-border);
+  background: #FFFFFF;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--cp-text-muted);
+}
+
+.cp-tabs__content {
+  margin-top: 16px;
+}
+.cp-tabs__content--hidden {
+  display: none;
+}

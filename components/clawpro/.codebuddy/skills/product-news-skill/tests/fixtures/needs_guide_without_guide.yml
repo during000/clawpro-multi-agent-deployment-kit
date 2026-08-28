@@ -1,0 +1,10 @@
+# 错误示例：needs_guide=true 但 guide 字段缺失
+changes:
+  - id: "test-needs-guide-no-guide"
+    title: "需要操作指南的功能"
+    type: "功能上线"
+    date: "2026-07-05"
+    endpoint: "管控端"
+    description: "描述内容。"
+    needs_guide: true
+    display_components: {banner: {enabled: false}, floating_window: {enabled: false}}

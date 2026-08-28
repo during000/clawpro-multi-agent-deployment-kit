@@ -1,0 +1,16 @@
+# 错误示例：两个条目使用了相同的 id
+changes:
+  - id: "same-id-20260705"
+    title: "第一个条目"
+    type: "功能上线"
+    date: "2026-07-05"
+    endpoint: "管控端"
+    description: "第一个条目描述。"
+    display_components: {banner: {enabled: false}, floating_window: {enabled: false}}
+  - id: "same-id-20260705"
+    title: "第二个条目"
+    type: "体验优化"
+    date: "2026-07-05"
+    endpoint: "用户端"
+    description: "第二个条目描述。"
+    display_components: {banner: {enabled: false}, floating_window: {enabled: false}}

@@ -1,0 +1,9 @@
+# 错误示例：title 包含 emoji
+changes:
+  - id: "test-emoji-title"
+    title: "🎉 新增超强功能"
+    type: "功能上线"
+    date: "2026-07-05"
+    endpoint: "管控端"
+    description: "测试描述。"
+    display_components: {banner: {enabled: false}, floating_window: {enabled: false}}

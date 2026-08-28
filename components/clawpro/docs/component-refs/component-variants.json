@@ -1,0 +1,2486 @@
+{
+  "generator": "scan-variants.cjs",
+  "generatedAt": "2026-05-21T07:23:51.153Z",
+  "repo": "../..",
+  "notes": [
+    "(unset)   = 调用处没显式写该 prop，运行时取 cva defaultVariants 的值",
+    "(dynamic) = 写的是 {expr} 这种动态值，需要人工确认",
+    "(unknown) = 显式传了字符串但不在 cva 已声明的取值里（多半是自定义/历史值/拼写错）",
+    "byDimension 是分维度反向索引：组件 → 维度（variant/size/...）→ 变体值 → 引用页面"
+  ],
+  "components": {
+    "accordion": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "alert": {
+      "hasCva": true,
+      "dimensions": {
+        "variant": {
+          "values": [
+            "default",
+            "destructive"
+          ],
+          "default": "default"
+        }
+      },
+      "byDimension": {
+        "variant": {}
+      },
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "alert-dialog": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 15,
+      "pagesWithUsage": [
+        "admin/ChannelConfig.tsx",
+        "admin/FileManagement.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/PlatformPolicy.tsx",
+        "admin/SkillLibrary/BatchDeleteDialog.tsx",
+        "admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "admin/SkillLibrary/DeleteSkillDialog.tsx",
+        "admin/SkillLibrary/SkillDetail.tsx",
+        "admin/SkillLibrary/SkillListTab.tsx",
+        "admin/SkillRolesTab.tsx",
+        "tenant/ChatView.tsx",
+        "tenant/OpenClawDetail.tsx",
+        "tenant/ToolsMcpPanel.tsx"
+      ]
+    },
+    "aspect-ratio": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "avatar": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "badge": {
+      "hasCva": true,
+      "dimensions": {
+        "variant": {
+          "values": [
+            "default",
+            "secondary",
+            "destructive",
+            "outline"
+          ],
+          "default": "default"
+        }
+      },
+      "byDimension": {
+        "variant": {
+          "secondary": [
+            {
+              "page": "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 4
+            }
+          ],
+          "destructive": [
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 1
+            }
+          ],
+          "outline": [
+            {
+              "page": "admin/DocManagement.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement/NodeContentPanel.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillRolesTab.tsx",
+              "count": 2
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 1
+            }
+          ],
+          "(unset)": [
+            {
+              "page": "admin/SkillLibrary/AddToPackageDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "totalUsages": 18,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/DocManagement.tsx",
+        "admin/MemberManagement/NodeContentPanel.tsx",
+        "admin/SkillLibrary/AddToPackageDialog.tsx",
+        "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+        "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "admin/SkillRolesTab.tsx",
+        "tenant/OpenClawDetail.tsx",
+        "tenant/OpenClawDetailGuide.tsx"
+      ]
+    },
+    "breadcrumb": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "button": {
+      "hasCva": true,
+      "dimensions": {
+        "variant": {
+          "values": [
+            "default",
+            "destructive",
+            "outline",
+            "secondary",
+            "ghost",
+            "link",
+            "claw-outline",
+            "claw-primary"
+          ],
+          "default": "default"
+        },
+        "size": {
+          "values": [
+            "default",
+            "sm",
+            "lg",
+            "icon",
+            "claw",
+            "icon-sm",
+            "icon-lg",
+            "claw-sm",
+            "claw-lg",
+            "claw-square"
+          ],
+          "default": "default"
+        }
+      },
+      "byDimension": {
+        "variant": {
+          "default": [
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 1
+            },
+            {
+              "page": "Home.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 1
+            }
+          ],
+          "destructive": [
+            {
+              "page": "admin/FileManagement.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/MemberManagement/GroupDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement/NodeContentPanel.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProCloseDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ModelConfig.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SecurityGroupManagement.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/CategoryManagementTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/MCPListTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PluginListTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/VersionManagement/CommandTaskTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/VersionManagement/components/CreateCommandDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 8
+            },
+            {
+              "page": "tenant/FileSpace.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/MyOpenClaw.tsx",
+              "count": 1
+            }
+          ],
+          "outline": [
+            {
+              "page": "admin/AgentMigration.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/AgentToolLibrary.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/AuditLog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/AuthSourceImportDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/BasicInfo.tsx",
+              "count": 8
+            },
+            {
+              "page": "admin/BatchUpdateNotice.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ChannelConfig.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/DocManagement.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/FileManagement.tsx",
+              "count": 16
+            },
+            {
+              "page": "admin/MemberManagement.tsx",
+              "count": 19
+            },
+            {
+              "page": "admin/MemberManagement/GroupDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemberManagement/GroupList.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemberManagement/GroupView.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement/NodeContentPanel.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/FreeVersionCard.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProActivationDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProCloseDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProDashboard.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProServiceCard.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProVersionCard.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ModelConfig.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 16
+            },
+            {
+              "page": "admin/OpsObservation.tsx",
+              "count": 7
+            },
+            {
+              "page": "admin/PlatformPolicy.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SecurityGroupManagement.tsx",
+              "count": 15
+            },
+            {
+              "page": "admin/ServerManagement.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SessionManagement.tsx",
+              "count": 9
+            },
+            {
+              "page": "admin/SkillLibrary/AddCategoryDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/AddToPackageDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/BatchDeleteDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/BatchDistributeDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SkillLibrary/CategoryManagementTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/DistributeDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/EditCategoriesDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/EditCategoryDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/EditScopeDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/EnableCOSDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/MCPAddDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SkillLibrary/MCPDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/MCPListTab.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/SkillLibrary/PluginDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PluginListTab.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/SkillLibrary/PluginUploadDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+              "count": 12
+            },
+            {
+              "page": "admin/SkillLibrary/SkillListTab.tsx",
+              "count": 7
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUpdateDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUploadDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SkillRolesTab.tsx",
+              "count": 10
+            },
+            {
+              "page": "admin/standard/StandardBasicInfo.tsx",
+              "count": 11
+            },
+            {
+              "page": "admin/TokensMonitor.tsx",
+              "count": 10
+            },
+            {
+              "page": "admin/VersionManagement/CommandTaskTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/VersionManagement/components/CreateCommandDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/VersionManagement/components/RecentHistorySection.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 7
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 2
+            }
+          ],
+          "ghost": [
+            {
+              "page": "admin/AgentMigration.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/FileManagement.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/ImageManagement/AgentTypesTable.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemberManagement.tsx",
+              "count": 7
+            },
+            {
+              "page": "admin/MemberManagement/NodeContentPanel.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemberManagement/OverrideCell.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProDashboard.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SecurityGroupManagement.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/SkillConfig.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/MCPDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PluginDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PluginUploadDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUpdateDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUploadDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/TokensMonitor.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/VersionManagement/CommandTaskTab.tsx",
+              "count": 2
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 5
+            },
+            {
+              "page": "tenant/FileSpace.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/HelpDocs.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/ModelQuota.tsx",
+              "count": 6
+            },
+            {
+              "page": "tenant/MyOpenClaw.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 10
+            }
+          ],
+          "link": [
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 4
+            }
+          ],
+          "claw-outline": [
+            {
+              "page": "admin/AuditLog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ImageManagement.tsx",
+              "count": 6
+            },
+            {
+              "page": "admin/ImageManagement/PublicImageHistoryDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ImageManagement/PushUpgradeDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ImageManagement/UpdateRecordsDrawer.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 6
+            },
+            {
+              "page": "admin/OpsObservation.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SessionManagement.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillDetail.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/TokensMonitor.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 7
+            },
+            {
+              "page": "tenant/ChatView.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/FileSpace.tsx",
+              "count": 6
+            },
+            {
+              "page": "tenant/ModelQuota.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/MyOpenClaw.tsx",
+              "count": 6
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 11
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 11
+            },
+            {
+              "page": "tenant/ResetPassword.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 5
+            },
+            {
+              "page": "tenant/ToolsMcpPanel.tsx",
+              "count": 6
+            }
+          ],
+          "claw-primary": [
+            {
+              "page": "admin/ImageManagement.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/ImageManagement/PushUpgradeDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 7
+            },
+            {
+              "page": "tenant/ChatView.tsx",
+              "count": 3
+            },
+            {
+              "page": "tenant/FileSpace.tsx",
+              "count": 4
+            },
+            {
+              "page": "tenant/MyOpenClaw.tsx",
+              "count": 3
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 9
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 1
+            }
+          ],
+          "(unset)": [
+            {
+              "page": "admin/AgentMigration.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/AgentToolLibrary.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/AuthSourceImportDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/ChannelConfig.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/DocManagement.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/FileManagement.tsx",
+              "count": 11
+            },
+            {
+              "page": "admin/ImageManagement.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement.tsx",
+              "count": 15
+            },
+            {
+              "page": "admin/MemberManagement/GroupDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement/GroupView.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement/NodeContentPanel.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/MemberManagement/OverrideCell.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement/SyncResultDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/FreeVersionCard.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/InstanceTable.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProActivationDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProCloseDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ModelConfig.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 16
+            },
+            {
+              "page": "admin/OpsObservation.tsx",
+              "count": 6
+            },
+            {
+              "page": "admin/PlatformPolicy.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SecurityGroupManagement.tsx",
+              "count": 17
+            },
+            {
+              "page": "admin/ServerManagement.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SessionManagement.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/SkillConfig.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/AddCategoryDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/AddToPackageDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/BatchDeleteDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/BatchDistributeDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/BucketManagementTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/CategoryManagementTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/DistributeDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/EditCategoriesDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/EditCategoryDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/EditScopeDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/EnableCOSDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/MCPAddDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/MCPDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/MCPListTab.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/PluginDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PluginListTab.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/PluginUploadDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+              "count": 9
+            },
+            {
+              "page": "admin/SkillLibrary/SkillListTab.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUpdateDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUploadDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillRolesTab.tsx",
+              "count": 6
+            },
+            {
+              "page": "admin/TokensMonitor.tsx",
+              "count": 8
+            },
+            {
+              "page": "admin/VersionManagement/CommandTaskTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/VersionManagement/components/CreateCommandDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 1
+            },
+            {
+              "page": "NotFound.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/MyOpenClaw.tsx",
+              "count": 3
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 6
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 3
+            },
+            {
+              "page": "tenant/ResetPassword.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/ToolsMcpPanel.tsx",
+              "count": 4
+            }
+          ],
+          "(dynamic)": [
+            {
+              "page": "admin/SessionManagement.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 2
+            }
+          ]
+        },
+        "size": {
+          "default": [
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 12
+            }
+          ],
+          "sm": [
+            {
+              "page": "admin/AgentMigration.tsx",
+              "count": 9
+            },
+            {
+              "page": "admin/AuditLog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/AuthSourceImportDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/BasicInfo.tsx",
+              "count": 8
+            },
+            {
+              "page": "admin/BatchUpdateNotice.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ChannelConfig.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/FileManagement.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/ImageManagement/AgentTypesTable.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemberManagement.tsx",
+              "count": 9
+            },
+            {
+              "page": "admin/MemberManagement/GroupList.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemberManagement/NodeContentPanel.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/MemberManagement/OverrideCell.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/InstanceTable.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProDashboard.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProServiceCard.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/ModelConfig.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 23
+            },
+            {
+              "page": "admin/PlatformPolicy.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SecurityGroupManagement.tsx",
+              "count": 13
+            },
+            {
+              "page": "admin/ServerManagement.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SkillConfig.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/BatchDistributeDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/EditScopeDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/MCPDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/MCPListTab.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillLibrary/PluginDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PluginListTab.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillLibrary/PluginUploadDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+              "count": 9
+            },
+            {
+              "page": "admin/SkillLibrary/SkillListTab.tsx",
+              "count": 6
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUpdateDialog.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUploadDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillRolesTab.tsx",
+              "count": 7
+            },
+            {
+              "page": "admin/standard/StandardBasicInfo.tsx",
+              "count": 11
+            },
+            {
+              "page": "admin/TokensMonitor.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/VersionManagement/CommandTaskTab.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/VersionManagement/components/CreateCommandDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/VersionManagement/components/RecentHistorySection.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 3
+            },
+            {
+              "page": "tenant/HelpDocs.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/ModelQuota.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/MyOpenClaw.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 6
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 6
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 5
+            },
+            {
+              "page": "tenant/ToolsMcpPanel.tsx",
+              "count": 1
+            }
+          ],
+          "lg": [
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 2
+            }
+          ],
+          "icon": [
+            {
+              "page": "admin/AuditLog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemberManagement.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/OpsObservation.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SessionManagement.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/TokensMonitor.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/ModelQuota.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 6
+            },
+            {
+              "page": "tenant/ToolsMcpPanel.tsx",
+              "count": 2
+            }
+          ],
+          "claw": [
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 6
+            },
+            {
+              "page": "admin/SkillLibrary/SkillDetail.tsx",
+              "count": 4
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 10
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 5
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 2
+            }
+          ],
+          "icon-sm": [
+            {
+              "page": "tenant/FileSpace.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 1
+            }
+          ],
+          "claw-sm": [
+            {
+              "page": "admin/ImageManagement.tsx",
+              "count": 12
+            },
+            {
+              "page": "admin/ImageManagement/PublicImageHistoryDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ImageManagement/PushUpgradeDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/ImageManagement/UpdateRecordsDrawer.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/ChatView.tsx",
+              "count": 5
+            },
+            {
+              "page": "tenant/FileSpace.tsx",
+              "count": 3
+            },
+            {
+              "page": "tenant/ModelQuota.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 15
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 1
+            }
+          ],
+          "claw-lg": [
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 2
+            }
+          ],
+          "(unset)": [
+            {
+              "page": "admin/AgentMigration.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/AgentToolLibrary.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/AuditLog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/AuthSourceImportDialog.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/ChannelConfig.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/DocManagement.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/FileManagement.tsx",
+              "count": 26
+            },
+            {
+              "page": "admin/MemberManagement.tsx",
+              "count": 36
+            },
+            {
+              "page": "admin/MemberManagement/GroupDialog.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/MemberManagement/GroupView.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemberManagement/NodeContentPanel.tsx",
+              "count": 8
+            },
+            {
+              "page": "admin/MemberManagement/SyncResultDialog.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/FreeVersionCard.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProActivationDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProCloseDialog.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProDashboard.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/MemoryManagement/components/ProVersionCard.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/ModelConfig.tsx",
+              "count": 8
+            },
+            {
+              "page": "admin/OpenClawMonitor.tsx",
+              "count": 14
+            },
+            {
+              "page": "admin/OpsObservation.tsx",
+              "count": 13
+            },
+            {
+              "page": "admin/SecurityGroupManagement.tsx",
+              "count": 26
+            },
+            {
+              "page": "admin/ServerManagement.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SessionManagement.tsx",
+              "count": 15
+            },
+            {
+              "page": "admin/SkillLibrary/AddCategoryDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/AddToPackageDialog.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillLibrary/BatchDeleteDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/BatchDistributeDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SkillLibrary/BucketManagementTab.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/CategoryManagementTab.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SkillLibrary/DistributeDialog.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillLibrary/EditCategoriesDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/EditCategoryDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/EnableCOSDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/MCPAddDialog.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/SkillLibrary/MCPDetail.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/MCPListTab.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillLibrary/PluginDetail.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/PluginListTab.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillLibrary/PluginUploadDialog.tsx",
+              "count": 3
+            },
+            {
+              "page": "admin/SkillLibrary/SkillDetail.tsx",
+              "count": 1
+            },
+            {
+              "page": "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+              "count": 12
+            },
+            {
+              "page": "admin/SkillLibrary/SkillListTab.tsx",
+              "count": 5
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUpdateDialog.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/SkillLibrary/SkillUploadDialog.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/SkillRolesTab.tsx",
+              "count": 9
+            },
+            {
+              "page": "admin/TokensMonitor.tsx",
+              "count": 16
+            },
+            {
+              "page": "admin/VersionManagement/CommandTaskTab.tsx",
+              "count": 2
+            },
+            {
+              "page": "admin/VersionManagement/components/CreateCommandDialog.tsx",
+              "count": 4
+            },
+            {
+              "page": "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+              "count": 5
+            },
+            {
+              "page": "ComponentPreview.tsx",
+              "count": 9
+            },
+            {
+              "page": "Home.tsx",
+              "count": 1
+            },
+            {
+              "page": "NotFound.tsx",
+              "count": 1
+            },
+            {
+              "page": "tenant/FileSpace.tsx",
+              "count": 8
+            },
+            {
+              "page": "tenant/ModelQuota.tsx",
+              "count": 3
+            },
+            {
+              "page": "tenant/MyOpenClaw.tsx",
+              "count": 13
+            },
+            {
+              "page": "tenant/OpenClawDetail.tsx",
+              "count": 7
+            },
+            {
+              "page": "tenant/OpenClawDetailGuide.tsx",
+              "count": 4
+            },
+            {
+              "page": "tenant/ResetPassword.tsx",
+              "count": 2
+            },
+            {
+              "page": "tenant/SkillSquare.tsx",
+              "count": 4
+            },
+            {
+              "page": "tenant/ToolsMcpPanel.tsx",
+              "count": 7
+            }
+          ]
+        }
+      },
+      "totalUsages": 651,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "Home.tsx",
+        "NotFound.tsx",
+        "admin/AgentMigration.tsx",
+        "admin/AgentToolLibrary.tsx",
+        "admin/AuditLog.tsx",
+        "admin/AuthSourceImportDialog.tsx",
+        "admin/BasicInfo.tsx",
+        "admin/BatchUpdateNotice.tsx",
+        "admin/ChannelConfig.tsx",
+        "admin/DocManagement.tsx",
+        "admin/FileManagement.tsx",
+        "admin/ImageManagement.tsx",
+        "admin/ImageManagement/AgentTypesTable.tsx",
+        "admin/ImageManagement/PublicImageHistoryDialog.tsx",
+        "admin/ImageManagement/PushUpgradeDialog.tsx",
+        "admin/ImageManagement/UpdateRecordsDrawer.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemberManagement/GroupDialog.tsx",
+        "admin/MemberManagement/GroupList.tsx",
+        "admin/MemberManagement/GroupView.tsx",
+        "admin/MemberManagement/NodeContentPanel.tsx",
+        "admin/MemberManagement/OverrideCell.tsx",
+        "admin/MemberManagement/SyncResultDialog.tsx",
+        "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+        "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+        "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+        "admin/MemoryManagement/components/FreeVersionCard.tsx",
+        "admin/MemoryManagement/components/InstanceTable.tsx",
+        "admin/MemoryManagement/components/ProActivationDialog.tsx",
+        "admin/MemoryManagement/components/ProCloseDialog.tsx",
+        "admin/MemoryManagement/components/ProDashboard.tsx",
+        "admin/MemoryManagement/components/ProServiceCard.tsx",
+        "admin/MemoryManagement/components/ProVersionCard.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/OpsObservation.tsx",
+        "admin/PlatformPolicy.tsx",
+        "admin/SecurityGroupManagement.tsx",
+        "admin/ServerManagement.tsx",
+        "admin/SessionManagement.tsx",
+        "admin/SkillConfig.tsx",
+        "admin/SkillLibrary/AddCategoryDialog.tsx",
+        "admin/SkillLibrary/AddToPackageDialog.tsx",
+        "admin/SkillLibrary/BatchDeleteDialog.tsx",
+        "admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "admin/SkillLibrary/BucketManagementTab.tsx",
+        "admin/SkillLibrary/CategoryManagementTab.tsx",
+        "admin/SkillLibrary/DistributeDialog.tsx",
+        "admin/SkillLibrary/EditCategoriesDialog.tsx",
+        "admin/SkillLibrary/EditCategoryDialog.tsx",
+        "admin/SkillLibrary/EditScopeDialog.tsx",
+        "admin/SkillLibrary/EnableCOSDialog.tsx",
+        "admin/SkillLibrary/MCPAddDialog.tsx",
+        "admin/SkillLibrary/MCPDetail.tsx",
+        "admin/SkillLibrary/MCPListTab.tsx",
+        "admin/SkillLibrary/PluginDetail.tsx",
+        "admin/SkillLibrary/PluginListTab.tsx",
+        "admin/SkillLibrary/PluginUploadDialog.tsx",
+        "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+        "admin/SkillLibrary/SkillDetail.tsx",
+        "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "admin/SkillLibrary/SkillListTab.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/TokensMonitor.tsx",
+        "admin/VersionManagement/CommandTaskTab.tsx",
+        "admin/VersionManagement/components/CreateCommandDialog.tsx",
+        "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+        "admin/VersionManagement/components/RecentHistorySection.tsx",
+        "admin/standard/StandardBasicInfo.tsx",
+        "tenant/ChatView.tsx",
+        "tenant/FileSpace.tsx",
+        "tenant/HelpDocs.tsx",
+        "tenant/ModelQuota.tsx",
+        "tenant/MyOpenClaw.tsx",
+        "tenant/OpenClawDetail.tsx",
+        "tenant/OpenClawDetailGuide.tsx",
+        "tenant/ResetPassword.tsx",
+        "tenant/SkillSquare.tsx",
+        "tenant/ToolsMcpPanel.tsx"
+      ]
+    },
+    "button-group": {
+      "hasCva": true,
+      "dimensions": {
+        "orientation": {
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "horizontal"
+        }
+      },
+      "byDimension": {
+        "orientation": {}
+      },
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "calendar": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 1,
+      "pagesWithUsage": [
+        "admin/ImageManagement/UpdateRecordsDrawer.tsx"
+      ]
+    },
+    "card": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 4,
+      "pagesWithUsage": [
+        "NotFound.tsx",
+        "admin/AgentMigration.tsx"
+      ]
+    },
+    "carousel": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "chart": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "checkbox": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 36,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/FileManagement.tsx",
+        "admin/ImageManagement.tsx",
+        "admin/ImageManagement/PushUpgradeDialog.tsx",
+        "admin/MemberManagement/NodeContentPanel.tsx",
+        "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+        "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+        "admin/MemoryManagement/components/InstanceTable.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/OpsObservation.tsx",
+        "admin/SessionManagement.tsx",
+        "admin/SkillLibrary/BatchDeleteDialog.tsx",
+        "admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "admin/SkillLibrary/DistributeDialog.tsx",
+        "admin/SkillLibrary/EnableCOSDialog.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/TokensMonitor.tsx",
+        "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+        "admin/standard/StandardBasicInfo.tsx"
+      ]
+    },
+    "collapsible": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 3,
+      "pagesWithUsage": [
+        "admin/AgentMigration.tsx"
+      ]
+    },
+    "command": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 2,
+      "pagesWithUsage": [
+        "admin/SecurityGroupManagement.tsx"
+      ]
+    },
+    "context-menu": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "dialog": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 163,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/AgentToolLibrary.tsx",
+        "admin/AuditLog.tsx",
+        "admin/AuthSourceImportDialog.tsx",
+        "admin/ChannelConfig.tsx",
+        "admin/DocManagement.tsx",
+        "admin/FileManagement.tsx",
+        "admin/ImageManagement.tsx",
+        "admin/ImageManagement/PublicImageHistoryDialog.tsx",
+        "admin/ImageManagement/PushUpgradeDialog.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemberManagement/GroupDialog.tsx",
+        "admin/MemberManagement/GroupView.tsx",
+        "admin/MemberManagement/NodeContentPanel.tsx",
+        "admin/MemberManagement/SyncResultDialog.tsx",
+        "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+        "admin/MemoryManagement/components/DisableConfirmDialog.tsx",
+        "admin/MemoryManagement/components/EnableConfirmDialog.tsx",
+        "admin/MemoryManagement/components/FreeVersionCard.tsx",
+        "admin/MemoryManagement/components/ProActivationDialog.tsx",
+        "admin/MemoryManagement/components/ProCloseDialog.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/OpsObservation.tsx",
+        "admin/PlatformPolicy.tsx",
+        "admin/SecurityGroupManagement.tsx",
+        "admin/ServerManagement.tsx",
+        "admin/SessionManagement.tsx",
+        "admin/SkillLibrary/AddCategoryDialog.tsx",
+        "admin/SkillLibrary/AddToPackageDialog.tsx",
+        "admin/SkillLibrary/BatchDeleteDialog.tsx",
+        "admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "admin/SkillLibrary/DistributeDialog.tsx",
+        "admin/SkillLibrary/EditCategoriesDialog.tsx",
+        "admin/SkillLibrary/EditCategoryDialog.tsx",
+        "admin/SkillLibrary/EnableCOSDialog.tsx",
+        "admin/SkillLibrary/MCPAddDialog.tsx",
+        "admin/SkillLibrary/MCPDetail.tsx",
+        "admin/SkillLibrary/MCPListTab.tsx",
+        "admin/SkillLibrary/PluginDetail.tsx",
+        "admin/SkillLibrary/PluginListTab.tsx",
+        "admin/SkillLibrary/PluginUploadDialog.tsx",
+        "admin/SkillLibrary/SkillDetail.tsx",
+        "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "admin/SkillLibrary/SkillListTab.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/TokensMonitor.tsx",
+        "admin/VersionManagement/CommandTaskTab.tsx",
+        "admin/VersionManagement/HistoryTab.tsx",
+        "admin/VersionManagement/components/CreateCommandDialog.tsx",
+        "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+        "tenant/ChatView.tsx",
+        "tenant/FileSpace.tsx",
+        "tenant/MyOpenClaw.tsx",
+        "tenant/OpenClawDetail.tsx",
+        "tenant/OpenClawDetailGuide.tsx",
+        "tenant/SkillSquare.tsx",
+        "tenant/ToolsMcpPanel.tsx"
+      ]
+    },
+    "drawer": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "dropdown-menu": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 14,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/ImageManagement/AgentTypesTable.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemberManagement/GroupList.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/SkillLibrary/SkillListTab.tsx",
+        "admin/VersionManagement/CommandTaskTab.tsx",
+        "tenant/ChatView.tsx",
+        "tenant/FileSpace.tsx"
+      ]
+    },
+    "empty": {
+      "hasCva": true,
+      "dimensions": {
+        "variant": {
+          "values": [
+            "default",
+            "icon"
+          ],
+          "default": "default"
+        }
+      },
+      "byDimension": {
+        "variant": {}
+      },
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "field": {
+      "hasCva": true,
+      "dimensions": {
+        "orientation": {
+          "values": [
+            "vertical",
+            "horizontal",
+            "responsive"
+          ],
+          "default": "vertical"
+        }
+      },
+      "byDimension": {
+        "orientation": {
+          "(unset)": [
+            {
+              "page": "admin/VersionManagement/HistoryTab.tsx",
+              "count": 14
+            }
+          ]
+        }
+      },
+      "totalUsages": 14,
+      "pagesWithUsage": [
+        "admin/VersionManagement/HistoryTab.tsx"
+      ]
+    },
+    "form": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "hover-card": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 4,
+      "pagesWithUsage": [
+        "admin/AgentToolLibrary.tsx",
+        "admin/MemberManagement/OverrideCell.tsx",
+        "admin/OpenClawMonitor.tsx"
+      ]
+    },
+    "input": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 139,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/AgentMigration.tsx",
+        "admin/AuditLog.tsx",
+        "admin/AuthSourceImportDialog.tsx",
+        "admin/BasicInfo.tsx",
+        "admin/ChannelConfig.tsx",
+        "admin/DocManagement.tsx",
+        "admin/FileManagement.tsx",
+        "admin/ImageManagement.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemberManagement/NodeContentPanel.tsx",
+        "admin/MemoryManagement/components/InstanceTable.tsx",
+        "admin/MemoryManagement/components/ProCloseDialog.tsx",
+        "admin/MemoryManagement/components/ProDashboard.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/PlatformPolicy.tsx",
+        "admin/SecurityGroupManagement.tsx",
+        "admin/ServerManagement.tsx",
+        "admin/SkillConfig.tsx",
+        "admin/SkillLibrary/AddCategoryDialog.tsx",
+        "admin/SkillLibrary/BatchDeleteDialog.tsx",
+        "admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "admin/SkillLibrary/DistributeDialog.tsx",
+        "admin/SkillLibrary/EditCategoryDialog.tsx",
+        "admin/SkillLibrary/EnableCOSDialog.tsx",
+        "admin/SkillLibrary/MCPAddDialog.tsx",
+        "admin/SkillLibrary/MCPDetail.tsx",
+        "admin/SkillLibrary/MCPListTab.tsx",
+        "admin/SkillLibrary/PluginDetail.tsx",
+        "admin/SkillLibrary/PluginListTab.tsx",
+        "admin/SkillLibrary/PluginUploadDialog.tsx",
+        "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+        "admin/SkillLibrary/SkillDetail.tsx",
+        "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "admin/SkillLibrary/SkillListTab.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/VersionManagement/CommandTaskTab.tsx",
+        "admin/VersionManagement/HistoryTab.tsx",
+        "admin/VersionManagement/components/CreateCommandDialog.tsx",
+        "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+        "admin/standard/StandardBasicInfo.tsx",
+        "tenant/FileSpace.tsx",
+        "tenant/MyOpenClaw.tsx",
+        "tenant/OpenClawDetail.tsx",
+        "tenant/OpenClawDetailGuide.tsx",
+        "tenant/ResetPassword.tsx",
+        "tenant/SkillSquare.tsx",
+        "tenant/ToolsMcpPanel.tsx"
+      ]
+    },
+    "input-group": {
+      "hasCva": true,
+      "dimensions": {
+        "align": {
+          "values": [
+            "inline-start",
+            "inline-end",
+            "block-start",
+            "block-end"
+          ],
+          "default": "inline-start"
+        }
+      },
+      "byDimension": {
+        "align": {}
+      },
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "input-otp": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "item": {
+      "hasCva": true,
+      "dimensions": {
+        "variant": {
+          "values": [
+            "default",
+            "outline",
+            "muted"
+          ],
+          "default": "default"
+        },
+        "size": {
+          "values": [
+            "default",
+            "sm"
+          ],
+          "default": "default"
+        }
+      },
+      "byDimension": {
+        "variant": {},
+        "size": {}
+      },
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "kbd": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "label": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 154,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/AgentMigration.tsx",
+        "admin/AuthSourceImportDialog.tsx",
+        "admin/BasicInfo.tsx",
+        "admin/DocManagement.tsx",
+        "admin/FileManagement.tsx",
+        "admin/ImageManagement.tsx",
+        "admin/ImageManagement/PushUpgradeDialog.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemoryManagement/components/ProCloseDialog.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/OpsObservation.tsx",
+        "admin/SecurityGroupManagement.tsx",
+        "admin/ServerManagement.tsx",
+        "admin/SessionManagement.tsx",
+        "admin/SkillLibrary/MCPAddDialog.tsx",
+        "admin/SkillLibrary/PluginUploadDialog.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/TokensMonitor.tsx",
+        "admin/VersionManagement/components/CreateCommandDialog.tsx",
+        "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+        "admin/standard/StandardBasicInfo.tsx",
+        "tenant/MyOpenClaw.tsx",
+        "tenant/OpenClawDetailGuide.tsx",
+        "tenant/ResetPassword.tsx"
+      ]
+    },
+    "menubar": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "navigation-menu": {
+      "hasCva": true,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "pagination": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 9,
+      "pagesWithUsage": [
+        "admin/SkillLibrary/PublicSkillLibraryTab.tsx",
+        "admin/TokensMonitor.tsx",
+        "tenant/ModelQuota.tsx"
+      ]
+    },
+    "popover": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 40,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/BatchUpdateNotice.tsx",
+        "admin/FileManagement.tsx",
+        "admin/ImageManagement.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemberManagement/NodeContentPanel.tsx",
+        "admin/MemberManagement/OverrideCell.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/PlatformPolicy.tsx",
+        "admin/SecurityGroupManagement.tsx",
+        "admin/SkillLibrary/EditScopeDialog.tsx",
+        "admin/SkillLibrary/PluginUploadDialog.tsx",
+        "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/TokensMonitor.tsx",
+        "admin/standard/StandardBasicInfo.tsx",
+        "tenant/ModelQuota.tsx"
+      ]
+    },
+    "progress": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 6,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/AgentMigration.tsx",
+        "tenant/ModelQuota.tsx"
+      ]
+    },
+    "radio-group": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 8,
+      "pagesWithUsage": [
+        "admin/FileManagement.tsx",
+        "tenant/MyOpenClaw.tsx",
+        "tenant/OpenClawDetailGuide.tsx"
+      ]
+    },
+    "resizable": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "scroll-area": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "select": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 53,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/AgentMigration.tsx",
+        "admin/AuthSourceImportDialog.tsx",
+        "admin/ImageManagement.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemoryManagement/components/ProDashboard.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/SecurityGroupManagement.tsx",
+        "admin/ServerManagement.tsx",
+        "admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "admin/SkillLibrary/DistributeDialog.tsx",
+        "admin/SkillLibrary/MCPDetail.tsx",
+        "admin/SkillLibrary/PluginDetail.tsx",
+        "admin/SkillLibrary/SkillDetail.tsx",
+        "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/VersionManagement/HistoryTab.tsx",
+        "admin/VersionManagement/components/DispatchCommandDialog.tsx",
+        "tenant/MyOpenClaw.tsx",
+        "tenant/OpenClawDetail.tsx",
+        "tenant/OpenClawDetailGuide.tsx",
+        "tenant/SkillSquare.tsx"
+      ]
+    },
+    "separator": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 2,
+      "pagesWithUsage": [
+        "admin/OpsObservation.tsx",
+        "tenant/MyOpenClaw.tsx"
+      ]
+    },
+    "sheet": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 2,
+      "pagesWithUsage": [
+        "admin/ImageManagement/UpdateRecordsDrawer.tsx",
+        "admin/MemberManagement/MemberDrawer.tsx"
+      ]
+    },
+    "sidebar": {
+      "hasCva": true,
+      "dimensions": {
+        "variant": {
+          "values": [
+            "default",
+            "outline"
+          ],
+          "default": "default"
+        },
+        "size": {
+          "values": [
+            "default",
+            "sm",
+            "lg"
+          ],
+          "default": "default"
+        }
+      },
+      "byDimension": {
+        "variant": {},
+        "size": {}
+      },
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "skeleton": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 24,
+      "pagesWithUsage": [
+        "admin/MemoryManagement/components/InstanceTable.tsx",
+        "admin/MemoryManagement/components/ProDashboard.tsx",
+        "admin/MemoryManagement/components/ProServiceCard.tsx"
+      ]
+    },
+    "slider": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 1,
+      "pagesWithUsage": [
+        "admin/SecurityGroupManagement.tsx"
+      ]
+    },
+    "sonner": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "spinner": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "switch": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 27,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/AgentMigration.tsx",
+        "admin/ChannelConfig.tsx",
+        "admin/DocManagement.tsx",
+        "admin/FileManagement.tsx",
+        "admin/ImageManagement/AgentTypesTable.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemoryManagement/components/FreeVersionCard.tsx",
+        "admin/MemoryManagement/components/ProActivationDialog.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/ServerManagement.tsx",
+        "admin/SkillLibrary/EnableCOSDialog.tsx",
+        "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/VersionManagement/components/CreateCommandDialog.tsx",
+        "tenant/ToolsMcpPanel.tsx"
+      ]
+    },
+    "table": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 6,
+      "pagesWithUsage": [
+        "admin/AgentMigration.tsx",
+        "admin/OpsObservation.tsx",
+        "tenant/ModelQuota.tsx",
+        "tenant/SkillSquare.tsx"
+      ]
+    },
+    "tabs": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 11,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/AgentMigration.tsx",
+        "admin/EnterpriseSkillLibrary.tsx",
+        "admin/ImageManagement/AgentTypeImagePicker.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/ServerManagement.tsx",
+        "admin/SkillLibrary/MCPDetail.tsx",
+        "admin/SkillLibrary/PluginDetail.tsx",
+        "admin/SkillLibrary/SkillDetail.tsx",
+        "tenant/SkillSquare.tsx"
+      ]
+    },
+    "textarea": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 19,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/SkillLibrary/AddCategoryDialog.tsx",
+        "admin/SkillLibrary/EditCategoryDialog.tsx",
+        "admin/SkillLibrary/MCPAddDialog.tsx",
+        "admin/SkillLibrary/PluginUploadDialog.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/VersionManagement/components/CreateCommandDialog.tsx",
+        "tenant/OpenClawDetail.tsx",
+        "tenant/ToolsMcpPanel.tsx"
+      ]
+    },
+    "toggle": {
+      "hasCva": true,
+      "dimensions": {
+        "variant": {
+          "values": [
+            "default",
+            "outline"
+          ],
+          "default": "default"
+        },
+        "size": {
+          "values": [
+            "default",
+            "sm",
+            "lg"
+          ],
+          "default": "default"
+        }
+      },
+      "byDimension": {
+        "variant": {},
+        "size": {}
+      },
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "toggle-group": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 0,
+      "pagesWithUsage": []
+    },
+    "tooltip": {
+      "hasCva": false,
+      "dimensions": {},
+      "byDimension": {},
+      "totalUsages": 234,
+      "pagesWithUsage": [
+        "ComponentPreview.tsx",
+        "admin/AgentMigration.tsx",
+        "admin/AgentToolLibrary.tsx",
+        "admin/AuthSourceImportDialog.tsx",
+        "admin/BatchUpdateNotice.tsx",
+        "admin/FileManagement.tsx",
+        "admin/ImageManagement.tsx",
+        "admin/ImageManagement/AgentTypeImagePicker.tsx",
+        "admin/ImageManagement/AgentTypesTable.tsx",
+        "admin/ImageManagement/UpdateRecordSidebar.tsx",
+        "admin/ImageManagement/UpdateRecordsDrawer.tsx",
+        "admin/MemberManagement.tsx",
+        "admin/MemberManagement/GroupList.tsx",
+        "admin/MemberManagement/NodeContentPanel.tsx",
+        "admin/MemoryManagement/components/DefaultMemoryVersion.tsx",
+        "admin/MemoryManagement/components/FreeVersionCard.tsx",
+        "admin/MemoryManagement/components/InstanceTable.tsx",
+        "admin/MemoryManagement/components/ProDashboard.tsx",
+        "admin/MemoryManagement/components/ProServiceCard.tsx",
+        "admin/ModelConfig.tsx",
+        "admin/OpenClawMonitor.tsx",
+        "admin/OpsObservation.tsx",
+        "admin/PlatformPolicy.tsx",
+        "admin/SecurityGroupManagement.tsx",
+        "admin/SessionDetail.tsx",
+        "admin/SessionManagement.tsx",
+        "admin/SkillLibrary/BatchDeleteDialog.tsx",
+        "admin/SkillLibrary/BatchDistributeDialog.tsx",
+        "admin/SkillLibrary/EditScopeDialog.tsx",
+        "admin/SkillLibrary/MCPAddDialog.tsx",
+        "admin/SkillLibrary/MCPDetail.tsx",
+        "admin/SkillLibrary/MCPListTab.tsx",
+        "admin/SkillLibrary/PluginDetail.tsx",
+        "admin/SkillLibrary/PluginListTab.tsx",
+        "admin/SkillLibrary/SkillDetail.tsx",
+        "admin/SkillLibrary/SkillInitialPackageTab.tsx",
+        "admin/SkillLibrary/SkillListTab.tsx",
+        "admin/SkillLibrary/SkillUpdateDialog.tsx",
+        "admin/SkillLibrary/SkillUploadDialog.tsx",
+        "admin/SkillRolesTab.tsx",
+        "admin/TokensMonitor.tsx",
+        "admin/VersionManagement/CommandTaskTab.tsx",
+        "admin/VersionManagement/components/CreateCommandDialog.tsx",
+        "tenant/ChatView.tsx",
+        "tenant/FileSpace.tsx",
+        "tenant/ModelQuota.tsx",
+        "tenant/OpenClawDetail.tsx",
+        "tenant/OpenClawDetailGuide.tsx",
+        "tenant/SkillSquare.tsx",
+        "tenant/ToolsMcpPanel.tsx"
+      ]
+    }
+  }
+}

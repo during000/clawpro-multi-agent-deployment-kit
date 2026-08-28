@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Proxy 测试 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+    <style>
+        .json-editor { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, monospace; font-size: 13px; tab-size: 2; }
+        .json-editor:focus { outline: none; box-shadow: 0 0 0 2px rgba(0,82,217,0.2); }
+        pre.response-body { white-space: pre-wrap; word-break: break-all; font-family: 'SF Mono', 'Fira Code', Menlo, monospace; font-size: 13px; }
+        .tab-active { color: #0052d9; border-bottom: 2px solid #0052d9; }
+        .tab-inactive { color: #6b7280; border-bottom: 2px solid transparent; }
+        .tab-inactive:hover { color: #374151; }
+        .fade-in { animation: fadeIn 0.2s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <!-- Tab 切换 -->
+            <div class="flex space-x-6 border-b border-gray-200 mb-6">
+                <button onclick="switchTab('actions')" id="tab-actions" class="pb-3 px-1 text-[14px] font-medium transition-colors tab-active">
+                    📋 查看可用 Actions
+                </button>
+                <button onclick="switchTab('query')" id="tab-query" class="pb-3 px-1 text-[14px] font-medium transition-colors tab-inactive">
+                    🔍 查询接口 (Query)
+                </button>
+                <button onclick="switchTab('mutate')" id="tab-mutate" class="pb-3 px-1 text-[14px] font-medium transition-colors tab-inactive">
+                    ✏️ 变更接口 (Mutate)
+                </button>
+            </div>
+
+            <!-- ==================== Tab 1: 查看可用 Actions ==================== -->
+            <div id="panel-actions" class="fade-in">
+                <div class="bg-white rounded shadow-sm border border-gray-100">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <div>
+                            <h2 class="text-[16px] font-semibold text-gray-800">查看所有可用 Actions</h2>
+                            <p class="text-[13px] text-gray-400 mt-1">GET /admin/cloud — 返回所有已注册的 service 及其可用 Actions（区分读写）</p>
+                        </div>
+                        <button onclick="fetchActions()" id="btn-actions"
+                            class="h-9 px-5 bg-[#0052d9] text-white text-[14px] font-medium rounded hover:bg-[#003cab] transition-colors flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                            <span>获取</span>
+                        </button>
+                    </div>
+                    <div id="actions-result" class="px-6 py-4">
+                        <p class="text-[14px] text-gray-400 text-center py-8">点击「获取」按钮查看所有可用的 service 和 actions</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== Tab 2: 查询接口 ==================== -->
+            <div id="panel-query" class="hidden fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- 左侧：请求配置 -->
+                    <div class="bg-white rounded shadow-sm border border-gray-100">
+                        <div class="px-6 py-4 border-b border-gray-100">
+                            <h2 class="text-[16px] font-semibold text-gray-800">查询请求</h2>
+                            <p class="text-[13px] text-gray-400 mt-1">POST /admin/cloud/query/{service} — 只读类 API 透传</p>
+                        </div>
+                        <div class="px-6 py-4 space-y-4">
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1.5">Service</label>
+                                <select id="query-service" onchange="onQueryServiceChange()"
+                                    class="w-full h-9 px-3 text-[14px] border border-gray-200 rounded focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20 transition-colors">
+                                    <option value="cvm">cvm</option>
+                                    <option value="vpc">vpc</option>
+                                    <option value="cls">cls</option>
+                                    <option value="csip">csip</option>
+                                    <option value="cwp">cwp</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1.5">Action (X-TC-Action)</label>
+                                <select id="query-action" onchange="onQueryActionChange()"
+                                    class="w-full h-9 px-3 text-[14px] border border-gray-200 rounded focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20 transition-colors">
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1.5">请求体 (JSON Body)</label>
+                                <textarea id="query-body" rows="12"
+                                    class="json-editor w-full px-3 py-2 text-[14px] border border-gray-200 rounded focus:border-[#0052d9] transition-colors resize-y"
+                                ></textarea>
+                            </div>
+                            <button onclick="sendQuery()" id="btn-query"
+                                class="w-full h-10 bg-[#0052d9] text-white text-[14px] font-medium rounded hover:bg-[#003cab] transition-colors flex items-center justify-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>发送查询请求</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- 右侧：响应 -->
+                    <div class="bg-white rounded shadow-sm border border-gray-100">
+                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <h2 class="text-[16px] font-semibold text-gray-800">响应结果</h2>
+                            <span id="query-status" class="text-[12px] px-2 py-1 rounded hidden"></span>
+                        </div>
+                        <div id="query-result" class="px-6 py-4 overflow-auto max-h-[600px]">
+                            <p class="text-[14px] text-gray-400 text-center py-8">发送请求后显示响应</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== Tab 3: 变更接口 ==================== -->
+            <div id="panel-mutate" class="hidden fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- 左侧：请求配置 -->
+                    <div class="bg-white rounded shadow-sm border border-gray-100">
+                        <div class="px-6 py-4 border-b border-gray-100">
+                            <h2 class="text-[16px] font-semibold text-gray-800">变更请求</h2>
+                            <p class="text-[13px] text-gray-400 mt-1">POST /admin/cloud/mutate/{service} — 变更类 API 透传（带审计）</p>
+                        </div>
+                        <div class="px-6 py-4 space-y-4">
+                            <div class="bg-amber-50 border border-amber-200 rounded px-4 py-3">
+                                <div class="flex items-start space-x-2">
+                                    <svg class="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.072 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                                    <div>
+                                        <p class="text-[13px] font-medium text-amber-800">注意：变更接口会执行写操作</p>
+                                        <p class="text-[12px] text-amber-600 mt-0.5">此接口会对云资源进行创建/删除/修改等变更操作，且带审计日志记录。请谨慎操作！</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1.5">Service</label>
+                                <select id="mutate-service" onchange="onMutateServiceChange()"
+                                    class="w-full h-9 px-3 text-[14px] border border-gray-200 rounded focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20 transition-colors">
+                                    <option value="cvm">cvm</option>
+                                    <option value="vpc">vpc</option>
+                                    <option value="cls">cls</option>
+                                    <option value="csip">csip</option>
+                                    <option value="cwp">cwp</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1.5">Action (X-TC-Action)</label>
+                                <select id="mutate-action" onchange="onMutateActionChange()"
+                                    class="w-full h-9 px-3 text-[14px] border border-gray-200 rounded focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20 transition-colors">
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1.5">Region (X-TC-Region) <span class="text-gray-400">— 可选</span></label>
+                                <input type="text" id="mutate-region" value="ap-guangzhou" placeholder="如 ap-guangzhou"
+                                    class="w-full h-9 px-3 text-[14px] border border-gray-200 rounded focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1.5">请求体 (JSON Body)</label>
+                                <textarea id="mutate-body" rows="12"
+                                    class="json-editor w-full px-3 py-2 text-[14px] border border-gray-200 rounded focus:border-[#0052d9] transition-colors resize-y"
+                                ></textarea>
+                            </div>
+                            <button onclick="sendMutate()" id="btn-mutate"
+                                class="w-full h-10 bg-red-600 text-white text-[14px] font-medium rounded hover:bg-red-700 transition-colors flex items-center justify-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>发送变更请求</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- 右侧：响应 -->
+                    <div class="bg-white rounded shadow-sm border border-gray-100">
+                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <h2 class="text-[16px] font-semibold text-gray-800">响应结果</h2>
+                            <span id="mutate-status" class="text-[12px] px-2 py-1 rounded hidden"></span>
+                        </div>
+                        <div id="mutate-result" class="px-6 py-4 overflow-auto max-h-[600px]">
+                            <p class="text-[14px] text-gray-400 text-center py-8">发送请求后显示响应</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {{template "admin_scripts" .}}
+
+    <script>
+    // ====================== 接口注册表（与后端 cloudProxyRegistry 对应）======================
+    const registry = {
+        cvm: {
+            read_actions: [
+                "DescribeInstances", "CheckOpenClawRole"
+            ],
+            write_actions: [
+                "AssociateSecurityGroups", "DisassociateSecurityGroups"
+            ]
+        },
+        vpc: {
+            read_actions: [
+                "DescribeSecurityGroups", "DescribeSecurityGroupPolicies"
+            ],
+            write_actions: [
+                "DeleteSecurityGroupPolicies", "DeleteSecurityGroup",
+                "CreateSecurityGroupWithPolicies", "CreateSecurityGroupPolicies"
+            ]
+        },
+        cls: {
+            read_actions: ["DescribeLogsets", "DescribeTopics", "SearchLog", "QueryMetric", "QueryRangeMetric", "GetClsService"],
+            write_actions: ["OpenClsService", "DeleteTopic"]
+        },
+        csip: {
+            read_actions: [
+                "DescribeAIAgentAssetList", "DescribeABTestConfig", "DescribeOrganizationInfo",
+                "DescribePayInfo", "DescribeUserAccountInfo", "DescribeUserOperationPermission",
+                "GetLocalStorageItem", "DescribeAgentlessVulAssetDetail", "DescribeExposeRules",
+                "DescribeExposeAssetCategory", "DescribeExposePath", "DescribeCVMAssets",
+                "DescribeAssetProcessList", "DescribeVulRiskList", "DescribeHighBaseLineRiskList",
+                "DescribeExposures"
+            ],
+            write_actions: ["SetLocalStorageItem"]
+        },
+        cwp: {
+            read_actions: [
+                "DescribeLicenseWhiteConfig", "DescribeOrderList", "DescribeLogStorageConfig",
+                "DescribeLicenseBindSchedule", "DescribeBashEventsNew", "DescribeRiskDnsEventList",
+                "DescribeVersionStatistics", "DescribeBashEventsInfoNew", "DescribeMachines",
+                "DescribeRiskDnsEventInfo", "DescribeBashPolicies", "DescribeMalWareList",
+                "DescribeRiskDnsPolicyList", "DescribeSkillInfo", "DescribeImportMachineInfo",
+                "DescribeRiskBatchStatus", "DescribeTags", "DescribeMachineRegionList",
+                "DescribeLicenseGeneral", "GetLocalStorageItem", "DescribeMachineGeneral",
+                "DescribeLogHistogram", "DescribeLogStorageStatistic", "SearchLog",
+                "DescribeMachineInfo", "DescribeMalwareInfo"
+            ],
+            write_actions: [
+                "CreateWhiteListOrder", "ModifyLicenseBinds", "ModifyLogStorageConfig",
+                "ScanAsset", "SyncAssetScan", "ModifyRiskEventsStatus", "SetLocalStorageItem",
+                "RemoveLocalStorageItem", "ModifyBashPolicyStatus", "DeleteBashPolicies",
+                "ModifyBashPolicy", "CheckBashPolicyParams", "ModifyRiskDnsPolicy",
+                "ModifyRiskDnsPolicyStatus", "DeleteRiskDnsPolicy", "ModifyReverseShellRulesAggregation"
+            ]
+        }
+    };
+
+    // ====================== 默认测试数据 ======================
+    const defaultBodies = {
+        // CVM 查询
+        "cvm/DescribeInstances": { "Offset": 0, "Limit": 20, "Filters": [{ "Name": "instance-state", "Values": ["RUNNING"] }] },
+        "cvm/CheckOpenClawRole": {},
+        // CVM 写
+        "cvm/AssociateSecurityGroups": { "SecurityGroupIds": ["sg-xxxxxxxx"], "InstanceIds": ["ins-xxxxxxxx"] },
+        "cvm/DisassociateSecurityGroups": { "SecurityGroupIds": ["sg-xxxxxxxx"], "InstanceIds": ["ins-xxxxxxxx"] },
+        // VPC 查询
+        "vpc/DescribeSecurityGroups": { "Offset": "0", "Limit": "20" },
+        "vpc/DescribeSecurityGroupPolicies": { "SecurityGroupId": "sg-xxxxxxxx" },
+        // VPC 写
+        "vpc/DeleteSecurityGroupPolicies": { "SecurityGroupId": "sg-xxxxxxxx", "SecurityGroupPolicySet": { "Ingress": [{ "PolicyIndex": 0 }] } },
+        "vpc/DeleteSecurityGroup": { "SecurityGroupId": "sg-xxxxxxxx" },
+        "vpc/CreateSecurityGroupWithPolicies": {
+            "GroupName": "test-sg", "GroupDescription": "测试安全组",
+            "SecurityGroupPolicySet": {
+                "Ingress": [{ "Protocol": "TCP", "Port": "22", "CidrBlock": "0.0.0.0/0", "Action": "ACCEPT", "PolicyDescription": "允许 SSH" }],
+                "Egress": [{ "Protocol": "ALL", "Port": "ALL", "CidrBlock": "0.0.0.0/0", "Action": "ACCEPT", "PolicyDescription": "允许所有出站" }]
+            }
+        },
+        "vpc/CreateSecurityGroupPolicies": {
+            "SecurityGroupId": "sg-xxxxxxxx",
+            "SecurityGroupPolicySet": { "Ingress": [{ "Protocol": "TCP", "Port": "80,443", "CidrBlock": "0.0.0.0/0", "Action": "ACCEPT", "PolicyDescription": "允许 HTTP/HTTPS" }] }
+        },
+        // CLS 查询
+        "cls/DescribeLogsets": { "Offset": 0, "Limit": 20 },
+        "cls/DescribeTopics": { "Offset": 0, "Limit": 20 },
+        "cls/SearchLog": { "TopicId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "From": Math.floor(Date.now()/1000)-3600, "To": Math.floor(Date.now()/1000), "Query": "*", "Limit": 20 },
+        "cls/QueryMetric": { "Query": "* | SELECT count(*) as cnt", "TopicId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "From": Math.floor(Date.now()/1000)-3600, "To": Math.floor(Date.now()/1000) },
+        "cls/QueryRangeMetric": { "TopicId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "Query": "* | SELECT count(*) as cnt", "From": Math.floor(Date.now()/1000)-3600, "To": Math.floor(Date.now()/1000), "Period": 60 },
+        "cls/GetClsService": {},
+        // CLS 写
+        "cls/OpenClsService": {},
+        "cls/DeleteTopic": { "TopicId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" },
+        // CSIP
+        "csip/DescribeCVMAssets": { "Filter": {} },
+        "csip/DescribeVulRiskList": { "Filter": {} },
+        "csip/DescribeExposures": { "Filter": {} },
+        "csip/SetLocalStorageItem": { "Id": "test-key", "Value": "test-value" },
+        // CWP
+        "cwp/DescribeMachines": { "MachineType": "CVM", "MachineRegion": "ap-guangzhou", "Offset": 0, "Limit": 20 },
+        "cwp/DescribeVersionStatistics": {},
+        "cwp/DescribeLicenseGeneral": {},
+        "cwp/DescribeMachineGeneral": {},
+        "cwp/DescribeBashEventsNew": { "Offset": 0, "Limit": 20 },
+        "cwp/DescribeRiskDnsEventList": { "Offset": 0, "Limit": 20 },
+        "cwp/SearchLog": {
+            "StartTime": new Date(Date.now()-3600000).toISOString().slice(0,19).replace('T',' '),
+            "EndTime": new Date().toISOString().slice(0,19).replace('T',' '),
+            "QueryString": "*", "Count": 20
+        },
+    };
+
+    // ====================== Tab 切换 ======================
+    function switchTab(name) {
+        ['actions', 'query', 'mutate'].forEach(function(t) {
+            document.getElementById('panel-' + t).classList.toggle('hidden', t !== name);
+            var tab = document.getElementById('tab-' + t);
+            tab.className = tab.className.replace(/tab-\w+/, t === name ? 'tab-active' : 'tab-inactive');
+        });
+    }
+
+    // ====================== 工具函数 ======================
+    function populateSelect(selectId, options) {
+        var sel = document.getElementById(selectId);
+        sel.innerHTML = '';
+        options.forEach(function(opt) {
+            var o = document.createElement('option');
+            o.value = opt; o.textContent = opt;
+            sel.appendChild(o);
+        });
+    }
+
+    function getDefaultBody(service, action) {
+        var key = service + '/' + action;
+        if (defaultBodies[key]) return JSON.stringify(defaultBodies[key], null, 2);
+        return '{}';
+    }
+
+    // ====================== Query 面板 ======================
+    function onQueryServiceChange() {
+        var svc = document.getElementById('query-service').value;
+        populateSelect('query-action', (registry[svc] || {}).read_actions || []);
+        onQueryActionChange();
+    }
+    function onQueryActionChange() {
+        var svc = document.getElementById('query-service').value;
+        var action = document.getElementById('query-action').value;
+        document.getElementById('query-body').value = getDefaultBody(svc, action);
+    }
+
+    // ====================== Mutate 面板 ======================
+    function onMutateServiceChange() {
+        var svc = document.getElementById('mutate-service').value;
+        var actions = (registry[svc] || {}).write_actions || [];
+        populateSelect('mutate-action', actions);
+        if (actions.length === 0) {
+            document.getElementById('mutate-body').value = '// 该 service 无可用的写操作 Action';
+        } else {
+            onMutateActionChange();
+        }
+    }
+    function onMutateActionChange() {
+        var svc = document.getElementById('mutate-service').value;
+        var action = document.getElementById('mutate-action').value;
+        document.getElementById('mutate-body').value = getDefaultBody(svc, action);
+    }
+
+    // ====================== 发起请求 ======================
+    function setLoading(btnId, loading) {
+        var btn = document.getElementById(btnId);
+        btn.disabled = loading;
+        if (loading) {
+            btn.dataset.origText = btn.innerHTML;
+            btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg><span>请求中...</span>';
+            btn.classList.add('opacity-60', 'cursor-not-allowed');
+        } else {
+            btn.innerHTML = btn.dataset.origText || btn.innerHTML;
+            btn.classList.remove('opacity-60', 'cursor-not-allowed');
+        }
+    }
+
+    function showStatus(spanId, ok, httpStatus) {
+        var el = document.getElementById(spanId);
+        el.classList.remove('hidden');
+        if (ok) {
+            el.className = 'text-[12px] px-2 py-1 rounded bg-green-50 text-green-600 border border-green-200';
+            el.textContent = 'HTTP ' + httpStatus + ' ✓';
+        } else {
+            el.className = 'text-[12px] px-2 py-1 rounded bg-red-50 text-red-600 border border-red-200';
+            el.textContent = 'HTTP ' + httpStatus + ' ✗';
+        }
+    }
+
+    function renderJSON(containerId, data) {
+        var container = document.getElementById(containerId);
+        var jsonStr;
+        try { jsonStr = JSON.stringify(data, null, 2); } catch(e) { jsonStr = String(data); }
+        var highlighted = jsonStr
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"([^"]+)":/g, '<span class="text-purple-600">"$1"</span>:')
+            .replace(/: "(.*?)"/g, ': <span class="text-green-600">"$1"</span>')
+            .replace(/: (\d+\.?\d*)/g, ': <span class="text-blue-600">$1</span>')
+            .replace(/: (true|false)/g, ': <span class="text-amber-600">$1</span>')
+            .replace(/: null/g, ': <span class="text-gray-400">null</span>');
+        container.innerHTML = '<pre class="response-body text-[13px] leading-relaxed">' + highlighted + '</pre>';
+    }
+
+    async function fetchActions() {
+        setLoading('btn-actions', true);
+        try {
+            var resp = await fetch('/admin/cloud', { credentials: 'include', headers: { 'Accept': 'application/json' } });
+            var data = await resp.json();
+            var container = document.getElementById('actions-result');
+            if (data.data) {
+                var html = '<div class="space-y-4">';
+                Object.keys(data.data).sort().forEach(function(svc) {
+                    var info = data.data[svc];
+                    html += '<div class="border border-gray-100 rounded-lg overflow-hidden">'
+                        + '<div class="bg-[#f5f6fa] px-4 py-2.5 flex items-center space-x-3">'
+                        + '<span class="text-[14px] font-semibold text-gray-800">' + svc + '</span>'
+                        + '<span class="text-[12px] text-gray-400">v' + info.version + '</span>'
+                        + '</div>'
+                        + '<div class="px-4 py-3 grid grid-cols-1 md:grid-cols-2 gap-4">'
+                        + '<div><div class="text-[12px] font-medium text-gray-400 mb-2">📖 读操作 (' + (info.read_actions||[]).length + ')</div><div class="flex flex-wrap gap-1.5">'
+                        + (info.read_actions||[]).sort().map(function(a) {
+                            return '<span class="text-[12px] bg-blue-50 text-blue-600 px-2 py-1 rounded cursor-pointer hover:bg-blue-100 transition-colors" onclick="jumpToQuery(\'' + svc + '\',\'' + a + '\')">' + a + '</span>';
+                        }).join('')
+                        + ((info.read_actions||[]).length === 0 ? '<span class="text-[12px] text-gray-300">无</span>' : '')
+                        + '</div></div>'
+                        + '<div><div class="text-[12px] font-medium text-gray-400 mb-2">✏️ 写操作 (' + (info.write_actions||[]).length + ')</div><div class="flex flex-wrap gap-1.5">'
+                        + (info.write_actions||[]).sort().map(function(a) {
+                            return '<span class="text-[12px] bg-amber-50 text-amber-700 px-2 py-1 rounded cursor-pointer hover:bg-amber-100 transition-colors" onclick="jumpToMutate(\'' + svc + '\',\'' + a + '\')">' + a + '</span>';
+                        }).join('')
+                        + ((info.write_actions||[]).length === 0 ? '<span class="text-[12px] text-gray-300">无</span>' : '')
+                        + '</div></div></div></div>';
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            } else {
+                renderJSON('actions-result', data);
+            }
+        } catch(e) {
+            document.getElementById('actions-result').innerHTML = '<p class="text-red-500 text-[14px] py-4">请求失败: ' + e.message + '</p>';
+        } finally {
+            setLoading('btn-actions', false);
+        }
+    }
+
+    function jumpToQuery(svc, action) {
+        switchTab('query');
+        document.getElementById('query-service').value = svc;
+        onQueryServiceChange();
+        document.getElementById('query-action').value = action;
+        onQueryActionChange();
+    }
+    function jumpToMutate(svc, action) {
+        switchTab('mutate');
+        document.getElementById('mutate-service').value = svc;
+        onMutateServiceChange();
+        document.getElementById('mutate-action').value = action;
+        onMutateActionChange();
+    }
+
+    async function sendQuery() {
+        var svc = document.getElementById('query-service').value;
+        var action = document.getElementById('query-action').value;
+        var regionEl = document.getElementById('query-region');
+        var region = regionEl ? regionEl.value : '';
+        var body = document.getElementById('query-body').value.trim();
+        if (!body) body = '{}';
+        try { JSON.parse(body); } catch(e) { alert('请求体不是合法的 JSON: ' + e.message); return; }
+
+        setLoading('btn-query', true);
+        try {
+            var headers = { 'Content-Type': 'application/json', 'X-TC-Action': action };
+            if (region) headers['X-TC-Region'] = region;
+            var resp = await fetch('/admin/cloud/query/' + svc, { method: 'POST', credentials: 'include', headers: headers, body: body });
+            var data = await resp.json();
+            showStatus('query-status', resp.ok || !(data.Response && data.Response.Error), resp.status);
+            renderJSON('query-result', data);
+        } catch(e) {
+            showStatus('query-status', false, 'ERR');
+            document.getElementById('query-result').innerHTML = '<p class="text-red-500 text-[14px] py-4">请求失败: ' + e.message + '</p>';
+        } finally {
+            setLoading('btn-query', false);
+        }
+    }
+
+    async function sendMutate() {
+        var svc = document.getElementById('mutate-service').value;
+        var action = document.getElementById('mutate-action').value;
+        var region = document.getElementById('mutate-region').value;
+        var body = document.getElementById('mutate-body').value.trim();
+        if (!action) { alert('该 service 无可用的写操作 Action'); return; }
+        if (!body || body.startsWith('//')) body = '{}';
+        try { JSON.parse(body); } catch(e) { alert('请求体不是合法的 JSON: ' + e.message); return; }
+        if (!confirm('确认要执行写操作？\n\nService: ' + svc + '\nAction: ' + action + '\nRegion: ' + (region||'默认') + '\n\n此操作会修改云资源并记录审计日志。')) return;
+
+        setLoading('btn-mutate', true);
+        try {
+            var headers = { 'Content-Type': 'application/json', 'X-TC-Action': action };
+            if (region) headers['X-TC-Region'] = region;
+            var resp = await fetch('/admin/cloud/mutate/' + svc, { method: 'POST', credentials: 'include', headers: headers, body: body });
+            var data = await resp.json();
+            showStatus('mutate-status', resp.ok || !(data.Response && data.Response.Error), resp.status);
+            renderJSON('mutate-result', data);
+        } catch(e) {
+            showStatus('mutate-status', false, 'ERR');
+            document.getElementById('mutate-result').innerHTML = '<p class="text-red-500 text-[14px] py-4">请求失败: ' + e.message + '</p>';
+        } finally {
+            setLoading('btn-mutate', false);
+        }
+    }
+
+    // 初始化
+    onQueryServiceChange();
+    onMutateServiceChange();
+    </script>
+</body>
+</html>

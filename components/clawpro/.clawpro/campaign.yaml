@@ -1,0 +1,108 @@
+# AI 合并保护：Vibe Coding 或处理代码冲突时，必须按 campaign_id 和 component_id 合并并保留不同产品开发产生的组件记录；不得用任一分支的完整文件覆盖另一分支。
+schema_version: 3
+campaigns:
+  - campaign_id: "admin-file-traffic-20260727"
+    launched_on: "2026-07-27"
+    current_user_id: "chenlupeng"
+    components:
+      - component_id: "admin-file-traffic-point-bubble"
+        component_name: "GuidePointBubble"
+        copy:
+          - slot: "标题"
+            text: "外网流量管理上线"
+          - slot: "说明"
+            text: "可查看外网下行流量用量，并按需购买 20 GB 至 1000 GB 资源包。"
+        mount:
+          page: "/admin/file-management"
+          target: "购买流量资源包按钮"
+          placement: "按钮下方"
+        code_paths:
+          - "client/src/pages/admin/FileManagement.tsx"
+        duration:
+          mode: "fixed_days"
+          days: 14
+        state: "active"
+  - campaign_id: "update-awareness-admin-file-management-20260728"
+    launched_on: "2026-07-28"
+    current_user_id: "chenlupeng"
+    components:
+      - component_id: "admin-file-renew-expand-bubble"
+        component_name: "GuidePointBubble"
+        copy:
+          - slot: "title"
+            text: "网盘续费与扩容"
+          - slot: "description"
+            text: "可在个人空间操作列为实例续期或调整存储容量。"
+        mount:
+          page: "/admin/file-management"
+          target: "[data-guide=\"file-renew-expand-actions\"]"
+          placement: "首个可操作行续费/扩容按钮组上方"
+        code_paths:
+          - "client/src/pages/admin/FileManagement.tsx"
+        duration:
+          mode: "fixed_days"
+          days: 14
+        state: "active"
+  - campaign_id: "update-awareness-tenant-public-skill-202607-new-tag"
+    launched_on: "2026-07-30"
+    current_user_id: "nicole"
+    components:
+      - component_id: "tenant-skill-square-public-new-tag"
+        component_name: "GuideNewTag"
+        copy:
+          - slot: "label"
+            text: "New"
+        mount:
+          page: "/skill-square"
+          target: "公共技能页签"
+          placement: "页签文字右侧"
+        code_paths:
+          - "client/src/pages/tenant/SkillSquare.tsx"
+          - "client/src/lib/tenantSkillSquarePublicOnboarding.ts"
+        duration:
+          mode: "fixed_days"
+          days: 14
+        state: "active"
+  - campaign_id: "update-awareness-tenant-public-skill-202607-point-bubble"
+    launched_on: "2026-07-16"
+    current_user_id: "nicole"
+    components:
+      - component_id: "tenant-skill-square-public-point-bubble"
+        component_name: "GuidePointBubble"
+        copy:
+          - slot: "title"
+            text: "公共技能上线"
+          - slot: "description"
+            text: "可在公共技能页面，浏览精选技能并按需安装到你的 Agent。"
+        mount:
+          page: "用户端 TenantLayout"
+          target: "顶部导航技能广场入口"
+          placement: "导航项下方"
+        code_paths:
+          - "client/src/components/TenantLayout.tsx"
+          - "client/src/lib/tenantSkillSquarePublicOnboarding.ts"
+        duration:
+          mode: "fixed_days"
+          days: 30
+        state: "active"
+  - campaign_id: "plan-20260818-clone-image"
+    launched_on: "2026-08-18"
+    current_user_id: "petzhou"
+    components:
+      - component_id: "clone-agent-image-20260818"
+        component_name: "GuidePointBubble"
+        copy:
+          - slot: "title"
+            text: "克隆 Agent 为镜像"
+          - slot: "description"
+            text: "在「更多」中将编辑好的 Agent 克隆为自定义镜像，沉淀企业模板，便于批量复制与分发。"
+        mount:
+          page: "/admin/openclaw-monitor"
+          target: "Agent列表-首个云端Agent行-操作列「更多」按钮"
+          placement: "left（气泡位于目标左侧，箭头指向「更多」）"
+        code_paths:
+          - "client/src/pages/admin/OpenClawMonitor.tsx"
+        duration:
+          mode: "fixed_days"
+          days: 14
+        state: "active"

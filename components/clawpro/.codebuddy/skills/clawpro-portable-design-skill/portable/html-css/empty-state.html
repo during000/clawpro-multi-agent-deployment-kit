@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Empty State</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      body { margin: 0; padding: 24px; background: var(--cp-page-bg); font-family: var(--cp-font-sans); }
+      .cp-empty {
+        display: flex;
+        min-height: 320px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        border: 1px dashed var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+        padding: 48px 24px;
+        text-align: center;
+      }
+      .cp-empty img { width: 100px; height: 100px; object-fit: contain; }
+      .cp-empty-header { display: flex; max-width: 320px; flex-direction: column; gap: 8px; align-items: center; }
+      .cp-empty-title { font-size: 18px; line-height: 1.4; color: var(--cp-text-title); }
+      .cp-empty-description { font-size: 12px; line-height: 1.5; color: var(--cp-text-weak); }
+      .cp-empty-action {
+        display: inline-flex;
+        height: 36px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        background: var(--cp-brand-black);
+        color: white;
+        padding: 0 24px;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="cp-empty">
+      <img src="/assets/admin-resource-management/empty-no-data.png" alt="" />
+      <div class="cp-empty-header">
+        <div class="cp-empty-title">暂无管理内容</div>
+        <div class="cp-empty-description">当前对象还没有任何记录，可在此继续配置或创建。</div>
+      </div>
+      <a class="cp-empty-action" href="#">立即创建</a>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,639 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const packageRoot = path.resolve(__dirname, '..');
+const projectRoot = process.cwd();
+const registryPath = path.resolve(packageRoot, 'assets/icon-registry.example.json');
+
+const args = process.argv.slice(2);
+const strict = args.includes('--strict') || process.env.STRICT === '1';
+const explicitTargets = args.filter((arg) => !arg.startsWith('--'));
+const targets = explicitTargets.length > 0
+  ? explicitTargets.map((target) => path.resolve(projectRoot, target))
+  : [path.resolve(projectRoot, 'client/src')];
+
+const allowMarkers = [
+  'allow-design-legacy',
+  'allow-shadow',
+  'allow-radius',
+  'allow-tenant-legacy',
+  'allow-asset-legacy',
+  'allow-shadcn-outline',
+  'allow-inline-gradient',
+  'allow-inline-svg',
+];
+
+// 禁 lucide 的 9 个槽位
+const forbiddenLucideSlots = [
+  'number-card',
+  'status-tag',
+  'card-left-icon',
+  'run-status',
+  'feature-card',
+  'admin-sidebar-icon',
+  'batch-action-icon',
+  'toggle-item-icon',
+  'chart-legend-icon',
+];
+
+const textExtensions = new Set(['.ts', '.tsx', '.js', '.jsx', '.css', '.scss', '.html', '.md']);
+const ignoredDirs = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', '.codebuddy']);
+
+const rules = [
+  {
+    id: 'old-brand-color',
+    message: '旧品牌色：请改为 #1447E6 / #020617 或当前 token。',
+    pattern: /#007AFF|#5856D6|linear-gradient\(135deg,\s*#007AFF,\s*#5856D6\)/i,
+  },
+  {
+    id: 'tailwind-heavy-shadow',
+    message: '业务层不应使用 Tailwind 重阴影，请改用 Surface 层级或 shadow token。',
+    pattern: /(?:^|[\s"'`])(?:hover:)?shadow-(?:md|lg|xl|2xl)(?:[\s"'`]|$)/,
+  },
+  {
+    id: 'inline-box-shadow',
+    message: '业务层 inline boxShadow 需要改用 Surface 层级；合理场景请加 allow-shadow 注释。',
+    pattern: /boxShadow\s*:/,
+  },
+  {
+    id: 'large-radius',
+    message: '可疑大圆角：确认是否符合分端规则；合理场景请加 allow-radius 注释。',
+    pattern: /(?:^|[\s"'`])rounded-(?:md|lg|xl|2xl|3xl)(?:[\s"'`]|$)|rounded-\[(?:[8-9]|[1-9]\d+)px\]/,
+  },
+  {
+    id: 'emoji-icon',
+    message: '疑似使用 emoji 作为图标：请改用 lucide-react 或已登记 SVG。',
+    pattern: /[\u{1F300}-\u{1FAFF}]/u,
+  },
+];
+
+function readRegistry() {
+  try {
+    const json = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    return new Set((json.icons || []).map((icon) => normalizeAssetPath(icon.path)));
+  } catch (error) {
+    return new Set();
+  }
+}
+
+function normalizeAssetPath(value) {
+  return value.replace(/^\.\//, '').replace(/^\//, '').replace(/^client\/public\//, '');
+}
+
+function shouldSkipLine(line) {
+  return allowMarkers.some((marker) => line.includes(marker));
+}
+
+function walk(entry, files = []) {
+  if (!fs.existsSync(entry)) return files;
+  const stat = fs.statSync(entry);
+  if (stat.isDirectory()) {
+    const basename = path.basename(entry);
+    if (ignoredDirs.has(basename)) return files;
+    for (const child of fs.readdirSync(entry)) {
+      walk(path.join(entry, child), files);
+    }
+    return files;
+  }
+  if (textExtensions.has(path.extname(entry))) files.push(entry);
+  return files;
+}
+
+function reportIssue(violations, file, lineNumber, rule, line) {
+  violations.push({
+    file: path.relative(projectRoot, file),
+    line: lineNumber,
+    rule: rule.id,
+    message: rule.message,
+    source: line.trim(),
+  });
+}
+
+function scanFile(file, registeredIcons, violations, confirmationItems) {
+  const content = fs.readFileSync(file, 'utf8');
+  const lines = content.split(/\r?\n/);
+  lines.forEach((line, index) => {
+    if (shouldSkipLine(line)) return;
+    for (const rule of rules) {
+      if (rule.pattern.test(line)) reportIssue(violations, file, index + 1, rule, line);
+    }
+
+    const iconRefs = line.matchAll(/['"`]\/?(icon\/[^'"`]+?\.svg)['"`]/g);
+    for (const match of iconRefs) {
+      const ref = normalizeAssetPath(match[1]);
+      if (!registeredIcons.has(ref)) {
+        reportIssue(violations, file, index + 1, {
+          id: 'unregistered-icon',
+          message: `引用了未登记图标 ${ref}，请更新 .codebuddy/skills/clawpro-portable-design-skill/assets/icon-registry.example.json。`,
+        }, line);
+      }
+    }
+
+    // 收集 needs-design-confirmation 标记
+    const confirmationMatch = line.match(/needs-design-confirmation:\s*(.+?)(?:\s*\*\/|$)/);
+    if (confirmationMatch) {
+      confirmationItems.push({
+        file: path.relative(projectRoot, file),
+        line: index + 1,
+        description: confirmationMatch[1].trim(),
+      });
+    }
+  });
+}
+
+// ===== 7 个新增 check 函数 =====
+
+/**
+ * 检查 1：9 槽位禁 lucide 检测
+ */
+function checkForbiddenLucideUsage(files) {
+  const violations = [];
+
+  for (const file of files) {
+    if (!file.endsWith('.tsx') && !file.endsWith('.ts')) continue;
+
+    // 检查文件是否属于禁 lucide 的槽位
+    const isForbiddenSlot = forbiddenLucideSlots.some(slot => file.includes(slot));
+    if (!isForbiddenSlot) continue;
+
+    const content = fs.readFileSync(file, 'utf8');
+    const lines = content.split(/\r?\n/);
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // 跳过标记为允许的行
+      if (line.includes('allow-inline-svg') || line.includes('allow-design-legacy')) continue;
+
+      // 检查 lucide-react 导入
+      if (line.includes("from 'lucide-react'") || line.includes('from "lucide-react"')) {
+        violations.push({
+          file: path.relative(projectRoot, file),
+          line: i + 1,
+          rule: 'forbidden-lucide-import',
+          message: 'Danger #1: Prohibited lucide import in forbidden slot. Use resource-skill-map.json instead.',
+          source: line.trim(),
+        });
+      }
+
+      // 检查 lucide 图标使用（<IconName /> 模式）
+      // 只检查明显的 lucide 图标使用
+      const lucideIconPattern = /<(AlertCircle|MoreVertical|Eye|EyeOff|ChevronDown|ChevronUp|Search|Clock|Info|AlertTriangle|CheckCircle|XCircle|User|Settings|Home|Menu|X|Plus|Minus|Check|Calendar|FileText|Download|Upload|Share2|Lock|Unlock|Bell|Heart|Star|Flag|Bookmark|MessageSquare|Send|Trash2|Edit|Copy|Zap|Wifi|Volume|Sliders|Maximize|Minimize|SkipBack|SkipForward|ArrowLeft|ArrowRight|TrendingUp|TrendingDown|BarChart|PieChart|DollarSign|CreditCard|Inbox|Users|GitCommit|GitBranch|GitPullRequest|Activity|Target|HardDrive|Cpu|Database|Package|Layers|Shield|Tool|Codepen|Airplay|Anchor|Archive|Award|Axe|BarChart2|Battery|Bookmark|BookOpen|Box|Briefcase|Bug|Building|Bulb|CalculatorLayout|Camera|Cast|ChevronLeft|ChevronRight|Circle|Clipboard|Compass|Cpu|CreditCard|Crop|ChevronsDown|ChevronsUp|ChevronsLeft|ChevronsRight|Clock|Cloud|Code|Codepen|Command|Compass|Copy|CopyCheck|Corner|CornerDownLeft|CornerDownRight|CornerLeftDown|CornerLeftUp|CornerRightDown|CornerRightUp|CornerUpLeft|CornerUpRight|Cpu|CreditCard|Crop|CrosshairIcon|Dash|Database|Delete|Dial|Diamond|Dices|DidNotPass|DirectionsFace|DiskSaving|DisclosureTriangle|Divider|Done|DoneAll|DoneOutline|Dots|DotsVertical|DoubleArrowLeft|DoubleArrowRight|DoWithout|DownloadFile|DownloadOutline|Drafts|DragHandleIcon|DrawIcon|Drift|DriveFolderUpload|DriveFolderUploadIcon|DriveFolderIcon|DriveFolderUploadOutlineIcon|Drivenav|DrivesIcon)\s*\/>/g;
+
+      if (lucideIconPattern.test(line)) {
+        violations.push({
+          file: path.relative(projectRoot, file),
+          line: i + 1,
+          rule: 'forbidden-lucide-usage',
+          message: 'Danger #1: Prohibited lucide usage in forbidden slot. Use resource-skill-map.json instead.',
+          source: line.trim(),
+        });
+      }
+    }
+  }
+
+  return violations;
+}
+
+/**
+ * 检查 2：.css 文件硬编码色检测
+ */
+function checkCssHardcodedColors(files) {
+  const violations = [];
+  // 匹配硬编码 hex 颜色（排除 var(--) 前缀和 color-mix 中的颜色）
+  const hexColorPattern = /(?<!var\(--)#[0-9A-Fa-f]{3,6}(?![0-9A-Fa-f])/g;
+  // 匹配 rgba 颜色值
+  const rgbaPattern = /rgba?\s*\(\s*\d+\s*,\s*\d+\s*,\s*\d+(?:\s*,\s*[\d.]+)?\s*\)/g;
+
+  // 排除的文件类型（token 定义文件等）
+  const excludePatterns = [
+    /tokens\.css$/,
+    /TOKENS\.css$/,
+    /theme-tokens\.css$/,
+    /color-tokens\.css$/,
+  ];
+
+  for (const file of files) {
+    if (!file.endsWith('.css') && !file.endsWith('.scss')) continue;
+
+    // 跳过 token 定义文件
+    if (excludePatterns.some(pattern => pattern.test(file))) continue;
+
+    const content = fs.readFileSync(file, 'utf8');
+    const lines = content.split(/\r?\n/);
+
+    lines.forEach((line, index) => {
+      if (line.includes('allow-inline-gradient') || line.includes('color-mix')) return;
+
+      // 检查 hex 颜色（排除 var() 中的默认值）
+      if (hexColorPattern.test(line) && !line.includes('var(')) {
+        const matches = line.match(hexColorPattern);
+        if (matches) {
+          violations.push({
+            file: path.relative(projectRoot, file),
+            line: index + 1,
+            rule: 'css-hardcoded-hex-color',
+            message: 'Hard-coded color in CSS. Use CSS variables (--cp-*) instead.',
+            source: line.trim(),
+          });
+        }
+      }
+
+      // 检查 rgba 颜色（排除 box-shadow 中的 rgba）
+      if (!line.includes('box-shadow') && rgbaPattern.test(line)) {
+        violations.push({
+          file: path.relative(projectRoot, file),
+          line: index + 1,
+          rule: 'css-hardcoded-rgba-color',
+          message: 'Hard-coded rgba color in CSS. Use CSS variables (--cp-*) instead.',
+          source: line.trim(),
+        });
+      }
+    });
+    hexColorPattern.lastIndex = 0;
+    rgbaPattern.lastIndex = 0;
+  }
+
+  return violations;
+}
+
+/**
+ * 检查 3：语义 Tailwind 色检测
+ */
+function checkSemanticTailwindColors(files) {
+  const violations = [];
+  const tailwindColorPattern = /(?:^|[\s"'`])(text|bg|border|fill|stroke|ring)-(gray|red|orange|yellow|green|blue|indigo|purple|pink)-(?:\d+)(?:[\s"'`]|$)/g;
+
+  for (const file of files) {
+    if (!file.endsWith('.tsx') && !file.endsWith('.ts') && !file.endsWith('.jsx')) continue;
+
+    const content = fs.readFileSync(file, 'utf8');
+    const lines = content.split(/\r?\n/);
+
+    lines.forEach((line, index) => {
+      if (line.includes('allow-design-legacy')) return;
+
+      const matches = line.match(tailwindColorPattern);
+      if (matches) {
+        violations.push({
+          file: path.relative(projectRoot, file),
+          line: index + 1,
+          rule: 'semantic-tailwind-color',
+          message: 'Hard-coded Tailwind color. Use token variables (--cp-*) instead.',
+          source: line.trim(),
+        });
+      }
+    });
+    tailwindColorPattern.lastIndex = 0;
+  }
+
+  return violations;
+}
+
+/**
+ * 检查 4：inline SVG 标记检测
+ */
+function checkInlineSvgMarking(files) {
+  const violations = [];
+
+  for (const file of files) {
+    if (!file.endsWith('.tsx') && !file.endsWith('.ts') && !file.endsWith('.jsx')) continue;
+
+    const content = fs.readFileSync(file, 'utf8');
+    const lines = content.split(/\r?\n/);
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // 跳过标记为允许的行
+      if (line.includes('allow-inline-svg') || line.includes('allow-design-legacy')) continue;
+
+      // 检查 inline SVG 定义
+      if (line.includes('<svg') && !line.includes('</svg>')) {
+        // 多行 SVG 的情况
+        let svgContent = line;
+        let foundEnd = false;
+
+        for (let j = i + 1; j < Math.min(i + 20, lines.length); j++) {
+          svgContent += '\n' + lines[j];
+          if (lines[j].includes('</svg>')) {
+            foundEnd = true;
+            break;
+          }
+        }
+
+        // 检查是否是业务代码中的 inline SVG（不是框架级组件）
+        const isFrameworkComponent = file.includes('portable/react') &&
+          (file.includes('alert') || file.includes('admin-sidebar') || file.includes('icon'));
+
+        if (foundEnd && (svgContent.includes('<path') || svgContent.includes('<circle'))) {
+          if (!isFrameworkComponent) {
+            violations.push({
+              file: path.relative(projectRoot, file),
+              line: i + 1,
+              rule: 'inline-svg-without-marker',
+              message: 'Inline SVG without proper marker. Add /* allow-design-legacy: portable-lucide-svg-inline */ if intentional.',
+              source: `<svg block starting at line ${i + 1}`,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return violations;
+}
+
+/**
+ * 检查 5：needs-design-confirmation 标记收集（作为统计而非违规）
+ */
+function collectDesignConfirmations(files) {
+  const confirmations = [];
+  const confirmationPattern = /needs-design-confirmation:\s*(.+?)(?:\s*\*\/|\n|$)/g;
+
+  for (const file of files) {
+    const content = fs.readFileSync(file, 'utf8');
+    const lines = content.split(/\r?\n/);
+
+    lines.forEach((line, index) => {
+      const match = line.match(/needs-design-confirmation:\s*(.+?)(?:\s*\*\/|$)/);
+      if (match) {
+        confirmations.push({
+          file: path.relative(projectRoot, file),
+          line: index + 1,
+          description: match[1].trim(),
+        });
+      }
+    });
+  }
+
+  return confirmations;
+}
+
+/**
+ * 检查 6：icon-registry 一致性检查
+ */
+function checkIconRegistryConsistency(files, registeredIcons) {
+  const violations = [];
+
+  // 扫描所有 icon 引用
+  const iconRefsMap = new Map();
+  for (const file of files) {
+    const content = fs.readFileSync(file, 'utf8');
+    const matches = content.matchAll(/['"`]\/?(icon\/[^'"`]+?\.svg)['"`]/g);
+
+    for (const match of matches) {
+      const ref = normalizeAssetPath(match[1]);
+      if (!registeredIcons.has(ref)) {
+        if (!iconRefsMap.has(ref)) {
+          iconRefsMap.set(ref, []);
+        }
+        iconRefsMap.get(ref).push(path.relative(projectRoot, file));
+      }
+    }
+  }
+
+  // 报告无效的 icon 引用
+  for (const [iconRef, files] of iconRefsMap) {
+    violations.push({
+      file: files[0],
+      line: 0,
+      rule: 'icon-registry-broken',
+      message: `Icon registry reference broken or outdated: ${iconRef}`,
+      source: `Referenced in ${files.length} file(s)`,
+    });
+  }
+
+  return violations;
+}
+
+/**
+ * 检查 7：多 variant 同步检查
+ */
+function checkMultiVariantSync(files) {
+  const violations = [];
+
+  // 检查 admin-sidebar / alert 等组件的 variant 一致性
+  const componentVariants = {
+    'admin-sidebar': ['admin', 'tenant'],
+    'alert': ['info', 'warning', 'success', 'error'],
+  };
+
+  for (const [component, variants] of Object.entries(componentVariants)) {
+    const componentFiles = files.filter(f => f.includes(component));
+
+    if (componentFiles.length === 0) continue;
+
+    // 简单检查：不同 variant 文件中的 icon 映射
+    const iconMaps = new Map();
+
+    for (const file of componentFiles) {
+      const content = fs.readFileSync(file, 'utf8');
+      const variantMatch = file.match(new RegExp(`--${variants.join('|')}`));
+
+      if (variantMatch) {
+        const variant = variantMatch[0].substring(2);
+        const iconRefs = content.match(/icon[A-Za-z]*\s*=\s*['"`]([^'"`]+)['"`]/g);
+
+        if (iconRefs) {
+          if (!iconMaps.has(variant)) {
+            iconMaps.set(variant, new Set());
+          }
+          iconRefs.forEach(ref => iconMaps.get(variant).add(ref));
+        }
+      }
+    }
+
+    // 检查不同 variant 间的 icon 集合是否一致
+    if (iconMaps.size > 1) {
+      const firstVariantIcons = Array.from(iconMaps.values())[0];
+      let isConsistent = true;
+
+      for (const [variant, icons] of iconMaps) {
+        if (icons.size !== firstVariantIcons.size ||
+            ![...icons].every(icon => firstVariantIcons.has(icon))) {
+          isConsistent = false;
+          break;
+        }
+      }
+
+      if (!isConsistent) {
+        violations.push({
+          file: componentFiles[0],
+          line: 0,
+          rule: 'multi-variant-inconsistency',
+          message: `Icon mapping inconsistency between variants of ${component}`,
+          source: `Check all ${component} variant files for consistent icon mapping`,
+        });
+      }
+    }
+  }
+
+  return violations;
+}
+
+// ===== 主程序 =====
+
+const registeredIcons = readRegistry();
+const files = targets.flatMap((target) => walk(target));
+const violations = [];
+const confirmationItems = [];
+
+// 执行原有的 scanFile 逻辑
+for (const file of files) {
+  scanFile(file, registeredIcons, violations, confirmationItems);
+}
+
+// 执行 7 个新的检查
+const results = {
+  forbiddenLucide: checkForbiddenLucideUsage(files),
+  cssHardcodedColors: checkCssHardcodedColors(files),
+  semanticTailwindColors: checkSemanticTailwindColors(files),
+  inlineSvgMarking: checkInlineSvgMarking(files),
+  iconRegistry: checkIconRegistryConsistency(files, registeredIcons),
+  multiVariantSync: checkMultiVariantSync(files),
+};
+
+// 汇总所有违规
+const allViolations = [
+  ...violations,
+  ...results.forbiddenLucide,
+  ...results.cssHardcodedColors,
+  ...results.semanticTailwindColors,
+  ...results.inlineSvgMarking,
+  ...results.iconRegistry,
+  ...results.multiVariantSync,
+];
+
+// 按 rule 分组
+const violationsByRule = {};
+for (const violation of allViolations) {
+  if (!violationsByRule[violation.rule]) {
+    violationsByRule[violation.rule] = [];
+  }
+  violationsByRule[violation.rule].push(violation);
+}
+
+// 输出规范化报告
+console.log('\n=== ClawPro Design Usage Check Report ===\n');
+
+let passCount = 0;
+let failCount = 0;
+let totalViolations = 0;
+
+// 检查 1：禁 lucide 槽位
+const lucideViolations = results.forbiddenLucide;
+if (lucideViolations.length === 0) {
+  console.log('✓ Icon slot validation (forbidden lucide): PASS (0 violations)');
+  passCount++;
+} else {
+  console.log(`✗ Icon slot validation (forbidden lucide): FAIL (${lucideViolations.length} violations)`);
+  lucideViolations.forEach(v => {
+    console.log(`  - ${v.file}:${v.line} ${v.message}`);
+    console.log(`    ${v.source}`);
+  });
+  failCount++;
+  totalViolations += lucideViolations.length;
+}
+
+// 检查 2-3：CSS 硬编码色
+const cssColorViolations = [...results.cssHardcodedColors];
+if (cssColorViolations.length === 0) {
+  console.log('✓ CSS hard-coded colors: PASS (0 violations)');
+  passCount++;
+} else {
+  console.log(`✗ CSS hard-coded colors: FAIL (${cssColorViolations.length} violations)`);
+  cssColorViolations.forEach(v => {
+    console.log(`  - ${v.file}:${v.line} ${v.rule}`);
+    console.log(`    ${v.source}`);
+  });
+  failCount++;
+  totalViolations += cssColorViolations.length;
+}
+
+// 检查 3：语义 Tailwind 色
+const tailwindViolations = results.semanticTailwindColors;
+if (tailwindViolations.length === 0) {
+  console.log('✓ Semantic Tailwind colors: PASS (0 violations)');
+  passCount++;
+} else {
+  console.log(`✗ Semantic Tailwind colors: FAIL (${tailwindViolations.length} violations)`);
+  tailwindViolations.forEach(v => {
+    console.log(`  - ${v.file}:${v.line}`);
+    console.log(`    ${v.source}`);
+  });
+  failCount++;
+  totalViolations += tailwindViolations.length;
+}
+
+// 检查 4：inline SVG 标记
+const svgViolations = results.inlineSvgMarking;
+if (svgViolations.length === 0) {
+  console.log('✓ Inline SVG marking: PASS (0 violations)');
+  passCount++;
+} else {
+  console.log(`✗ Inline SVG marking: FAIL (${svgViolations.length} violations)`);
+  svgViolations.forEach(v => {
+    console.log(`  - ${v.file}:${v.line} ${v.message}`);
+    console.log(`    ${v.source}`);
+  });
+  failCount++;
+  totalViolations += svgViolations.length;
+}
+
+// 检查 5：icon-registry 一致性
+const registryViolations = results.iconRegistry;
+if (registryViolations.length === 0) {
+  console.log('✓ Icon registry consistency: PASS (0 violations)');
+  passCount++;
+} else {
+  console.log(`✗ Icon registry consistency: FAIL (${registryViolations.length} violations)`);
+  registryViolations.forEach(v => {
+    console.log(`  - ${v.message}`);
+  });
+  failCount++;
+  totalViolations += registryViolations.length;
+}
+
+// 检查 6：多 variant 同步
+const variantViolations = results.multiVariantSync;
+if (variantViolations.length === 0) {
+  console.log('✓ Multi-variant consistency: PASS (0 violations)');
+  passCount++;
+} else {
+  console.log(`✗ Multi-variant consistency: FAIL (${variantViolations.length} violations)`);
+  variantViolations.forEach(v => {
+    console.log(`  - ${v.message}`);
+  });
+  failCount++;
+  totalViolations += variantViolations.length;
+}
+
+// 显示 needs-design-confirmation 统计
+console.log(`\n📋 Design Confirmations Needed: ${confirmationItems.length} items`);
+if (confirmationItems.length > 0) {
+  confirmationItems.slice(0, 5).forEach(item => {
+    console.log(`  - ${item.file}:${item.line}`);
+  });
+  if (confirmationItems.length > 5) {
+    console.log(`  ... and ${confirmationItems.length - 5} more items`);
+  }
+}
+
+// 总结
+console.log(`\n=== Summary ===`);
+console.log(`Total checks: ${passCount + failCount}`);
+console.log(`PASSED: ${passCount}`);
+console.log(`FAILED: ${failCount}`);
+console.log(`Total violations: ${totalViolations}`);
+console.log(`Design confirmations: ${confirmationItems.length}`);
+
+if (strict && (totalViolations > 0 || failCount > 0)) {
+  process.exit(1);
+}
+
+process.exit(0);

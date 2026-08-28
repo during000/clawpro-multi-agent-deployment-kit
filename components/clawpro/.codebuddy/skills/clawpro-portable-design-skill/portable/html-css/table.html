@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Table</title>
+    <!-- 复用沉淀的共享样式：tokens + table.css + pagination.css（不再内联手写） -->
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <link rel="stylesheet" href="../css/table.css" />
+    <link rel="stylesheet" href="../css/pagination.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      .cp-shell { max-width: 1080px; margin: 0 auto; }
+      .cp-header { margin-bottom: 24px; }
+      .cp-header h1 { margin: 0 0 8px; font-size: 20px; line-height: 1.4; color: var(--cp-text-title); }
+      .cp-header p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--cp-text-secondary); }
+      .cp-group { display: grid; gap: 32px; }
+      .cp-demo-block { display: grid; gap: 12px; }
+      .cp-demo-title { margin: 0; font-size: 15px; line-height: 1.5; color: var(--cp-text-secondary); }
+      .cp-rule-box {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: #FAFAFA;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-rule-box p { margin: 0; }
+      .cp-rule-box p + p { margin-top: 4px; }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>Table</h1>
+        <p>根据 `component-specs/table.md` 生成，验证标准版 / 紧凑版 / 空态，以及状态列、操作列、分页页脚。全部复用 `portable/css/table.css` 共享 class。</p>
+      </header>
+
+      <div class="cp-group">
+        <!-- ① 标准版（含状态列 / 操作列 / 分页页脚） -->
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">标准版（默认密度 · 行高 54px）</h2>
+          <section class="cp-table-shell">
+            <div class="cp-table-scroll">
+              <table class="cp-table">
+                <thead>
+                  <tr>
+                    <th>名称</th>
+                    <th>状态</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>企业技能库</td>
+                    <td><span class="cp-table-status cp-table-status--success">已启用</span></td>
+                    <td>2026-06-06 10:20</td>
+                    <td>
+                      <div class="cp-table-actions">
+                        <button class="cp-table-action" type="button">查看</button>
+                        <button class="cp-table-action" type="button">编辑</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>运维 Agent</td>
+                    <td><span class="cp-table-status cp-table-status--muted">已停用</span></td>
+                    <td>2026-06-05 16:42</td>
+                    <td>
+                      <div class="cp-table-actions">
+                        <button class="cp-table-action" type="button">查看</button>
+                        <button class="cp-table-action" type="button">编辑</button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>通用语义模型</td>
+                    <td><span class="cp-table-status cp-table-status--info">同步中</span></td>
+                    <td>2026-06-04 09:10</td>
+                    <td>
+                      <div class="cp-table-actions">
+                        <button class="cp-table-action" type="button">查看</button>
+                        <button class="cp-table-action" type="button" disabled>编辑</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="cp-table-footer">
+              <span class="cp-table-footer__total">共 36 条记录</span>
+              <div class="cp-table-footer__pager">
+                <nav class="cp-pagination__list" aria-label="分页">
+                  <button class="cp-pagination__btn" type="button" disabled>‹</button>
+                  <button class="cp-pagination__btn cp-pagination__btn--active" type="button">1</button>
+                  <button class="cp-pagination__btn" type="button">2</button>
+                  <button class="cp-pagination__btn" type="button">3</button>
+                  <span class="cp-pagination__ellipsis">…</span>
+                  <button class="cp-pagination__btn" type="button">12</button>
+                  <button class="cp-pagination__btn" type="button">›</button>
+                </nav>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- ② 紧凑版 -->
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">紧凑版（compact · 行高 40px）</h2>
+          <section class="cp-table-shell">
+            <div class="cp-table-scroll">
+              <table class="cp-table cp-table--compact">
+                <thead>
+                  <tr>
+                    <th>实例 ID</th>
+                    <th>类型</th>
+                    <th class="cp-col-right cp-num">用量</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ins-8f2a91c0</td>
+                    <td>标准型 S5</td>
+                    <td class="cp-col-right cp-num">128</td>
+                    <td><span class="cp-table-status cp-table-status--success">运行中</span></td>
+                  </tr>
+                  <tr>
+                    <td>ins-3b71de44</td>
+                    <td>计算型 C6</td>
+                    <td class="cp-col-right cp-num">2,048</td>
+                    <td><span class="cp-table-status cp-table-status--warning">告警</span></td>
+                  </tr>
+                  <tr>
+                    <td>ins-a01c77e9</td>
+                    <td>内存型 M5</td>
+                    <td class="cp-col-right cp-num">512</td>
+                    <td><span class="cp-table-status cp-table-status--danger">已欠费</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <!-- ③ 空态 -->
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">空态（colSpan 纯文字双行 · 禁插画）</h2>
+          <section class="cp-table-shell">
+            <div class="cp-table-scroll">
+              <table class="cp-table">
+                <thead>
+                  <tr>
+                    <th>名称</th>
+                    <th>状态</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="cp-table-empty-row">
+                    <td class="cp-table-empty" colspan="4">
+                      <p>暂无数据</p>
+                      <p>调整筛选条件，或点击右上角「创建」新增一条记录</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="cp-rule-box">
+          <p><strong>规则</strong></p>
+          <p>• 容器圆角 4px（管控端铁律）+ 蓝灰描边 + 白底；表头灰底 / 40px / 12px Medium</p>
+          <p>• 状态列纯文字变色，禁底色胶囊 / 禁圆点；操作列纯品牌蓝文字、间距 24px、禁红色</p>
+          <p>• 空态在 colSpan 内纯文字双行，禁插画；页脚总数左对齐、分页器右对齐</p>
+          <p>• fallback 只依赖 `var(--cp-*)` 变量，样式集中在 `portable/css/table.css`</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

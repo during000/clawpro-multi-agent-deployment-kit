@@ -1,0 +1,252 @@
+{
+  "$schema": "clawpro-component-resource-map",
+  "note": "阶段 8 产物：组件资源使用映射与风险约束（人工策展事实源，基于真实组件源码审计，绝不臆测）。本文件只记录映射与风险，不改任何组件源码、不引入注册体系、不做迁移。slots=可用组件槽位白名单（资源详情面板「适合组件槽位」据此展示风险约束）；components=纳入映射的组件清单（对应建设计划 §7.3）；findings=审计中据实发现的不一致；checkRules=供 check-component-resource-usage.mjs 落地的检查项说明。",
+  "stage": 8,
+  "baselineAt": "2026-06-14T03:30:00.000Z",
+  "updatedAt": "2026-06-22T00:00:00.000Z",
+  "boundary": [
+    "所有组件统一按「开发仓库已使用 / 共享组件」处理（isShared 恒为 true）",
+    "本阶段不改任何组件源码、不改组件 icon API、不做全量组件重构",
+    "canonicalAssets 仅当前项目页面层使用；组件源码禁止 import canonicalAssets 或写死当前项目 /assets/ 路径",
+    "channel-icon / brand-logo / agent-avatar 为红线资源：禁当普通 UI 图标改色、禁进普通 icon 槽位、跨仓由宿主注入",
+    "需改组件源码 / 默认资源 / 组件 API 的，必须脱离本资源库任务单独立项并评估开发仓库兼容性"
+  ],
+  "slots": {
+    "admin-sidebar": {
+      "label": "AdminSidebar 菜单图标",
+      "componentSlotPath": "AdminSidebar.itemIcon",
+      "owningComponents": ["AdminSidebar"],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "low",
+      "redline": false,
+      "currentResource": "页面通过 AdminSidebarMenuButton 的 img/svg 槽位传入菜单图标（cva variants 已约束 [&>img]:size-4 / [&>svg]:size-4），组件本身不硬编码菜单图标路径",
+      "hostInjection": "跨仓由宿主页面传入菜单图标，组件不内置",
+      "constraint": "侧栏菜单图标须从 admin-sidebar 槽位已登记候选中挑选；无合适候选时标 needs-design-confirmation 记录并交设计补绘、由产品联系设计师，不回退 lucide、不在页面手搓 inline svg；自有 SVG 由页面经 img/svg 槽位传入，组件不写死 /assets 路径"
+    },
+    "card-left-icon": {
+      "label": "卡片左侧图标",
+      "componentSlotPath": "Card.leftIcon",
+      "owningComponents": ["Card"],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "medium",
+      "redline": false,
+      "currentResource": "卡片左上角块状多彩渐变图标，多为自有 SVG，由页面在调用处传入",
+      "hostInjection": "跨仓由宿主注入或降级为单色 lucide",
+      "constraint": "多彩渐变语义，lucide 单色难等价；保持自有 SVG，由页面层引用"
+    },
+    "number-card": {
+      "label": "NumberCard 卡片图标",
+      "componentSlotPath": "NumberCard.icon",
+      "owningComponents": ["NumberCard"],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "low",
+      "redline": false,
+      "currentResource": "NumberCard 暴露 icon prop（ReactNode 槽位），内置 GradientIcon + 4 枚 inline 渐变图标（早期固化的常用项，非上限）；组件 API 层仍可接收任意 ReactNode，组件本身不硬编码 /assets 路径",
+      "hostInjection": "跨仓由宿主页面通过 icon prop 传入对应渐变图标",
+      "constraint": "统计卡图标须从 number-card 槽位已登记渐变候选中挑选（阶段 9 候选已扩至 22 枚渐变图标，内置 4 枚仅为其中已固化常用项、非上限）；无合适候选时标 needs-design-confirmation 交设计补绘，不回退扁平 lucide（会破坏渐变家族）、不在页面手搓 inline svg；自有 SVG 由页面经 img/canonical 传入，组件不写死路径"
+    },
+    "file-type": {
+      "label": "文件类型图标",
+      "componentSlotPath": "FileSpace.fileTypeIcon",
+      "owningComponents": ["FileSpace"],
+      "recommendedResourceType": "custom-svg | lucide",
+      "allowLucideFallback": true,
+      "riskLevel": "medium",
+      "redline": false,
+      "currentResource": "FileSpace 当前以 inline SVG 实现文件/文件夹类型图标与工具栏图标；资源库中 file-space 静态 SVG 多为设计源（见 findings.fileTypeStaticUnreferenced）",
+      "hostInjection": "跨仓由宿主页面提供文件类型图标或用 lucide",
+      "constraint": "通用文件类型图标，可用 lucide；如抽为资源须脱离本任务单独立项"
+    },
+    "run-status": {
+      "label": "运行状态图标",
+      "componentSlotPath": "AgentCard.statusIcon",
+      "owningComponents": ["StatusBadge", "AgentCard"],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "medium",
+      "redline": false,
+      "currentResource": "StatusBadge 以组件内 inline 动画 SVG 实现 8 种状态（运行/创建中/维护中等）；资源库中 agent-card status 静态 SVG 未被组件引用（见 findings.runStatusStaticUnreferenced）",
+      "hostInjection": "状态动画语义为组件私有，跨仓随组件携带",
+      "constraint": "带动画/状态语义，lucide 难等价；保持组件私有 inline 实现，本阶段不抽资源"
+    },
+    "feature-card": {
+      "label": "企业特性卡片图标",
+      "componentSlotPath": "ComparisonTable.featureIcon",
+      "owningComponents": ["ComparisonTable"],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "high",
+      "redline": false,
+      "currentResource": "ComparisonTable 组件层硬编码 /assets/admin-memory-management/version-compare/*.svg（feature-tenant/encrypt/backup/token 等）",
+      "hostInjection": "跨仓由宿主注入特性图标",
+      "constraint": "组件层硬编码当前项目 /assets 路径不可移植；如改为 canonical/props 注入须单独立项"
+    },
+    "agent-avatar": {
+      "label": "Agent 头像",
+      "componentSlotPath": "AgentCard.avatar",
+      "owningComponents": ["AgentAvatar", "AgentCard"],
+      "recommendedResourceType": "agent-avatar",
+      "allowLucideFallback": false,
+      "riskLevel": "high",
+      "redline": true,
+      "currentResource": "AgentAvatar 组件 ROLE_AVATAR 硬编码 7 个 /assets/avatars/avatar-*.png",
+      "hostInjection": "跨仓由宿主注入头像；当前项目页面层可用 canonicalAssets.avatars.*",
+      "constraint": "头像不可用图标替代、禁改色当 UI 图标；组件硬编码当前项目路径不可移植，跨仓须宿主注入"
+    },
+    "channel-icon": {
+      "label": "渠道图标",
+      "componentSlotPath": "ChannelConfig.channelIcon",
+      "owningComponents": ["ChannelConfig"],
+      "recommendedResourceType": "channel-icon",
+      "allowLucideFallback": false,
+      "riskLevel": "low",
+      "redline": true,
+      "currentResource": "ChannelConfig 页面层经 canonicalAssets.channels.*（微信/QQ/企微/企微应用/钉钉/飞书）引用——阶段 6 已接入的正确范例",
+      "hostInjection": "跨仓由宿主注入渠道图标",
+      "constraint": "品牌固定色，禁改色当普通图标；当前项目页面用 canonicalAssets.channels，组件不写死路径"
+    },
+    "brand-logo": {
+      "label": "品牌 Logo",
+      "componentSlotPath": "BrandLogo.logo",
+      "owningComponents": ["AdminSidebar", "TopNav"],
+      "recommendedResourceType": "brand-logo",
+      "allowLucideFallback": false,
+      "riskLevel": "medium",
+      "redline": true,
+      "currentResource": "AdminSidebarLogo 为 inline 品牌渐变 SVG；TopNav 引用 @/assets/topnav/clawpro-logo.svg（与 sidebar Logo 为不同物理文件，阶段 6 已记录不合并）",
+      "hostInjection": "跨仓由宿主注入品牌 Logo",
+      "constraint": "品牌资源禁当普通 icon、禁改色；跨仓由宿主注入"
+    }
+  },
+  "components": [
+    {
+      "componentName": "AgentAvatar",
+      "componentPath": "client/src/components/agent/AgentAvatar.tsx",
+      "isShared": true,
+      "currentResourceSource": "组件硬编码 7 个 /assets/avatars/avatar-*.png（ROLE_AVATAR 角色→头像映射）",
+      "resourceSlot": "agent-avatar",
+      "recommendedResourceType": "agent-avatar",
+      "allowLucideFallback": false,
+      "currentRisk": "high：组件层硬编码当前项目 /assets 路径，跨仓缺资源、不可移植",
+      "recommendedUsage": "当前项目页面经 canonicalAssets.avatars.* 注入；跨仓由宿主注入头像",
+      "needsSeparateRefactor": true
+    },
+    {
+      "componentName": "StatusBadge",
+      "componentPath": "client/src/components/agent/StatusBadge.tsx",
+      "isShared": true,
+      "currentResourceSource": "组件内 8 种状态全部为 inline 动画 SVG，未引用 src/assets/agent-card/status-*.svg 静态文件",
+      "resourceSlot": "run-status",
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "currentRisk": "medium：inline SVG 散落；与资源库 8 个 status 静态文件存在「标槽位但未被引用」的不一致",
+      "recommendedUsage": "保持组件私有 inline（动画语义）；静态文件按设计源记录，本阶段不抽资源",
+      "needsSeparateRefactor": false
+    },
+    {
+      "componentName": "NumberCard",
+      "componentPath": "client/src/components/ui/number-card.tsx",
+      "isShared": true,
+      "currentResourceSource": "组件不硬编码 /assets；内置 GradientIcon + 4 枚 inline 渐变图标（早期固化常用项，非上限）；icon 槽位由页面传入",
+      "resourceSlot": "number-card",
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "currentRisk": "low：组件本身无当前项目路径依赖",
+      "recommendedUsage": "页面通过 icon prop 传入 number-card 槽位渐变候选（阶段 9 已扩至 22 枚）；无合适候选标 needs-design-confirmation 交设计补绘，不回退 lucide、不手搓 inline svg",
+      "needsSeparateRefactor": false
+    },
+    {
+      "componentName": "AdminSidebar",
+      "componentPath": "client/src/components/ui/admin-sidebar.tsx",
+      "isShared": true,
+      "currentResourceSource": "AdminSidebarLogo 为 inline 品牌渐变 SVG；折叠/组织 chevron 为 inline SVG；菜单图标由页面经 img/svg 槽位传入；AdminSidebarInset 用 backgroundImage url(/admin_content_bg.png)",
+      "resourceSlot": "admin-sidebar",
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": true,
+      "currentRisk": "medium：内嵌品牌 Logo inline、背景图 public 路径写死",
+      "recommendedUsage": "菜单图标由页面传入；内嵌 Logo 跨仓由宿主注入",
+      "needsSeparateRefactor": false
+    },
+    {
+      "componentName": "ComparisonTable",
+      "componentPath": "client/src/pages/admin/MemoryManagement/components/ComparisonTable.tsx",
+      "isShared": true,
+      "currentResourceSource": "组件硬编码 6 个 /assets/admin-memory-management/version-compare/*.svg（feature-tenant/encrypt/backup/token + free/pro 图标）；另用 lucide Check",
+      "resourceSlot": "feature-card",
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "currentRisk": "high：组件层硬编码当前项目 /assets 路径，不可移植",
+      "recommendedUsage": "经页面层 canonical/props 注入；跨仓由宿主注入",
+      "needsSeparateRefactor": true
+    },
+    {
+      "componentName": "ChannelConfig",
+      "componentPath": "client/src/pages/admin/ChannelConfig.tsx",
+      "isShared": true,
+      "currentResourceSource": "页面层经 canonicalAssets.channels.*（微信/QQ/企微/企微应用/钉钉/飞书）引用——阶段 6 已接入的正确范例",
+      "resourceSlot": "channel-icon",
+      "recommendedResourceType": "channel-icon",
+      "allowLucideFallback": false,
+      "currentRisk": "low：已走 canonical 入口，路径可统一维护",
+      "recommendedUsage": "当前项目页面用 canonicalAssets.channels；跨仓由宿主注入",
+      "needsSeparateRefactor": false
+    },
+    {
+      "componentName": "FileSpace",
+      "componentPath": "client/src/pages/tenant/FileSpace.tsx",
+      "isShared": true,
+      "currentResourceSource": "getFileIcon 文件/文件夹类型图标与工具栏图标全部 inline SVG；仅关闭态 ESM import 4 个 @/assets/icons/agent-page/file-space/file-*.svg 功能介绍图标",
+      "resourceSlot": "file-type",
+      "recommendedResourceType": "custom-svg | lucide",
+      "allowLucideFallback": true,
+      "currentRisk": "medium：文件类型图标 inline 散落；与资源库 21 个 file-space 静态文件存在「标槽位但仅 4 个被 import」的不一致",
+      "recommendedUsage": "文件类型图标可逐步抽为资源或改 lucide（须单独立项）；功能介绍图标保持 import",
+      "needsSeparateRefactor": false
+    },
+    {
+      "componentName": "Empty",
+      "componentPath": "client/src/components/ui/empty.tsx",
+      "isShared": true,
+      "currentResourceSource": "组件硬编码 /assets/admin-sidebar/empty-aiagent*.png（EMPTY_MEDIA_ASSETS）；这些 PNG 在分类标 excludeFromLibrary（组件私有）",
+      "resourceSlot": "empty-media",
+      "recommendedResourceType": "business-image",
+      "allowLucideFallback": false,
+      "currentRisk": "medium：组件层硬编码当前项目 /assets 路径，不可移植",
+      "recommendedUsage": "跨仓由宿主注入空态插画；资源不纳入资源库，仅记录",
+      "needsSeparateRefactor": false
+    }
+  ],
+  "findings": {
+    "runStatusStaticUnreferenced": {
+      "summary": "分类将 8 个 src/assets/agent-card/status-*.svg 标为 run-status 槽位，但 StatusBadge 实际以组件内 inline 动画 SVG 渲染状态，未通过这些静态路径引用。",
+      "conclusion": "据实记录为设计源 / 低引用；本阶段不改组件、不删文件、不抽资源。",
+      "affectedComponents": ["StatusBadge"]
+    },
+    "fileTypeStaticUnreferenced": {
+      "summary": "分类将 21 个 src/assets/icons/file-space/* 标为 file-type 槽位，但 FileSpace 实际以 inline SVG 渲染文件类型与工具栏图标，仅 ESM import 4 个关闭态功能介绍图标。",
+      "conclusion": "据实记录；文件类型图标如抽为资源/改 lucide 须脱离本任务单独立项。",
+      "affectedComponents": ["FileSpace"]
+    },
+    "numberCardInlineGradient": {
+      "summary": "NumberCard 组件内置 GradientIcon + 4 枚 inline 渐变图标（number-card.tsx），inventory 收录 1 条 inline-svg（GradientIcon 字面 <svg）；属组件私有实现，适合 number-card 槽位。",
+      "conclusion": "保留组件 inline 实现、组件源码不变（守阶段 8 边界）；其「适合 number-card 槽位」已由 slots.number-card 约束记录，供资源详情面板展示，方便后期组件优化时据此抽取/接入。本阶段不抽资源。",
+      "affectedComponents": ["NumberCard"],
+      "relatedPageExtraction": "对照：OpenClawMonitor.tsx 页面级统计卡 4 枚渐变图标（总数/运行中/已关机/其他）原为页面 inline。其中「总数」与资源库既有 instance-total（client/public/assets/admin-memory-management/instance-total.svg）逐字一致，已直接复用该资源、不重复引入；「运行中/已关机/其他」3 枚抽为独立资源 client/public/icon/monitor-{running,shutdown,other}.svg，并在 classification.json 登记 componentSlot=number-card·confirmed。页面层属可治理范围，与组件私有 inline 区别对待。",
+      "revision": "2026-06-22：将 number-card 槽位由 allowLucideFallback=true 翻转为 false（recommendedResourceType 去 lucide）。理由——阶段 9 派生候选已扩至 22 枚渐变图标（OpenClawMonitor 抽出 monitor-* 并复用 instance-total 后槽位充足），早期标『允许 lucide 回退』是因内置仅 4 枚怕 AI 选不到；现候选已足，扁平 lucide 反而破坏渐变家族，故据实撤回兜底、对齐 card-left-icon：无合适候选时标 needs-design-confirmation 交设计补绘，不回退 lucide。属合法修订（建设计划 §5 待定项：是否允许 lucide 回退以审计真实产出为准），下游 resource-skill-map.json 经 build:skill-map 重生成、check:skill-map 防漂移校验保持一致。"
+    }
+  },
+  "checkRules": {
+    "baselineMode": true,
+    "description": "由 client/src/design-assets/scripts/check-component-resource-usage.mjs 落地。采用基线模式：允许存量违规不阻塞 CI，只防新增倒退（STRICT=1 时严格）。",
+    "rules": [
+      "component-imports-canonical：组件源码（client/src/components/**）禁止 import canonicalAssets（仅页面层可用）",
+      "component-hardcoded-assets：组件源码硬编码当前项目 /assets/ 路径（存量：AgentAvatar / Empty / ComparisonTable，列入基线豁免，防新增）",
+      "new-inline-svg：业务代码新增 inline <svg>（仅计数，防无序新增；存量 StatusBadge / FileSpace 等计入基线）",
+      "emoji-icon：源码以 emoji 充当图标",
+      "brand-resource-wrong-slot：channel-icon / brand-logo / agent-avatar 红线资源被当普通 icon 改色或放入普通 icon 槽位"
+    ]
+  }
+}

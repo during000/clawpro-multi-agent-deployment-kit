@@ -1,0 +1,1896 @@
+{
+  "generator": "scan-progress.cjs",
+  "generatedAt": "2026-05-21T07:23:51.201Z",
+  "repo": "../..",
+  "rules": {
+    "component": "命中 rounded-[4px] / var(--shadow-*) / var(--color-gray-*) / #1447E6 / Surface 任一 → done",
+    "page": "Surface×3 + rounded-[4px]×1（≤3）+ shadow-token×2（≤2）+ gray-token×1（≤2）；分≥3 done / ≥1 doing / 否则 todo"
+  },
+  "summary": {
+    "components": {
+      "total": 53,
+      "done": 25,
+      "todo": 28
+    },
+    "pages": {
+      "total": 117,
+      "done": 31,
+      "doing": 10,
+      "todo": 76
+    }
+  },
+  "components": {
+    "accordion": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "alert": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "alert-dialog": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "aspect-ratio": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "avatar": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "badge": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "breadcrumb": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "button": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 3,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "button-group": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "calendar": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 6,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "card": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "carousel": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "chart": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "checkbox": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "collapsible": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "command": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "context-menu": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "dialog": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "drawer": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "dropdown-menu": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "empty": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "field": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "form": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "hover-card": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "input": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "input-group": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "input-otp": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "item": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "kbd": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "label": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231189
+    },
+    "menubar": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 3,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "navigation-menu": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 3,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "pagination": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "popover": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "progress": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "radio-group": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "resizable": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "scroll-area": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "select": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "separator": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "sheet": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "sidebar": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 10,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "skeleton": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "slider": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "sonner": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "spinner": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "switch": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "table": {
+      "status": "todo",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "tabs": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "textarea": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "toggle": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "toggle-group": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    },
+    "tooltip": {
+      "status": "done",
+      "signals": {
+        "fileExists": true,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0,
+        "surface": 0
+      },
+      "updatedAt": 1779348231190
+    }
+  },
+  "pages": {
+    "ComponentPreview.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231191
+    },
+    "Home.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231191
+    },
+    "NotFound.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231191
+    },
+    "PreviewIndex.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "SsoLoginDemo.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/AgentMigration.tsx": {
+      "status": "done",
+      "score": 5,
+      "signals": {
+        "surface": 0,
+        "rounded4": 1,
+        "shadowToken": 2,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/AgentTemplate.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/AgentToolLibrary.tsx": {
+      "status": "doing",
+      "score": 1,
+      "signals": {
+        "surface": 0,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/ApiDocs.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/AuditLog.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 3,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/AuthSourceImportDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/BasicInfo.tsx": {
+      "status": "done",
+      "score": 4,
+      "signals": {
+        "surface": 0,
+        "rounded4": 12,
+        "shadowToken": 0,
+        "grayToken": 1
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/BatchUpdateNotice.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/ChannelConfig.tsx": {
+      "status": "doing",
+      "score": 2,
+      "signals": {
+        "surface": 0,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/CloudDevManagement.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/DocManagement.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 3,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/EnterpriseSkillLibrary.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231192
+    },
+    "admin/FileManagement.tsx": {
+      "status": "doing",
+      "score": 1,
+      "signals": {
+        "surface": 0,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/ImageManagement/AgentTypeImagePicker.tsx": {
+      "status": "doing",
+      "score": 2,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 14
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/ImageManagement/AgentTypesTable.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 0,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 1
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/ImageManagement/PublicImageHistoryDialog.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 0,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 6
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/ImageManagement/PushUpgradeDialog.tsx": {
+      "status": "done",
+      "score": 5,
+      "signals": {
+        "surface": 0,
+        "rounded4": 4,
+        "shadowToken": 0,
+        "grayToken": 7
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/ImageManagement/UpdateRecordSidebar.tsx": {
+      "status": "done",
+      "score": 5,
+      "signals": {
+        "surface": 0,
+        "rounded4": 8,
+        "shadowToken": 0,
+        "grayToken": 13
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/ImageManagement/UpdateRecordsDrawer.tsx": {
+      "status": "done",
+      "score": 5,
+      "signals": {
+        "surface": 0,
+        "rounded4": 4,
+        "shadowToken": 0,
+        "grayToken": 27
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/ImageManagement.tsx": {
+      "status": "done",
+      "score": 5,
+      "signals": {
+        "surface": 0,
+        "rounded4": 16,
+        "shadowToken": 0,
+        "grayToken": 20
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/MemberManagement/GroupDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/MemberManagement/GroupList.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231193
+    },
+    "admin/MemberManagement/GroupView.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemberManagement/MemberDrawer.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemberManagement/NodeContentPanel.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemberManagement/OverrideCell.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemberManagement/SyncResultDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemberManagement.tsx": {
+      "status": "doing",
+      "score": 2,
+      "signals": {
+        "surface": 0,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemoryManagement/MemoryManagement.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 0,
+        "rounded4": 4,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemoryManagement/components/BenchmarkSection.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemoryManagement/components/BenchmarkTable.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemoryManagement/components/ComparisonTable.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemoryManagement/components/DefaultMemoryVersion.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemoryManagement/components/DisableConfirmDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemoryManagement/components/EnableConfirmDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231194
+    },
+    "admin/MemoryManagement/components/FeatureGrid.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/FreeVersionCard.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 3,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/InstanceTable.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/OneClickUpgradeDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/OverviewStats.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 5,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/ProActivationDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/ProCloseDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/ProDashboard.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 5,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/ProServiceCard.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 3,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/ProVersionCard.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/MemoryManagement/components/RadarWidget.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/ModelConfig.tsx": {
+      "status": "doing",
+      "score": 1,
+      "signals": {
+        "surface": 0,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/OpenClawMonitor.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 0,
+        "rounded4": 4,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231195
+    },
+    "admin/OpsObservation.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231196
+    },
+    "admin/PlatformPolicy.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 0,
+        "rounded4": 4,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231196
+    },
+    "admin/SecurityGroupManagement.tsx": {
+      "status": "doing",
+      "score": 1,
+      "signals": {
+        "surface": 0,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231196
+    },
+    "admin/SecurityManagement.tsx": {
+      "status": "doing",
+      "score": 1,
+      "signals": {
+        "surface": 0,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231196
+    },
+    "admin/ServerManagement.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231196
+    },
+    "admin/SessionDetail.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231196
+    },
+    "admin/SessionManagement.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillConfig.tsx": {
+      "status": "doing",
+      "score": 2,
+      "signals": {
+        "surface": 0,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 1
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillDetailPage.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/AddCategoryDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/AddToPackageDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/BatchDeleteDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/BatchDistributeDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/BucketManagementTab.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/CategoryManagementTab.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/DeleteSkillDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/DistributeDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/EditCategoriesDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/EditCategoryDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/EditScopeDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/EnableCOSDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/MCPAddDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/MCPDetail.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/MCPListTab.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/PluginDetail.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/PluginListTab.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/PluginUploadDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/PublicSkillLibraryTab.tsx": {
+      "status": "doing",
+      "score": 1,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 1
+      },
+      "updatedAt": 1779348231197
+    },
+    "admin/SkillLibrary/SkillDetail.tsx": {
+      "status": "done",
+      "score": 9,
+      "signals": {
+        "surface": 7,
+        "rounded4": 6,
+        "shadowToken": 1,
+        "grayToken": 1
+      },
+      "updatedAt": 1779348231198
+    },
+    "admin/SkillLibrary/SkillInitialPackageTab.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 0,
+        "rounded4": 3,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231198
+    },
+    "admin/SkillLibrary/SkillListTab.tsx": {
+      "status": "done",
+      "score": 4,
+      "signals": {
+        "surface": 0,
+        "rounded4": 3,
+        "shadowToken": 0,
+        "grayToken": 1
+      },
+      "updatedAt": 1779348231198
+    },
+    "admin/SkillLibrary/SkillUpdateDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231198
+    },
+    "admin/SkillLibrary/SkillUploadDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231198
+    },
+    "admin/SkillRolesTab.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231198
+    },
+    "admin/TokensMonitor.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 0,
+        "rounded4": 5,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231198
+    },
+    "admin/VersionManagement/CommandTaskTab.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/VersionManagement/HistoryTab.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/VersionManagement/components/CopyableId.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/VersionManagement/components/CreateCommandDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/VersionManagement/components/DispatchCommandDialog.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/VersionManagement/components/RecentHistorySection.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/agentOps/AgentCommandsPage.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/agentOps/AgentOpsPageHeader.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/agentOps/PageTabs.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "admin/standard/StandardBasicInfo.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/Advanced.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/Enterprise.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/Features.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/Footer.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/Hero.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/HowItWorks.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/Intro.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/Navbar.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "landing/index.tsx": {
+      "status": "todo",
+      "score": 0,
+      "signals": {
+        "surface": 0,
+        "rounded4": 0,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231199
+    },
+    "tenant/ChatView.tsx": {
+      "status": "done",
+      "score": 5,
+      "signals": {
+        "surface": 0,
+        "rounded4": 21,
+        "shadowToken": 0,
+        "grayToken": 3
+      },
+      "updatedAt": 1779348231199
+    },
+    "tenant/FileSpace.tsx": {
+      "status": "done",
+      "score": 8,
+      "signals": {
+        "surface": 8,
+        "rounded4": 12,
+        "shadowToken": 0,
+        "grayToken": 19
+      },
+      "updatedAt": 1779348231200
+    },
+    "tenant/HelpDocs.tsx": {
+      "status": "done",
+      "score": 8,
+      "signals": {
+        "surface": 3,
+        "rounded4": 3,
+        "shadowToken": 1,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231200
+    },
+    "tenant/ModelQuota.tsx": {
+      "status": "done",
+      "score": 7,
+      "signals": {
+        "surface": 9,
+        "rounded4": 6,
+        "shadowToken": 0,
+        "grayToken": 1
+      },
+      "updatedAt": 1779348231200
+    },
+    "tenant/MyOpenClaw.tsx": {
+      "status": "done",
+      "score": 6,
+      "signals": {
+        "surface": 3,
+        "rounded4": 10,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231200
+    },
+    "tenant/OpenClawDetail.tsx": {
+      "status": "done",
+      "score": 3,
+      "signals": {
+        "surface": 0,
+        "rounded4": 77,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231200
+    },
+    "tenant/OpenClawDetailGuide.tsx": {
+      "status": "done",
+      "score": 10,
+      "signals": {
+        "surface": 13,
+        "rounded4": 35,
+        "shadowToken": 1,
+        "grayToken": 22
+      },
+      "updatedAt": 1779348231201
+    },
+    "tenant/ResetPassword.tsx": {
+      "status": "done",
+      "score": 4,
+      "signals": {
+        "surface": 3,
+        "rounded4": 1,
+        "shadowToken": 0,
+        "grayToken": 0
+      },
+      "updatedAt": 1779348231201
+    },
+    "tenant/SkillSquare.tsx": {
+      "status": "done",
+      "score": 12,
+      "signals": {
+        "surface": 12,
+        "rounded4": 11,
+        "shadowToken": 8,
+        "grayToken": 9
+      },
+      "updatedAt": 1779348231201
+    },
+    "tenant/ToolsMcpPanel.tsx": {
+      "status": "done",
+      "score": 7,
+      "signals": {
+        "surface": 3,
+        "rounded4": 2,
+        "shadowToken": 0,
+        "grayToken": 2
+      },
+      "updatedAt": 1779348231201
+    }
+  }
+}

@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Button 使用图鉴 · 产品 × 设计 × 前端通用</title>
+<style>
+  /* ============================================================
+     ClawPro Design System v2 (mirror of SKILL.md v2 + index.css)
+     - 主色 #1447E6 / 主 CTA 黑→蓝渐变
+     - 用户端背景：白→灰渐变
+     - 圆角仅保留 2 / 3 / 4 / full 四档
+     - 阴影统一走五档 token：card / inner / overlay / config / segment
+     - 字体：PingFang SC + Menlo + DIN Alternate + Open Sans
+     - 文字色阶：#0A0A0A / #020617 / #334155 / #737373 / #A3A3A3
+     ============================================================ */
+  :root{
+    /* 品牌 */
+    --primary:#1447E6;
+    --primary-foreground:#FFFFFF;
+    --brand-tint:#EFF6FF;
+    --secondary:#F5F5F5;
+    --secondary-foreground:#334155;
+    --accent:#F5F5F5;
+    --accent-foreground:#0A0A0A;
+    --destructive:#DC2626;
+    --border:#E5E5E5;
+    --ring:#1447E6;
+
+    /* 文字色阶（v2 五档） */
+    --fg:#0A0A0A;       /* 主文字 */
+    --fg-strong:#020617;/* 强调 / 数字 */
+    --fg-2:#334155;     /* 次级正文 */
+    --fg-3:#737373;     /* 辅助 */
+    --fg-4:#A3A3A3;     /* 极弱 */
+
+    /* 背景：用户端白→灰渐变 */
+    --bg:linear-gradient(180deg,#FFFFFF 0%,#F5F5F5 100%);
+    --card:#FFFFFF;
+
+    /* Surface 阴影 token（与 client/src/index.css 一致） */
+    --shadow-card:0px 1px 4px rgba(0,0,0,.05),0px 0px 2px rgba(0,0,0,.1);
+    --shadow-overlay:0px 4px 16px -2px rgba(0,0,0,.08),0px 2px 6px rgba(0,0,0,.06);
+    --shadow-config:0px 2px 8px -1px rgba(0,0,0,.05),0px 2px 4px 2px rgba(0,0,0,.05);
+    --shadow-segment:0px 1.11px 2.22px rgba(0,0,0,.05);
+
+    /* claw figma button */
+    --claw-outline-bg:#FFFFFF;
+    --claw-outline-hover-bg:#F5F5F5;
+    --claw-outline-border:#E5E5E5;
+    --claw-outline-hover-border:#E3E3E3;
+    --claw-outline-text:#020617;
+    --claw-primary-bg:linear-gradient(90deg,#020617 70%,#1447E6 100%);
+    --claw-primary-hover-bg:linear-gradient(90deg,#020617 70%,#0A226F 100%);
+
+    /* 三档强度色（不再用蓝/灰渐变 hint，改成黑/中灰/淡灰，避免抢主色） */
+    --tier-strong:#1447E6;
+    --tier-mid:#475569;
+    --tier-weak:#A3A3A3;
+
+    /* 来源 tag */
+    --tag-shadcn-bg:#EFF6FF;--tag-shadcn-fg:#1447E6;
+    --tag-claw-bg:#F5F5F5;--tag-claw-fg:#020617;
+  }
+
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;padding:0;background:var(--bg);background-attachment:fixed;
+    color:var(--fg);
+    font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased
+  }
+  code,.mono{font-family:"Menlo","Consolas","Courier New",monospace;font-size:12px}
+  .num,.font-din{font-family:"DIN Alternate","DIN","Helvetica Neue",sans-serif;font-feature-settings:"tnum"}
+  .font-en{font-family:"Open Sans","Helvetica Neue",sans-serif}
+  a{color:inherit;text-decoration:none}
+
+  /* ===== Layout ===== */
+  .layout{
+    display:grid;grid-template-columns:220px 1fr;gap:32px;
+    max-width:1320px;margin:0 auto;padding:32px 32px 96px;align-items:start
+  }
+  @media (max-width:980px){.layout{grid-template-columns:1fr;padding:20px}}
+
+  /* ===== Side Nav ===== */
+  .nav{
+    position:sticky;top:24px;background:var(--card);
+    border-radius:4px;padding:16px;font-size:13px;
+    box-shadow:var(--shadow-card);
+  }
+  .nav .back{
+    display:flex;align-items:center;gap:6px;margin:0 0 14px;padding:8px 10px;
+    border-radius:3px;background:#F5F5F5;color:var(--fg-2);font-size:12px;
+    transition:all .15s;border:1px solid transparent;
+  }
+  .nav .back:hover{background:#FFFFFF;border-color:#E3E3E3;color:var(--fg-1);box-shadow:var(--shadow-card)}
+  .nav .back .arrow{font-family:Menlo,monospace;color:var(--fg-3)}
+  .nav .nav-title{
+    font-size:11px;color:var(--fg-3);letter-spacing:.12em;text-transform:uppercase;
+    margin:0 0 10px;padding-left:8px
+  }
+
+  /* ===== Breadcrumb ===== */
+  .crumb{
+    display:flex;align-items:center;gap:8px;font-size:12px;color:var(--fg-3);
+    margin:0 0 16px;
+  }
+  .crumb a{color:var(--fg-3);transition:color .15s}
+  .crumb a:hover{color:var(--primary)}
+  .crumb .sep{color:var(--fg-4);font-family:Menlo,monospace}
+  .crumb .here{color:var(--fg-1);font-weight:500}
+  .nav ol{list-style:none;margin:0;padding:0;counter-reset:n}
+  .nav li{counter-increment:n}
+  .nav a{
+    display:flex;align-items:center;gap:10px;
+    padding:8px 10px;border-radius:4px;color:var(--fg-2);
+    transition:all .15s;
+  }
+  .nav a::before{
+    content:counter(n,decimal-leading-zero);
+    font-family:"Menlo",monospace;font-size:10px;color:var(--fg-3);
+    background:#F5F5F5;padding:2px 6px;border-radius:2px;flex-shrink:0
+  }
+  .nav a:hover{
+    background:linear-gradient(90deg,#EFF6FF 0%,rgba(20,71,230,.05) 100%);
+    color:var(--primary);
+  }
+  .nav a:hover::before{color:var(--primary);background:#fff}
+  .nav .meta{
+    margin-top:14px;padding:10px;background:#FAFAFA;
+    border-radius:4px;font-size:11px;color:var(--fg-3);line-height:1.5
+  }
+  .nav .meta b{color:var(--fg);font-weight:600}
+  @media (max-width:980px){.nav{position:static}}
+
+  /* ===== Hero ===== */
+  .hero{
+    background:var(--card);border-radius:4px;padding:32px 36px;margin-bottom:28px;
+    box-shadow:var(--shadow-card);position:relative;overflow:hidden;
+  }
+  /* 角落点缀：低饱和、无玻璃感 */
+  .hero::before{
+    content:"";position:absolute;right:-80px;top:-80px;width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle,rgba(20,71,230,.06) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .hero h1{margin:0 0 8px;font-size:30px;letter-spacing:-.02em;font-weight:700;color:var(--fg)}
+  .hero .lead{margin:0;color:var(--fg-2);max-width:760px;font-size:15px}
+  .hero .lead b{color:var(--fg)}
+  .hero .lead code{
+    background:#F5F5F5;border:1px solid var(--border);
+    padding:1px 6px;border-radius:2px;color:var(--fg-strong)
+  }
+
+  /* ===== 主角对比 ===== */
+  .compare{
+    margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    background:#FAFAFA;border:1px solid #F5F5F5;border-radius:4px;padding:20px;
+    position:relative;z-index:1
+  }
+  .compare .col{
+    display:flex;flex-direction:column;gap:10px;align-items:center;
+    padding:16px 12px;border-radius:4px;background:#fff;
+    border:1px solid #F5F5F5;transition:all .2s
+  }
+  .compare .col:hover{border-color:#D8E1FF;transform:translateY(-2px)}
+  .compare .col .role{font-size:12px;font-weight:500;color:var(--fg)}
+  .compare .col .role .strength{
+    display:inline-block;width:6px;height:6px;border-radius:50%;
+    margin-right:6px;vertical-align:middle
+  }
+  .compare .col .desc{
+    font-size:11px;color:var(--fg-3);text-align:center;min-height:32px;line-height:1.5
+  }
+  .compare .col .vname{
+    margin-top:4px;font-family:"Menlo",monospace;font-size:10px;color:var(--fg-2);
+    background:#F5F5F5;padding:2px 8px;border-radius:2px
+  }
+
+  /* ===== 大标题 ===== */
+  .section{margin-top:48px;scroll-margin-top:24px}
+  .section-title{display:flex;align-items:center;gap:14px;margin:0 0 18px}
+  .section-title .num{
+    width:36px;height:36px;border-radius:4px;
+    background:var(--claw-primary-bg);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:15px;font-family:"Menlo",monospace;
+  }
+  .section-title h2{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--fg)}
+  .section-title .sub{color:var(--fg-3);font-size:13px;margin-left:auto}
+
+  /* ===== 三层组织头 ===== */
+  .tier{margin:32px 0 14px;display:flex;align-items:center;gap:12px;font-size:13px}
+  .tier .bar{flex:0 0 4px;height:18px;border-radius:2px}
+  .tier b{color:var(--fg);font-weight:600;font-size:14px}
+  .tier .desc{color:var(--fg-3)}
+
+  /* ===== 场景行 ===== */
+  .scene-list{display:flex;flex-direction:column;gap:14px}
+  .scene{
+    background:var(--card);border-radius:4px;
+    display:grid;grid-template-columns:260px 1fr 300px;
+    overflow:hidden;transition:transform .2s,box-shadow .2s;
+    box-shadow:var(--shadow-card);
+  }
+  .scene:hover{transform:translateY(-1px);box-shadow:var(--shadow-config)}
+  @media (max-width:1100px){.scene{grid-template-columns:1fr}}
+
+  .scene .when{
+    padding:22px 22px 22px 24px;
+    border-right:1px solid #F5F5F5;
+    display:flex;flex-direction:column;gap:6px;justify-content:center;
+    position:relative;
+  }
+  .scene .when::before{
+    content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:0 3px 3px 0;
+  }
+  .scene[data-tier="strong"] .when::before{background:var(--tier-strong)}
+  .scene[data-tier="mid"]    .when::before{background:var(--tier-mid)}
+  .scene[data-tier="weak"]   .when::before{background:var(--tier-weak)}
+  .scene[data-tier="danger"] .when::before{background:var(--destructive)}
+
+  .scene .when .badge{
+    display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;
+    background:#fff;border:1px solid var(--border);color:var(--fg-2);
+    padding:3px 10px;border-radius:9999px;width:fit-content;letter-spacing:.04em
+  }
+  .scene[data-tier="strong"] .when .badge{
+    border-color:#D8E1FF;color:var(--primary);background:var(--brand-tint)
+  }
+  .scene[data-tier="danger"] .when .badge{
+    border-color:#FCA5A5;color:#B91C1C;background:#FEF2F2
+  }
+  .scene .when .label{
+    font-size:16px;font-weight:600;color:var(--fg);letter-spacing:-.01em;margin-top:6px
+  }
+  .scene .when .hint{font-size:12px;color:var(--fg-3);line-height:1.6;margin-top:2px}
+  .scene .when .examples{
+    font-size:12px;color:var(--fg-2);margin-top:8px;padding-top:8px;
+    border-top:1px dashed var(--border)
+  }
+  .scene .when .examples b{color:var(--fg);font-weight:600}
+
+  .scene .stage{
+    padding:24px;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:linear-gradient(180deg,#FAFAFA 0%,#FFFFFF 100%);
+    min-height:140px;position:relative;
+  }
+  .scene .stage::after{
+    content:"hover 看交互 →";position:absolute;bottom:10px;right:14px;
+    font-size:10px;color:var(--fg-4);
+  }
+
+  /* ===== Token 价签 ===== */
+  .ticket{
+    padding:18px 20px;border-left:1px solid #F5F5F5;background:#FAFAFA;
+    display:flex;flex-direction:column;gap:12px
+  }
+  .ticket .head{
+    display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+    padding-bottom:10px;border-bottom:1px dashed var(--border)
+  }
+  .ticket .head .pill{
+    font-family:"Menlo",monospace;font-size:12px;font-weight:500;
+    background:var(--fg-strong);color:#fff;padding:4px 10px;border-radius:2px;
+  }
+  .ticket .head .pill.size{background:var(--fg-2)}
+  .ticket .head .src{font-size:10px;color:var(--fg-3);margin-left:auto;font-family:"Open Sans",sans-serif}
+  .ticket .head .src.shadcn{color:var(--tag-shadcn-fg)}
+  .ticket .head .src.claw{color:var(--tag-claw-fg)}
+
+  .ticket .meta-row{
+    display:flex;justify-content:space-between;align-items:center;gap:8px;
+    font-size:12px;color:var(--fg-2)
+  }
+  .ticket .meta-row .k{color:var(--fg-3);font-size:11px}
+  .ticket .swatch-line{display:flex;gap:4px}
+  .ticket .swatch-line .sw{
+    flex:1;height:18px;border-radius:2px;border:1px solid var(--border);position:relative
+  }
+  .ticket .swatch-line .sw[data-label]:hover::after{
+    content:attr(data-label);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);
+    background:var(--fg-strong);color:#fff;font-size:10px;padding:3px 6px;border-radius:2px;
+    white-space:nowrap;z-index:5
+  }
+  .ticket .copy{
+    background:var(--fg-strong);color:#fff;padding:10px 12px;border-radius:2px;
+    font-family:"Menlo",monospace;font-size:11px;line-height:1.5;
+    word-break:break-all;cursor:pointer;position:relative;
+    transition:background .15s;
+  }
+  .ticket .copy:hover{background:#0F172A}
+  .ticket .copy::after{
+    content:"复制";position:absolute;top:8px;right:10px;font-size:10px;color:#94A3B8;
+    font-family:"PingFang SC",sans-serif;
+  }
+  .ticket .copy.copied::after{content:"✓ 已复制";color:#86EFAC}
+  .ticket .copy .c{color:#7DD3FC}
+  .ticket .copy .p{color:#FCA5A5}
+  .ticket .copy .s{color:#FDE68A}
+
+  /* ===== Button 实现（与 button.tsx 1:1）===== */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    white-space:nowrap;border-radius:4px;font-size:14px;font-weight:500;
+    transition:all .15s;cursor:pointer;border:0;outline:none;font-family:inherit;
+  }
+  .btn svg{width:16px;height:16px;flex-shrink:0}
+  .btn:disabled{pointer-events:none;opacity:.5}
+  .btn:focus-visible{box-shadow:0 0 0 3px rgba(20,71,230,.4)}
+
+  .btn-default{background:var(--primary);color:#fff}
+  .btn-default:hover{background:#1239BF}
+  .btn-destructive{background:var(--destructive);color:#fff}
+  .btn-destructive:hover{background:#B91C1C}
+  .btn-outline{
+    background:#fff;border:1px solid var(--border);color:var(--fg);
+  }
+  .btn-outline:hover{background:var(--accent)}
+  .btn-secondary{background:var(--secondary);color:var(--secondary-foreground)}
+  .btn-secondary:hover{background:#EBEBEB}
+  .btn-ghost{background:transparent;color:var(--fg)}
+  .btn-ghost:hover{background:var(--accent)}
+  .btn-link{background:transparent;color:var(--primary);text-underline-offset:4px}
+  .btn-link:hover{text-decoration:underline}
+
+  .btn-claw-outline{
+    background:var(--claw-outline-bg);
+    border:1px solid var(--claw-outline-border);
+    color:var(--claw-outline-text);font-weight:400
+  }
+  .btn-claw-outline:hover{
+    background:var(--claw-outline-hover-bg);
+    border-color:var(--claw-outline-hover-border)
+  }
+  .btn-claw-primary{
+    background:var(--claw-primary-bg);color:#fff;font-weight:400
+  }
+  .btn-claw-primary:hover{background:var(--claw-primary-hover-bg)}
+
+  .sz-default{height:36px;padding:0 16px}
+  .sz-sm{height:32px;padding:0 12px;gap:6px}
+  .sz-lg{height:40px;padding:0 24px}
+  .sz-icon{width:36px;height:36px;padding:0}
+  .sz-claw{height:36px;padding:0 24px;gap:8px}
+  .sz-claw-sm{height:32px;padding:0 16px;gap:6px}
+  .sz-claw-square{height:36px;width:48px;padding:0}
+  .sz-claw-lg{height:40px;padding:0 18px;gap:16px}
+
+  /* ===== 状态 / 尺寸卡片 ===== */
+  .card{
+    background:var(--card);border-radius:4px;padding:24px;
+    box-shadow:var(--shadow-card)
+  }
+  .grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media (max-width:900px){.grid-5,.grid-4{grid-template-columns:repeat(2,1fr)}}
+
+  .demo-cell{
+    display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;
+    padding:18px 12px;border-radius:4px;background:#FAFAFA;
+    border:1px solid transparent;transition:all .2s
+  }
+  .demo-cell:hover{border-color:#F5F5F5;background:#fff}
+  .demo-cell .name{font-size:13px;font-weight:500;color:var(--fg)}
+  .demo-cell .desc{font-size:11px;color:var(--fg-3)}
+  .demo-cell code{
+    font-size:10px;background:#fff;border:1px solid var(--border);
+    padding:1px 6px;border-radius:2px;color:var(--fg-2)
+  }
+
+  /* ===== Token 索引 ===== */
+  .table-wrap{
+    background:var(--card);border-radius:4px;overflow:hidden;
+    box-shadow:var(--shadow-card)
+  }
+  .table-tools{
+    padding:14px 18px;border-bottom:1px solid #F5F5F5;
+    display:flex;gap:12px;align-items:center;background:#FAFAFA
+  }
+  .table-tools input{
+    flex:1;height:34px;padding:0 12px;border:1px solid var(--border);border-radius:4px;
+    font-size:13px;font-family:inherit;background:#fff;outline:none
+  }
+  .table-tools input:focus{
+    border-color:var(--primary);box-shadow:0 0 0 3px rgba(20,71,230,.1)
+  }
+  .table-tools .filter{display:flex;gap:4px}
+  .table-tools .filter button{
+    padding:6px 12px;border-radius:4px;border:1px solid var(--border);background:#fff;
+    cursor:pointer;font-size:12px;color:var(--fg-2);
+    font-family:inherit;transition:all .15s
+  }
+  .table-tools .filter button.on{
+    background:var(--claw-primary-bg);color:#fff;border-color:transparent
+  }
+  .table-tools .filter button:hover:not(.on){background:#F5F5F5;color:var(--fg)}
+
+  .token-row{
+    display:grid;grid-template-columns:200px 90px 1fr 220px 130px;align-items:center;
+    border-bottom:1px solid #F5F5F5;transition:background .15s;
+  }
+  .token-row:last-child{border-bottom:0}
+  .token-row:hover{background:#FAFAFA}
+  .token-row.head{
+    background:#FAFAFA;font-size:11px;color:var(--fg-3);
+    letter-spacing:.06em;text-transform:uppercase;font-weight:500
+  }
+  .token-row .cell{padding:14px 16px}
+  .token-row .name{font-family:"Menlo",monospace;font-size:12px;font-weight:500;color:var(--fg)}
+  .token-row .role{color:var(--fg-2);font-size:13px}
+  .token-row .chip{display:flex;align-items:center;gap:8px}
+  .token-row .chip .box{
+    width:32px;height:20px;border-radius:2px;border:1px solid var(--border);flex-shrink:0
+  }
+  .token-row .chip .val{font-family:"Menlo",monospace;font-size:11px;color:var(--fg)}
+  .token-row .preview{display:flex;justify-content:flex-end}
+  .group-divider{
+    background:var(--claw-primary-bg);color:#fff;font-size:11px;
+    padding:10px 18px;letter-spacing:.08em;font-weight:500
+  }
+  .src-tag{
+    font-size:10px;padding:2px 8px;border-radius:2px;font-weight:500;letter-spacing:.04em;
+    font-family:"Open Sans",sans-serif
+  }
+  .src-tag.shadcn{background:var(--tag-shadcn-bg);color:var(--tag-shadcn-fg)}
+  .src-tag.claw{background:var(--tag-claw-bg);color:var(--tag-claw-fg)}
+
+  /* ===== 提示卡（warning 横幅 §8.13）===== */
+  .tip{
+    margin-top:18px;background:#FEF3C7;border:1px solid #FCD34D;border-radius:4px;
+    padding:16px 20px;display:flex;gap:12px;font-size:13px;color:#78350F;line-height:1.7
+  }
+  .tip .ico{font-size:18px;flex-shrink:0;line-height:1.3}
+  .tip code{
+    background:#fff;border:1px solid #FCD34D;padding:1px 6px;border-radius:2px;color:#78350F;
+    font-family:"Menlo",monospace
+  }
+
+  /* ===== 顶部规范小贴 ===== */
+  .spec-strip{
+    margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;
+  }
+  .spec-strip .chip{
+    background:#F5F5F5;border:1px solid var(--border);
+    padding:3px 10px;border-radius:9999px;font-size:11px;color:var(--fg-2);
+    font-family:"Menlo",monospace;
+  }
+  .spec-strip .chip b{color:var(--fg);font-weight:500}
+  .spec-strip .chip.brand{
+    background:var(--brand-tint);border-color:#D8E1FF;color:var(--primary)
+  }
+
+  footer{
+    margin-top:64px;color:var(--fg-3);font-size:12px;text-align:center;line-height:1.8
+  }
+  footer code{
+    background:#fff;border:1px solid var(--border);padding:2px 6px;border-radius:2px;
+    font-family:"Menlo",monospace
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ============ 侧边导航 ============ -->
+  <aside class="nav">
+    <a class="back" href="index.html"><span class="arrow">←</span>组件总览</a>
+    <div class="nav-title">目录</div>
+    <ol>
+      <li><a href="#overview">主角对比</a></li>
+      <li><a href="#scenes">按场景查</a></li>
+      <li><a href="#states">5 种状态</a></li>
+      <li><a href="#sizes">尺寸一览</a></li>
+      <li><a href="#tokens">Token 索引</a></li>
+    </ol>
+    <div class="meta">
+      <b>Source</b><br/>
+      <code>button.tsx</code> + <code>index.css</code><br/>
+      <b>Spec</b> · ClawPro DS v2
+    </div>
+  </aside>
+
+  <!-- ============ 主内容 ============ -->
+  <main>
+
+    <nav class="crumb" aria-label="breadcrumb">
+      <a href="index.html">组件总览</a>
+      <span class="sep">/</span>
+      <span class="here">Button 使用图鉴</span>
+    </nav>
+
+    <!-- Hero + 主角对比 -->
+    <section class="hero" id="overview">
+      <h1>Button 使用图鉴</h1>
+      <p class="lead">每一行讲清三件事：<b>什么场景用</b>、<b>长这样</b>、<b>叫什么名字</b>。产品同学拿这页就能直接和前端对齐——不用画图、不用 Figma 链接，一句"用 <code>claw-primary</code>"就够。</p>
+
+      <div class="spec-strip">
+        <span class="chip brand">主色 <b>#1447E6</b></span>
+        <span class="chip">CTA 渐变 <b>#020617 → #1447E6</b></span>
+        <span class="chip">圆角 <b>≤ 4px</b></span>
+        <span class="chip">阴影 token <b>shadow-card</b></span>
+        <span class="chip">背景 <b>白→灰渐变</b></span>
+      </div>
+
+      <div class="compare">
+        <div class="col">
+          <div class="role"><i class="strength" style="background:var(--tier-strong)"></i>强引导</div>
+          <button class="btn btn-claw-primary sz-claw-lg">创建 Agent</button>
+          <div class="desc">页面最强主操作，整页只有 1 个</div>
+          <div class="vname">claw-primary</div>
+        </div>
+        <div class="col">
+          <div class="role"><i class="strength" style="background:var(--primary)"></i>标准</div>
+          <button class="btn btn-default sz-default">确认</button>
+          <div class="desc">弹窗 / 表单的常规主按钮</div>
+          <div class="vname">default</div>
+        </div>
+        <div class="col">
+          <div class="role"><i class="strength" style="background:var(--tier-mid)"></i>次要</div>
+          <button class="btn btn-claw-outline sz-claw">详细配置</button>
+          <div class="desc">辅助操作，跟主按钮搭配</div>
+          <div class="vname">claw-outline</div>
+        </div>
+        <div class="col">
+          <div class="role"><i class="strength" style="background:var(--tier-weak)"></i>弱化</div>
+          <button class="btn btn-ghost sz-sm">查看</button>
+          <div class="desc">行内 / 高频次要，hover 才亮</div>
+          <div class="vname">ghost</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 1. 场景 ============ -->
+    <section class="section" id="scenes">
+      <div class="section-title">
+        <span class="num">01</span>
+        <h2>按场景查 · PRD 提问指南</h2>
+        <span class="sub">右侧 token 价签可点击复制</span>
+      </div>
+
+      <!-- Tier: 强引导 -->
+      <div class="tier">
+        <div class="bar" style="background:var(--tier-strong)"></div>
+        <b>强引导</b>
+        <span class="desc">· 主操作 / 关键转化 · 一个页面尽量只出现 1 次</span>
+      </div>
+      <div class="scene-list">
+
+        <div class="scene" data-tier="strong">
+          <div class="when">
+            <span class="badge">最强 CTA</span>
+            <div class="label">页面主操作</div>
+            <div class="hint">引导用户完成核心目标，黑→蓝渐变识别度最高</div>
+            <div class="examples">例：<b>创建 Agent</b>、提交申请、开始体验</div>
+          </div>
+          <div class="stage">
+            <button class="btn btn-claw-primary sz-claw-lg">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              创建 Agent
+            </button>
+          </div>
+          <div class="ticket">
+            <div class="head">
+              <span class="pill">claw-primary</span>
+              <span class="pill size">claw-lg</span>
+              <span class="src claw">claw figma</span>
+            </div>
+            <div class="meta-row"><span class="k">尺寸</span><span>40 高 · 18 横向内距</span></div>
+            <div class="meta-row"><span class="k">底色</span><span>黑→蓝渐变</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:#020617" data-label="#020617"></div>
+              <div class="sw" style="background:#1447E6" data-label="#1447E6"></div>
+              <div class="sw" style="background:#0A226F" data-label="hover #0A226F"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Button variant="claw-primary" size="claw-lg"&gt;'>&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"claw-primary"</span> <span class="p">size</span>=<span class="s">"claw-lg"</span>&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="strong">
+          <div class="when">
+            <span class="badge">弹窗主操作</span>
+            <div class="label">Dialog 底部「确认」</div>
+            <div class="hint">弹窗里的主操作，比页面 CTA 稍小，保持紧凑</div>
+            <div class="examples">例：<b>确认</b>、保存、提交</div>
+          </div>
+          <div class="stage">
+            <button class="btn btn-secondary sz-claw-sm">取消</button>
+            <button class="btn btn-claw-primary sz-claw-sm">确认</button>
+          </div>
+          <div class="ticket">
+            <div class="head">
+              <span class="pill">claw-primary</span>
+              <span class="pill size">claw-sm</span>
+              <span class="src claw">claw figma</span>
+            </div>
+            <div class="meta-row"><span class="k">尺寸</span><span>32 高 · 16 横向内距</span></div>
+            <div class="meta-row"><span class="k">底色</span><span>黑→蓝渐变</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:#020617" data-label="#020617"></div>
+              <div class="sw" style="background:#1447E6" data-label="#1447E6"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Button variant="claw-primary" size="claw-sm"&gt;确认&lt;/Button&gt;'>&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"claw-primary"</span> <span class="p">size</span>=<span class="s">"claw-sm"</span>&gt;</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tier: 中等 -->
+      <div class="tier">
+        <div class="bar" style="background:var(--tier-mid)"></div>
+        <b>次要操作</b>
+        <span class="desc">· 跟主按钮搭配出现 · 描边/填充，但不抢焦点</span>
+      </div>
+      <div class="scene-list">
+
+        <div class="scene" data-tier="mid">
+          <div class="when">
+            <span class="badge">次要操作</span>
+            <div class="label">卡片底部 · 详细配置 / 对话</div>
+            <div class="hint">最新 Agent 卡片底部固定一对：<b>详细配置（文+图）</b> + <b>对话（仅图标方按钮）</b>，左侧配创建时间</div>
+            <div class="examples">例：<b>详细配置</b>、对话（Figma 358:2387）</div>
+          </div>
+          <div class="stage" style="padding:18px 24px;align-items:stretch">
+            <div style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <span style="font-size:12px;color:var(--fg-3)">2026-05-13 20:30 创建</span>
+              <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+                <button class="btn btn-claw-outline sz-claw">
+                  <!-- Figma 同款齿轮：黑→蓝径向渐变填充 -->
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M9.53796 2H6.46178L6.10863 3.76579C5.81461 3.89729 5.53694 4.05843 5.27938 4.24533L3.57275 3.66799L2.03467 6.33202L3.38795 7.52131C3.37177 7.67884 3.3635 7.83855 3.3635 8C3.3635 8.16151 3.37177 8.32116 3.38795 8.47869L2.03467 9.668L3.57275 12.332L5.27939 11.7547C5.53694 11.9416 5.81462 12.1027 6.10863 12.2342L6.46178 14H9.53796L9.89109 12.2342C10.1851 12.1027 10.4628 11.9416 10.7203 11.7547L12.427 12.332L13.965 9.668L12.6118 8.47869C12.628 8.32116 12.6362 8.16151 12.6362 8C12.6362 7.83855 12.628 7.67884 12.6118 7.52131L13.965 6.33202L12.427 3.66799L10.7203 4.24533C10.4628 4.05843 10.1851 3.89729 9.89109 3.76579L9.53796 2ZM7.99978 10.1818C6.79479 10.1818 5.81796 9.20496 5.81796 8C5.81796 6.79501 6.79479 5.81818 7.99978 5.81818C9.20474 5.81818 10.1816 6.79501 10.1816 8C10.1816 9.20496 9.20474 10.1818 7.99978 10.1818Z" fill="url(#pm_gear)"/>
+                    <defs>
+                      <radialGradient id="pm_gear" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(13.965 8) rotate(-180) scale(11.9304 19.9444)">
+                        <stop offset="0.748539" stop-color="#202020"/>
+                        <stop offset="1" stop-color="#1447E6"/>
+                      </radialGradient>
+                    </defs>
+                  </svg>
+                  详细配置
+                </button>
+                <button class="btn btn-claw-outline sz-claw-square" aria-label="开始对话">
+                  <!-- Figma 同款对话气泡：黑→蓝径向渐变 -->
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M7.99988 14.5C11.5897 14.5 14.4999 11.5898 14.4999 8C14.4999 4.41015 11.5897 1.5 7.99988 1.5C4.41003 1.5 1.49988 4.41015 1.49988 8C1.49988 9.73056 2.17615 11.3031 3.27884 12.4679L2.14988 14.5H7.99988Z" fill="url(#pm_chat)"/>
+                    <rect x="7.66602" y="6.16699" width="1.5" height="2" rx="0.75" fill="#D9D9D9"/>
+                    <rect x="10.666" y="6.16699" width="1.5" height="2" rx="0.75" fill="#D9D9D9"/>
+                    <defs>
+                      <radialGradient id="pm_chat" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(14.4999 8) rotate(-180) scale(13 21.6065)">
+                        <stop offset="0.748539" stop-color="#202020"/>
+                        <stop offset="1" stop-color="#1447E6"/>
+                      </radialGradient>
+                    </defs>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="ticket">
+            <div class="head">
+              <span class="pill">claw-outline</span>
+              <span class="pill size">claw</span>
+              <span class="src claw">claw figma</span>
+            </div>
+            <div class="meta-row"><span class="k">尺寸</span><span>36 高 · 24 横向内距</span></div>
+            <div class="meta-row"><span class="k">交互</span><span>hover → 浅灰底</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:#fff;border:1px solid #E5E5E5" data-label="bg #FFF"></div>
+              <div class="sw" style="background:#F5F5F5;border:1px solid #E3E3E3" data-label="hover #F5F5F5"></div>
+              <div class="sw" style="background:#020617" data-label="text #020617"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Button variant="claw-outline" size="claw"&gt;'>&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"claw-outline"</span> <span class="p">size</span>=<span class="s">"claw"</span>&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="mid">
+          <div class="when">
+            <span class="badge">纯图标方按钮</span>
+            <div class="label">Agent 卡片底部 · 对话</div>
+            <div class="hint">仅图标的矩形次按钮（48×36），主要用在 Agent 卡片底部「对话」入口；不要拿它去当卡片角落的"刷新"——那是普通幽灵按钮</div>
+            <div class="examples">例：<b>对话</b>（图标方按钮的几乎唯一归宿）</div>
+          </div>
+          <div class="stage">
+            <button class="btn btn-claw-outline sz-claw-square" aria-label="开始对话">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M7.99988 14.5C11.5897 14.5 14.4999 11.5898 14.4999 8C14.4999 4.41015 11.5897 1.5 7.99988 1.5C4.41003 1.5 1.49988 4.41015 1.49988 8C1.49988 9.73056 2.17615 11.3031 3.27884 12.4679L2.14988 14.5H7.99988Z" fill="url(#pm_chat2)"/>
+                <rect x="7.66602" y="6.16699" width="1.5" height="2" rx="0.75" fill="#D9D9D9"/>
+                <rect x="10.666" y="6.16699" width="1.5" height="2" rx="0.75" fill="#D9D9D9"/>
+                <defs>
+                  <radialGradient id="pm_chat2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(14.4999 8) rotate(-180) scale(13 21.6065)">
+                    <stop offset="0.748539" stop-color="#202020"/>
+                    <stop offset="1" stop-color="#1447E6"/>
+                  </radialGradient>
+                </defs>
+              </svg>
+            </button>
+          </div>
+          <div class="ticket">
+            <div class="head">
+              <span class="pill">claw-outline</span>
+              <span class="pill size">claw-square</span>
+              <span class="src claw">claw figma</span>
+            </div>
+            <div class="meta-row"><span class="k">尺寸</span><span>48 × 36 · 矩形</span></div>
+            <div class="meta-row"><span class="k">特殊</span><span>非正方，更扁平</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:#fff" data-label="#FFF"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Button variant="claw-outline" size="claw-square"&gt;'>&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"claw-outline"</span> <span class="p">size</span>=<span class="s">"claw-square"</span>&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="mid">
+          <div class="when">
+            <span class="badge">辅助</span>
+            <div class="label">取消 / 中性反向操作</div>
+            <div class="hint">主按钮旁边的反向选项，比 outline 弱、比 ghost 强</div>
+            <div class="examples">例：<b>取消</b>、稍后再说</div>
+          </div>
+          <div class="stage">
+            <button class="btn btn-secondary sz-claw-sm">取消</button>
+          </div>
+          <div class="ticket">
+            <div class="head">
+              <span class="pill">secondary</span>
+              <span class="pill size">claw-sm</span>
+              <span class="src shadcn">shadcn</span>
+            </div>
+            <div class="meta-row"><span class="k">尺寸</span><span>32 高</span></div>
+            <div class="meta-row"><span class="k">底色</span><span>浅灰 #F5F5F5</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:#F5F5F5" data-label="#F5F5F5"></div>
+              <div class="sw" style="background:#EBEBEB" data-label="hover #EBEBEB"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Button variant="secondary"&gt;'>&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"secondary"</span>&gt;</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tier: 弱化 -->
+      <div class="tier">
+        <div class="bar" style="background:var(--tier-weak)"></div>
+        <b>弱化操作</b>
+        <span class="desc">· 行内高频 / 文字链 · 视觉权重最低</span>
+      </div>
+      <div class="scene-list">
+
+        <div class="scene" data-tier="weak">
+          <div class="when">
+            <span class="badge">弱化</span>
+            <div class="label">表格 / 列表行内</div>
+            <div class="hint">行内高频出现，平时透明，hover 才"亮起来"</div>
+            <div class="examples">例：<b>查看</b>、编辑、复制</div>
+          </div>
+          <div class="stage">
+            <button class="btn btn-ghost sz-sm">查看</button>
+            <button class="btn btn-ghost sz-sm">编辑</button>
+            <button class="btn btn-ghost sz-sm">复制</button>
+          </div>
+          <div class="ticket">
+            <div class="head">
+              <span class="pill">ghost</span>
+              <span class="pill size">sm</span>
+              <span class="src shadcn">shadcn</span>
+            </div>
+            <div class="meta-row"><span class="k">尺寸</span><span>32 高</span></div>
+            <div class="meta-row"><span class="k">交互</span><span>hover 才显示底色</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:transparent;border:1px dashed #CBD5E1" data-label="透明"></div>
+              <div class="sw" style="background:#F5F5F5" data-label="hover #F5F5F5"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Button variant="ghost" size="sm"&gt;'>&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"ghost"</span> <span class="p">size</span>=<span class="s">"sm"</span>&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="weak">
+          <div class="when">
+            <span class="badge">跳转</span>
+            <div class="label">文字链接</div>
+            <div class="hint">视觉等同于普通超链接，hover 才有下划线</div>
+            <div class="examples">例：<b>查看详情</b>、了解更多、跳转文档</div>
+          </div>
+          <div class="stage">
+            <button class="btn btn-link sz-default">查看详情 →</button>
+          </div>
+          <div class="ticket">
+            <div class="head">
+              <span class="pill">link</span>
+              <span class="pill size">default</span>
+              <span class="src shadcn">shadcn</span>
+            </div>
+            <div class="meta-row"><span class="k">尺寸</span><span>36 高</span></div>
+            <div class="meta-row"><span class="k">交互</span><span>hover 显示下划线</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:#1447E6" data-label="#1447E6"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Button variant="link"&gt;'>&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"link"</span>&gt;</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tier: 危险 -->
+      <div class="tier">
+        <div class="bar" style="background:var(--destructive)"></div>
+        <b>危险操作</b>
+        <span class="desc">· 不可逆 · 必须配二次确认</span>
+      </div>
+      <div class="scene-list">
+
+        <div class="scene" data-tier="danger">
+          <div class="when">
+            <span class="badge">危险</span>
+            <div class="label">删除 / 清空 / 解绑</div>
+            <div class="hint">不可逆操作，红色警示，建议配二次确认弹窗</div>
+            <div class="examples">例：<b>删除会话</b>、清空记忆、解绑账号</div>
+          </div>
+          <div class="stage">
+            <button class="btn btn-destructive sz-default">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14H7L5 6m5 4v6m4-6v6"/><path d="M10 6V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2"/></svg>
+              删除
+            </button>
+          </div>
+          <div class="ticket">
+            <div class="head">
+              <span class="pill" style="background:var(--destructive)">destructive</span>
+              <span class="pill size">default</span>
+              <span class="src shadcn">shadcn</span>
+            </div>
+            <div class="meta-row"><span class="k">尺寸</span><span>36 高</span></div>
+            <div class="meta-row"><span class="k">底色</span><span>警示红</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:#DC2626" data-label="#DC2626"></div>
+              <div class="sw" style="background:#B91C1C" data-label="hover #B91C1C"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Button variant="destructive"&gt;'>&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"destructive"</span>&gt;</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tip">
+        <span class="ico">!</span>
+        <div><b>给产品同学的口令</b><br/>提需求时直接说"<code>claw-primary</code>"或"<code>claw-outline</code> 的 <code>claw-square</code>"，前端就知道你要的样式，不用拉设计反复对图。<br/>更复杂的搭配可以直接复制右侧 token 价签里的代码贴在 PRD 里。</div>
+      </div>
+    </section>
+
+    <!-- ============ 2. 状态 ============ -->
+    <section class="section" id="states">
+      <div class="section-title">
+        <span class="num">02</span>
+        <h2>同一个按钮的 5 种状态</h2>
+        <span class="sub">所有 variant 通用</span>
+      </div>
+      <div class="card">
+        <div class="grid-5">
+          <div class="demo-cell">
+            <button class="btn btn-claw-primary sz-claw-lg">创建 Agent</button>
+            <div class="name">默认</div>
+            <div class="desc">normal</div>
+          </div>
+          <div class="demo-cell">
+            <button class="btn btn-claw-primary sz-claw-lg" style="background:linear-gradient(90deg,#020617 70%,#0A226F 100%)">创建 Agent</button>
+            <div class="name">悬停</div>
+            <div class="desc">hover · 颜色变深</div>
+          </div>
+          <div class="demo-cell">
+            <button class="btn btn-claw-primary sz-claw-lg" style="box-shadow:0 0 0 3px rgba(20,71,230,.4)">创建 Agent</button>
+            <div class="name">键盘聚焦</div>
+            <div class="desc">focus · 蓝色外环</div>
+          </div>
+          <div class="demo-cell">
+            <button class="btn btn-claw-primary sz-claw-lg" disabled>创建 Agent</button>
+            <div class="name">禁用</div>
+            <div class="desc">disabled · 50% 透明</div>
+          </div>
+          <div class="demo-cell">
+            <button class="btn btn-claw-primary sz-claw-lg" style="box-shadow:0 0 0 3px rgba(220,38,38,.3)">创建 Agent</button>
+            <div class="name">校验失败</div>
+            <div class="desc">aria-invalid · 红环</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. 尺寸 ============ -->
+    <section class="section" id="sizes">
+      <div class="section-title">
+        <span class="num">03</span>
+        <h2>尺寸一览</h2>
+        <span class="sub">同样的按钮可以有不同高度</span>
+      </div>
+      <div class="card">
+        <div class="grid-4">
+          <div class="demo-cell">
+            <button class="btn btn-claw-primary sz-claw-lg">创建 Agent</button>
+            <div class="name">大号 40px</div>
+            <div class="desc">页面主操作</div>
+            <code>claw-lg</code>
+          </div>
+          <div class="demo-cell">
+            <button class="btn btn-claw-outline sz-claw">详细配置</button>
+            <div class="name">默认 36px</div>
+            <div class="desc">大多数场景</div>
+            <code>claw</code>
+          </div>
+          <div class="demo-cell">
+            <button class="btn btn-claw-outline sz-claw-sm">取消</button>
+            <div class="name">紧凑 32px</div>
+            <div class="desc">弹窗 / 表格行内</div>
+            <code>claw-sm</code>
+          </div>
+          <div class="demo-cell">
+            <button class="btn btn-claw-outline sz-claw-square"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+            <div class="name">图标 48×36</div>
+            <div class="desc">仅图标</div>
+            <code>claw-square</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. Token 索引 ============ -->
+    <section class="section" id="tokens">
+      <div class="section-title">
+        <span class="num">04</span>
+        <h2>完整 Token 索引</h2>
+        <span class="sub">设计 / 前端速查 · 与 button.tsx 一一对应</span>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-tools">
+          <input id="tk-search" placeholder="搜索 token 名 / 用途…" />
+          <div class="filter">
+            <button class="on" data-f="all">全部</button>
+            <button data-f="shadcn">shadcn</button>
+            <button data-f="claw">claw figma</button>
+          </div>
+        </div>
+
+        <div class="token-row head">
+          <div class="cell">Token 名</div>
+          <div class="cell">来源</div>
+          <div class="cell">用途</div>
+          <div class="cell">值</div>
+          <div class="cell" style="text-align:right">实物预览</div>
+        </div>
+
+        <div class="group-divider">VARIANT · 颜色语义（8 个）</div>
+
+        <div class="token-row" data-src="shadcn" data-key="default 蓝色主按钮">
+          <div class="cell name">default</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">蓝色主按钮</div>
+          <div class="cell chip"><div class="box" style="background:#1447E6"></div><span class="val">#1447E6</span></div>
+          <div class="cell preview"><button class="btn btn-default sz-sm">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="shadcn" data-key="destructive 红色危险删除">
+          <div class="cell name">destructive</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">红色危险按钮</div>
+          <div class="cell chip"><div class="box" style="background:#DC2626"></div><span class="val">#DC2626</span></div>
+          <div class="cell preview"><button class="btn btn-destructive sz-sm">删除</button></div>
+        </div>
+        <div class="token-row" data-src="shadcn" data-key="outline 描边">
+          <div class="cell name">outline</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">通用描边按钮</div>
+          <div class="cell chip"><div class="box" style="background:#fff;border:1px solid #E5E5E5"></div><span class="val">#FFF + #E5E5E5</span></div>
+          <div class="cell preview"><button class="btn btn-outline sz-sm">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="shadcn" data-key="secondary 浅灰填充">
+          <div class="cell name">secondary</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">浅灰填充按钮</div>
+          <div class="cell chip"><div class="box" style="background:#F5F5F5"></div><span class="val">#F5F5F5</span></div>
+          <div class="cell preview"><button class="btn btn-secondary sz-sm">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="shadcn" data-key="ghost 透明 hover">
+          <div class="cell name">ghost</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">透明按钮（hover 才有底色）</div>
+          <div class="cell chip"><div class="box" style="background:transparent;border:1px dashed #CBD5E1"></div><span class="val">transparent</span></div>
+          <div class="cell preview"><button class="btn btn-ghost sz-sm">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="shadcn" data-key="link 文字链接">
+          <div class="cell name">link</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">文字链接样式</div>
+          <div class="cell chip"><div class="box" style="background:#1447E6"></div><span class="val">#1447E6</span></div>
+          <div class="cell preview"><button class="btn btn-link sz-sm">查看 →</button></div>
+        </div>
+        <div class="token-row" data-src="claw" data-key="claw-outline figma 描边">
+          <div class="cell name">claw-outline</div>
+          <div class="cell"><span class="src-tag claw">claw figma</span></div>
+          <div class="cell role">Figma 次按钮（hover 浅灰）</div>
+          <div class="cell chip"><div class="box" style="background:#F5F5F5;border:1px solid #E3E3E3"></div><span class="val">#FFF / hover #F5F5F5</span></div>
+          <div class="cell preview"><button class="btn btn-claw-outline sz-claw-sm">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="claw" data-key="claw-primary figma 主按钮 渐变">
+          <div class="cell name">claw-primary</div>
+          <div class="cell"><span class="src-tag claw">claw figma</span></div>
+          <div class="cell role">Figma 主按钮（黑→蓝渐变）</div>
+          <div class="cell chip"><div class="box" style="background:linear-gradient(90deg,#020617 70%,#1447E6)"></div><span class="val">#020617→#1447E6</span></div>
+          <div class="cell preview"><button class="btn btn-claw-primary sz-claw-sm">按钮</button></div>
+        </div>
+
+        <div class="group-divider">SIZE · 尺寸（10 个）</div>
+
+        <div class="token-row" data-src="shadcn" data-key="default size 36">
+          <div class="cell name">default</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">默认尺寸</div>
+          <div class="cell chip"><span class="val">h-9 · px-4 · gap-2</span></div>
+          <div class="cell preview"><button class="btn btn-default sz-default">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="shadcn" data-key="sm size 32 小">
+          <div class="cell name">sm</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">小尺寸</div>
+          <div class="cell chip"><span class="val">h-8 · px-3 · gap-1.5</span></div>
+          <div class="cell preview"><button class="btn btn-default sz-sm">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="shadcn" data-key="lg size 40 大">
+          <div class="cell name">lg</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">大尺寸</div>
+          <div class="cell chip"><span class="val">h-10 · px-6 · gap-2</span></div>
+          <div class="cell preview"><button class="btn btn-default sz-lg">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="shadcn" data-key="icon 方形 图标">
+          <div class="cell name">icon / icon-sm / icon-lg</div>
+          <div class="cell"><span class="src-tag shadcn">shadcn</span></div>
+          <div class="cell role">通用方形图标按钮</div>
+          <div class="cell chip"><span class="val">36 / 32 / 40 方</span></div>
+          <div class="cell preview"><button class="btn btn-outline sz-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg></button></div>
+        </div>
+        <div class="token-row" data-src="claw" data-key="claw figma 默认">
+          <div class="cell name">claw</div>
+          <div class="cell"><span class="src-tag claw">claw figma</span></div>
+          <div class="cell role">Figma 默认尺寸</div>
+          <div class="cell chip"><span class="val">h-9 · px-6 · gap-2</span></div>
+          <div class="cell preview"><button class="btn btn-claw-outline sz-claw">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="claw" data-key="claw-sm dialog 紧凑">
+          <div class="cell name">claw-sm</div>
+          <div class="cell"><span class="src-tag claw">claw figma</span></div>
+          <div class="cell role">Dialog footer 紧凑尺寸</div>
+          <div class="cell chip"><span class="val">h-8 · px-4 · gap-1.5</span></div>
+          <div class="cell preview"><button class="btn btn-claw-outline sz-claw-sm">按钮</button></div>
+        </div>
+        <div class="token-row" data-src="claw" data-key="claw-square 矩形 图标">
+          <div class="cell name">claw-square</div>
+          <div class="cell"><span class="src-tag claw">claw figma</span></div>
+          <div class="cell role">纯图标矩形按钮</div>
+          <div class="cell chip"><span class="val">48 × 36</span></div>
+          <div class="cell preview"><button class="btn btn-claw-outline sz-claw-square"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg></button></div>
+        </div>
+        <div class="token-row" data-src="claw" data-key="claw-lg figma 主按钮 大">
+          <div class="cell name">claw-lg</div>
+          <div class="cell"><span class="src-tag claw">claw figma</span></div>
+          <div class="cell role">Figma 主按钮加大尺寸</div>
+          <div class="cell chip"><span class="val">h-10 · px-[18px] · gap-4</span></div>
+          <div class="cell preview"><button class="btn btn-claw-primary sz-claw-lg">按钮</button></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Source · <code>client/src/components/ui/button.tsx</code> + <code>client/src/index.css</code><br/>
+      Spec · ClawPro Design System v2 · Figma node <code>317:1051</code>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // 点击复制代码
+  document.querySelectorAll('.copy').forEach(el=>{
+    el.addEventListener('click',async()=>{
+      const text = el.dataset.copy || el.textContent;
+      try{
+        await navigator.clipboard.writeText(text);
+        el.classList.add('copied');
+        setTimeout(()=>el.classList.remove('copied'),1500);
+      }catch(e){}
+    });
+  });
+
+  // Token 索引：搜索 + 筛选
+  const search = document.getElementById('tk-search');
+  const filterBtns = document.querySelectorAll('.table-tools .filter button');
+  let currentFilter = 'all';
+  function applyFilter(){
+    const q = (search.value||'').toLowerCase().trim();
+    document.querySelectorAll('.token-row[data-key]').forEach(row=>{
+      const matchSrc = currentFilter==='all' || row.dataset.src===currentFilter;
+      const matchQ   = !q || row.dataset.key.toLowerCase().includes(q) || row.querySelector('.name').textContent.toLowerCase().includes(q);
+      row.style.display = (matchSrc && matchQ) ? '' : 'none';
+    });
+  }
+  search.addEventListener('input',applyFilter);
+  filterBtns.forEach(b=>b.addEventListener('click',()=>{
+    filterBtns.forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    currentFilter = b.dataset.f;
+    applyFilter();
+  }));
+
+  // 平滑滚动到锚点
+  document.querySelectorAll('.nav a').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const id = a.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
+    });
+  });
+</script>
+</body>
+</html>

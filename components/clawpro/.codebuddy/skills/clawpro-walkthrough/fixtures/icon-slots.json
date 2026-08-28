@@ -1,0 +1,92 @@
+{
+  "$comment": "ClawPro 管控端 9 类不可回退图标槽位。机器可读快照。",
+  "$source": [
+    "clawpro-portable-design-skill/SKILL.md#§2.8-图标槽位",
+    "clawpro-portable-design-skill/SKILL.md#§8-Self-Audit-Checklist",
+    "clawpro-portable-design-skill/SKILL.md#§19-新页面-Checklist",
+    "clawpro-portable-design-skill/references/assets-icons.md#§5.5",
+    "clawpro-portable-design-skill/docs/ClawPro资源库-阶段9决策溯源(ADR).md"
+  ],
+  "$rule": "命中以下任一槽位，禁止使用 lucide-react / 手搓 inline SVG / emoji，必须使用 ClawPro 自研 SVG。",
+  "$severity": "P0",
+  "$extractedAt": "2026-06-30T17:00:00Z",
+  "$generator": "extractors/extract-icon-slots.mjs",
+  "slots": [
+    {
+      "id": "number-card",
+      "label": "数据卡片图标",
+      "size": "18×18",
+      "style": "渐变",
+      "candidates": 22,
+      "specPath": "component-specs/number-card.md",
+      "showcaseAnchor": "design-system#number-card",
+      "fallbackForbidden": true
+    },
+    {
+      "id": "status-tag",
+      "label": "状态徽标 / Badge",
+      "size": "12×12 ~ 16×16",
+      "candidates": "运行/成功/异常等",
+      "specPath": "component-specs/status-tag.md",
+      "showcaseAnchor": "design-system#status-tag",
+      "fallbackForbidden": true
+    },
+    {
+      "id": "card-left-icon",
+      "label": "卡片左侧装饰图标",
+      "size": "20×20 ~ 24×24",
+      "specPath": "component-specs/card-surface.md",
+      "showcaseAnchor": "design-system#card-surface",
+      "fallbackForbidden": true
+    },
+    {
+      "id": "run-status-indicator",
+      "label": "在线/离线状态点",
+      "size": "8×8",
+      "candidates": 2,
+      "specPath": "component-specs/status-tag.md",
+      "showcaseAnchor": "design-system#status-indicator",
+      "fallbackForbidden": true
+    },
+    {
+      "id": "feature-card",
+      "label": "功能卡上方标题图标",
+      "size": "24×24 ~ 32×32",
+      "specPath": "component-specs/card-surface.md",
+      "showcaseAnchor": "design-system#feature-card",
+      "fallbackForbidden": true
+    },
+    {
+      "id": "admin-sidebar-icon",
+      "label": "管控端侧栏一级/二级导航图标",
+      "size": "16×16",
+      "specPath": "component-specs/sidebar.md",
+      "showcaseAnchor": "design-system#sidebar",
+      "fallbackForbidden": true
+    },
+    {
+      "id": "batch-action-icon",
+      "label": "批量操作条 / 主操作按钮图标",
+      "size": "14×14 ~ 16×16",
+      "specPath": "component-specs/batch-actions.md",
+      "showcaseAnchor": "design-system#batch-actions",
+      "fallbackForbidden": true
+    },
+    {
+      "id": "toggle-item-icon",
+      "label": "开关 / 切换条目前置图标",
+      "size": "14×14",
+      "specPath": "component-specs/segment.md",
+      "showcaseAnchor": "design-system#segment",
+      "fallbackForbidden": true
+    },
+    {
+      "id": "chart-legend-icon",
+      "label": "图表图例图标",
+      "size": "10×10 ~ 12×12",
+      "specPath": "component-specs/chart.md",
+      "showcaseAnchor": "design-system#chart",
+      "fallbackForbidden": true
+    }
+  ]
+}

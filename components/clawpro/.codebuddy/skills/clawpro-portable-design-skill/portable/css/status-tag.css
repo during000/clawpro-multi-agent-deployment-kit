@@ -1,0 +1,32 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable StatusTag — ClawPro
+ * 形态唯一：12px / Medium / 彩色纯文本（无底色 / 无边框 / 无圆点）。
+ * 5 主语义色（不可扩展）：blue / green / red / orange(amber) / gray
+ * 配套：portable/react/status-tag.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.cp-status-tag__icon {
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── 5 主语义色 ─── */
+.cp-status-tag--blue   { color: #1447E6; }  /* 信息 / 进行中 */
+.cp-status-tag--green  { color: #008236; }  /* 成功 / 在线 / 已完成 */
+.cp-status-tag--red    { color: #DC2626; }  /* 失败 / 离线 / 错误 */
+.cp-status-tag--orange { color: #B45309; }  /* 警告 / 即将到期（amber-700） */
+.cp-status-tag--gray   { color: #0A0A0A; }  /* 中性 / 未启用 / 草稿 */

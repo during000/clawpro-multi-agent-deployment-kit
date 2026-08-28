@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Search Filter Bar</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      body { margin: 0; padding: 24px; background: var(--cp-page-bg); font-family: var(--cp-font-sans); }
+      .cp-filter-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+      .cp-filter-bar-main { display: flex; flex: 1 1 320px; flex-wrap: wrap; align-items: center; gap: 12px; min-width: 0; }
+      .cp-filter-bar-actions { display: flex; align-items: center; gap: 8px; }
+      .cp-search-field { position: relative; flex: 1 1 220px; max-width: 320px; }
+      .cp-search-field input { width: 100%; height: 36px; border: 1px solid var(--cp-border); border-radius: 4px; background: var(--cp-surface); padding: 0 12px 0 36px; font-size: 14px; color: var(--cp-text-body); }
+      .cp-search-icon { position: absolute; left: 12px; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); color: var(--cp-text-weak); }
+      .cp-search-icon svg { width: 100%; height: 100%; }
+      .cp-filter-btn { display: inline-flex; align-items: center; height: 36px; border: 1px solid var(--cp-border); border-radius: 4px; background: var(--cp-surface); padding: 0 12px; font-size: 14px; color: var(--cp-text-body); }
+      .cp-filter-btn-muted { color: var(--cp-text-muted); }
+      .cp-filter-btn-primary { border-color: var(--cp-brand-black); background: var(--cp-brand-black); color: white; padding: 0 24px; }
+    </style>
+  </head>
+  <body>
+    <div class="cp-filter-bar">
+      <div class="cp-filter-bar-main">
+        <label class="cp-search-field">
+          <span class="cp-search-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none">
+              <path d="M11.5 11.5 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+              <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"></circle>
+            </svg>
+          </span>
+          <input type="text" placeholder="搜索关键字" />
+        </label>
+        <button class="cp-filter-btn">全部状态</button>
+        <button class="cp-filter-btn cp-filter-btn-muted">开始日期</button>
+      </div>
+      <div class="cp-filter-bar-actions">
+        <button class="cp-filter-btn">刷新</button>
+        <button class="cp-filter-btn cp-filter-btn-primary">创建</button>
+      </div>
+    </div>
+  </body>
+</html>

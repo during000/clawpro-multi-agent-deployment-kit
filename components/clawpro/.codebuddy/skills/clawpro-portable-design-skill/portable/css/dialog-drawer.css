@@ -1,0 +1,93 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Dialog / AlertDialog / Drawer — ClawPro
+ * 容器：白底 + 蓝灰描边 + 4px 圆角（管控端）+ overlay 阴影。
+ * Drawer：右侧侧滑，全高度，圆角 0（贴右）。
+ * 配套：portable/react/dialog-drawer.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--cp-overlay-bg);
+}
+
+.cp-dialog-positioner {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Dialog / AlertDialog 容器 ─── */
+.cp-dialog {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  margin: 0 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  padding: 24px;
+  box-shadow: var(--cp-shadow-overlay);
+}
+
+.cp-dialog__header {
+  margin-bottom: 16px;
+}
+.cp-dialog__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--cp-text-title);
+}
+.cp-dialog__title--danger {
+  color: var(--cp-text-danger);
+}
+.cp-dialog__desc {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--cp-text-secondary);
+}
+.cp-dialog__body {
+  font-size: 14px;
+  color: var(--cp-text-body);
+}
+.cp-dialog__body > * + * {
+  margin-top: 16px;
+}
+
+/* ─── Drawer ─── */
+.cp-drawer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  background: var(--cp-surface);
+  border-left: 1px solid var(--cp-border);
+  box-shadow: var(--cp-shadow-overlay);
+}
+.cp-drawer__header {
+  border-bottom: 1px solid var(--cp-border);
+  padding: 16px 24px;
+}
+.cp-drawer__body {
+  flex: 1 1 0%;
+  overflow-y: auto;
+  padding: 16px 24px;
+  font-size: 14px;
+  color: var(--cp-text-body);
+}
+
+/* ─── Footer（右对齐，主次按钮分明） ─── */
+.cp-dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}

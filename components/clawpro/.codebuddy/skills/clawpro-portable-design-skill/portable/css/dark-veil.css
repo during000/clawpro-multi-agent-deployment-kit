@@ -1,0 +1,71 @@
+/**
+ * Portable DarkVeil — L1 静态 CSS 兜底（无 ogl / WebGL）
+ * ───────────────────────────────────────────────────────────────────────────
+ * 对应 component-specs/dark-veil.md §9.2「L1 静态 CSS 兜底」。
+ * demo 仓的动态背景是 client/src/components/ui/DarkVeil.tsx（WebGL CPPN，依赖 ogl）；
+ * 当宿主仓不便引 ogl / WebGL 时，用本文件在基底色上叠几层径向渐变光晕，
+ * 模拟 DarkVeil 的「白底 + 蓝紫飘带」观感，零 WebGL、零依赖。
+ *
+ * 三档兜底（详见 dark-veil.md §9，禁止改写 L0 / L1 / L2 含义）：
+ *   L0 完整移植 = 复制 DarkVeil.tsx + npm i ogl，1:1 动态背景；
+ *   L1 静态 CSS = 本文件（migration-map 默认档，宿主仓最少做到这一档）；
+ *   L2 纯色 / 截图 = 见 dark-veil.md §9.3。
+ *
+ * 配套静态页：portable/html-css/dark-veil.html（直接浏览器打开预览）。
+ * token 走 --cp-darkveil-* 命名，与本 skill 其余 --cp-* 一致。
+ * ───────────────────────────────────────────────────────────────────────────
+ */
+
+:root {
+  --cp-darkveil-base: #e0ebfe;   /* 基底色，映射宿主仓浅蓝雾 token */
+  --cp-darkveil-tint: #b2c3ff;   /* 飘带色 */
+}
+
+/* hero 容器：对应 demo 仓 SurfaceCard(overflow-hidden) 内的 relative 容器 */
+.cp-darkveil-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 48px 60px;
+}
+
+/* 第 0 + 1 + 2 层合一：基底 + 径向光晕飘带 + 顶部淡出 */
+.cp-darkveil-hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 30% 120%, var(--cp-darkveil-tint) 0%, transparent 55%),
+    radial-gradient(90% 70% at 75% 130%, color-mix(in srgb, var(--cp-darkveil-tint) 70%, #fff) 0%, transparent 50%),
+    var(--cp-darkveil-base);
+  background-repeat: no-repeat;
+  /* 顶部淡出露基底（对齐 L0 的 mask 22%） */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%);
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 22%);
+}
+
+/* 底部收束叠层（对齐 L0 第 2 层）——单独一层避免被上面的 mask 吃掉 */
+.cp-darkveil-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), var(--cp-darkveil-base));
+}
+
+/* 内容层：永远压在背景三层之上 */
+.cp-darkveil-hero__content {
+  position: relative;
+  z-index: 10;
+}
+
+/* 可选：极慢流动；尊重 reduced-motion */
+@media (prefers-reduced-motion: no-preference) {
+  .cp-darkveil-hero__bg {
+    animation: cp-darkveil-drift 18s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes cp-darkveil-drift {
+  from { background-position: 0 0, 0 0, 0 0; }
+  to   { background-position: 6% 4%, -5% 3%, 0 0; }
+}

@@ -1,53 +1,57 @@
 # 源码开发与重新部署
 
-## 一、初始化源码工作区
+## 一、直接开发
 
-在已经 clone 的部署仓库中执行：
+克隆仓库后，源码已经位于 `components/`：
 
-```bash
-bash scripts/setup-development.sh
-```
+- `components/clawpro`：ClawPro 前端。
+- `components/hatchery`：任务、HTTPS 与 WSS 后端。
+- `components/teamai-cli`：TeamAI 本地任务执行插件。
+- `components/orchestrator`：工作流编排服务。
 
-脚本会从当前私有 GitHub Release 下载源码快照、验证 SHA-256，并解压到：
+不需要运行初始化脚本，也不需要下载 Release 源码附件。组件的原始仓库、分支、基线和未提交变更范围记录在 [SOURCE_STATE.md](SOURCE_STATE.md)。
 
-```text
-workspace/clawpro-multi-agent-source-20260828/
-```
-
-源码包括：
-
-- `repos/clawpro`：ClawPro 前端。
-- `repos/hatchery`：任务、HTTPS 和 WSS 后端。
-- `repos/teamai-cli`：TeamAI 本地任务执行插件。
-- `repos/orchestrator`：工作流编排服务。
-
-打开源码根目录后，CodeBuddy 会读取源码快照内的 `CODEBUDDY.md`，根据需求只修改对应组件。
-
-## 二、验证并生成新的部署包
-
-完成代码修改后执行：
+## 二、按组件验证
 
 ```bash
-bash scripts/package-development.sh \
-  --source-root "$PWD/workspace/clawpro-multi-agent-source-20260828"
+# ClawPro 前端
+cd components/clawpro
+npm ci
+npm run build
+
+# TeamAI
+cd ../teamai-cli
+corepack pnpm install --frozen-lockfile
+corepack pnpm typecheck
+corepack pnpm test
+corepack pnpm build
+
+# Hatchery
+cd ../hatchery
+go test ./controller ./model
+
+# 编排服务
+cd ../orchestrator
+python3 -m unittest discover -p 'test_*.py'
 ```
 
-默认会：
+具体组件命令以各组件现有 `package.json`、`go.mod` 和测试文件为准。
 
-1. 安装缺失的前端和 TeamAI 项目依赖。
-2. 构建 ClawPro 前端。
-3. 执行 TeamAI 类型检查和任务执行器测试。
-4. 执行 Python 编排服务测试。
-5. 执行 Hatchery 相关 Go 测试。
-6. 交叉编译 Linux amd64 Hatchery。
-7. 打包新的 TeamAI npm 安装包。
-8. 生成新的完整部署包和 SHA-256 文件。
+## 三、一键构建部署包
 
-本地开发部署包生成在 `.local-releases/`，不会提交到 GitHub。
+在仓库根目录执行：
 
-## 三、部署修改后的版本
+```bash
+bash scripts/package-development.sh
+```
 
-使用上一步输出的 `ARCHIVE` 与 `CHECKSUM`：
+脚本会构建前端、检查 TeamAI、执行相关测试、编译 Linux amd64 Hatchery、打包 TeamAI npm 包，并生成完整部署包及 SHA-256 文件。
+
+本地输出位于 `.local-releases/`，不会提交到 GitHub。仅在明确需要快速排查打包问题时使用 `--skip-tests`，不要把它作为正式交付结果。
+
+## 四、部署修改后的版本
+
+使用构建脚本输出的 `ARCHIVE` 与 `CHECKSUM`：
 
 ```bash
 bash scripts/deploy-remote.sh \
@@ -61,12 +65,12 @@ bash scripts/deploy-remote.sh \
 
 部署脚本保留服务器已有数据库和凭证，只更新程序文件并重启服务。
 
-## 四、开发依赖
+## 五、开发依赖
 
 - Node.js 22、npm、Corepack/pnpm。
-- Go，版本需满足 Hatchery `go.mod`。
+- Go，版本满足 `components/hatchery/go.mod`。
 - Python 3.9 或更高版本。
-- GitHub CLI，且具有当前私有仓库访问权。
-- 可 SSH 登录的 Linux x86_64 测试服务器。
+- GitHub CLI（部署 Release 或访问私有仓库时需要）。
+- 可 SSH 登录的 Linux x86_64 测试服务器（部署时需要）。
 
-源码快照不包含原仓库 Git 历史。需要向工蜂提交时，应由拥有工蜂权限的开发者把修改迁移回对应 feature 分支，再按 ClawPro 协作规范提交 MR。
+如果修改需要回到原工蜂或 TeamAI 上游仓库提交，请依据 `SOURCE_STATE.md` 的来源与基线，将对应组件的改动迁移到上游 feature 分支并按其协作规范发起 MR。

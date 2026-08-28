@@ -1,0 +1,44 @@
+branch	module	page_or_tab	team
+feature/landing-page	用户端	落地页	计算
+feature/tenant-my-openclaw	用户端	我的 Agent	计算
+feature/tenant-openclaw-detail-basic	用户端	Agent 详细配置 基础配置 Tab 模型 通道 技能 页面 Header	计算
+feature/tenant-openclaw-detail-tools	用户端	Agent 详细配置 工具管理 Tab	计算
+feature/tenant-openclaw-detail-memory	用户端	Agent 详细配置 记忆管理 Tab	数据库
+feature/tenant-openclaw-detail-files	用户端	Agent 详细配置 文件管理 Tab	云盘
+feature/tenant-openclaw-detail-backup	用户端	Agent 详细配置 数据备份 Tab	计算
+feature/tenant-openclaw-detail-doctor	用户端	Agent 详细配置 龙虾医生 Tab	计算
+feature/tenant-skill-square	用户端	技能广场	计算
+feature/tenant-model-quota	用户端	模型配额	计算
+feature/tenant-help-docs	用户端	帮助文档	计算
+feature/tenant-reset-password	用户端	重置密码	计算
+feature/admin-basic-info	管控端	基础信息配置	计算
+feature/admin-api-docs	管控端	API 文档 API文档 独立页面	计算
+feature/admin-platform-policy	管控端	平台策略 用户配额 模型配额 功能权限开关	计算
+feature/admin-member-management	管控端	用户管理	计算
+feature/admin-model-config	管控端	模型配置	计算
+feature/admin-channel-config	管控端	通道配置	计算
+feature/admin-memory-management	管控端	记忆管理	数据库
+feature/admin-file-management	管控端	文件管理	云盘
+feature/admin-knowledge-management	管控端	知识管理	计算
+feature/admin-resource-management	管控端	资源管理	计算
+feature/admin-image-management	管控端	Agent 类型 原镜像管理	计算
+feature/admin-security-group	管控端	网络管理 安全组 私有网络 子网 公网 敬请期待 Tab	计算
+feature/admin-cloud-dev	管控端	云开发管理	云开发
+feature/admin-security-management	管控端	AI Agent 安全 AI Agent安全	安全
+feature/admin-audit-log	管控端	操作记录 审计日志	计算
+feature/admin-skill-preset	管控端 技能配置	技能初始包 Tab	计算
+feature/admin-skill-roles	管控端 技能配置	角色设定 Tab	计算
+feature/admin-skill-source	管控端 技能配置	技能安装来源 Tab	计算
+feature/admin-tool-public	管控端 Agent工具库	公共技能库 Tab	计算
+feature/admin-tool-enterprise	管控端 Agent工具库	企业技能库 Tab	计算
+feature/admin-tool-plugin	管控端 Agent工具库	企业插件库 Tab	计算
+feature/admin-tool-mcp	管控端 Agent工具库	企业 MCP 库 企业MCP库 Tab	计算
+feature/admin-knowledge-base	管控端 Agent工具库	企业知识库 Tab	计算
+feature/admin-standards-library	管控端 Agent工具库	企业规范库 Tab	计算
+feature/admin-settings-library	管控端 Agent工具库	企业设定库 Tab	计算
+feature/admin-asset-management	管控端	资产管理	计算
+feature/credential-management	管控端	凭据管理	计算
+feature/admin-cls-monitoring	管控端 联动	会话管理 会话详情 运维观测 Tokens 监控 Tokens监控	CLS 计算
+feature/admin-openclaw-monitor	管控端	Agent 列表	计算
+feature/admin-agent-migration	管控端	智能体迁移 独立页面	计算
+feature/design-integration-2026	全局	设计侧刷新样式专用	设计

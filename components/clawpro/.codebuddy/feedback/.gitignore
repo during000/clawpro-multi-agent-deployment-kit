@@ -1,0 +1,2 @@
+# PostToolUse/Stop hook 运行期产生的会话调用清单与收口游标，属临时状态，不入库
+.sessions/

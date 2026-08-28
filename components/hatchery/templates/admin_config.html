@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础信息 - 管理后台 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <div id="config-form">
+                    {{block "config_form" .}}
+                    {{if .Error}}
+                    <div class="mb-4 text-[#f64041] font-medium text-[14px] px-5 py-3 bg-red-50 rounded border border-red-100">{{.Error}}</div>
+                    {{end}}
+                    {{if .Success}}
+                    <div class="mb-4 text-green-600 font-medium text-[14px] px-5 py-3 bg-green-50 rounded border border-green-100">{{.Success}}</div>
+                    {{end}}
+                    <div class="bg-white p-6 rounded shadow-sm border border-gray-100">
+                        <h2 class="text-[14px] font-semibold text-gray-800 mb-6">基础信息配置</h2>
+                        <form hx-post="/admin/config" hx-target="#config-form" hx-swap="innerHTML"
+                              hx-encoding="multipart/form-data" enctype="multipart/form-data"
+                              class="space-y-6">
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">网站名称</label>
+                                <input type="text" name="name" value="{{.Config.Name}}" required
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                    placeholder="请输入网站名称">
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">网站 Logo</label>
+                                {{if .Config.Logo}}
+                                <div class="mb-3">
+                                    <p class="text-[12px] text-gray-400 mb-2">当前 Logo：</p>
+                                    <img src="/logo" alt="当前Logo" class="h-16 border border-gray-200 rounded p-1">
+                                </div>
+                                {{end}}
+                                <input type="file" name="logo" accept="image/png,image/jpeg,image/svg+xml"
+                                    class="block w-full text-[14px] text-gray-500 file:mr-4 file:py-2 file:px-5 file:rounded file:border-0 file:text-[14px] file:font-medium file:bg-[#f2f6fc] file:text-[#0052d9] hover:file:bg-[#e0ebfb]">
+                                <p class="mt-1.5 text-[12px] text-gray-400">支持 PNG、JPEG、SVG 格式，最大 512KB</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">全局每日 Token 配额</label>
+                                <input type="number" name="global_token_quota_day" min="-1" value="{{.Config.GlobalTokenQuotaDay}}"
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                    placeholder="-1 表示不限制">
+                                <p class="mt-1.5 text-[12px] text-gray-400">全站所有用户所有模型共享的每日 Token 总限额，-1 表示不限制</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">用户默认实例上限</label>
+                                <input type="number" name="default_instance_quota" min="0" max="999" value="{{.Config.DefaultInstanceQuota}}"
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                    placeholder="0 表示无配额">
+                                <p class="mt-1.5 text-[12px] text-gray-400">创建用户时未指定实例上限时的默认值</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">新用户默认每日 Token 配额</label>
+                                <input type="number" name="default_token_quota_day" min="-1" value="{{.Config.DefaultTokenQuotaDay}}"
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                    placeholder="-1 表示不限制">
+                                <p class="mt-1.5 text-[12px] text-gray-400">创建用户时未指定 Token 配额时的默认值，-1 表示不限制</p>
+                            </div>
+                            <div>
+                                <button type="submit"
+                                    class="h-10 bg-[#0052d9] text-white px-6 rounded hover:bg-[#0034b5] transition-colors duration-200 font-medium text-[14px]">
+                                    保存
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="bg-white p-6 rounded shadow-sm border border-gray-100 mt-6">
+                        <h2 class="text-[14px] font-semibold text-gray-800 mb-6">CVM 实例配置</h2>
+                        <form hx-post="/admin/config/cvm" hx-target="#config-form" hx-swap="innerHTML"
+                              class="space-y-6">
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">地域（Region）</label>
+                                <input type="text" value="{{.CVMRegion}}" readonly disabled
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded bg-gray-50 text-gray-500 cursor-not-allowed"
+                                    placeholder="未配置（通过 --region 启动参数设置）">
+                                <p class="mt-1.5 text-[12px] text-gray-400">通过启动参数 --region 配置，不可在页面修改</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">SecretId</label>
+                                <input type="text" name="cvm_secret_id" value="{{.Config.CVMSecretId}}"
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                    placeholder="腾讯云 API SecretId">
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">SecretKey</label>
+                                <input type="password" name="cvm_secret_key"
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                    placeholder="{{if .Config.CVMSecretKey}}已配置，留空表示不修改{{else}}腾讯云 API SecretKey{{end}}">
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">主账号 UIN</label>
+                                <input type="text" name="cvm_uin" value="{{.CVMUin}}" readonly disabled
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded bg-gray-50 text-gray-500 cursor-not-allowed"
+                                    placeholder="未配置（通过 -uin 启动参数设置）">
+                                <p class="mt-1.5 text-[12px] text-gray-400">通过启动参数 -uin 配置，不可在页面修改</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">服务地址（Domain）</label>
+                                <input type="text" value="{{.Domain}}"
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded bg-gray-50 text-gray-500 cursor-not-allowed"
+                                    placeholder="未配置（通过 -domain 启动参数设置）" disabled readonly>
+                                <p class="mt-1.5 text-[12px] text-gray-400">通过启动参数 -domain 配置，不可在页面修改。本服务对外可访问的根地址，不含 /v1 路径。</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">SkillHub 地址</label>
+                                <input type="text" name="skillhub" value="{{.Config.SkillHub}}"
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                    placeholder="如 https://skillhub.example.com">
+                                <p class="mt-1.5 text-[12px] text-gray-400">SkillHub 注册地址，创建实例时通过 UserData 注入。留空则不注入。</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">公共镜像 ID</label>
+                                <input type="text" name="public_image_id" value="{{.Config.PublicImageId}}"
+                                    class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                    placeholder="如 img-xxx，留空则不设置公共镜像">
+                                <p class="mt-1.5 text-[12px] text-gray-400">配置后该镜像将在镜像列表中标记为"公共"，并自动从腾讯云导入</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">全局 VPC ID</label>
+                                <div class="flex items-center gap-2">
+                                    <select name="vpc_id" id="vpc_select"
+                                        class="flex-1 h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors bg-white">
+                                        <option value="">不使用全局 VPC（使用默认 VPC）</option>
+                                        {{if .Config.VpcId}}
+                                        <option value="{{.Config.VpcId}}" selected>{{.Config.VpcId}}（已保存）</option>
+                                        {{end}}
+                                    </select>
+                                    <input type="text" id="vpc_search" placeholder="按名称搜索 VPC"
+                                        class="w-48 h-10 px-3 text-[13px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors"
+                                        onkeydown="if(event.key==='Enter'){event.preventDefault();loadVpcList();}">
+                                    <button type="button" id="refresh_vpc_btn" onclick="loadVpcList()"
+                                        class="h-10 px-4 text-[13px] border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors bg-white whitespace-nowrap">
+                                        搜索
+                                    </button>
+                                </div>
+                                <p class="mt-1.5 text-[12px] text-gray-400">配置后创建实例时使用全局 VPC，不再为每个用户创建独立 VPC</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">全局子网配置</label>
+                                <input type="hidden" name="subnet_ids" id="subnet_ids_json" value="{{.Config.SubnetIds}}">
+                                {{if .AvailableZones}}
+                                <div class="space-y-4">
+                                    {{range .AvailableZones}}
+                                    <div class="subnet-zone-group" data-zone="{{.}}">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <span class="inline-block w-40 text-[13px] text-gray-600 shrink-0 font-medium">{{.}}</span>
+                                            <button type="button" class="add-subnet-btn h-8 px-3 text-[12px] border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors bg-white" data-zone="{{.}}">+ 添加子网</button>
+                                        </div>
+                                        <div class="subnet-rows ml-40 space-y-2" data-zone="{{.}}" data-saved="{{range index $.SubnetMap .}}{{.}},{{end}}">
+                                            <!-- 子网行由 JS 动态渲染 -->
+                                        </div>
+                                    </div>
+                                    {{end}}
+                                </div>
+                                {{else}}
+                                <p class="text-[13px] text-gray-400">未配置 Region，无可用区信息</p>
+                                {{end}}
+                                <p class="mt-1.5 text-[12px] text-gray-400">配合全局 VPC ID 使用，每个可用区可配置多个子网。创建实例时按剩余 IP 加权随机选择，子网满时自动跳过。留空的可用区不会被使用。</p>
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-medium text-gray-700 mb-2">RunInstances JSON 模板</label>
+                                <textarea name="cvm_template" rows="10"
+                                    class="w-full px-3 py-2 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors font-mono"
+                                    placeholder='{"InstanceType":"S5.MEDIUM2","SecurityGroupIds":["sg-xxx"],"VirtualPrivateCloud":{"VpcId":"vpc-xxx","SubnetId":"subnet-xxx"}}'>{{.Config.CVMTemplate}}</textarea>
+                                <p class="mt-1.5 text-[12px] text-gray-400">RunInstances 请求的 JSON 参数模板，ImageId、Zone、InstanceName 将被自动覆盖</p>
+                            </div>
+                            <div>
+                                <button type="submit"
+                                    class="h-10 bg-[#0052d9] text-white px-6 rounded hover:bg-[#0034b5] transition-colors duration-200 font-medium text-[14px]">
+                                    保存 CVM 配置
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- OpenClaw 面板开关 -->
+                    <div class="bg-white p-6 rounded shadow-sm border border-gray-100 mt-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-[14px] font-semibold text-gray-800">OpenClaw 面板</h2>
+                                <p class="text-[12px] text-gray-400 mt-1">开启后用户可在实例操作栏中打开 OpenClaw Gateway 控制面板</p>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                {{if .Config.GatewayUIEnable}}
+                                <span id="gateway-ui-port-badge" class="text-[12px] text-gray-500 bg-gray-50 px-2 py-1 rounded font-mono">端口: {{.Config.GatewayUIPort}}</span>
+                                {{else}}
+                                <span id="gateway-ui-port-badge" class="text-[12px] text-gray-500 bg-gray-50 px-2 py-1 rounded font-mono hidden"></span>
+                                {{end}}
+                                <button type="button" id="gateway-ui-toggle-btn" onclick="toggleGatewayUI()"
+                                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none {{if .Config.GatewayUIEnable}}bg-[#0052d9]{{else}}bg-gray-300{{end}}"
+                                    data-enabled="{{if .Config.GatewayUIEnable}}true{{else}}false{{end}}">
+                                    <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 {{if .Config.GatewayUIEnable}}translate-x-6{{else}}translate-x-1{{end}}"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 安全组管理 -->
+                    <div class="bg-white p-6 rounded shadow-sm border border-gray-100 mt-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-[14px] font-semibold text-gray-800">安全组管理</h2>
+                            <div id="sg-actions" class="hidden">
+                                <button type="button" onclick="showCreateSGModal()"
+                                    class="h-8 px-4 text-[13px] font-medium border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors bg-white">
+                                    创建安全组
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 安全组加载中 -->
+                        <div id="sg-loading" class="text-center py-10">
+                            <div class="inline-block w-5 h-5 border-2 border-[#0052d9] border-t-transparent rounded-full animate-spin"></div>
+                            <p class="text-[13px] text-gray-400 mt-2">加载安全组信息…</p>
+                        </div>
+
+                        <!-- 安全组未配置 -->
+                        <div id="sg-empty" class="hidden text-center py-10">
+                            <div class="w-12 h-12 rounded-full bg-[#f2f6fc] flex items-center justify-center mx-auto mb-3">
+                                <svg class="w-6 h-6 text-[#0052d9]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            </div>
+                            <p class="text-[14px] text-gray-600 mb-1">尚未配置安全组</p>
+                            <p class="text-[12px] text-gray-400 mb-4">创建安全组以管控云服务器的入站与出站端口策略</p>
+                            <button type="button" onclick="showCreateSGModal()"
+                                class="h-9 px-5 text-[13px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors">
+                                创建安全组
+                            </button>
+                        </div>
+
+                        <!-- 安全组详情 -->
+                        <div id="sg-detail" class="hidden">
+                            <div class="flex items-start space-x-2 bg-[#f2f6fc] border border-[#d4e3fc] rounded px-3 py-2.5 mb-4">
+                                <svg class="w-4 h-4 text-[#0052d9] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                                <p class="text-[12px] text-gray-600 leading-relaxed">修改规则后对所有 OpenClaw 云服务器立即生效，请谨慎操作。</p>
+                            </div>
+
+                            <!-- Tab 切换 -->
+                            <div class="flex items-center space-x-1 mb-4 border-b border-[#e3e6eb]">
+                                <button id="tab-ingress" onclick="switchSGTab('ingress')"
+                                    class="px-4 py-2.5 text-[13px] font-medium border-b-2 transition-colors -mb-px border-[#0052d9] text-[#0052d9]">
+                                    入站规则
+                                </button>
+                                <button id="tab-egress" onclick="switchSGTab('egress')"
+                                    class="px-4 py-2.5 text-[13px] font-medium border-b-2 transition-colors -mb-px border-transparent text-gray-500 hover:text-gray-700">
+                                    出站规则
+                                </button>
+                            </div>
+
+                            <!-- 入站规则 -->
+                            <div id="panel-ingress">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-[13px] font-medium text-gray-700">入站规则</span>
+                                    <button type="button" onclick="showAddRuleModal('ingress')"
+                                        class="flex items-center h-7 px-3 text-[12px] font-medium border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors bg-white">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                        添加规则
+                                    </button>
+                                </div>
+                                <div class="overflow-x-auto border border-[#e3e6eb] rounded">
+                                    <table class="w-full text-[13px]">
+                                        <thead>
+                                            <tr class="bg-[#f9fafb] text-gray-500 border-b border-[#f0f1f5]">
+                                                <th class="px-4 py-2.5 text-left font-medium">来源</th>
+                                                <th class="px-4 py-2.5 text-left font-medium w-[80px]">协议</th>
+                                                <th class="px-4 py-2.5 text-left font-medium w-[100px]">端口</th>
+                                                <th class="px-4 py-2.5 text-left font-medium w-[60px]">策略</th>
+                                                <th class="px-4 py-2.5 text-left font-medium">备注</th>
+                                                <th class="px-4 py-2.5 text-right font-medium w-[60px]">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="sg-ingress-body">
+                                            <tr><td colspan="6" class="px-4 py-6 text-center text-gray-400">加载中…</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 出站规则 -->
+                            <div id="panel-egress" class="hidden">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-[13px] font-medium text-gray-700">出站规则</span>
+                                    <button type="button" onclick="showAddRuleModal('egress')"
+                                        class="flex items-center h-7 px-3 text-[12px] font-medium border border-[#e3e6eb] rounded hover:border-[#0052d9] hover:text-[#0052d9] transition-colors bg-white">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                        添加规则
+                                    </button>
+                                </div>
+                                <div class="overflow-x-auto border border-[#e3e6eb] rounded">
+                                    <table class="w-full text-[13px]">
+                                        <thead>
+                                            <tr class="bg-[#f9fafb] text-gray-500 border-b border-[#f0f1f5]">
+                                                <th class="px-4 py-2.5 text-left font-medium">目标</th>
+                                                <th class="px-4 py-2.5 text-left font-medium w-[80px]">协议</th>
+                                                <th class="px-4 py-2.5 text-left font-medium w-[100px]">端口</th>
+                                                <th class="px-4 py-2.5 text-left font-medium w-[60px]">策略</th>
+                                                <th class="px-4 py-2.5 text-left font-medium">备注</th>
+                                                <th class="px-4 py-2.5 text-right font-medium w-[60px]">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="sg-egress-body">
+                                            <tr><td colspan="6" class="px-4 py-6 text-center text-gray-400">加载中…</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{end}}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 创建安全组 Modal -->
+    <div id="sg-create-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeCreateModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-2xl w-[440px] max-w-[90vw]">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#e3e6eb]">
+                <h3 class="text-[15px] font-semibold text-gray-900">创建安全组</h3>
+                <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            <div class="px-6 py-5 space-y-4">
+                <div>
+                    <label class="block text-[13px] font-medium text-gray-700 mb-1.5">安全组名称 <span class="text-red-500">*</span></label>
+                    <input id="sg-create-name" type="text" placeholder="如: openclaw-sg"
+                        class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] transition-colors">
+                </div>
+                <div>
+                    <label class="block text-[13px] font-medium text-gray-700 mb-1.5">描述</label>
+                    <input id="sg-create-desc" type="text" placeholder="安全组描述（可选）"
+                        class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] transition-colors">
+                </div>
+                <p id="sg-create-error" class="text-[13px] text-[#f64041] hidden"></p>
+            </div>
+            <div class="px-6 py-4 border-t border-[#f0f1f5] flex justify-end space-x-3">
+                <button onclick="closeCreateModal()" class="h-9 px-5 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 text-gray-700">取消</button>
+                <button id="sg-create-btn" onclick="createSecurityGroup()" class="h-9 px-5 text-[14px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5]">创建</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加规则 Modal -->
+    <div id="sg-rule-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeRuleModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-2xl w-[500px] max-w-[90vw]">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-[#e3e6eb]">
+                <h3 id="rule-modal-title" class="text-[15px] font-semibold text-gray-900">添加入站规则</h3>
+                <button onclick="closeRuleModal()" class="text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            <div class="px-6 py-5 space-y-4">
+                <input type="hidden" id="rule-direction" value="ingress">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[13px] font-medium text-gray-700 mb-1.5">协议 <span class="text-red-500">*</span></label>
+                        <select id="rule-protocol" onchange="onProtocolChange()"
+                            class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded bg-white focus:outline-none focus:border-[#0052d9] transition-colors">
+                            <option value="tcp">TCP</option>
+                            <option value="udp">UDP</option>
+                            <option value="icmp">ICMP</option>
+                            <option value="ALL">ALL</option>
+                        </select>
+                    </div>
+                    <div id="rule-port-row">
+                        <label class="block text-[13px] font-medium text-gray-700 mb-1.5">端口 <span class="text-red-500">*</span></label>
+                        <input id="rule-port" type="text" placeholder="如 80 或 80,443 或 1-65535"
+                            class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] transition-colors">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[13px] font-medium text-gray-700 mb-1.5" id="rule-cidr-label">来源 <span class="text-red-500">*</span></label>
+                        <input id="rule-cidr" type="text" placeholder="如 0.0.0.0/0" value="0.0.0.0/0"
+                            class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-medium text-gray-700 mb-1.5">策略 <span class="text-red-500">*</span></label>
+                        <select id="rule-action"
+                            class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded bg-white focus:outline-none focus:border-[#0052d9] transition-colors">
+                            <option value="ACCEPT">允许 (ACCEPT)</option>
+                            <option value="DROP">拒绝 (DROP)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[13px] font-medium text-gray-700 mb-1.5">备注</label>
+                    <input id="rule-desc" type="text" placeholder="规则描述（可选）"
+                        class="w-full h-10 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] transition-colors">
+                </div>
+                <p id="rule-error" class="text-[13px] text-[#f64041] hidden"></p>
+            </div>
+            <div class="px-6 py-4 border-t border-[#f0f1f5] flex justify-end space-x-3">
+                <button onclick="closeRuleModal()" class="h-9 px-5 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 text-gray-700">取消</button>
+                <button id="rule-submit-btn" onclick="addRule()" class="h-9 px-5 text-[14px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5]">添加</button>
+            </div>
+        </div>
+    </div>
+
+    {{template "admin_scripts" .}}
+    <script>
+    // Load VPC list from cloud (with scroll pagination and optional name filter)
+    function loadVpcList() {
+        var btn = document.getElementById('refresh_vpc_btn');
+        var sel = document.getElementById('vpc_select');
+        var searchInput = document.getElementById('vpc_search');
+        if (!sel) return;
+        btn.disabled = true;
+        btn.textContent = '加载中…';
+        var savedVal = sel.value;
+        var allVpcs = [];
+        var pageSize = 100;
+        var vpcNameFilter = (searchInput && searchInput.value.trim()) ? searchInput.value.trim() : '';
+
+        function fetchPage(offset) {
+            var url = '/admin/vpc/cloud?offset=' + offset + '&limit=' + pageSize;
+            if (vpcNameFilter) {
+                url += '&vpc_name=' + encodeURIComponent(vpcNameFilter);
+            }
+            return fetch(url)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.error) { throw new Error(data.error); }
+                    var vpcs = data.vpcs || [];
+                    allVpcs = allVpcs.concat(vpcs);
+                    var totalCount = data.total_count || 0;
+                    // If there are more pages, fetch next
+                    if (allVpcs.length < totalCount && vpcs.length > 0) {
+                        return fetchPage(offset + vpcs.length);
+                    }
+                });
+        }
+
+        fetchPage(0).then(function() {
+            // Rebuild options
+            sel.innerHTML = '<option value="">不使用全局 VPC（使用默认 VPC）</option>';
+            allVpcs.forEach(function(v) {
+                var opt = document.createElement('option');
+                opt.value = v.vpc_id;
+                opt.textContent = v.vpc_id + (v.name ? ' (' + v.name + ')' : '') + (v.cidr_block ? ' [' + v.cidr_block + ']' : '');
+                sel.appendChild(opt);
+            });
+            // Restore saved selection if still present
+            if (savedVal) {
+                sel.value = savedVal;
+                if (!sel.value) {
+                    // savedVal not in new list, add it back
+                    var opt = document.createElement('option');
+                    opt.value = savedVal;
+                    opt.textContent = savedVal + '（已保存，不在当前列表中）';
+                    sel.appendChild(opt);
+                    sel.value = savedVal;
+                }
+            }
+            // After loading VPCs, load subnets for the selected VPC
+            loadSubnetsForVpc(sel.value);
+        }).catch(function(e) {
+            alert('加载 VPC 列表失败: ' + e.message);
+        }).finally(function() {
+            btn.disabled = false;
+            btn.textContent = '搜索';
+        });
+    }
+
+    // ========== 子网多行列表管理 ==========
+    // 缓存每个 zone 的云端子网列表（供下拉选项复用） { zone: [{subnet_id, name, cidr_block, available_ip_count, total_ip_count}] }
+    var subnetsByZone = {};
+
+    function renderSubnetRow(zone, preselectSubnetId) {
+        var row = document.createElement('div');
+        row.className = 'subnet-row flex items-center gap-2';
+        row.setAttribute('data-zone', zone);
+
+        var select = document.createElement('select');
+        select.className = 'subnet-select flex-1 h-9 px-3 text-[13px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9] hover:border-[#0052d9] transition-colors bg-white font-mono';
+        select.setAttribute('data-zone', zone);
+
+        var placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = '-- 请选择子网 --';
+        select.appendChild(placeholder);
+
+        var list = subnetsByZone[zone] || [];
+        var found = false;
+        list.forEach(function(s) {
+            var opt = document.createElement('option');
+            opt.value = s.subnet_id;
+            var remain = (typeof s.available_ip_count === 'number') ? s.available_ip_count : '?';
+            var total = (typeof s.total_ip_count === 'number') ? s.total_ip_count : '?';
+            var parts = [s.subnet_id];
+            if (s.name) parts.push('(' + s.name + ')');
+            if (s.cidr_block) parts.push('[' + s.cidr_block + ']');
+            parts.push('剩余 ' + remain + '/' + total + ' IP');
+            opt.textContent = parts.join(' ');
+            select.appendChild(opt);
+            if (s.subnet_id === preselectSubnetId) found = true;
+        });
+        if (preselectSubnetId && !found) {
+            var opt = document.createElement('option');
+            opt.value = preselectSubnetId;
+            opt.textContent = preselectSubnetId + '（已保存，不在当前列表中）';
+            select.appendChild(opt);
+        }
+        if (preselectSubnetId) select.value = preselectSubnetId;
+        row.appendChild(select);
+
+        var del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'h-9 px-3 text-[12px] border border-[#e3e6eb] rounded hover:border-[#f64041] hover:text-[#f64041] transition-colors bg-white';
+        del.textContent = '删除';
+        del.onclick = function() { row.remove(); };
+        row.appendChild(del);
+
+        return row;
+    }
+
+    function loadSubnetsForVpc(vpcId) {
+        var groups = document.querySelectorAll('.subnet-zone-group');
+        if (!vpcId) {
+            // 清空所有行
+            document.querySelectorAll('.subnet-rows').forEach(function(wrap) { wrap.innerHTML = ''; });
+            subnetsByZone = {};
+            return;
+        }
+        groups.forEach(function(group) {
+            var zone = group.getAttribute('data-zone');
+            var rowsWrap = group.querySelector('.subnet-rows');
+            var savedRaw = rowsWrap.getAttribute('data-saved') || '';
+            var savedIds = savedRaw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+            rowsWrap.innerHTML = '<p class="text-[12px] text-gray-400">加载中…</p>';
+
+            fetch('/admin/subnet/cloud?vpc_id=' + encodeURIComponent(vpcId) + '&zone=' + encodeURIComponent(zone))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    rowsWrap.innerHTML = '';
+                    if (data.error) {
+                        // 用 textContent 避免 data.error 中的 HTML 被当成 DOM 注入（XSS）
+                        var errP = document.createElement('p');
+                        errP.className = 'text-[12px] text-[#f64041]';
+                        errP.textContent = '加载失败：' + (data.error || '');
+                        rowsWrap.appendChild(errP);
+                        return;
+                    }
+                    subnetsByZone[zone] = data.subnets || [];
+                    if (savedIds.length === 0) {
+                        // 该 zone 无已保存子网，留空让用户添加
+                        return;
+                    }
+                    savedIds.forEach(function(sid) {
+                        rowsWrap.appendChild(renderSubnetRow(zone, sid));
+                    });
+                })
+                .catch(function(e) {
+                    // 同上：用 textContent 避免潜在 XSS
+                    rowsWrap.innerHTML = '';
+                    var errP = document.createElement('p');
+                    errP.className = 'text-[12px] text-[#f64041]';
+                    errP.textContent = '加载失败：' + (e && e.message ? e.message : '网络错误');
+                    rowsWrap.appendChild(errP);
+                });
+        });
+    }
+
+    // 点击"添加子网"追加一行
+    document.addEventListener('click', function(evt) {
+        if (evt.target && evt.target.classList.contains('add-subnet-btn')) {
+            var zone = evt.target.getAttribute('data-zone');
+            var group = document.querySelector('.subnet-zone-group[data-zone="' + zone + '"]');
+            if (!group) return;
+            var rowsWrap = group.querySelector('.subnet-rows');
+            if (!rowsWrap) return;
+            if (!subnetsByZone[zone] || subnetsByZone[zone].length === 0) {
+                // 没加载出子网列表时提示并阻止
+                var vpcSel = document.getElementById('vpc_select');
+                if (!vpcSel || !vpcSel.value) {
+                    alert('请先选择 VPC');
+                    return;
+                }
+                alert('该可用区下暂无可用子网，请先到腾讯云控制台创建');
+                return;
+            }
+            rowsWrap.appendChild(renderSubnetRow(zone, ''));
+        }
+    });
+
+    // 监听 VPC 切换
+    document.addEventListener('change', function(evt) {
+        if (evt.target && evt.target.id === 'vpc_select') {
+            loadSubnetsForVpc(evt.target.value);
+        }
+    });
+
+    // 保存前组装 subnet_ids JSON + VPC 切换确认
+    // 记录进入页面时的原始 VPC ID，用于切换检测
+    var originalVpcId = (function() {
+        var sel = document.getElementById('vpc_select');
+        return sel ? sel.value : '';
+    })();
+
+    document.addEventListener('htmx:configRequest', function(evt) {
+        var form = evt.detail.elt.closest ? evt.detail.elt.closest('form') : evt.detail.elt;
+        if (!form || form.getAttribute('hx-post') !== '/admin/config/cvm') return;
+
+        // VPC 切换确认（仅当 VPC 变化且切换前后都非空，或从有 VPC 切到无 VPC）
+        var newVpcId = (form.querySelector('#vpc_select') || {}).value || '';
+        if (originalVpcId && newVpcId !== originalVpcId) {
+            var msg = '检测到 VPC 配置变化：' +
+                '\n\n旧 VPC：' + originalVpcId +
+                '\n新 VPC：' + (newVpcId || '（未配置，将使用默认 VPC）') +
+                '\n\n切换后：\n• 已创建的实例继续在旧 VPC 内运行（CVM 无法跨 VPC 迁移）\n• 新创建的实例将进入新 VPC\n\n确定要切换吗？';
+            if (!confirm(msg)) {
+                // HTMX 官方推荐用 preventDefault 取消请求，而不是抛 Error（抛 Error 会冒泡到全局
+                // error handler，可能被其它监听器误判为脚本异常）。
+                // 参考：https://htmx.org/events/#htmx:configRequest
+                if (evt.preventDefault) {
+                    evt.preventDefault();
+                }
+                return;
+            }
+        }
+
+        // 组装 subnet_ids：每 zone 一个子网数组
+        var map = {};
+        form.querySelectorAll('.subnet-zone-group').forEach(function(group) {
+            var zone = group.getAttribute('data-zone');
+            var ids = [];
+            group.querySelectorAll('.subnet-row .subnet-select').forEach(function(sel) {
+                var v = (sel.value || '').trim();
+                if (v && ids.indexOf(v) === -1) ids.push(v);
+            });
+            if (ids.length > 0) map[zone] = ids;
+        });
+        var hidden = form.querySelector('#subnet_ids_json');
+        var jsonStr = Object.keys(map).length > 0 ? JSON.stringify(map) : '';
+        if (hidden) hidden.value = jsonStr;
+        evt.detail.parameters['subnet_ids'] = jsonStr;
+
+        // 保存成功后更新 originalVpcId（在下一次请求前生效）
+        originalVpcId = newVpcId;
+    });
+
+    // ========== OpenClaw 面板开关 ==========
+    function toggleGatewayUI() {
+        var btn = document.getElementById('gateway-ui-toggle-btn');
+        var currentEnabled = btn.getAttribute('data-enabled') === 'true';
+        var newEnabled = !currentEnabled;
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+
+        var form = new FormData();
+        form.append('gateway_ui_enable', newEnabled ? 'true' : 'false');
+
+        fetch('/admin/config', { method: 'POST', body: form, headers: { 'Accept': 'application/json' } })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    alert('操作失败: ' + data.error + (data.detail ? '\n' + data.detail : ''));
+                    return;
+                }
+                // 更新开关状态
+                btn.setAttribute('data-enabled', newEnabled ? 'true' : 'false');
+                var dot = btn.querySelector('span');
+                if (newEnabled) {
+                    btn.className = btn.className.replace('bg-gray-300', 'bg-[#0052d9]');
+                    dot.className = dot.className.replace('translate-x-1', 'translate-x-6');
+                } else {
+                    btn.className = btn.className.replace('bg-[#0052d9]', 'bg-gray-300');
+                    dot.className = dot.className.replace('translate-x-6', 'translate-x-1');
+                }
+                // 更新端口标识
+                var badge = document.getElementById('gateway-ui-port-badge');
+                if (newEnabled && data.gateway_ui_port) {
+                    badge.textContent = '端口: ' + data.gateway_ui_port;
+                    badge.classList.remove('hidden');
+                } else if (!newEnabled) {
+                    // 关闭时隐藏端口（端口保持不变，只是不显示）
+                }
+            })
+            .catch(function(e) {
+                alert('请求失败: ' + e.message);
+            })
+            .finally(function() {
+                btn.disabled = false;
+                btn.style.opacity = '';
+            });
+    }
+
+    // ========== 安全组管理 ==========
+    var sgCurrentTab = 'ingress';
+
+    function switchSGTab(tab) {
+        sgCurrentTab = tab;
+        ['ingress', 'egress'].forEach(function(t) {
+            var btn = document.getElementById('tab-' + t);
+            var panel = document.getElementById('panel-' + t);
+            if (t === tab) {
+                btn.className = 'px-4 py-2.5 text-[13px] font-medium border-b-2 transition-colors -mb-px border-[#0052d9] text-[#0052d9]';
+                panel.classList.remove('hidden');
+            } else {
+                btn.className = 'px-4 py-2.5 text-[13px] font-medium border-b-2 transition-colors -mb-px border-transparent text-gray-500 hover:text-gray-700';
+                panel.classList.add('hidden');
+            }
+        });
+    }
+
+    function loadSecurityGroup() {
+        var loading = document.getElementById('sg-loading');
+        var empty = document.getElementById('sg-empty');
+        var detail = document.getElementById('sg-detail');
+        var actions = document.getElementById('sg-actions');
+        loading.classList.remove('hidden');
+        empty.classList.add('hidden');
+        detail.classList.add('hidden');
+        actions.classList.add('hidden');
+
+        fetch('/admin/config/security-group', { headers: { 'Accept': 'application/json' } })
+            .then(function(r) {
+                if (r.status === 404) return null;
+                if (!r.ok) return r.json().then(function(d) { throw new Error(d.error || '查询失败'); });
+                return r.json();
+            })
+            .then(function(data) {
+                loading.classList.add('hidden');
+                if (!data || !data.Response || !data.Response.SecurityGroupSet || data.Response.SecurityGroupSet.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+                detail.classList.remove('hidden');
+                actions.classList.remove('hidden');
+                loadPolicies();
+            })
+            .catch(function(e) {
+                loading.classList.add('hidden');
+                empty.classList.remove('hidden');
+            });
+    }
+
+    function loadPolicies() {
+        fetch('/admin/config/security-group/policies', { headers: { 'Accept': 'application/json' } })
+            .then(function(r) {
+                if (!r.ok) return r.json().then(function(d) { throw new Error(d.error || '查询失败'); });
+                return r.json();
+            })
+            .then(function(data) {
+                if (!data.Response || !data.Response.SecurityGroupPolicySet) return;
+                var ps = data.Response.SecurityGroupPolicySet;
+                renderRules('sg-ingress-body', ps.Ingress || [], 'ingress');
+                renderRules('sg-egress-body', ps.Egress || [], 'egress');
+            })
+            .catch(function(e) {
+                var errHtml = '<tr><td colspan="6" class="px-4 py-6 text-center text-[#f64041]">加载失败: ' + sgEscape(e.message) + '</td></tr>';
+                document.getElementById('sg-ingress-body').innerHTML = errHtml;
+                document.getElementById('sg-egress-body').innerHTML = errHtml;
+            });
+    }
+
+    function sgEscape(str) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
+    }
+
+    function renderRules(tbodyId, rules, direction) {
+        var tbody = document.getElementById(tbodyId);
+        if (!rules || rules.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-6 text-center text-gray-400">暂无规则</td></tr>';
+            return;
+        }
+        var html = '';
+        rules.forEach(function(p) {
+            var protocol = (p.Protocol || 'ALL').toLowerCase();
+            var port = p.Port || 'ALL';
+            var cidr = p.CidrBlock || p.Ipv6CidrBlock || p.SecurityGroupId || '—';
+            var action = p.Action || '—';
+            var desc = p.PolicyDescription || '—';
+            var policyIndex = p.PolicyIndex !== undefined ? p.PolicyIndex : 0;
+            var actionText = action === 'ACCEPT' ? '允许' : '拒绝';
+            var actionClass = action === 'ACCEPT' ? 'text-[#00a870]' : 'text-[#f64041]';
+
+            html += '<tr class="border-b border-[#f0f1f5] hover:bg-[#fafbfc]">' +
+                '<td class="px-4 py-3 text-gray-800 font-mono text-[12px]">' + sgEscape(cidr) + '</td>' +
+                '<td class="px-4 py-3 text-gray-800 text-[12px]">' + sgEscape(protocol) + '</td>' +
+                '<td class="px-4 py-3 text-gray-800 font-mono text-[12px]">' + sgEscape(port) + '</td>' +
+                '<td class="px-4 py-3"><span class="text-[12px] font-medium ' + actionClass + '">' + actionText + '</span></td>' +
+                '<td class="px-4 py-3 text-gray-500 text-[12px] max-w-[160px] truncate" title="' + sgEscape(desc) + '">' + sgEscape(desc) + '</td>' +
+                '<td class="px-4 py-3 text-right">' +
+                    '<button onclick="deleteRule(\'' + direction + '\',' + policyIndex + ',this)" class="p-1 text-gray-400 hover:text-[#f64041] hover:bg-red-50 rounded transition-all" title="删除">' +
+                        '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>' +
+                    '</button>' +
+                '</td>' +
+            '</tr>';
+        });
+        tbody.innerHTML = html;
+    }
+
+    // 创建安全组
+    function showCreateSGModal() {
+        document.getElementById('sg-create-modal').classList.remove('hidden');
+        document.getElementById('sg-create-name').value = '';
+        document.getElementById('sg-create-desc').value = '';
+        document.getElementById('sg-create-error').classList.add('hidden');
+        document.getElementById('sg-create-name').focus();
+    }
+    function closeCreateModal() { document.getElementById('sg-create-modal').classList.add('hidden'); }
+    function createSecurityGroup() {
+        var name = document.getElementById('sg-create-name').value.trim();
+        if (!name) { sgShowError('sg-create-error', '请输入安全组名称'); return; }
+        var btn = document.getElementById('sg-create-btn');
+        btn.disabled = true; btn.textContent = '创建中…';
+        fetch('/admin/config/security-group', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ GroupName: name, GroupDescription: document.getElementById('sg-create-desc').value.trim() || '' })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.error) { sgShowError('sg-create-error', data.error + (data.detail ? ': ' + data.detail : '')); return; }
+            closeCreateModal();
+            loadSecurityGroup();
+        })
+        .catch(function(e) { sgShowError('sg-create-error', '请求失败: ' + e.message); })
+        .finally(function() { btn.disabled = false; btn.textContent = '创建'; });
+    }
+
+    // 添加规则
+    function showAddRuleModal(direction) {
+        document.getElementById('sg-rule-modal').classList.remove('hidden');
+        document.getElementById('rule-direction').value = direction;
+        document.getElementById('rule-modal-title').textContent = direction === 'ingress' ? '添加入站规则' : '添加出站规则';
+        document.getElementById('rule-cidr-label').innerHTML = (direction === 'ingress' ? '来源' : '目标') + ' <span class="text-red-500">*</span>';
+        document.getElementById('rule-protocol').value = 'tcp';
+        document.getElementById('rule-port').value = '';
+        document.getElementById('rule-cidr').value = '0.0.0.0/0';
+        document.getElementById('rule-action').value = 'ACCEPT';
+        document.getElementById('rule-desc').value = '';
+        document.getElementById('rule-error').classList.add('hidden');
+        document.getElementById('rule-port-row').classList.remove('hidden');
+    }
+    function closeRuleModal() { document.getElementById('sg-rule-modal').classList.add('hidden'); }
+    function onProtocolChange() {
+        var proto = document.getElementById('rule-protocol').value;
+        var portRow = document.getElementById('rule-port-row');
+        if (proto === 'icmp' || proto === 'ALL') {
+            portRow.classList.add('hidden');
+            document.getElementById('rule-port').value = 'ALL';
+        } else {
+            portRow.classList.remove('hidden');
+            if (document.getElementById('rule-port').value === 'ALL') document.getElementById('rule-port').value = '';
+        }
+    }
+    function addRule() {
+        var direction = document.getElementById('rule-direction').value;
+        var protocol = document.getElementById('rule-protocol').value;
+        var port = document.getElementById('rule-port').value.trim() || 'ALL';
+        var cidr = document.getElementById('rule-cidr').value.trim();
+        var action = document.getElementById('rule-action').value;
+        var desc = document.getElementById('rule-desc').value.trim();
+        if (!cidr) { sgShowError('rule-error', '请输入' + (direction === 'ingress' ? '来源' : '目标') + '地址'); return; }
+        var btn = document.getElementById('rule-submit-btn');
+        btn.disabled = true; btn.textContent = '添加中…';
+        var policy = { Protocol: protocol, Port: port, CidrBlock: cidr, Action: action, PolicyDescription: desc };
+        var dirKey = direction === 'ingress' ? 'Ingress' : 'Egress';
+        var body = { SecurityGroupPolicySet: {} };
+        body.SecurityGroupPolicySet[dirKey] = [policy];
+        fetch('/admin/config/security-group/policies', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(body)
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.error) { sgShowError('rule-error', data.error + (data.detail ? ': ' + data.detail : '')); return; }
+            closeRuleModal();
+            loadPolicies();
+        })
+        .catch(function(e) { sgShowError('rule-error', '请求失败: ' + e.message); })
+        .finally(function() { btn.disabled = false; btn.textContent = '添加'; });
+    }
+
+    // 删除规则
+    function deleteRule(direction, policyIndex, btnEl) {
+        if (!confirm('确定要删除该规则吗？删除后将立即对所有实例生效。')) return;
+        var row = btnEl.closest('tr');
+        if (row) row.style.opacity = '0.4';
+        var dirKey = direction === 'ingress' ? 'Ingress' : 'Egress';
+        var body = { SecurityGroupPolicySet: {} };
+        body.SecurityGroupPolicySet[dirKey] = [{ PolicyIndex: policyIndex }];
+        fetch('/admin/config/security-group/policies', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(body)
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.error) { alert('删除失败: ' + data.error); if (row) row.style.opacity = ''; return; }
+            loadPolicies();
+        })
+        .catch(function(e) { alert('请求失败: ' + e.message); if (row) row.style.opacity = ''; });
+    }
+
+    function sgShowError(elemId, msg) {
+        var el = document.getElementById(elemId);
+        el.textContent = msg;
+        el.classList.remove('hidden');
+    }
+
+    // 页面加载时初始化安全组
+    loadSecurityGroup();
+    </script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+{
+  "audit_metadata": {
+    "date": "2026-06-26",
+    "base_path": "/Users/addietang/Documents/cvm/openclaw-enterprise/.codebuddy/skills/clawpro-portable-design-skill",
+    "phase": "A1 - 组件 ↔ spec 双向对账"
+  },
+  "summary": {
+    "total_react_files": 33,
+    "total_css_files": 33,
+    "total_spec_files": 36,
+    "unique_component_names": 39,
+    "spec_defined_components": 36,
+    "table1_items_count": 11,
+    "table2_items_count": 8,
+    "true_missing_count": 3,
+    "intentional_aggregation_count": 3
+  },
+  "table1_components_no_spec": [
+    {
+      "component": "admin-sidebar-style",
+      "has_react": false,
+      "has_css": true,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "CSS文件，对应admin-sidebar",
+      "react_path": "",
+      "css_path": "portable/css/admin-sidebar-style.css"
+    },
+    {
+      "component": "admin-sidebar-with-tooltip",
+      "has_react": true,
+      "has_css": false,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "admin-sidebar的变体，带Tooltip支持",
+      "react_path": "portable/react/admin-sidebar-with-tooltip.tsx",
+      "css_path": ""
+    },
+    {
+      "component": "badges",
+      "has_react": true,
+      "has_css": false,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "",
+      "react_path": "portable/react/badges.tsx",
+      "css_path": ""
+    },
+    {
+      "component": "card",
+      "has_react": true,
+      "has_css": true,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "",
+      "react_path": "portable/react/card.tsx",
+      "css_path": "portable/css/card.css"
+    },
+    {
+      "component": "globals",
+      "has_react": false,
+      "has_css": true,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "全局CSS，基础设施文件",
+      "react_path": "",
+      "css_path": "portable/css/globals.css"
+    },
+    {
+      "component": "input",
+      "has_react": false,
+      "has_css": true,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "CSS文件，input-select样式",
+      "react_path": "",
+      "css_path": "portable/css/input.css"
+    },
+    {
+      "component": "popover-menu",
+      "has_react": true,
+      "has_css": true,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "",
+      "react_path": "portable/react/popover-menu.tsx",
+      "css_path": "portable/css/popover-menu.css"
+    },
+    {
+      "component": "portable",
+      "has_react": false,
+      "has_css": true,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "主入口CSS，基础设施文件",
+      "react_path": "",
+      "css_path": "portable/css/portable.css"
+    },
+    {
+      "component": "searchable-select",
+      "has_react": true,
+      "has_css": false,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "",
+      "react_path": "portable/react/searchable-select.tsx",
+      "css_path": ""
+    },
+    {
+      "component": "segment-showcase",
+      "has_react": true,
+      "has_css": false,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "segment演示/展示组件，非生产组件",
+      "react_path": "portable/react/segment-showcase.tsx",
+      "css_path": ""
+    },
+    {
+      "component": "tokens",
+      "has_react": false,
+      "has_css": true,
+      "is_known_alias": false,
+      "alias_of": null,
+      "note": "token声明CSS，基础设施文件",
+      "react_path": "",
+      "css_path": "portable/css/tokens.css"
+    }
+  ],
+  "table2_specs_no_component": [
+    {
+      "spec": "card-surface",
+      "has_react": false,
+      "has_css": false,
+      "real_implementation": "card",
+      "intent": "实现命名为card，规范命名为card-surface",
+      "spec_path": "component-specs/card-surface.md"
+    },
+    {
+      "spec": "combobox",
+      "has_react": false,
+      "has_css": false,
+      "real_implementation": "searchable-select",
+      "intent": "已并入SearchableSelect（searchable-select）作为搜索模式",
+      "spec_path": "component-specs/combobox.md"
+    },
+    {
+      "spec": "data-table",
+      "has_react": false,
+      "has_css": false,
+      "real_implementation": null,
+      "intent": "参考文档，不是独立组件",
+      "spec_path": "component-specs/data-table.md"
+    },
+    {
+      "spec": "popover-dropdown-menu",
+      "has_react": false,
+      "has_css": false,
+      "real_implementation": "popover-menu",
+      "intent": "实现命名为popover-menu",
+      "spec_path": "component-specs/popover-dropdown-menu.md"
+    },
+    {
+      "spec": "tag-label",
+      "has_react": false,
+      "has_css": false,
+      "real_implementation": null,
+      "intent": "独立spec，未找到实现，需要确认",
+      "spec_path": "component-specs/tag-label.md"
+    },
+    {
+      "spec": "tenant-topnav",
+      "has_react": false,
+      "has_css": false,
+      "real_implementation": null,
+      "intent": "Tenant应用顶栏spec，未找到实现，需要确认",
+      "spec_path": "component-specs/tenant-topnav.md"
+    },
+    {
+      "spec": "typography",
+      "has_react": false,
+      "has_css": false,
+      "real_implementation": null,
+      "intent": "设计token，不是组件",
+      "spec_path": "component-specs/typography.md"
+    },
+    {
+      "spec": "upload-file-browser",
+      "has_react": false,
+      "has_css": false,
+      "real_implementation": null,
+      "intent": "spec，需要与file-browser对齐，未找到独立实现",
+      "spec_path": "component-specs/upload-file-browser.md"
+    }
+  ],
+  "table3_manifest_vs_actual": {
+    "manifest_total": 36,
+    "actual_spec_total": 36,
+    "actual_react_total": 33,
+    "actual_css_total": 33,
+    "unique_components_total": 47,
+    "manifest_only": [],
+    "actual_only": [
+      "admin-sidebar-style",
+      "admin-sidebar-with-tooltip",
+      "badges",
+      "card",
+      "globals",
+      "input",
+      "popover-menu",
+      "portable",
+      "searchable-select",
+      "segment-showcase",
+      "tokens"
+    ]
+  },
+  "conclusions": {
+    "true_missing_specs_need_implementation": [
+      {
+        "spec": "tag-label",
+        "reason": "独立spec，未找到实现，需要确认"
+      },
+      {
+        "spec": "tenant-topnav",
+        "reason": "Tenant应用顶栏spec，未找到实现，需要确认"
+      },
+      {
+        "spec": "upload-file-browser",
+        "reason": "spec，需要与file-browser对齐，未找到独立实现"
+      }
+    ],
+    "intentional_aggregation_confirmed": [
+      {
+        "spec": "card-surface",
+        "aggregated_into": "card",
+        "reason": "实现命名为card，规范命名为card-surface"
+      },
+      {
+        "spec": "combobox",
+        "aggregated_into": "searchable-select",
+        "reason": "已并入SearchableSelect（searchable-select）作为搜索模式"
+      },
+      {
+        "spec": "popover-dropdown-menu",
+        "aggregated_into": "popover-menu",
+        "reason": "实现命名为popover-menu"
+      }
+    ]
+  }
+}

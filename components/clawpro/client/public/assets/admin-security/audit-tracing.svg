@@ -1,0 +1,31 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 渐变底（与 Figma 设计稿其它三张卡片一致：4px 圆角 + diamond 渐变） -->
+  <g clip-path="url(#paint0_diamond_638_5470_clip_path)" data-figma-skip-parse="true">
+    <g transform="matrix(-0.151677 -0.153527 0.34384 -0.339697 48.6926 49.3816)">
+      <rect x="0" y="0" width="327.238" height="55.7561" fill="url(#paint0_diamond_638_5470)" opacity="1" shape-rendering="crispEdges"/>
+      <rect x="0" y="0" width="327.238" height="55.7561" transform="scale(1 -1)" fill="url(#paint0_diamond_638_5470)" opacity="1" shape-rendering="crispEdges"/>
+      <rect x="0" y="0" width="327.238" height="55.7561" transform="scale(-1 1)" fill="url(#paint0_diamond_638_5470)" opacity="1" shape-rendering="crispEdges"/>
+      <rect x="0" y="0" width="327.238" height="55.7561" transform="scale(-1)" fill="url(#paint0_diamond_638_5470)" opacity="1" shape-rendering="crispEdges"/>
+    </g>
+  </g>
+  <rect width="36" height="36" rx="4"/>
+
+  <!-- 18×18 的 notebook-bold 图标（左偏移 9,9），渐变描边色与其他卡片一致：linear -15deg #0080FF -> #202020 -->
+  <g transform="translate(9 9)">
+    <path fill-rule="evenodd" clip-rule="evenodd"
+      d="M5.0625 0.5625C4.75184 0.5625 4.5 0.81434 4.5 1.125V2.25H3.375C2.44052 2.25 1.6875 3.00302 1.6875 3.9375V15.1875C1.6875 16.122 2.44052 16.875 3.375 16.875H14.625C15.5595 16.875 16.3125 16.122 16.3125 15.1875V3.9375C16.3125 3.00302 15.5595 2.25 14.625 2.25H13.5V1.125C13.5 0.81434 13.2482 0.5625 12.9375 0.5625C12.6268 0.5625 12.375 0.81434 12.375 1.125V2.25H10.6875V1.125C10.6875 0.81434 10.4357 0.5625 10.125 0.5625C9.81434 0.5625 9.5625 0.81434 9.5625 1.125V2.25H7.875V1.125C7.875 0.81434 7.62316 0.5625 7.3125 0.5625C7.00184 0.5625 6.75 0.81434 6.75 1.125V2.25H5.625V1.125C5.625 0.81434 5.37316 0.5625 5.0625 0.5625ZM5.0625 6.1875C4.75184 6.1875 4.5 6.43934 4.5 6.75C4.5 7.06066 4.75184 7.3125 5.0625 7.3125H12.9375C13.2482 7.3125 13.5 7.06066 13.5 6.75C13.5 6.43934 13.2482 6.1875 12.9375 6.1875H5.0625ZM4.5 9.5625C4.5 9.25184 4.75184 9 5.0625 9H12.9375C13.2482 9 13.5 9.25184 13.5 9.5625C13.5 9.87316 13.2482 10.125 12.9375 10.125H5.0625C4.75184 10.125 4.5 9.87316 4.5 9.5625ZM5.0625 11.8125C4.75184 11.8125 4.5 12.0643 4.5 12.375C4.5 12.6857 4.75184 12.9375 5.0625 12.9375H9.5625C9.87316 12.9375 10.125 12.6857 10.125 12.375C10.125 12.0643 9.87316 11.8125 9.5625 11.8125H5.0625Z"
+      fill="url(#paint_icon_audit_tracing)"/>
+  </g>
+
+  <defs>
+    <clipPath id="paint0_diamond_638_5470_clip_path"><rect width="36" height="36" rx="4"/></clipPath>
+    <linearGradient id="paint0_diamond_638_5470" x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1447E6" stop-opacity="0.01"/>
+      <stop offset="1" stop-color="white"/>
+    </linearGradient>
+    <linearGradient id="paint_icon_audit_tracing" x1="18" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0080FF"/>
+      <stop offset="0.43" stop-color="#202020"/>
+    </linearGradient>
+  </defs>
+</svg>

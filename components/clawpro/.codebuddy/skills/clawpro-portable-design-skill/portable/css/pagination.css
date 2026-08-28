@@ -1,0 +1,95 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Pagination — ClawPro
+ * 字号 12px / 按钮 28×28（small 24×24）/ 圆角 8px（pagination 唯一 allow-radius 例外）
+ * active：白底 + 蓝描边 + 蓝字（不做实心色块）
+ * mode=simple：仅 前后页 + 当前页指示 + 总数（弹窗 / 浮层等紧凑场景）
+ * 配套：portable/react/pagination.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.cp-pagination__total {
+  color: var(--cp-text-muted);
+}
+
+.cp-pagination__list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── 翻页按钮 ─── */
+.cp-pagination__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 6px;
+  border-radius: 8px; /* allow-radius：pagination 唯一例外 */
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  color: var(--cp-text-title);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.cp-pagination__btn:hover:not(:disabled):not(.cp-pagination__btn--active) {
+  background: var(--bg-grey-hover);
+}
+
+/* small 尺寸：24×24 */
+.cp-pagination__btn--sm {
+  height: 24px;
+  min-width: 24px;
+}
+
+/* active：白底 + 蓝描边 + 蓝字 */
+.cp-pagination__btn--active {
+  border-color: var(--cp-brand-blue);
+  color: var(--cp-text-brand);
+  background: var(--cp-surface);
+  cursor: default;
+}
+
+/* disabled */
+.cp-pagination__btn:disabled {
+  color: var(--cp-text-weak);
+  border-color: var(--cp-border);
+  background: var(--cp-surface);
+  cursor: not-allowed;
+}
+
+/* 省略号 */
+.cp-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  min-width: 28px;
+  color: var(--cp-text-weak);
+}
+.cp-pagination__ellipsis--sm {
+  height: 24px;
+  min-width: 24px;
+}
+
+/* simple 模式：当前页 / 总页数 指示（仅 前后页 + 总数 的紧凑形态） */
+.cp-pagination__simple {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 6px;
+  color: var(--cp-text-body);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.cp-pagination__simple--sm {
+  height: 24px;
+}

@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable File Browser</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans, -apple-system, "PingFang SC", "Segoe UI", Roboto, sans-serif);
+        color: var(--cp-text-body);
+      }
+      button { font: inherit; cursor: pointer; }
+
+      .cp-shell { max-width: 1240px; margin: 0 auto; }
+      .cp-header { margin-bottom: 24px; }
+      .cp-header h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-header p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-stack { display: grid; gap: 24px; }
+      .cp-demo-block { display: grid; gap: 12px; }
+      .cp-demo-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-demo-note {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+
+      /* ============= FileBrowser ============= */
+      .fb {
+        display: flex;
+        height: 520px;
+        border: 1px solid var(--cp-border);
+        border-radius: 8px;
+        background: #ffffff;
+        overflow: hidden;
+        box-shadow: var(--cp-shadow-card-interactive);
+      }
+
+      /* 三栏宽度：14% / 22% / flex-1，最小宽度 120 / 160 */
+      .fb__col-versions { width: 14%; min-width: 120px; }
+      .fb__col-tree    { width: 22%; min-width: 160px; }
+      .fb__col-content { flex: 1; min-width: 0; }
+
+      .fb__col-versions,
+      .fb__col-tree {
+        border-right: 1px solid var(--cp-border);
+      }
+
+      .fb__col-versions,
+      .fb__col-tree,
+      .fb__col-content {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      /* 三栏头部行 */
+      .fb__header {
+        flex: 0 0 auto;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        border-bottom: 1px solid var(--cp-border-soft);
+        background: #ffffff;
+      }
+      .fb__title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--cp-text-emphasis);
+      }
+
+      /* ============= 左栏：版本列表 ============= */
+      .fb__versions {
+        flex: 1 1 auto;
+        overflow-y: auto;
+      }
+      .fb__version-item {
+        position: relative;
+        padding: 10px 12px;
+        border-bottom: 1px solid #f4f4f5;
+        cursor: pointer;
+        transition: background 120ms ease;
+      }
+      .fb__version-item:hover,
+      .fb__version-item[aria-selected="true"] {
+        background: #f4f4f5;
+      }
+      .fb__version-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .fb__version-name {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        color: var(--cp-text-emphasis);
+      }
+      .fb__version-date {
+        margin-top: 2px;
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--cp-text-weak);
+      }
+      .fb__latest {
+        display: inline-flex;
+        align-items: center;
+        height: 18px;
+        padding: 0 4px;
+        font-size: 11px;
+        line-height: 1;
+        color: var(--cp-brand-blue);
+        border: 1px solid var(--cp-brand-blue);
+        border-radius: 2px;
+      }
+      .fb__changelog-trigger {
+        margin-left: auto;
+        display: inline-flex;
+        width: 16px;
+        height: 16px;
+        align-items: center;
+        justify-content: center;
+        color: var(--cp-text-weak);
+        border: 0;
+        background: transparent;
+        padding: 0;
+        border-radius: 2px;
+      }
+      .fb__changelog-trigger:hover { color: var(--cp-text-secondary); }
+
+      /* changelog tooltip（demo 静态展示） */
+      .fb__tooltip {
+        position: absolute;
+        top: 4px;
+        left: calc(100% + 8px);
+        z-index: 10;
+        width: 260px;
+        padding: 12px;
+        background: #ffffff;
+        border: 1px solid var(--cp-border);
+        border-radius: 6px;
+        box-shadow: 0 12px 24px -8px rgba(2, 6, 23, 0.14), 0 2px 6px rgba(2, 6, 23, 0.06);
+      }
+      .fb__tooltip::before {
+        content: "";
+        position: absolute;
+        top: 12px;
+        left: -5px;
+        width: 10px;
+        height: 10px;
+        background: #ffffff;
+        border-left: 1px solid var(--cp-border);
+        border-bottom: 1px solid var(--cp-border);
+        transform: rotate(45deg);
+      }
+      .fb__tooltip-title {
+        margin: 0 0 4px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--cp-text-title);
+      }
+      .fb__tooltip-body {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--cp-text-muted);
+        white-space: pre-line;
+      }
+
+      /* ============= 中栏：文件树 ============= */
+      .fb__tree-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--cp-text-muted);
+      }
+      .fb__icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border: 0;
+        background: transparent;
+        color: var(--cp-text-muted);
+        border-radius: 4px;
+      }
+      .fb__icon-btn:hover { color: var(--cp-text-title); background: var(--bg-grey-hover); }
+
+      .fb__tree {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 8px 8px;
+      }
+      .fb__node {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 28px;
+        padding: 0 6px;
+        font-size: 13px;
+        line-height: 1;
+        color: var(--cp-text-body);
+        border-radius: 4px;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .fb__node:hover { background: var(--bg-grey-hover); }
+      .fb__node[aria-selected="true"] {
+        background: #f4f4f5;
+        color: var(--cp-text-emphasis);
+        font-weight: 500;
+      }
+      .fb__node[data-disabled="true"] {
+        color: var(--cp-text-weak);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .fb__node[data-disabled="true"]:hover { background: transparent; }
+      .fb__node-chevron {
+        width: 14px;
+        height: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--cp-text-weak);
+        flex: 0 0 auto;
+        transition: transform 120ms ease;
+      }
+      .fb__node-chevron[data-expanded="true"] { transform: rotate(90deg); }
+      .fb__node-icon {
+        width: 14px;
+        height: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--cp-text-weak);
+        flex: 0 0 auto;
+      }
+      .fb__node-label { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; }
+      .fb__node-size {
+        font-size: 11px;
+        color: var(--cp-text-weak);
+        font-variant-numeric: tabular-nums;
+        flex: 0 0 auto;
+      }
+
+      /* ============= 右栏：文件内容 ============= */
+      .fb__filename {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--cp-text-emphasis);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .fb__view-switch {
+        display: inline-flex;
+        gap: 2px;
+        padding: 2px;
+        background: rgba(245, 246, 250, 0.6);
+        border-radius: 6px;
+      }
+      .fb__view-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px;
+        font-size: 12px;
+        line-height: 1;
+        color: var(--cp-text-muted);
+        background: transparent;
+        border: 0;
+        border-radius: 4px;
+      }
+      .fb__view-btn[aria-selected="true"] {
+        background: #ffffff;
+        color: var(--cp-text-title);
+        font-weight: 500;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      }
+      .fb__view-btn svg { width: 12px; height: 12px; }
+
+      .fb__content {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 16px;
+      }
+      .fb__source {
+        margin: 0;
+        padding: 12px;
+        background: var(--cp-bg-subtle);
+        border-radius: 6px;
+        font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 20px;
+        color: var(--cp-text-body);
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .fb__preview-md h1 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .fb__preview-md h2 {
+        margin: 20px 0 8px;
+        font-size: 15px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .fb__preview-md p { margin: 0 0 12px; font-size: 13px; line-height: 1.7; color: var(--cp-text-body); }
+      .fb__preview-md ul { margin: 0 0 12px; padding-left: 20px; }
+      .fb__preview-md li { font-size: 13px; line-height: 1.7; color: var(--cp-text-body); }
+      .fb__preview-md code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        background: var(--cp-bg-subtle);
+        padding: 1px 4px;
+        border-radius: 3px;
+        font-size: 12px;
+        color: var(--cp-text-secondary);
+      }
+
+      .fb__empty {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: var(--cp-text-weak);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>FileBrowser · 多版本资产文件浏览器</h1>
+        <p>
+          来源 spec：<code>component-specs/file-browser.md</code>。三栏布局
+          <strong>版本（14%）/ 文件树（22%）/ 内容（flex-1）</strong>，统一 Skill / Plugin / MCP 详情页的"版本侧栏 + 文件树 + 内容面板"组合。
+        </p>
+      </header>
+
+      <section class="cp-stack">
+        <!-- ============================================================== -->
+        <!-- Demo 1：默认态——v1.3.0 + SKILL.md + Preview 模式（含 changelog tooltip） -->
+        <!-- ============================================================== -->
+        <article class="cp-demo-block">
+          <h2 class="cp-demo-title">默认状态：选中 Latest 版本 + SKILL.md + Preview 模式</h2>
+          <p class="cp-demo-note">
+            首次渲染默认选第一个版本；文件优先选中 <code>SKILL.md</code>（fallback 到第一个文件）；<code>.md / .mdx</code>
+            自动进 Preview 模式；右上角 <code>showDownload</code> 已开启。
+          </p>
+
+          <div class="fb">
+            <!-- 左栏：版本列表 -->
+            <div class="fb__col-versions">
+              <div class="fb__header"><span class="fb__title">版本</span></div>
+              <div class="fb__versions">
+                <!-- v1.3.0 选中 + Latest + tooltip 静态展示 -->
+                <div class="fb__version-item" aria-selected="true">
+                  <div class="fb__version-row">
+                    <span class="fb__version-name">v1.3.0</span>
+                    <span class="fb__latest">Latest</span>
+                    <button class="fb__changelog-trigger" aria-label="变更说明">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    </button>
+                  </div>
+                  <div class="fb__version-date">2026-06-05</div>
+
+                  <!-- 静态 tooltip（实际为 hover 出现） -->
+                  <div class="fb__tooltip" role="tooltip">
+                    <p class="fb__tooltip-title">v1.3.0 变更说明</p>
+                    <p class="fb__tooltip-body">- 新增 SKILL.md 入口导航
+- 补齐 portable HTML 模板
+- 修复版本切换不同步父组件的问题</p>
+                  </div>
+                </div>
+
+                <div class="fb__version-item">
+                  <div class="fb__version-row">
+                    <span class="fb__version-name">v1.2.0</span>
+                    <button class="fb__changelog-trigger" aria-label="变更说明">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    </button>
+                  </div>
+                  <div class="fb__version-date">2026-05-21</div>
+                </div>
+
+                <div class="fb__version-item">
+                  <div class="fb__version-row">
+                    <span class="fb__version-name">v1.1.0</span>
+                  </div>
+                  <div class="fb__version-date">2026-05-08</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 中栏：文件树 -->
+            <div class="fb__col-tree">
+              <div class="fb__header">
+                <span class="fb__title">v1.3.0</span>
+                <div class="fb__tree-actions">
+                  <button class="fb__icon-btn" aria-label="下载该版本">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="fb__tree">
+                <!-- SKILL.md 选中 -->
+                <div class="fb__node" aria-selected="true">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">SKILL.md</span>
+                  <span class="fb__node-size">8.0 KB</span>
+                </div>
+
+                <div class="fb__node">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">README.md</span>
+                  <span class="fb__node-size">1.0 KB</span>
+                </div>
+
+                <!-- src/ 目录 + 展开 -->
+                <div class="fb__node">
+                  <span class="fb__node-chevron" data-expanded="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14l1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"/></svg>
+                  </span>
+                  <span class="fb__node-label">src</span>
+                </div>
+                <div class="fb__node" style="padding-left: 22px;">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">index.ts</span>
+                  <span class="fb__node-size">2.3 KB</span>
+                </div>
+                <div class="fb__node" style="padding-left: 22px;">
+                  <span class="fb__node-chevron">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  </span>
+                  <span class="fb__node-label">utils</span>
+                </div>
+
+                <!-- portable/ 目录 -->
+                <div class="fb__node">
+                  <span class="fb__node-chevron">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  </span>
+                  <span class="fb__node-label">portable</span>
+                </div>
+
+                <!-- package.json -->
+                <div class="fb__node">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">package.json</span>
+                  <span class="fb__node-size">412 B</span>
+                </div>
+
+                <!-- 不可查看示例：.bin -->
+                <div class="fb__node" data-disabled="true">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">assets.bin</span>
+                  <span class="fb__node-size">12 MB</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右栏：内容 + Preview 模式 -->
+            <div class="fb__col-content">
+              <div class="fb__header">
+                <span class="fb__filename">SKILL.md</span>
+                <div class="fb__view-switch">
+                  <button class="fb__view-btn" aria-selected="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    Preview
+                  </button>
+                  <button class="fb__view-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Source
+                  </button>
+                </div>
+              </div>
+              <div class="fb__content">
+                <div class="fb__preview-md">
+                  <h1>Portable Design Skill</h1>
+                  <p>统一 ClawPro 设计资产的可移植版本，支持跨仓 fallback 与离线 HTML 预览。</p>
+                  <h2>核心能力</h2>
+                  <ul>
+                    <li>组件 spec：每个组件对应一份 <code>component-specs/*.md</code></li>
+                    <li>Portable 模板：HTML/CSS 与 React 双轨产物，跨仓直接可用</li>
+                    <li>Tokens：通过 <code>portable/css/tokens.css</code> 暴露设计变量</li>
+                  </ul>
+                  <h2>使用约定</h2>
+                  <ul>
+                    <li>新增页面前查阅 <code>SKILL.md</code> 决策表</li>
+                    <li>组件命中已有 spec 时禁止再手写实现</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ============================================================== -->
+        <!-- Demo 2：选中 .ts 文件 → Source 模式（pre + 等宽字体） -->
+        <!-- ============================================================== -->
+        <article class="cp-demo-block">
+          <h2 class="cp-demo-title">非 Markdown 文件：自动切到 Source 模式</h2>
+          <p class="cp-demo-note">
+            选中 <code>.ts / .json / .yaml</code> 等非 markdown 文件时，<code>viewMode</code> 自动切到 Source；用
+            <code>&lt;pre&gt;</code> 等宽字体 + 软换行渲染，背景 <code>--cp-bg-subtle</code>。
+          </p>
+
+          <div class="fb">
+            <!-- 左栏：版本列表（v1.2.0 选中态） -->
+            <div class="fb__col-versions">
+              <div class="fb__header"><span class="fb__title">版本</span></div>
+              <div class="fb__versions">
+                <div class="fb__version-item">
+                  <div class="fb__version-row">
+                    <span class="fb__version-name">v1.3.0</span>
+                    <span class="fb__latest">Latest</span>
+                  </div>
+                  <div class="fb__version-date">2026-06-05</div>
+                </div>
+                <div class="fb__version-item" aria-selected="true">
+                  <div class="fb__version-row">
+                    <span class="fb__version-name">v1.2.0</span>
+                  </div>
+                  <div class="fb__version-date">2026-05-21</div>
+                </div>
+                <div class="fb__version-item">
+                  <div class="fb__version-row">
+                    <span class="fb__version-name">v1.1.0</span>
+                  </div>
+                  <div class="fb__version-date">2026-05-08</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 中栏：文件树（src/index.ts 选中） -->
+            <div class="fb__col-tree">
+              <div class="fb__header">
+                <span class="fb__title">v1.2.0</span>
+                <div class="fb__tree-actions">
+                  <button class="fb__icon-btn" aria-label="下载该版本">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="fb__tree">
+                <div class="fb__node">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">SKILL.md</span>
+                  <span class="fb__node-size">7.2 KB</span>
+                </div>
+
+                <div class="fb__node">
+                  <span class="fb__node-chevron" data-expanded="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14l1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"/></svg>
+                  </span>
+                  <span class="fb__node-label">src</span>
+                </div>
+                <div class="fb__node" style="padding-left: 22px;" aria-selected="true">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">index.ts</span>
+                  <span class="fb__node-size">2.0 KB</span>
+                </div>
+
+                <div class="fb__node">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">package.json</span>
+                  <span class="fb__node-size">412 B</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右栏：Source 模式 -->
+            <div class="fb__col-content">
+              <div class="fb__header">
+                <span class="fb__filename">src/index.ts</span>
+                <div class="fb__view-switch">
+                  <button class="fb__view-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    Preview
+                  </button>
+                  <button class="fb__view-btn" aria-selected="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Source
+                  </button>
+                </div>
+              </div>
+              <div class="fb__content">
+<pre class="fb__source">/**
+ * Portable Design Skill - entry
+ * 由 SKILL.md 决策表注册组件 spec 与 portable 模板。
+ */
+import { FileBrowser } from "./components/file-browser";
+import type { VersionInfo, FileEntry } from "./components/file-browser";
+
+export { FileBrowser };
+export type { VersionInfo, FileEntry };
+
+export const SKILL_VERSION = "1.2.0";
+</pre>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ============================================================== -->
+        <!-- Demo 3：边界态——空文件 / 未选中文件 -->
+        <!-- ============================================================== -->
+        <article class="cp-demo-block">
+          <h2 class="cp-demo-title">边界态：未选中文件 / 空文件</h2>
+          <p class="cp-demo-note">
+            未选中文件时显示 <code>"Select a file to view content"</code>；选中但内容为空显示 <code>"No file content"</code>。文案统一使用
+            <code>BodyText tone="weak/muted"</code>。
+          </p>
+
+          <div class="fb" style="height: 220px;">
+            <div class="fb__col-versions">
+              <div class="fb__header"><span class="fb__title">版本</span></div>
+              <div class="fb__versions">
+                <div class="fb__version-item" aria-selected="true">
+                  <div class="fb__version-row">
+                    <span class="fb__version-name">v1.0.0</span>
+                  </div>
+                  <div class="fb__version-date">2026-04-01</div>
+                </div>
+              </div>
+            </div>
+            <div class="fb__col-tree">
+              <div class="fb__header"><span class="fb__title">v1.0.0</span></div>
+              <div class="fb__tree">
+                <div class="fb__node">
+                  <span class="fb__node-chevron"></span>
+                  <span class="fb__node-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </span>
+                  <span class="fb__node-label">README.md</span>
+                </div>
+              </div>
+            </div>
+            <div class="fb__col-content">
+              <div class="fb__header"><span class="fb__filename" style="color: var(--cp-text-weak); font-weight: 400;">未选择文件</span></div>
+              <div class="fb__content">
+                <div class="fb__empty">Select a file to view content</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

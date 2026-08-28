@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://clawpro.tencent.com/schemas/product-news-schema.json",
+  "title": "ClawPro Product News YAML Schema",
+  "description": "product-news.yml 文件格式定义。由 product-news skill v3 生成，AutoSync Bot 消费。v3 变更：auto_publish 默认 true、Source 新增 frontend_mr_id、related_campaign 字段保留向后兼容。",
+  "type": "object",
+  "required": ["changes"],
+  "additionalProperties": false,
+  "properties": {
+    "changes": {
+      "type": "array",
+      "description": "产品动态变更条目列表。新建文件时可以为空，提 MR 前应有至少 1 条。",
+      "items": {
+        "$ref": "#/$defs/ChangeEntry"
+      }
+    }
+  },
+  "$defs": {
+    "ChangeEntry": {
+      "type": "object",
+      "required": ["id", "title", "type", "date", "endpoint", "description", "display_components"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+){1,63}$",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "全局唯一标识。kebab-case 格式（仅小写字母、数字和连字符），用于去重和关联锚点。示例: feat-skill-delivery-20260715"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "产品动态标题。面向用户阅读，名词性词组结构（主语+动词+宾语），禁止以「支持」「新增」等动词开头，禁止 emoji。映射到腾讯云 API Title 字段。"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["功能上线", "体验优化"],
+          "description": "变更类型。仅 2 种，与 AutoSync 录入表单一致。注意：不是 ChangeRecord 的 6 种 change_type。"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "发布日期。格式 YYYY-MM-DD。映射到腾讯云 API PublishDate。"
+        },
+        "endpoint": {
+          "type": "string",
+          "enum": ["管控端", "用户端"],
+          "description": "本次产品动态所属端。由 LLM 根据上下文判断并由 PM 确认。"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "description": "产品动态描述。面向用户阅读，交代功能名称、变更内容、影响范围。结尾加句号。映射到腾讯云 API Summary。"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "description": "版本号，可选。映射到腾讯云 API NewsVersion。"
+        },
+        "sort_order": {
+          "type": "integer",
+          "description": "排序权重，可选。数字越大越靠前。映射到腾讯云 API SortOrder。"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "related_campaign": {
+          "$ref": "#/$defs/RelatedCampaign",
+          "description": "关联小晨 update-awareness skill 的 updateId。v3 暂不主动填写，保留字段以便未来集成。"
+        },
+        "needs_guide": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否需要生成官网操作指南（由 PM 人工确认，skill 不自动判断）。"
+        },
+        "guide": {
+          "$ref": "#/$defs/Guide"
+        },
+        "auto_publish": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否合入即自动发布。v3 默认 true（CodeBuddy 已审核）；高风险类变更时 PM 可显式设 false 走 6h 兜底自动发布。映射到 Bot 发布策略。"
+        },
+        "display_components": {
+          "$ref": "#/$defs/DisplayComponents"
+        }
+      }
+    },
+    "DisplayComponents": {
+      "type": "object",
+      "required": ["banner", "floating_window"],
+      "additionalProperties": false,
+      "properties": {
+        "banner": {
+          "$ref": "#/$defs/DisplayComponent",
+          "description": "Banner 的最终启用状态和存在时长。"
+        },
+        "floating_window": {
+          "$ref": "#/$defs/DisplayComponent",
+          "description": "浮窗的最终启用状态和存在时长。"
+        }
+      }
+    },
+    "DisplayComponent": {
+      "type": "object",
+      "required": ["enabled"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否开启该展示组件。必须由 PM 最终确认。"
+        },
+        "duration_days": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 14,
+          "description": "组件从实际发布成功起存在的天数。开启且 PM 未指定时由 skill 写入默认值14。"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"enabled": {"const": true}},
+            "required": ["enabled"]
+          },
+          "then": {"required": ["duration_days"]},
+          "else": {"not": {"required": ["duration_days"]}}
+        }
+      ]
+    },
+    "Source": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "repo_skill",
+          "description": "来源类型，固定为 repo_skill。"
+        },
+        "frontend_mr_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "description": "前端工蜂 MR id，例如 !1234。v3 新增字段，新流程产品改前端时填此字段。"
+        },
+        "mr_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "description": "后端工蜂 MR id，例如 !5678。新流程产品只改前端时此字段为空。"
+        },
+        "commit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "Git commit SHA。"
+        },
+        "author_gongfeng_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "description": "PM 工蜂 ID。"
+        }
+      }
+    },
+    "RelatedCampaign": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "update_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "关联小晨 update-awareness skill 的 updateId。格式: update-awareness-{slug}-{date}。v3 暂不主动填写，保留字段以便未来集成。"
+        }
+      }
+    },
+    "Guide": {
+      "type": "object",
+      "description": "操作指南元信息。仅 needs_guide=true 时写入；needs_guide=false 时省略整个 guide 块。",
+      "additionalProperties": false,
+      "properties": {
+        "doc_type": {
+          "type": "string",
+          "enum": ["dual_role_guide", "operation_guide", "config_integration", "feature_overview", "troubleshooting"],
+          "description": "文档类型 5 选 1，对应 Operation Guide Skill 的文档模板。"
+        },
+        "feature_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "功能名称。"
+        },
+        "feature_url": {
+          "type": "string",
+          "format": "uri",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "功能页面 URL。"
+        },
+        "endpoint": {
+          "type": "string",
+          "enum": ["管控端", "用户端"],
+          "description": "端类型。"
+        }
+      }
+    }
+  }
+}

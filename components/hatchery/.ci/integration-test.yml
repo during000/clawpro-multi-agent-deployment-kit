@@ -1,0 +1,79 @@
+version: v2.0
+
+on:
+  mr:
+    target-branches: ["*"]
+    block-mr: true
+
+variables:
+  IMAGE_URL: keitewang-test.tencentcloudcr.com/clawpro-test/hatchery
+  IMAGE_TAG: ${{ci.sha_short}}
+  CLS_TOPIC_ID: 5280e643-b118-419e-9331-e1e2af79ae9c
+  CLS_REGION: ap-guangzhou
+
+jobs:
+  build-image:
+    runs-on:
+      self-hosted: true
+      pool-name: build
+    steps:
+    - checkout: self
+    - uses: DockerBuildAndPushImage@3.*
+      with:
+        targetTicketId: IT_TCR_CREDENTIAL
+        targetImage: ${{ variables.IMAGE_URL }}
+        targetImageTag: ${{ variables.IMAGE_TAG }}
+        dockerBuildDir: ./
+        dockerFilePath: ./Dockerfile
+
+  integration-test:
+    runs-on:
+      pool-name: docker
+      container:
+        image: golang:1.26
+    steps:
+    - checkout: self
+      with:
+        enableGitLfs: false
+    - run: |
+        #!/bin/bash
+        set +e
+
+        apt-get update && apt-get install -y --no-install-recommends python3 python3-requests python3-websocket
+
+        # Generate OpenAPI spec (required for coverage report)
+        python3 test/api_md_to_openapi.py || exit 1
+
+        # Generate base branch OpenAPI spec for incremental coverage
+        BASE_BRANCH="${{ci.head_ref}}"
+        if git show "origin/${BASE_BRANCH}:docs/API.md" > /tmp/base_api.md 2>/dev/null; then
+          python3 test/api_md_to_openapi.py --input /tmp/base_api.md --output docs/openapi_base.json || true
+        fi
+
+        KUBECONFIG_FILE=$(mktemp)
+        echo '${{ settings.IT_KUBECONFIG.password }}' > "$KUBECONFIG_FILE"
+
+        cd test/integration
+        go run . \
+          --kubeconfig "$KUBECONFIG_FILE" \
+          --image "${{ variables.IMAGE_URL }}:${{ variables.IMAGE_TAG }}" \
+          --report-dir "../../test-report" \
+          --timeout 30m \
+          --concurrency 10 \
+          --keep-on-failure \
+          --cls-topic-id "${{ variables.CLS_TOPIC_ID }}" \
+          --cls-region "${{ variables.CLS_REGION }}" \
+          --cls-ak "${{ settings.IT_CLS_CREDENTIAL.appId }}" \
+          --cls-sk "${{ settings.IT_CLS_CREDENTIAL.secretKey }}"
+        EXIT_CODE=$?
+
+        rm -f "$KUBECONFIG_FILE"
+        cd ../..
+        if [ -f test-report/index.html ]; then
+          echo "::set-output name=test_report,type=report,label=Integration-test-report,path=test-report/::index.html"
+        fi
+        exit $EXIT_CODE
+
+notices:
+- type: wework-message
+  if: FAILURE

@@ -1,0 +1,329 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable TreeSelect — ClawPro（树形单选下拉）
+ * 两种触发器变体共用一套浮层口径：
+ *   - button      → toolbar 筛选按钮（h-36 / 4px 圆角 / 蓝灰描边，hover·open 切品牌蓝）
+ *   - filter-icon → 表头列标题 + 漏斗图标（激活变品牌蓝）
+ * 浮层：白底、4px 圆角、overlay 轻阴影、z-50，默认宽 280。
+ *   搜索区无分割线；列表区节点行 h-32 / 4px 圆角 / 缩进 level*16+12；
+ *   选中态走浅蓝底 + 控件交互蓝字 + Check（不靠整行重色块）；
+ *   底部 footer 已选回显 + 取消/确认。
+ * 注：触发器 hover/open 描边、选中文字/Check、filter 激活图标统一用「控件交互蓝」
+ *     --cp-control-accent（#355EF1，tokens.css 既定 select hover·focus / 选中态语义，
+ *     非品牌蓝 #1447E6）；圆角统一 4px。颜色/圆角已全部对齐 token，不要在调用处覆盖。
+ * 配套：portable/react/tree-select.tsx
+ * 规范：component-specs/tree-select.md §4
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-tree-select {
+  position: relative;
+  display: inline-flex;
+}
+
+/* ─── 触发器：button 变体 ─── */
+.cp-tree-select__trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  color: var(--cp-text-title);
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.cp-tree-select__trigger-btn:hover,
+.cp-tree-select__trigger-btn--open {
+  border-color: var(--cp-control-accent);
+}
+
+.cp-tree-select__trigger-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-tree-select__chevron {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--cp-text-muted);
+  transition: transform 0.2s ease;
+}
+
+.cp-tree-select__trigger-btn--open .cp-tree-select__chevron {
+  transform: rotate(180deg);
+}
+
+/* ─── 触发器：filter-icon 变体 ─── */
+.cp-tree-select__filter-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cp-tree-select__filter-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  color: var(--cp-text-weak);
+  transition: color 0.15s ease;
+}
+
+.cp-tree-select__filter-trigger:hover .cp-tree-select__filter-icon {
+  color: var(--cp-text-muted);
+}
+
+.cp-tree-select__filter-icon--active {
+  color: var(--cp-control-accent);
+}
+
+/* ─── 浮层面板 ─── */
+.cp-tree-select__panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-overlay);
+}
+
+.cp-tree-select__panel--start { left: 0; }
+.cp-tree-select__panel--end { right: 0; }
+.cp-tree-select__panel--center { left: 50%; transform: translateX(-50%); }
+
+/* ─── 搜索区 ─── */
+.cp-tree-select__search {
+  padding: 8px 8px 0;
+}
+
+.cp-tree-select__search-box {
+  position: relative;
+}
+
+.cp-tree-select__search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  color: var(--cp-text-weak);
+  pointer-events: none;
+}
+
+.cp-tree-select__search-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 8px 0 32px;
+  border: 1px solid var(--cp-border-control);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  color: var(--cp-text-title);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.cp-tree-select__search-input::placeholder {
+  color: var(--cp-text-weak);
+}
+
+.cp-tree-select__search-input:hover,
+.cp-tree-select__search-input:focus {
+  border-color: var(--cp-control-accent);
+}
+
+/* ─── 列表区 ─── */
+.cp-tree-select__list {
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cp-tree-select__list--button { max-height: 280px; }
+.cp-tree-select__list--filter { max-height: 260px; }
+
+/* filter-icon 变体：滚动条仅 hover 显示 */
+.cp-tree-select__list--filter {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.cp-tree-select__list--filter:hover {
+  scrollbar-color: var(--cp-overlay-bg) transparent;
+}
+
+.cp-tree-select__section-label {
+  padding: 4px 12px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--cp-text-weak);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cp-tree-select__node {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cp-tree-select__children {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ─── 节点行 / "全部"选项 ─── */
+.cp-tree-select__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--cp-text-title);
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+  user-select: none;
+}
+
+.cp-tree-select__row:hover {
+  background: var(--bg-grey-hover);
+}
+
+.cp-tree-select__row--selected {
+  background: var(--cp-bg-brand-selected);
+  color: var(--cp-control-accent);
+  font-weight: 500;
+}
+
+.cp-tree-select__row--selected:hover {
+  background: var(--cp-bg-brand-selected);
+}
+
+.cp-tree-select__arrow {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--cp-text-weak);
+  transition: transform 0.12s ease;
+}
+
+.cp-tree-select__arrow > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cp-tree-select__arrow--open {
+  transform: rotate(90deg);
+}
+
+.cp-tree-select__arrow--placeholder {
+  cursor: default;
+}
+
+.cp-tree-select__label {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-tree-select__check {
+  position: absolute;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  color: var(--cp-control-accent);
+}
+
+/* ─── 底部 footer ─── */
+.cp-tree-select__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--cp-border);
+}
+
+.cp-tree-select__footer-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--cp-text-muted);
+}
+
+.cp-tree-select__footer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+/* footer 按钮（h-7 / text-xs，自包含，不依赖 button.css） */
+.cp-tree-select__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cp-tree-select__btn--cancel {
+  padding: 0 8px;
+  border: 1px solid var(--cp-border-control);
+  background: var(--cp-surface);
+  color: var(--cp-text-title);
+}
+
+.cp-tree-select__btn--cancel:hover {
+  background: var(--bg-grey-hover);
+}
+
+.cp-tree-select__btn--confirm {
+  padding: 0 12px;
+  border: 1px solid transparent;
+  background: var(--cp-brand-black);
+  color: #ffffff;
+}
+
+.cp-tree-select__btn--confirm:hover {
+  background: #404040;
+}

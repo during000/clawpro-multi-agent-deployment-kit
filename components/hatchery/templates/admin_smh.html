@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMH 智能媒体托管 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <div class="flex items-center space-x-3">
+                        <h2 class="text-[16px] font-semibold text-gray-800">SMH 智能媒体托管</h2>
+                        {{if .SMHEnabled}}
+                        <span id="smh-global-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-green-50 text-green-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>已开通
+                        </span>
+                        {{else}}
+                        <span id="smh-global-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-gray-100 text-gray-500">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5"></span>未开通
+                        </span>
+                        {{end}}
+                    </div>
+                </div>
+
+                <!-- SMH Configuration Card -->
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="text-[14px] font-medium text-gray-700">SMH 配置信息</h3>
+                        <div class="flex items-center space-x-2">
+                            <button id="btn-refresh" onclick="loadConfig()"
+                                class="h-8 inline-flex items-center px-4 text-[13px] font-medium text-gray-600 bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors">
+                                刷新
+                            </button>
+                            <button id="btn-edit" onclick="toggleEdit()"
+                                class="h-8 inline-flex items-center px-4 text-[13px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors">
+                                编辑
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- View Mode -->
+                    <div id="config-view" class="px-6 py-5">
+                        <div id="config-loading" class="text-center text-gray-400 text-[14px] py-8">加载中...</div>
+                        <div id="config-content" class="hidden">
+                            <table class="w-full">
+                                <tbody class="divide-y divide-gray-50">
+                                    <tr>
+                                        <td class="py-3 pr-4 text-[13px] text-gray-500 w-44 align-top">服务状态</td>
+                                        <td class="py-3 text-[13px] text-gray-800" id="cfg-enabled">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 pr-4 text-[13px] text-gray-500 w-44 align-top">媒体库 ID</td>
+                                        <td class="py-3 text-[13px] text-gray-800 font-mono" id="cfg-library-id">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 pr-4 text-[13px] text-gray-500 w-44 align-top">媒体库密钥</td>
+                                        <td class="py-3 text-[13px] text-gray-800 font-mono" id="cfg-library-secret">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 pr-4 text-[13px] text-gray-500 w-44 align-top">访问域名</td>
+                                        <td class="py-3 text-[13px] text-gray-800 font-mono" id="cfg-endpoint">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 pr-4 text-[13px] text-gray-500 w-44 align-top">Common Space</td>
+                                        <td class="py-3 text-[13px] text-gray-800 font-mono" id="cfg-common-space">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 pr-4 text-[13px] text-gray-500 w-44 align-top">Skillhub Space</td>
+                                        <td class="py-3 text-[13px] text-gray-800 font-mono" id="cfg-skillhub-space">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 pr-4 text-[13px] text-gray-500 w-44 align-top">配置完整性</td>
+                                        <td class="py-3 text-[13px]" id="cfg-configured">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Edit Mode (hidden by default) -->
+                    <div id="config-edit" class="px-6 py-5 hidden">
+                        <form id="edit-form" class="space-y-4 max-w-xl">
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1">服务状态</label>
+                                <select id="edit-enabled" class="w-full h-9 px-3 text-[13px] border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-[#0052d9]/20 focus:border-[#0052d9]">
+                                    <option value="1">已开通</option>
+                                    <option value="0">未开通</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1">媒体库 ID</label>
+                                <input type="text" id="edit-library-id" placeholder="smhxxxxxxxx"
+                                    class="w-full h-9 px-3 text-[13px] font-mono border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-[#0052d9]/20 focus:border-[#0052d9]">
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1">媒体库密钥</label>
+                                <input type="password" id="edit-library-secret" placeholder="留空则不修改"
+                                    class="w-full h-9 px-3 text-[13px] font-mono border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-[#0052d9]/20 focus:border-[#0052d9]">
+                                <p class="text-[12px] text-gray-400 mt-1">留空表示不修改当前密钥</p>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-medium text-gray-600 mb-1">访问域名</label>
+                                <input type="text" id="edit-endpoint" placeholder="https://smh.tencentcs.com/api/v1"
+                                    class="w-full h-9 px-3 text-[13px] font-mono border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-[#0052d9]/20 focus:border-[#0052d9]">
+                            </div>
+                            <div class="flex items-center space-x-3 pt-2">
+                                <button type="submit"
+                                    class="h-8 inline-flex items-center px-5 text-[13px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                    保存
+                                </button>
+                                <button type="button" onclick="toggleEdit()"
+                                    class="h-8 inline-flex items-center px-5 text-[13px] font-medium text-gray-600 bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors">
+                                    取消
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Toast notification -->
+                <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+                    <div id="toast-inner" class="px-4 py-3 rounded shadow-lg text-[13px] font-medium"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {{template "admin_scripts" .}}
+
+    <script>
+    var configData = null;
+
+    function showToast(msg, type) {
+        var toast = document.getElementById('toast');
+        var inner = document.getElementById('toast-inner');
+        inner.textContent = msg;
+        if (type === 'error') {
+            inner.className = 'px-4 py-3 rounded shadow-lg text-[13px] font-medium bg-red-50 text-red-700 border border-red-200';
+        } else {
+            inner.className = 'px-4 py-3 rounded shadow-lg text-[13px] font-medium bg-green-50 text-green-700 border border-green-200';
+        }
+        toast.classList.remove('hidden');
+        setTimeout(function() { toast.classList.add('hidden'); }, 3000);
+    }
+
+    function loadConfig() {
+        document.getElementById('config-loading').classList.remove('hidden');
+        document.getElementById('config-content').classList.add('hidden');
+
+        fetch('/admin/smh/config', { headers: { 'Accept': 'application/json' } })
+            .then(function(r) { if (!r.ok) { throw new Error('HTTP error! status: ' + r.status); } return r.json(); })
+            .then(function(resp) {
+                if (resp.error) {
+                    showToast('加载配置失败: ' + resp.error, 'error');
+                    return;
+                }
+                configData = resp;
+
+                // Update view
+                var enabledEl = document.getElementById('cfg-enabled');
+                if (resp.smh_enabled === 1) {
+                    enabledEl.innerHTML = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-green-50 text-green-700">已开通</span>';
+                } else {
+                    enabledEl.innerHTML = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-gray-100 text-gray-500">未开通</span>';
+                }
+
+                document.getElementById('cfg-library-id').textContent = resp.smh_library_id || '(未设置)';
+                document.getElementById('cfg-library-secret').textContent = resp.smh_library_secret || '(未设置)';
+                document.getElementById('cfg-endpoint').textContent = resp.smh_endpoint || '(未设置)';
+                document.getElementById('cfg-common-space').textContent = resp.smh_common_space || '(未设置)';
+                document.getElementById('cfg-skillhub-space').textContent = resp.smh_skillhub_space || '(未设置)';
+
+                var cfgEl = document.getElementById('cfg-configured');
+                if (resp.is_configured) {
+                    cfgEl.innerHTML = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-green-50 text-green-700">✓ 配置完整</span>';
+                } else {
+                    cfgEl.innerHTML = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-yellow-50 text-yellow-700">⚠ 配置不完整</span>';
+                }
+
+                // Update global status badge
+                var statusEl = document.getElementById('smh-global-status');
+                if (statusEl) {
+                    if (resp.smh_enabled === 1) {
+                        statusEl.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-green-50 text-green-700';
+                        statusEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>已开通';
+                    } else {
+                        statusEl.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-gray-100 text-gray-500';
+                        statusEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5"></span>未开通';
+                    }
+                }
+
+                document.getElementById('config-loading').classList.add('hidden');
+                document.getElementById('config-content').classList.remove('hidden');
+            })
+            .catch(function(err) {
+                showToast('加载配置失败: ' + err.message, 'error');
+            });
+    }
+
+    function toggleEdit() {
+        var viewEl = document.getElementById('config-view');
+        var editEl = document.getElementById('config-edit');
+        var btnEdit = document.getElementById('btn-edit');
+
+        if (editEl.classList.contains('hidden')) {
+            // Switch to edit mode
+            editEl.classList.remove('hidden');
+            viewEl.classList.add('hidden');
+            btnEdit.textContent = '查看';
+
+            // Pre-fill form with current values
+            if (configData) {
+                document.getElementById('edit-enabled').value = configData.smh_enabled === 1 ? '1' : '0';
+                document.getElementById('edit-library-id').value = configData.smh_library_id || '';
+                document.getElementById('edit-endpoint').value = configData.smh_endpoint || '';
+                document.getElementById('edit-library-secret').value = '';
+            }
+        } else {
+            // Switch to view mode
+            editEl.classList.add('hidden');
+            viewEl.classList.remove('hidden');
+            btnEdit.textContent = '编辑';
+        }
+    }
+
+    document.getElementById('edit-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // 输入验证
+        var endpoint = document.getElementById('edit-endpoint').value.trim();
+        if (endpoint && !endpoint.startsWith('https://') && !endpoint.startsWith('http://')) {
+            showToast('访问域名必须以 https:// 或 http:// 开头', 'error');
+            return;
+        }
+
+        var params = new URLSearchParams();
+        params.append('smh_enabled', document.getElementById('edit-enabled').value);
+        params.append('smh_library_id', document.getElementById('edit-library-id').value.trim());
+        params.append('smh_endpoint', endpoint);
+
+        var secret = document.getElementById('edit-library-secret').value;
+        if (secret) {
+            params.append('smh_library_secret', secret);
+        }
+
+        var submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = '保存中...';
+
+        fetch('/admin/config/smh', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body: params.toString()
+        })
+        .then(function(r) { if (!r.ok) { throw new Error('HTTP error! status: ' + r.status); } return r.json(); })
+        .then(function(resp) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = '保存';
+
+            if (resp.error) {
+                showToast('保存失败: ' + resp.error, 'error');
+                return;
+            }
+            showToast('配置已保存', 'success');
+            toggleEdit();
+            loadConfig();
+        })
+        .catch(function(err) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = '保存';
+            showToast('保存失败: ' + err.message, 'error');
+        });
+    });
+
+    // Load config on page load
+    loadConfig();
+    </script>
+</body>
+</html>

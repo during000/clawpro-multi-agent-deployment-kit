@@ -1,0 +1,71 @@
+{{define "admin_sidebar"}}
+<aside id="sidebar" class="w-56 bg-white border-r border-gray-200 flex-shrink-0 transition-all duration-200 overflow-hidden">
+    <nav class="py-3">
+        <div class="px-5 py-2 text-[12px] font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">基础信息</div>
+        <a {{if ne .ActiveMenu "config"}}href="/admin/config"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "config"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "config"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span class="whitespace-nowrap">站点配置</span>
+        </a>
+        <a {{if ne .ActiveMenu "users"}}href="/admin/users"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "users"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "users"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <span class="whitespace-nowrap">用户管理</span>
+        </a>
+        <div class="px-5 py-2 mt-4 text-[12px] font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">OpenClaw 配置</div>
+        <a {{if ne .ActiveMenu "models"}}href="/admin/models"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "models"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "models"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+            <span class="whitespace-nowrap">模型配置</span>
+        </a>
+        <a {{if ne .ActiveMenu "channels"}}href="/admin/channels"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "channels"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "channels"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            <span class="whitespace-nowrap">通道配置</span>
+        </a>
+        <div class="px-5 py-2 mt-4 text-[12px] font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">云服务配置</div>
+        <a {{if ne .ActiveMenu "images"}}href="/admin/images"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "images"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "images"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span class="whitespace-nowrap">镜像管理</span>
+        </a>
+        <a {{if ne .ActiveMenu "quota-usage"}}href="/admin/quota-usage"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "quota-usage"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "quota-usage"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+            <span class="whitespace-nowrap">配额用量</span>
+        </a>
+        <a {{if ne .ActiveMenu "usage"}}href="/admin/usage"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "usage"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "usage"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            <span class="whitespace-nowrap">使用统计</span>
+        </a>
+        <a {{if ne .ActiveMenu "cls"}}href="/admin/cls"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "cls"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "cls"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <span class="whitespace-nowrap">CLS 日志</span>
+        </a>
+        <a {{if ne .ActiveMenu "smh"}}href="/admin/smh"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "smh"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "smh"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            <span class="whitespace-nowrap">SMH 媒体托管</span>
+        </a>
+        <div class="px-5 py-2 mt-4 text-[12px] font-medium text-gray-400 uppercase tracking-wider whitespace-nowrap">运营监控</div>
+        <a {{if ne .ActiveMenu "admin_instances"}}href="/admin/instances"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "admin_instances"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "admin_instances"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="whitespace-nowrap">OpenClaw 监控</span>
+        </a>
+        <a {{if ne .ActiveMenu "audit"}}href="/admin/audit"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "audit"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "audit"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="whitespace-nowrap">审计日志</span>
+        </a>
+        <a {{if ne .ActiveMenu "cloud-proxy-test"}}href="/admin/cloud/test"{{else}}onclick="return false"{{end}} class="flex items-center space-x-3 px-5 py-3 text-[14px] font-medium transition-colors border-l-[3px] {{if eq .ActiveMenu "cloud-proxy-test"}}text-[#0052d9] bg-[#f2f6fc] border-[#0052d9] cursor-default{{else}}text-gray-600 hover:bg-[#f2f6fc] hover:text-[#0052d9] border-transparent{{end}}">
+            <svg class="w-5 h-5 flex-shrink-0 {{if eq .ActiveMenu "cloud-proxy-test"}}text-[#0052d9]{{else}}text-gray-400{{end}}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span class="whitespace-nowrap">Cloud Proxy 测试</span>
+        </a>
+    </nav>
+</aside>
+{{end}}
+
+{{define "admin_scripts"}}
+<script>
+function toggleSidebar() {
+    var sb = document.getElementById('sidebar');
+    if (sb.style.width === '0px') {
+        sb.style.width = '';
+    } else {
+        sb.style.width = '0px';
+    }
+}
+</script>
+{{end}}

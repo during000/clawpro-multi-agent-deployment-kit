@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClawPro Typography 使用规范</title>
+  <style>
+    :root {
+      --brand: #1447E6;
+      --brand-soft: #EFF6FF;
+      --black: #020617;
+      --text: #0A0A0A;
+      --secondary: #334155;
+      --muted: #737373;
+      --weak: #A3A3A3;
+      --line: #E5E5E5;
+      --line-blue: #E2E8F0;
+      --bg-soft: #F5F5F5;
+      --bg-faint: #FAFAFA;
+      --danger: #DC2626;
+      --shadow-card: 0px 1px 4px rgba(0,0,0,0.05), 0px 0px 2px rgba(0,0,0,0.1);
+      --shadow-segment: 0px 1.11px 2.22px rgba(0,0,0,0.05);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 1200px;
+      font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
+      -webkit-font-smoothing: antialiased;
+    }
+    code, pre { font-family: Menlo, Consolas, "Courier New", monospace; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 64px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 0 40px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line-blue);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--black); }
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, #1447E6, #2563EB);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .tabs {
+      justify-self: center;
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 4px;
+      background: var(--bg-soft);
+    }
+    .tabs a {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 3px;
+      color: var(--secondary);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 22px;
+      white-space: nowrap;
+    }
+    .tabs a:first-child { background: #fff; color: var(--black); font-weight: 500; box-shadow: var(--shadow-segment); }
+    .meta-top { justify-self: end; color: var(--muted); font-size: 12px; }
+
+    .page { max-width: 1920px; min-height: calc(100vh - 64px); margin: 0 auto; display: flex; }
+    .rail { width: 80px; flex: 0 0 80px; }
+    .content {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      padding: 32px 42px 75px;
+      border-left: 1px solid var(--line-blue);
+      border-right: 1px solid var(--line-blue);
+    }
+    .content::before,
+    .content::after {
+      content: "";
+      position: absolute;
+      top: 176px;
+      bottom: 75px;
+      width: calc((100vw - 100%) / 2);
+      pointer-events: none;
+      background-image: radial-gradient(circle, #DFE2E5 1px, transparent 1.1px);
+      background-size: 12px 12px;
+    }
+    .content::before { right: 100%; }
+    .content::after { left: 100%; }
+
+    .hero {
+      position: relative;
+      padding-bottom: 30px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--line-blue);
+    }
+    .eyebrow { margin: 0 0 8px; color: var(--brand); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
+    h1 {
+      margin: 0;
+      width: fit-content;
+      font-size: 26px;
+      line-height: 35.56px;
+      font-weight: 500;
+      letter-spacing: -0.0427em;
+      background: linear-gradient(90deg, #0A0A0A 0%, #1447E6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-desc { max-width: 980px; margin: 12px 0 0; color: var(--secondary); font-size: 14px; line-height: 1.8; }
+    .hero-actions { display: flex; gap: 10px; margin-top: 22px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      height: 36px;
+      padding: 0 18px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .btn-primary { color: #fff; background: linear-gradient(90deg, #020617 70%, #1447E6 100%); }
+    .btn-outline { color: var(--black); background: #fff; border: 1px solid var(--line); }
+
+    .section { margin-bottom: 40px; }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+    .section-head h2 { margin: 0; font-size: 18px; line-height: 1.4; font-weight: 500; color: var(--text); }
+    .section-head p { max-width: 820px; margin: 6px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 2px;
+      color: var(--brand);
+      background: var(--brand-soft);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .card { border-radius: 4px; background: #fff; box-shadow: var(--shadow-card); overflow: hidden; }
+    .card-head { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+    .card-head h3 { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 600; color: var(--text); }
+    .card-head p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .card-body { padding: 20px; }
+
+    .principle { display: flex; gap: 12px; padding: 18px; }
+    .principle-no {
+      flex: 0 0 auto;
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(90deg, #020617 70%, #1447E6 100%);
+      font-family: Menlo, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .principle strong { display: block; color: var(--text); font-size: 14px; font-weight: 600; }
+    .principle span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      padding: 12px 14px;
+      text-align: left;
+      color: var(--muted);
+      background: var(--bg-faint);
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px;
+      color: var(--secondary);
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    td code, .code-pill {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      padding: 2px 6px;
+      border-radius: 2px;
+      color: var(--secondary);
+      background: var(--bg-soft);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .color-dot { display: inline-flex; align-items: center; gap: 8px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.08); }
+    .dot.primary { background: var(--text); }
+    .dot.emphasis { background: var(--black); }
+    .dot.secondary { background: var(--secondary); }
+    .dot.muted { background: var(--muted); }
+    .dot.weak { background: var(--weak); }
+    .dot.brand { background: var(--brand); }
+    .dot.danger { background: var(--danger); }
+
+    .sample-list { display: grid; gap: 12px; }
+    .sample-row {
+      display: grid;
+      grid-template-columns: 190px 1fr 260px;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 16px;
+      border: 1px solid #F0F0F0;
+      border-radius: 4px;
+      background: #fff;
+    }
+    .sample-meta strong { display: block; color: var(--black); font-size: 13px; font-weight: 600; }
+    .sample-meta span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .sample-use { color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+    .t-hero { font-size: 26px; line-height: 35.56px; font-weight: 500; letter-spacing: -0.0427em; color: var(--text); }
+    .t-page { font-size: 24px; line-height: 1.4; font-weight: 500; color: var(--text); }
+    .t-doc { font-size: 20px; line-height: 1.4; font-weight: 600; color: var(--text); }
+    .t-section { font-size: 18px; line-height: 1.4; font-weight: 500; color: var(--text); }
+    .t-panel { font-size: 16px; line-height: 1.4; font-weight: 600; color: var(--text); }
+    .t-card { font-size: 14px; line-height: 1.5; font-weight: 500; color: var(--text); }
+    .t-body { font-size: 14px; line-height: 1.5; font-weight: 400; color: var(--secondary); }
+    .t-body-medium { font-size: 14px; line-height: 1.5; font-weight: 500; color: var(--black); }
+    .t-compact { font-size: 13px; line-height: 1.5; font-weight: 400; color: var(--secondary); }
+    .t-meta { font-size: 12px; line-height: 1.5; font-weight: 400; color: var(--muted); }
+    .t-meta-medium { font-size: 12px; line-height: 1.5; font-weight: 500; color: var(--muted); }
+    .t-tiny { font-family: "Open Sans", "Helvetica Neue", sans-serif; font-size: 10px; line-height: 1; font-weight: 600; color: var(--brand); letter-spacing: 0.02em; }
+    .t-stat { font-family: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif; font-size: 24px; line-height: 1; font-weight: 700; color: var(--black); font-variant-numeric: tabular-nums; }
+    .t-number { font-family: "DIN Alternate", "DIN", "Helvetica Neue", sans-serif; font-size: 14px; line-height: 1.5; color: var(--secondary); font-variant-numeric: tabular-nums; }
+    .t-code { font-family: Menlo, Consolas, "Courier New", monospace; font-size: 12px; line-height: 1.5; color: var(--secondary); }
+    .t-step { font-family: Menlo, Consolas, "Courier New", monospace; font-size: 14px; line-height: 1; font-weight: 500; color: var(--brand); }
+
+    .example-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .code-block {
+      margin: 0;
+      padding: 16px;
+      border-radius: 4px;
+      color: #CBD5E1;
+      background: #020617;
+      font-size: 12px;
+      line-height: 1.8;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+    .bad { border-left: 3px solid var(--danger); }
+    .good { border-left: 3px solid var(--brand); }
+    .label-bad, .label-good { display: inline-flex; height: 22px; align-items: center; padding: 0 8px; border-radius: 2px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+    .label-bad { color: var(--danger); background: #FEF2F2; }
+    .label-good { color: var(--brand); background: var(--brand-soft); }
+
+    .checklist { display: grid; gap: 10px; margin: 0; padding: 0; }
+    .checklist li {
+      list-style: none;
+      display: flex;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      color: var(--secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .checkmark { color: var(--brand); font-weight: 700; }
+    .phase-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .phase-card { padding: 18px; }
+    .phase-kicker { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    .phase-no {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(90deg, #020617 70%, #1447E6 100%);
+      font-family: Menlo, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .phase-tag { color: var(--brand); background: var(--brand-soft); border-radius: 2px; padding: 2px 6px; font-size: 11px; font-weight: 600; }
+    .phase-card h3 { margin: 0; color: var(--text); font-size: 15px; line-height: 1.4; font-weight: 600; }
+    .phase-card p { margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .phase-card ul { margin: 12px 0 0; padding: 0; display: grid; gap: 7px; }
+    .phase-card li { list-style: none; color: var(--secondary); font-size: 12px; line-height: 1.5; }
+    .phase-card li::before { content: "•"; color: var(--brand); margin-right: 6px; }
+    .warning {
+      display: flex;
+      gap: 10px;
+      padding: 14px 16px;
+      border: 1px solid #FDE68A;
+      border-radius: 4px;
+      background: #FFFBEB;
+      color: #92400E;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .footer-line { height: 1px; margin-top: 32px; background: var(--line-blue); }
+    .footer-note { margin-top: 18px; color: var(--weak); font-size: 12px; line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div class="brand"><span class="brand-mark">T</span><span>ClawPro Typography</span></div>
+    <div class="tabs">
+      <a href="#why">为什么</a>
+      <a href="#tokens">颜色 token</a>
+      <a href="#components">组件层级</a>
+      <a href="#usage">使用规则</a>
+      <a href="#migration">迁移顺序</a>
+      <a href="#vibe">Vibe Coding</a>
+      <a href="#checklist">检查清单</a>
+    </div>
+    <div class="meta-top">给页面与组件作者的字体规范</div>
+  </nav>
+
+  <main class="page">
+    <div class="rail" aria-hidden="true"></div>
+    <div class="content">
+      <header class="hero" id="why">
+        <p class="eyebrow">TYPOGRAPHY GUIDELINE</p>
+        <h1>ClawPro 用户端 Typography 使用规范</h1>
+        <p class="hero-desc">
+          Typography 是用户端文字的基础组件入口。它把字号、字重、行高、字体族和默认颜色 token 绑定到同一个语义组件中，让大家写页面时先选择“文字角色”，而不是临时拼 `text-sm`、`font-medium`、`text-gray-*`。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#components">查看组件层级</a>
+          <a class="btn btn-outline" href="#usage">查看使用规则</a>
+        </div>
+      </header>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>1. 为什么要用 Typography</h2>
+            <p>目标不是增加一套复杂组件，而是减少页面里散落的文字样式，让所有新页面、新组件自然对齐同一套视觉标准。</p>
+          </div>
+          <span class="badge">Design Intent</span>
+        </div>
+        <div class="grid-4">
+          <div class="card principle"><div class="principle-no">1</div><div><strong>按语义选组件</strong><span>标题、正文、辅助信息、数字、代码各有固定入口，减少同字号不同含义。</span></div></div>
+          <div class="card principle"><div class="principle-no">2</div><div><strong>默认色由 token 提供</strong><span>不要再手写基础文字色，默认通过 `tone` 绑定 v2 色阶。</span></div></div>
+          <div class="card principle"><div class="principle-no">3</div><div><strong>组件影响后续新增</strong><span>新增页面和业务组件优先使用 Typography，底层组件对齐其规格。</span></div></div>
+          <div class="card principle"><div class="principle-no">4</div><div><strong>触达即同步</strong><span>改到旧页面时顺手迁移当前文件中明显的标题、正文、Meta、数字和代码。</span></div></div>
+        </div>
+      </section>
+
+      <section class="section" id="tokens">
+        <div class="section-head">
+          <div>
+            <h2>2. 默认颜色 token</h2>
+            <p>Typography 的默认颜色来自 `tone`。页面中基础文字不要再直接散落写 `text-gray-*` 或 `text-[#...]`。</p>
+          </div>
+          <span class="badge">tone</span>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <table>
+              <thead><tr><th>tone</th><th>Tailwind token</th><th>色值</th><th>用途</th><th>示例</th></tr></thead>
+              <tbody>
+                <tr><td><code>primary</code></td><td><code>text-gray-900</code></td><td><span class="color-dot"><span class="dot primary"></span>#0A0A0A</span></td><td>标题、卡片标题、主内容</td><td class="t-card">Agent 卡片标题</td></tr>
+                <tr><td><code>emphasis</code></td><td><code>text-gray-950</code></td><td><span class="color-dot"><span class="dot emphasis"></span>#020617</span></td><td>强调文字、按钮文字、关键字段</td><td class="t-body-medium">创建 Agent</td></tr>
+                <tr><td><code>secondary</code></td><td><code>text-gray-700</code></td><td><span class="color-dot"><span class="dot secondary"></span>#334155</span></td><td>正文、表格内容、ID、说明正文</td><td class="t-body">这里是一段正文说明</td></tr>
+                <tr><td><code>muted</code></td><td><code>text-gray-500</code></td><td><span class="color-dot"><span class="dot muted"></span>#737373</span></td><td>时间、描述、辅助说明、表头</td><td class="t-meta">更新于 2026-05-21</td></tr>
+                <tr><td><code>weak</code></td><td><code>text-gray-400</code></td><td><span class="color-dot"><span class="dot weak"></span>#A3A3A3</span></td><td>占位、空状态、极弱提示</td><td style="color:var(--weak);font-size:12px;">暂无符合条件的记录</td></tr>
+                <tr><td><code>brand</code></td><td><code>text-[var(--brand-blue)]</code></td><td><span class="color-dot"><span class="dot brand"></span>#1447E6</span></td><td>链接、活跃态、步骤标识、英文 Badge</td><td class="t-step">Step 1</td></tr>
+                <tr><td><code>danger</code></td><td><code>text-red-600</code></td><td><span class="color-dot"><span class="dot danger"></span>#DC2626</span></td><td>危险操作、错误提示</td><td style="color:var(--danger);font-size:14px;">删除 Agent</td></tr>
+                <tr><td><code>inherit</code></td><td><code>text-inherit</code></td><td>继承</td><td>放在已定义颜色的父级中</td><td>继承父级颜色</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="components">
+        <div class="section-head">
+          <div>
+            <h2>3. Typography 组件层级与样式</h2>
+            <p>这些组件位于 `client/src/components/ui/Typography.tsx`。业务页面和业务组件应优先直接使用它们。</p>
+          </div>
+          <span class="badge">Typography.tsx</span>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="sample-list">
+              <div class="sample-row"><div class="sample-meta"><strong>TenantHeroTitle</strong><span>h1 · 26px / Medium / 35.56px · primary</span></div><div class="t-hero">用户端 Hero 标题</div><div class="sample-use">模型额度、技能广场等入口型顶部标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>TenantPageTitle</strong><span>h1 · 24px / Medium / 1.4 · primary</span></div><div class="t-page">页面主标题</div><div class="sample-use">详情页标题、普通业务页标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>TenantDocTitle</strong><span>h1 · 20px / Semibold / 1.4 · primary</span></div><div class="t-doc">帮助文档标题</div><div class="sample-use">文章标题、帮助文档当前标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>SectionTitle</strong><span>h2 · 18px / Medium / 1.4 · primary</span></div><div class="t-section">大模块标题</div><div class="sample-use">复杂表单分区、页面内一级模块</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>PanelTitle</strong><span>h2 · 16px / Semibold / 1.4 · primary</span></div><div class="t-panel">面板标题</div><div class="sample-use">Dialog、Sheet、卡片区块、表格区块标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>CardTitle</strong><span>h3 · 14px / Medium / 1.5 · primary</span></div><div class="t-card">Agent 卡片标题</div><div class="sample-use">Agent 名、技能卡标题、模型名、列表项标题</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>BodyText</strong><span>p · 14px / Regular / 1.5 · secondary</span></div><div class="t-body">这是一段普通正文，用于说明、表格内容和描述文字。</div><div class="sample-use">正文、表格内容、说明段落</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>BodyMedium</strong><span>span · 14px / Medium / 1.5 · emphasis</span></div><div class="t-body-medium">表单 Label / 按钮 / Tab 文字</div><div class="sample-use">交互文字、表单 Label、列表主字段</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>CompactText</strong><span>span · 13px / Regular / 1.5 · secondary</span></div><div class="t-compact">紧凑列表里的轻量描述文字</div><div class="sample-use">空间不足的轻量描述，谨慎使用</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>MetaText</strong><span>span · 12px / Regular / 1.5 · muted</span></div><div class="t-meta">更新时间 2026-05-21 21:39 · ID: ins-g71c6vud</div><div class="sample-use">时间、ID、Tooltip、辅助说明、空状态</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>MetaMedium</strong><span>span · 12px / Medium / 1.5 · muted</span></div><div class="t-meta-medium">请求时间 / 模型名称 / 总 Tokens</div><div class="sample-use">表头、状态标签内文字、次级强调</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>TinyText</strong><span>span · 10px / Semibold / Open Sans · brand</span></div><div class="t-tiny">NEW / BETA / 99+</div><div class="sample-use">极小 Badge、角标，禁止进入正文系统</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>StatNumber</strong><span>span · 24px / Bold / DIN · emphasis</span></div><div class="t-stat">128,000</div><div class="sample-use">统计卡数字、额度总量、大数字</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>InlineNumber</strong><span>span · 14px / DIN / tabular · secondary</span></div><div class="t-number">12,480 tokens · 86.5%</div><div class="sample-use">表格内 Token 数、请求数、百分比</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>CodeText</strong><span>code · 12px / Menlo · secondary</span></div><div class="t-code">ins-g71c6vud / hk-xxxx / /api/quota/data</div><div class="sample-use">实例 ID、Token、路径、命令、代码片段</div></div>
+              <div class="sample-row"><div class="sample-meta"><strong>StepText</strong><span>span · 14px / Medium / Menlo · brand</span></div><div class="t-step">Step 1</div><div class="sample-use">Step 1 / Step 2 / 步骤编号</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="usage">
+        <div class="section-head">
+          <div>
+            <h2>4. 其他组件如何受 Typography 影响</h2>
+            <p>业务组件应直接使用 Typography；底层 UI 组件不一定直接 import Typography，但内部文字规格必须映射到 Typography 层级。</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h3>推荐映射</h3><p>新建或修改组件时先查这张表。</p></div>
+            <div class="card-body">
+              <table>
+                <thead><tr><th>组件 / 场景</th><th>推荐文字规格</th></tr></thead>
+                <tbody>
+                  <tr><td>Button / Tab / Segment item</td><td><code>BodyMedium</code> 对应规格：14px / Medium / emphasis</td></tr>
+                  <tr><td>Dialog / Sheet 标题</td><td><code>PanelTitle</code></td></tr>
+                  <tr><td>Card 标题</td><td><code>CardTitle</code></td></tr>
+                  <tr><td>表格表头</td><td><code>MetaMedium</code></td></tr>
+                  <tr><td>表格内容</td><td><code>BodyText</code> 或 <code>InlineNumber</code></td></tr>
+                  <tr><td>空状态说明</td><td><code>MetaText tone="weak"</code></td></tr>
+                  <tr><td>Badge / New / Beta</td><td><code>TinyText</code> 或 <code>MetaMedium</code></td></tr>
+                  <tr><td>统计卡数字</td><td><code>StatNumber</code></td></tr>
+                  <tr><td>ID / Token / 路径</td><td><code>CodeText</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>使用示例</h3><p>页面和业务组件中应优先这样写。</p></div>
+            <div class="card-body">
+              <pre class="code-block">import {
+  TenantPageTitle,
+  PanelTitle,
+  CardTitle,
+  BodyText,
+  BodyMedium,
+  MetaText,
+  StatNumber,
+  CodeText,
+} from "@/components/ui/Typography";
+
+&lt;TenantPageTitle&gt;Agent 详情&lt;/TenantPageTitle&gt;
+&lt;BodyText&gt;这里是当前 Agent 的配置说明。&lt;/BodyText&gt;
+&lt;PanelTitle as="h3"&gt;模型使用汇总&lt;/PanelTitle&gt;
+&lt;CardTitle&gt;Alice 的技术助手&lt;/CardTitle&gt;
+&lt;BodyMedium tone="brand"&gt;查看详情&lt;/BodyMedium&gt;
+&lt;MetaText&gt;更新于 2026-05-21 21:39&lt;/MetaText&gt;
+&lt;StatNumber&gt;128,000&lt;/StatNumber&gt;
+&lt;CodeText&gt;ins-g71c6vud&lt;/CodeText&gt;</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>5. Do / Don't</h2>
+            <p>不要机械替换所有 `text-sm` / `text-xs`，必须按语义判断；也不要继续新增 inline 字体族。</p>
+          </div>
+        </div>
+        <div class="example-split">
+          <div class="card bad">
+            <div class="card-body">
+              <div class="label-bad">不要这样写</div>
+              <pre class="code-block">&lt;h2 className="text-base font-semibold text-gray-900"&gt;
+  模型使用汇总
+&lt;/h2&gt;
+
+&lt;p className="text-sm text-gray-600"&gt;
+  这里是说明文字
+&lt;/p&gt;
+
+&lt;span
+  className="text-2xl font-bold text-black"
+  style={{ fontFamily: "DIN Next LT Pro" }}
+&gt;
+  128,000
+&lt;/span&gt;</pre>
+            </div>
+          </div>
+          <div class="card good">
+            <div class="card-body">
+              <div class="label-good">推荐这样写</div>
+              <pre class="code-block">&lt;PanelTitle&gt;模型使用汇总&lt;/PanelTitle&gt;
+
+&lt;BodyText&gt;
+  这里是说明文字
+&lt;/BodyText&gt;
+
+&lt;StatNumber&gt;128,000&lt;/StatNumber&gt;</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="migration">
+        <div class="section-head">
+          <div>
+            <h2>6. Vibe Coding 迁移组件建议</h2>
+            <p>我们主要通过 AI / Vibe Coding 迁移现有组件，所以重点不是“全仓替换”，而是给 AI 清晰边界：一次只迁移一个组件或一个页面区块，只改文字表达，不改业务逻辑。</p>
+          </div>
+          <span class="badge">Vibe Migration</span>
+        </div>
+        <div class="grid-2">
+          <div class="card prompt-card">
+            <div class="prompt-title"><span>每次开工 Prompt</span></div>
+            <p>迁移任何组件前，先把这段发给 AI，确保它读取规范并限制改动范围。</p>
+            <pre class="code-block">我要迁移当前组件的文字样式到 Typography 规范。
+
+请先读取：
+1. `SKILL-GLOBAL-COMPONENTS.md`
+2. `client/src/components/ui/Typography.tsx`
+3. `client/public/research/typography-guideline.html`
+
+要求：
+- 只迁移当前文件 / 当前组件，不做全仓替换
+- 按语义使用 `@/components/ui/Typography`
+- 页面标题、模块标题、卡片标题、正文、Meta、数字、代码分别映射到对应 Typography 组件
+- 不新增 `text-gray-*`、inline `fontFamily`、无规范来源的 `text-[xxpx]`
+- 保持原有布局、交互和业务逻辑不变
+- 如果是底层 UI 组件，不一定直接 import Typography，但文字规格必须对齐 Typography token</pre>
+          </div>
+          <div class="card prompt-card">
+            <div class="prompt-title"><span>完成后自检 Prompt</span></div>
+            <p>改完后继续让 AI 自检，避免迁移 Typography 时误改逻辑或引入散落样式。</p>
+            <pre class="code-block">请检查本次 Typography 迁移：
+1. 是否还新增了 `text-gray-*` 或 `text-[#...]`
+2. 是否还新增了 inline `fontFamily`
+3. 是否有无规范来源的 `text-[xxpx]`
+4. 标题、正文、Meta、数字、代码是否按语义映射
+5. 是否误改了布局、交互、状态逻辑
+6. 当前文件是否有 lint / TypeScript 问题</pre>
+          </div>
+        </div>
+        <div style="height:16px"></div>
+        <div class="phase-list">
+          <div class="card phase-card">
+            <div class="phase-kicker"><span class="phase-no">1</span><span class="phase-tag">示范组件</span></div>
+            <h3>先做一个小样板</h3>
+            <p>先选一个共享组件做示范，让团队知道 AI 应该怎么迁移。</p>
+            <ul>
+              <li>`components/agent/AgentCard.tsx`</li>
+              <li>`components/topnav/NotificationPanel.tsx`</li>
+              <li>只改文字表达，不改布局、交互和业务逻辑</li>
+            </ul>
+          </div>
+          <div class="card phase-card">
+            <div class="phase-kicker"><span class="phase-no">2</span><span class="phase-tag">共享组件</span></div>
+            <h3>再迁移复用组件</h3>
+            <p>共享组件适合小步提交，改一次可以影响多个页面。</p>
+            <ul>
+              <li>`client/src/components/topnav/**`</li>
+              <li>`client/src/components/agent/**`</li>
+              <li>状态、空状态、卡片、表格区块组件</li>
+            </ul>
+          </div>
+          <div class="card phase-card">
+            <div class="phase-kicker"><span class="phase-no">3</span><span class="phase-tag">按区块拆</span></div>
+            <h3>页面按区域迁移</h3>
+            <p>大页面不要一次迁移完整文件，让 AI 只处理一个明确区块。</p>
+            <ul>
+              <li>Header / Title 区</li>
+              <li>卡片列表区 / 表格区 / 弹窗区</li>
+              <li>空状态 / 错误状态 / 统计数字区</li>
+            </ul>
+          </div>
+          <div class="card phase-card">
+            <div class="phase-kicker"><span class="phase-no">4</span><span class="phase-tag">触达同步</span></div>
+            <h3>复杂页面渐进处理</h3>
+            <p>复杂大页只在业务迭代触达时顺手同步，避免一次性重构。</p>
+            <ul>
+              <li>`OpenClawDetail.tsx`、`ChatView.tsx`、`AgentChat.tsx`</li>
+              <li>优先迁移标题、Meta、数字、ID、Token、路径</li>
+              <li>聊天正文、Markdown 正文可暂时保留内容型排版</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="vibe">
+        <div class="section-head">
+          <div>
+            <h2>7. Vibe Coding 指引</h2>
+            <p>如果同事通过 AI 辅助快速生成页面或组件，不要只说“注意字体规范”，而要明确要求 AI 读取规范、使用 Typography，并按语义检查文字角色。</p>
+          </div>
+          <span class="badge">Prompt Guide</span>
+        </div>
+        <div class="grid-2">
+          <div class="card prompt-card">
+            <div class="prompt-title"><span>推荐短 Prompt</span></div>
+            <p>适合放在任意用户端页面 / 业务组件需求末尾。</p>
+            <pre class="code-block">这是用户端页面 / 组件，请按 `SKILL-GLOBAL-COMPONENTS.md` 的 Typography 规范实现。
+
+要求：
+- 优先使用 `@/components/ui/Typography`
+- 不要自行发明字号、字重和基础文字色
+- 不要新增 inline `fontFamily`
+- 页面标题、卡片标题、正文、Meta、数字、代码文字必须按语义映射到 Typography 组件</pre>
+          </div>
+          <div class="card prompt-card">
+            <div class="prompt-title"><span>完整开工 Prompt</span></div>
+            <p>适合新页面、新模块或较复杂组件开发前使用。</p>
+            <pre class="code-block">你正在开发 ClawPro 用户端页面 / 组件。
+
+开工前必须读取：
+1. `SKILL-GLOBAL-COMPONENTS.md`
+2. `client/src/components/ui/Typography.tsx`
+3. `client/public/research/typography-guideline.html`
+
+Typography 规则：
+- 新增页面 / 业务组件必须优先使用 `@/components/ui/Typography`
+- 基础文字色不手写，使用组件默认色或 `tone`
+- 数字用 `StatNumber` / `InlineNumber`
+- ID、Token、路径、命令用 `CodeText`
+- 如果现有层级不满足，先说明原因，不要直接发明新样式</pre>
+          </div>
+        </div>
+        <div style="height:16px"></div>
+        <div class="card prompt-card">
+          <div class="prompt-title"><span>Vibe Coding 自检清单</span></div>
+          <ul class="prompt-list">
+            <li><strong>页面标题：</strong>是否使用 `TenantHeroTitle` / `TenantPageTitle`，而不是 `text-2xl font-bold`？</li>
+            <li><strong>模块与卡片：</strong>模块标题用 `SectionTitle` / `PanelTitle`，卡片对象名用 `CardTitle`。</li>
+            <li><strong>正文与说明：</strong>普通正文用 `BodyText`，Label / Tab / 按钮文字按 `BodyMedium` 规格。</li>
+            <li><strong>辅助信息：</strong>时间、ID、Tooltip、空状态、描述文字优先用 `MetaText` / `MetaMedium`。</li>
+            <li><strong>数字与代码：</strong>统计数字用 `StatNumber`，表格数字用 `InlineNumber`，Token / 路径 / 命令用 `CodeText`。</li>
+            <li><strong>禁止项：</strong>不要新增散落的 `text-gray-*`、任意 `text-[xxpx]`、inline `fontFamily`。</li>
+            <li><strong>底层组件：</strong>即使不直接 import Typography，内部文字也必须与 Typography token 对齐。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="checklist">
+        <div class="section-head">
+          <div>
+            <h2>8. 给同事的开发检查清单</h2>
+            <p>新增页面、新增组件、修改旧页面时，用下面清单快速判断是否符合 Typography 规范。</p>
+          </div>
+          <span class="badge">Checklist</span>
+        </div>
+        <ul class="checklist">
+          <li><span class="checkmark">✓</span><span>页面标题是否使用 `TenantHeroTitle` / `TenantPageTitle`，而不是自己拼 `text-2xl font-bold`？</span></li>
+          <li><span class="checkmark">✓</span><span>卡片标题、面板标题、正文、辅助说明是否分别映射到 `CardTitle`、`PanelTitle`、`BodyText`、`MetaText`？</span></li>
+          <li><span class="checkmark">✓</span><span>数字是否使用 `StatNumber` 或 `InlineNumber`，并具备 DIN 与 `tabular-nums`？</span></li>
+          <li><span class="checkmark">✓</span><span>ID、Token、路径、命令是否使用 `CodeText`，而不是普通 `text-xs`？</span></li>
+          <li><span class="checkmark">✓</span><span>是否避免了新增 `text-gray-*` / `text-[#...]` 来表达基础文字色？如需变色，是否优先使用 `tone`？</span></li>
+          <li><span class="checkmark">✓</span><span>是否避免了新增 inline `fontFamily`？英文 Badge 是否使用 `TinyText`？</span></li>
+          <li><span class="checkmark">✓</span><span>如果底层 UI 组件没有直接 import Typography，其内部文字规格是否仍与 Typography token 对齐？</span></li>
+          <li><span class="checkmark">✓</span><span>如果确实需要新增文字层级，是否先更新 `Typography.tsx` 与 `SKILL-GLOBAL-COMPONENTS.md`？</span></li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <div class="warning">
+          <strong>合入规则：</strong>
+          <span>Typography 已写入 `SKILL-GLOBAL-COMPONENTS.md`。用户端新增页面 / 新增业务组件必须优先使用 Typography；新增全局组件的文字规格必须先映射到 Typography 层级。组件样式如在 rebase 后被改，以 addietang 和 miekoyychen 的版本为准强制恢复；新增组件需经 addietang 和 miekoyychen 审核后才能合入基线。</span>
+        </div>
+      </section>
+
+      <div class="footer-line"></div>
+      <p class="footer-note">
+        源规范：`client/src/components/ui/Typography.tsx` 与 `SKILL-GLOBAL-COMPONENTS.md`。本页面用于设计评审、代码评审和新同事接入说明。
+      </p>
+    </div>
+    <div class="rail" aria-hidden="true"></div>
+  </main>
+</body>
+</html>

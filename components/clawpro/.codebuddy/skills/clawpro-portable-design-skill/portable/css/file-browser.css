@@ -1,0 +1,361 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable FileBrowser — ClawPro（多版本资产文件浏览器，三栏只读浏览）
+ *   三栏：版本（14% / min 120）/ 文件树（22% / min 160）/ 内容（flex-1）；
+ *   外壳 8px 圆角（radius-lg 例外）+ var(--cp-border) 描边；三栏头部 48px；
+ *   左栏版本项 px-3 py-2.5、分隔 #f4f4f5、选中/hover #f4f4f5、Latest 蓝边胶囊、
+ *   changeLog Info 触发 Tooltip；中栏文件树 28px 行、4px 圆角、chevron 14px；
+ *   右栏 Preview/Source 切换器（bg-grey-hover/60）、<pre> 等宽软换行 bg-subtle。
+ *   与 portable/html-css/file-browser.html 共用 .fb__* 类名体系。
+ * 配套：portable/react/file-browser.tsx
+ * 规范：component-specs/file-browser.md §4
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fb {
+  display: flex;
+  height: 47rem;
+  overflow: hidden;
+  border: 1px solid var(--cp-border);
+  border-radius: 8px; /* radius-lg 例外，见 SKILL.md allow-radius */
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-card-interactive);
+}
+
+/* ─── 三栏骨架：14% / 22% / flex-1，最小 120 / 160 ─── */
+.fb__col-versions { width: 14%; min-width: 120px; }
+.fb__col-tree     { width: 22%; min-width: 160px; }
+.fb__col-content  { flex: 1; min-width: 0; }
+
+.fb__col-versions,
+.fb__col-tree {
+  border-right: 1px solid var(--cp-border);
+}
+
+.fb__col-versions,
+.fb__col-tree,
+.fb__col-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ─── 三栏统一头部行（48px） ─── */
+.fb__header {
+  display: flex;
+  height: 48px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--cp-border-soft);
+  background: var(--cp-surface);
+}
+
+.fb__title {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cp-text-emphasis);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ═══════════ 左栏：版本列表 ═══════════ */
+.fb__versions {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.fb__version-item {
+  position: relative;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f4f4f5;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.fb__version-item:hover,
+.fb__version-item[aria-selected="true"] {
+  background: #f4f4f5;
+}
+
+.fb__version-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fb__version-name {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--cp-text-emphasis);
+}
+
+.fb__version-date {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--cp-text-weak);
+}
+
+.fb__latest {
+  display: inline-flex;
+  height: 18px;
+  align-items: center;
+  padding: 0 4px;
+  border: 1px solid var(--cp-brand-blue);
+  border-radius: 2px;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--cp-brand-blue);
+}
+
+.fb__changelog-trigger {
+  margin-left: auto;
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  padding: 0;
+  color: var(--cp-text-weak);
+  cursor: pointer;
+}
+
+.fb__changelog-trigger:hover {
+  color: var(--cp-text-secondary);
+}
+
+.fb__changelog-trigger svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* changeLog tooltip（hover/focus 出现，右侧弹出） */
+.fb__tooltip {
+  position: absolute;
+  top: 4px;
+  left: calc(100% + 8px);
+  z-index: 10;
+  width: 260px;
+  padding: 12px;
+  border: 1px solid var(--cp-border);
+  border-radius: 6px;
+  background: var(--cp-surface);
+  box-shadow: var(--cp-shadow-overlay);
+}
+
+.fb__tooltip-title {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cp-text-title);
+}
+
+.fb__tooltip-body {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--cp-text-muted);
+  white-space: pre-line;
+}
+
+/* ═══════════ 中栏：文件树 ═══════════ */
+.fb__tree-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cp-text-muted);
+}
+
+.fb__icon-btn {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--cp-text-muted);
+  cursor: pointer;
+}
+
+.fb__icon-btn:hover {
+  color: var(--cp-text-title);
+  background: var(--bg-grey-hover);
+}
+
+.fb__icon-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.fb__icon-btn .fb__spin {
+  animation: fb-spin 0.8s linear infinite;
+}
+
+@keyframes fb-spin {
+  to { transform: rotate(360deg); }
+}
+
+.fb__tree {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.fb__node {
+  display: flex;
+  height: 28px;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  padding: 0 6px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  line-height: 1;
+  color: var(--cp-text-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.fb__node:hover {
+  background: var(--bg-grey-hover);
+}
+
+.fb__node[aria-selected="true"] {
+  background: #f4f4f5;
+  color: var(--cp-text-emphasis);
+  font-weight: 500;
+}
+
+.fb__node[data-disabled="true"] {
+  color: var(--cp-text-weak);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.fb__node[data-disabled="true"]:hover {
+  background: transparent;
+}
+
+.fb__node-chevron {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--cp-text-weak);
+  transition: transform 0.12s ease;
+}
+
+.fb__node-chevron[data-expanded="true"] {
+  transform: rotate(90deg);
+}
+
+.fb__node-icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--cp-text-weak);
+}
+
+.fb__node-label {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fb__node-size {
+  flex: 0 0 auto;
+  font-size: 11px;
+  color: var(--cp-text-weak);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════ 右栏：文件内容 ═══════════ */
+.fb__filename {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cp-text-emphasis);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fb__filename--empty {
+  font-weight: 400;
+  color: var(--cp-text-weak);
+}
+
+.fb__view-switch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 6px;
+  background: rgba(245, 246, 250, 0.6);
+}
+
+.fb__view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  padding: 4px 8px;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--cp-text-muted);
+  cursor: pointer;
+}
+
+.fb__view-btn[aria-selected="true"] {
+  background: var(--cp-surface);
+  color: var(--cp-text-title);
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.fb__view-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.fb__content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.fb__source {
+  margin: 0;
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--cp-bg-subtle);
+  font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--cp-text-body);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.fb__empty {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--cp-text-weak);
+}

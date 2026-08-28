@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClawPro Portable · Toast + Alert Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      /* Toast Variables */
+      --toast-bg: #ffffff;
+      --toast-border: #eaeef4;
+      --toast-text: #09090b;
+      --toast-text-secondary: #7b818f;
+      --toast-success: #10b981;
+      --toast-error: #09090b;
+      --toast-warning: #f59e0b;
+      --toast-info: #3b82f6;
+      --toast-hover-bg: #f4f4f5;
+      --toast-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --toast-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+      /* Alert Variables */
+      --alert-radius: 4px;
+      --alert-px: 16px;
+      --alert-py: 10px;
+      --alert-icon-size: 16px;
+      --alert-icon-gap: 8px;
+      --alert-title-gap: 4px;
+
+      --alert-info-bg: #f0f3fc;
+      --alert-info-border: #bfcffe;
+      --alert-info-foreground: #0a0a0a;
+      --alert-info-icon: #1447e6;
+
+      --alert-operation-info-bg: #ffffff;
+      --alert-operation-info-border: #eaeef4;
+      --alert-operation-info-foreground: #0a0a0a;
+      --alert-operation-info-icon: #7b818f;
+
+      --alert-warning-bg: #fff7ed;
+      --alert-warning-border: #fed7aa;
+      --alert-warning-foreground: #0a0a0a;
+      --alert-warning-icon: #ff6900;
+
+      --alert-product-news-bg: #f0f3fc;
+      --alert-product-news-border: #bfcffe;
+      --alert-product-news-foreground: #0a0a0a;
+      --alert-product-news-icon: #1447e6;
+
+      --alert-success-bg: #ecfdf5;
+      --alert-success-border: #a7f3d0;
+      --alert-success-foreground: #0a0a0a;
+      --alert-success-icon: #059669;
+
+      --alert-error-bg: #fef2f2;
+      --alert-error-border: #fecaca;
+      --alert-error-foreground: #0a0a0a;
+      --alert-error-icon: #dc2626;
+    }
+
+    /* ─── Toast Styles ─── */
+    .toast-container {
+      position: fixed;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      max-width: 500px;
+      width: calc(100% - 2rem);
+      pointer-events: none;
+    }
+
+    .toast {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 420px;
+      padding: 0.75rem 1rem;
+      background-color: var(--toast-bg);
+      border: 1px solid var(--toast-border);
+      border-radius: 0.75rem;
+      box-shadow: var(--toast-shadow);
+      color: var(--toast-text);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-align: left;
+      overflow: visible;
+      pointer-events: auto;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    .toast.toast-exiting {
+      animation: slideUp 0.2s ease-in forwards;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-1rem);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-1rem);
+      }
+    }
+
+    .toast-icon {
+      flex-shrink: 0;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-top: 0.125rem;
+    }
+
+    .toast-message {
+      flex: 1;
+      word-break: break-word;
+    }
+
+    .toast-close {
+      position: absolute;
+      top: -0.5rem;
+      right: -0.5rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      background-color: var(--toast-bg);
+      border: 1px solid var(--toast-border);
+      box-shadow: var(--toast-shadow-sm);
+      color: var(--toast-text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 0;
+      padding: 0;
+    }
+
+    .toast-close:hover {
+      background-color: var(--toast-hover-bg);
+      color: var(--toast-text);
+    }
+
+    .toast-success .toast-icon { color: var(--toast-success); }
+    .toast-error .toast-icon { color: var(--toast-error); }
+    .toast-warning .toast-icon { color: var(--toast-warning); }
+    .toast-info .toast-icon { color: var(--toast-info); }
+
+    /* ─── Alert Styles ─── */
+    .alert {
+      display: grid;
+      grid-template-columns: var(--alert-icon-size) minmax(0, 1fr);
+      gap: var(--alert-icon-gap);
+      align-items: flex-start;
+      padding: var(--alert-py) var(--alert-px);
+      border-radius: var(--alert-radius);
+      border: 1px solid;
+      background-color: var(--alert-bg, #ffffff);
+      border-color: var(--alert-border, #eaeef4);
+      color: var(--alert-foreground, #0a0a0a);
+      font-size: 12px;
+      line-height: 1.5;
+      box-shadow: none;
+    }
+
+    .alert-title {
+      grid-column: 2;
+      font-weight: 500;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+      color: inherit;
+      font-size: 12px;
+    }
+
+    .alert-description {
+      grid-column: 2;
+      font-size: 12px;
+      line-height: 1.5;
+      color: inherit;
+      margin: 0;
+      padding: 0;
+    }
+
+    .alert-title + .alert-description {
+      margin-top: var(--alert-title-gap);
+    }
+
+    .alert-icon {
+      width: var(--alert-icon-size);
+      height: var(--alert-icon-size);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .alert-info {
+      --alert-bg: var(--alert-info-bg);
+      --alert-border: var(--alert-info-border);
+      --alert-foreground: var(--alert-info-foreground);
+    }
+
+    .alert-info .alert-icon { color: var(--alert-info-icon); }
+
+    .alert-operation-info {
+      --alert-bg: var(--alert-operation-info-bg);
+      --alert-border: var(--alert-operation-info-border);
+      --alert-foreground: var(--alert-operation-info-foreground);
+    }
+
+    .alert-operation-info .alert-icon { color: var(--alert-operation-info-icon); }
+
+    .alert-warning {
+      --alert-bg: var(--alert-warning-bg);
+      --alert-border: var(--alert-warning-border);
+      --alert-foreground: var(--alert-warning-foreground);
+    }
+
+    .alert-warning .alert-icon { color: var(--alert-warning-icon); }
+
+    .alert-product-news {
+      --alert-bg: var(--alert-product-news-bg);
+      --alert-border: var(--alert-product-news-border);
+      --alert-foreground: var(--alert-product-news-foreground);
+    }
+
+    .alert-product-news .alert-icon { color: var(--alert-product-news-icon); }
+
+    .alert-success {
+      --alert-bg: var(--alert-success-bg);
+      --alert-border: var(--alert-success-border);
+      --alert-foreground: var(--alert-success-foreground);
+    }
+
+    .alert-success .alert-icon { color: var(--alert-success-icon); }
+
+    .alert-error {
+      --alert-bg: var(--alert-error-bg);
+      --alert-border: var(--alert-error-border);
+      --alert-foreground: var(--alert-error-foreground);
+    }
+
+    .alert-error .alert-icon { color: var(--alert-error-icon); }
+
+    /* ─── Demo Layout ─── */
+    .demo-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    .demo-section {
+      margin-bottom: 60px;
+    }
+
+    .demo-title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .demo-subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .demo-section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+    }
+
+    .demo-card {
+      border: 1px solid #eaeef4;
+      border-radius: 8px;
+      padding: 20px;
+      background: #f9fafb;
+    }
+
+    .demo-card-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .demo-button {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #1447e6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .demo-button:hover {
+      background: #0f3bc0;
+    }
+
+    .demo-code {
+      background: #f5f5f5;
+      border: 1px solid #eaeef4;
+      border-radius: 4px;
+      padding: 12px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body style="background: #fafbfc;">
+  <div class="demo-container">
+    <!-- Header -->
+    <header style="margin-bottom: 60px;">
+      <h1 class="demo-title">🔔 Toast + Alert Demo</h1>
+      <p class="demo-subtitle">ClawPro Portable Design Components Preview</p>
+    </header>
+
+    <!-- ════════════════════════════════════ Toast ════════════════════════════════════ -->
+    <section class="demo-section">
+      <h2 class="demo-section-title">Toast - 操作反馈通知</h2>
+
+      <div class="demo-grid">
+        <div class="demo-card">
+          <div class="demo-card-title">✓ Success</div>
+          <button class="demo-button" onclick="showToast('success', '操作成功')">
+            Show Success
+          </button>
+          <div class="demo-code">
+toast.success("操作成功")
+          </div>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-card-title">✗ Error</div>
+          <button class="demo-button" onclick="showToast('error', '操作失败，请重试')">
+            Show Error
+          </button>
+          <div class="demo-code">
+toast.error("操作失败")
+          </div>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-card-title">⚠ Warning</div>
+          <button class="demo-button" onclick="showToast('warning', '配额即将用尽')">
+            Show Warning
+          </button>
+          <div class="demo-code">
+toast.warning("警告提示")
+          </div>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-card-title">ⓘ Info</div>
+          <button class="demo-button" onclick="showToast('info', '数据已更新')">
+            Show Info
+          </button>
+          <div class="demo-code">
+toast.info("信息提示")
+          </div>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-card-title">长文本</div>
+          <button class="demo-button" onclick="showToast('error', '保存失败：权限不足，请联系管理员处理此问题。')">
+            Show Long Text
+          </button>
+          <div class="demo-code">
+toast.error("长文本...")
+          </div>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-card-title">自定义时长</div>
+          <button class="demo-button" onclick="showToast('success', '2秒后消失', 2000)">
+            2秒 Show
+          </button>
+          <div class="demo-code">
+toast.success("...", {duration: 2000})
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; padding: 16px; background: #f0f3fc; border-radius: 4px; border: 1px solid #bfcffe;">
+        <p style="font-size: 13px; color: #666; margin: 0;">
+          <strong>设计规范：</strong>
+          白色背景 (#FFFFFF) + 蓝灰边框 (#EAEEF4) • 圆角 12px • 内边距 12px 16px •
+          4秒自动消失 • 关闭按钮右上角外侧 • Z-Index 99999
+        </p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════ Alert ════════════════════════════════════ -->
+    <section class="demo-section">
+      <h2 class="demo-section-title">Alert - 页面级别提示</h2>
+
+      <div class="demo-grid">
+        <!-- Info -->
+        <div class="demo-card">
+          <div class="demo-card-title">Info - 信息提示</div>
+          <div class="alert alert-info" role="alert">
+            <svg class="alert-icon" viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="8" cy="5" r="0.5"/>
+              <path d="M8 7v3" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <div class="alert-description">数据每 5 分钟更新一次</div>
+          </div>
+          <div class="demo-code">
+&lt;Alert variant="info"&gt;
+  &lt;AlertInfoIcon /&gt;
+  &lt;AlertDescription&gt;...&lt;/AlertDescription&gt;
+&lt;/Alert&gt;
+          </div>
+        </div>
+
+        <!-- Operation-Info -->
+        <div class="demo-card">
+          <div class="demo-card-title">Operation-Info - 操作说明</div>
+          <div class="alert alert-operation-info" role="alert">
+            <svg class="alert-icon" viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="8" cy="5" r="0.5"/>
+              <path d="M8 7v3" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <div>
+              <div class="alert-title">修改提示</div>
+              <div class="alert-description">下方修改将影响所有 Agent</div>
+            </div>
+          </div>
+          <div class="demo-code">
+&lt;Alert variant="operation-info"&gt;
+  ...
+&lt;/Alert&gt;
+          </div>
+        </div>
+
+        <!-- Warning -->
+        <div class="demo-card">
+          <div class="demo-card-title">Warning - 警告</div>
+          <div class="alert alert-warning" role="alert">
+            <svg class="alert-icon" viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 3v5M8 11v1" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <div>
+              <div class="alert-title">配置不完整</div>
+              <div class="alert-description">有 3 项基础配置未完成</div>
+            </div>
+          </div>
+          <div class="demo-code">
+&lt;Alert variant="warning"&gt;
+  ...
+&lt;/Alert&gt;
+          </div>
+        </div>
+
+        <!-- Success -->
+        <div class="demo-card">
+          <div class="demo-card-title">Success - 成功</div>
+          <div class="alert alert-success" role="alert">
+            <svg class="alert-icon" viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <div class="alert-description">配置保存成功</div>
+          </div>
+          <div class="demo-code">
+&lt;Alert variant="success"&gt;
+  ...
+&lt;/Alert&gt;
+          </div>
+        </div>
+
+        <!-- Error -->
+        <div class="demo-card">
+          <div class="demo-card-title">Error - 错误</div>
+          <div class="alert alert-error" role="alert">
+            <svg class="alert-icon" viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <div class="alert-description">保存失败，请稍后重试</div>
+          </div>
+          <div class="demo-code">
+&lt;Alert variant="error"&gt;
+  ...
+&lt;/Alert&gt;
+          </div>
+        </div>
+
+        <!-- Product-News -->
+        <div class="demo-card">
+          <div class="demo-card-title">Product-News - 产品动态</div>
+          <div class="alert alert-product-news" role="alert">
+            <svg class="alert-icon" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 1v3M8 11v3M1 8h3M11 8h3M2.5 2.5l2.12 2.12M11.38 11.38l2.12 2.12M13.5 2.5l-2.12 2.12M4.62 11.38l-2.12 2.12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            </svg>
+            <div class="alert-description">【产品动态】OpenClaw v2.4.0 已发布</div>
+          </div>
+          <div class="demo-code">
+&lt;Alert variant="product-news"&gt;
+  ...
+&lt;/Alert&gt;
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; padding: 16px; background: #f0f3fc; border-radius: 4px; border: 1px solid #bfcffe;">
+        <p style="font-size: 13px; color: #666; margin: 0;">
+          <strong>设计规范：</strong>
+          6 种变体 (info / operation-info / warning / success / error / product-news) •
+          圆角 4px • 内边距 12px 16px • 图标 16px • 常驻显示（不自动消失）
+        </p>
+      </div>
+    </section>
+
+    <!-- Info -->
+    <footer style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #eaeef4; font-size: 13px; color: #999;">
+      <p>ClawPro Portable Design Components • Toast + Alert • 2026-06-11</p>
+      <p>查看源码：portable/react/toast/* | portable/react/alert/* | portable/css/toast.css | portable/css/alert.css</p>
+    </footer>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    function showToast(type, message, duration = 4000) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.setAttribute('role', 'alert');
+
+      // Icon
+      const icon = document.createElement('svg');
+      icon.className = 'toast-icon';
+      icon.setAttribute('viewBox', '0 0 24 24');
+      icon.setAttribute('fill', 'currentColor');
+      icon.setAttribute('aria-hidden', 'true');
+
+      if (type === 'success') {
+        icon.innerHTML = '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>';
+      } else if (type === 'error') {
+        icon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>';
+      } else if (type === 'warning') {
+        icon.innerHTML = '<path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>';
+      } else if (type === 'info') {
+        icon.innerHTML = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>';
+      }
+
+      // Message
+      const messageEl = document.createElement('span');
+      messageEl.className = 'toast-message';
+      messageEl.textContent = message;
+
+      // Close button
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'toast-close';
+      closeBtn.innerHTML = '×';
+      closeBtn.onclick = () => {
+        toast.classList.add('toast-exiting');
+        setTimeout(() => toast.remove(), 200);
+      };
+
+      toast.appendChild(icon);
+      toast.appendChild(messageEl);
+      toast.appendChild(closeBtn);
+      container.appendChild(toast);
+
+      // Auto remove after duration
+      if (duration > 0) {
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.classList.add('toast-exiting');
+            setTimeout(() => toast.remove(), 200);
+          }
+        }, duration);
+      }
+    }
+  </script>
+</body>
+</html>

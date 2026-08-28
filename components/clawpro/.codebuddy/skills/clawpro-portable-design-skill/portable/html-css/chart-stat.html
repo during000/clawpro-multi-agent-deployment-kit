@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Chart Stat</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      .cp-shell {
+        max-width: 1120px;
+        margin: 0 auto;
+      }
+      .cp-header {
+        margin-bottom: 24px;
+      }
+      .cp-header h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-header p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-group {
+        display: grid;
+        gap: 24px;
+      }
+      .cp-demo-title {
+        margin: 0 0 12px;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+      }
+      .cp-number-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+        padding: 20px;
+      }
+      .cp-number-card__header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .cp-number-card__icon {
+        display: inline-flex;
+        width: 18px;
+        height: 18px;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .cp-number-card__icon svg {
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+      .cp-number-card__label {
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 500;
+        color: var(--cp-text-title);
+      }
+      .cp-number-card__value {
+        display: block;
+        font-family: var(--cp-font-din);
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 600;
+        color: var(--cp-text-emphasis);
+        font-variant-numeric: tabular-nums;
+      }
+      .cp-stat-card,
+      .cp-chart-card,
+      .cp-state-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+      }
+      .cp-stat-card {
+        padding: 16px;
+      }
+      .cp-stat-label {
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-stat-value-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .cp-stat-value {
+        font-family: var(--cp-font-din);
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 700;
+        color: var(--cp-text-emphasis);
+        font-variant-numeric: tabular-nums;
+      }
+      .cp-stat-hint {
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-chart-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .cp-chart-card {
+        padding: 16px;
+      }
+      .cp-chart-card h3,
+      .cp-state-card h3 {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--cp-text-title);
+      }
+      .cp-chart-card p,
+      .cp-state-card p {
+        margin: 6px 0 0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-chart-area {
+        position: relative;
+        height: 180px;
+        margin-top: 16px;
+        border-radius: 4px;
+        background: linear-gradient(180deg, rgba(20, 71, 230, 0.04) 0%, rgba(20, 71, 230, 0) 100%);
+        overflow: hidden;
+      }
+      .cp-chart-grid-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(15, 23, 42, 0.06);
+      }
+      .cp-chart-grid-line:nth-child(1) { top: 24px; }
+      .cp-chart-grid-line:nth-child(2) { top: 72px; }
+      .cp-chart-grid-line:nth-child(3) { top: 120px; }
+      .cp-chart-grid-line:nth-child(4) { top: 168px; }
+      .cp-chart-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .cp-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 12px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cp-legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+      }
+      .cp-tooltip {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        min-width: 128px;
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: white;
+        padding: 8px 10px;
+        box-shadow: var(--cp-shadow-overlay);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .cp-tooltip strong {
+        display: block;
+        color: var(--cp-text-title);
+        font-weight: 500;
+      }
+      .cp-state-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .cp-state-card {
+        padding: 16px;
+        min-height: 168px;
+      }
+      .cp-loading-bars {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .cp-loading-bars span {
+        display: block;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #EEF2F7 0%, #F7F9FC 50%, #EEF2F7 100%);
+      }
+      .cp-loading-bars span:nth-child(1) { width: 76%; }
+      .cp-loading-bars span:nth-child(2) { width: 92%; }
+      .cp-loading-bars span:nth-child(3) { width: 64%; }
+      .cp-empty-box,
+      .cp-error-box,
+      .cp-lock-box {
+        display: grid;
+        place-items: center;
+        min-height: 96px;
+        margin-top: 16px;
+        border-radius: 4px;
+        background: var(--bg-grey-normal);
+        text-align: center;
+        padding: 12px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .cp-error-box { color: var(--cp-text-danger); }
+      .cp-lock-box { color: var(--cp-text-secondary); }
+      .cp-rule-box {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: #FAFAFA;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-rule-box p {
+        margin: 0;
+      }
+      .cp-rule-box p + p {
+        margin-top: 4px;
+      }
+      @media (max-width: 960px) {
+        .cp-stat-grid,
+        .cp-state-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .cp-chart-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        body { padding: 16px; }
+        .cp-stat-grid,
+        .cp-state-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>Chart / Stat</h1>
+        <p>这是 Dashboard 和监控页里的统计数字卡与图表卡，不是单独一张图。它负责统一 KPI 数字、趋势图、图例、Tooltip，以及空 / 加载 / 错误 / 无权限态。</p>
+      </header>
+
+      <div class="cp-group">
+        <section>
+          <h2 class="cp-demo-title">统计数字卡</h2>
+          <div class="cp-stat-grid">
+            <section class="cp-number-card">
+              <div class="cp-number-card__header">
+                <span class="cp-number-card__icon" aria-hidden="true">
+                  <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <radialGradient id="chart-stat-number-requests" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)">
+                        <stop stop-color="#202020"></stop>
+                        <stop offset="1" stop-color="#0080FF"></stop>
+                      </radialGradient>
+                    </defs>
+                    <path d="M10.7 1.8 6.8 9h2.6l-1.1 7.2 4.9-8H10.6l.1-6.4Z" fill="url(#chart-stat-number-requests)"></path>
+                  </svg>
+                </span>
+                <span class="cp-number-card__label">总请求数</span>
+              </div>
+              <strong class="cp-number-card__value">1,841</strong>
+            </section>
+            <section class="cp-number-card">
+              <div class="cp-number-card__header">
+                <span class="cp-number-card__icon" aria-hidden="true">
+                  <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <radialGradient id="chart-stat-number-input" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)">
+                        <stop stop-color="#202020"></stop>
+                        <stop offset="1" stop-color="#0080FF"></stop>
+                      </radialGradient>
+                    </defs>
+                    <path d="M9 2.2v8.2" stroke="url(#chart-stat-number-input)" stroke-width="1.8" stroke-linecap="round"></path>
+                    <path d="m5.9 7.8 3.1 3.1 3.1-3.1" stroke="url(#chart-stat-number-input)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M3.2 13.4h11.6" stroke="url(#chart-stat-number-input)" stroke-width="1.8" stroke-linecap="round"></path>
+                  </svg>
+                </span>
+                <span class="cp-number-card__label">输入 Tokens</span>
+              </div>
+              <strong class="cp-number-card__value">533,112</strong>
+            </section>
+            <section class="cp-number-card">
+              <div class="cp-number-card__header">
+                <span class="cp-number-card__icon" aria-hidden="true">
+                  <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <radialGradient id="chart-stat-number-output" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)">
+                        <stop stop-color="#202020"></stop>
+                        <stop offset="1" stop-color="#0080FF"></stop>
+                      </radialGradient>
+                    </defs>
+                    <path d="M9 15.8V7.6" stroke="url(#chart-stat-number-output)" stroke-width="1.8" stroke-linecap="round"></path>
+                    <path d="m12.1 10  -3.1-3.1L5.9 10" stroke="url(#chart-stat-number-output)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M3.2 4.6h11.6" stroke="url(#chart-stat-number-output)" stroke-width="1.8" stroke-linecap="round"></path>
+                  </svg>
+                </span>
+                <span class="cp-number-card__label">输出 Tokens</span>
+              </div>
+              <strong class="cp-number-card__value">419,040</strong>
+            </section>
+            <section class="cp-number-card">
+              <div class="cp-number-card__header">
+                <span class="cp-number-card__icon" aria-hidden="true">
+                  <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <radialGradient id="chart-stat-number-total" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)">
+                        <stop stop-color="#202020"></stop>
+                        <stop offset="1" stop-color="#0080FF"></stop>
+                      </radialGradient>
+                    </defs>
+                    <path d="m9 2.4 1.4 4.2 4.2 1.4-4.2 1.4L9 13.6l-1.4-4.2-4.2-1.4 4.2-1.4L9 2.4Z" fill="url(#chart-stat-number-total)"></path>
+                  </svg>
+                </span>
+                <span class="cp-number-card__label">总 Tokens</span>
+              </div>
+              <strong class="cp-number-card__value">952,152</strong>
+            </section>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="cp-demo-title">图表卡</h2>
+          <div class="cp-chart-grid">
+            <section class="cp-chart-card">
+              <h3>请求趋势</h3>
+              <p>主趋势线使用 `--cp-brand-blue`，辅助网格与说明弱化，不抢主数据。</p>
+              <div class="cp-chart-area">
+                <span class="cp-chart-grid-line"></span>
+                <span class="cp-chart-grid-line"></span>
+                <span class="cp-chart-grid-line"></span>
+                <span class="cp-chart-grid-line"></span>
+                <svg class="cp-chart-svg" viewBox="0 0 520 180" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M16 138C64 132 92 116 132 120C168 124 194 100 228 96C272 91 299 70 338 72C384 74 413 42 456 34C476 30 494 28 504 24" stroke="var(--cp-brand-blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M16 138C64 132 92 116 132 120C168 124 194 100 228 96C272 91 299 70 338 72C384 74 413 42 456 34C476 30 494 28 504 24V180H16V138Z" fill="rgba(20, 71, 230, 0.08)"></path>
+                </svg>
+                <div class="cp-tooltip">
+                  <strong>06-09 14:00</strong>
+                  请求数 2,184
+                </div>
+              </div>
+              <div class="cp-legend">
+                <span class="cp-legend-item"><span class="cp-legend-dot" style="background: var(--cp-brand-blue);"></span>请求总量</span>
+                <span class="cp-legend-item"><span class="cp-legend-dot" style="background: rgba(15, 23, 42, 0.22);"></span>基线阈值</span>
+              </div>
+            </section>
+
+            <section class="cp-chart-card">
+              <h3>配额占比</h3>
+              <p>环形图与数字卡配合使用，强调配额状态和剩余额度。</p>
+              <div class="cp-chart-area" style="display:grid;place-items:center;background:white;">
+                <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
+                  <circle cx="90" cy="90" r="54" stroke="#E8EDF5" stroke-width="18"></circle>
+                  <circle cx="90" cy="90" r="54" stroke="var(--cp-brand-blue)" stroke-width="18" stroke-linecap="round" stroke-dasharray="250 339" transform="rotate(-90 90 90)"></circle>
+                </svg>
+                <div style="position:absolute;text-align:center;">
+                  <div class="cp-stat-value" style="font-size:28px;">74%</div>
+                  <div class="cp-stat-label">已使用</div>
+                </div>
+              </div>
+              <div class="cp-legend">
+                <span class="cp-legend-item"><span class="cp-legend-dot" style="background: var(--cp-brand-blue);"></span>已使用</span>
+                <span class="cp-legend-item"><span class="cp-legend-dot" style="background: #E8EDF5;"></span>剩余额度</span>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="cp-demo-title">状态示例</h2>
+          <div class="cp-state-grid">
+            <section class="cp-state-card">
+              <h3>Loading</h3>
+              <p>保留图表区域高度，避免页面抖动。</p>
+              <div class="cp-loading-bars"><span></span><span></span><span></span></div>
+            </section>
+            <section class="cp-state-card">
+              <h3>Empty</h3>
+              <p>必须解释为什么没有数据，而不是只写“暂无数据”。</p>
+              <div class="cp-empty-box">当前统计周期内没有新的请求记录，请先接入业务流量或切换时间范围。</div>
+            </section>
+            <section class="cp-state-card">
+              <h3>Error / No Permission</h3>
+              <p>失败和无权限是不同状态，需要给出不同说明。</p>
+              <div class="cp-error-box">图表加载失败，请稍后重试。</div>
+              <div class="cp-lock-box">你当前没有查看该资源监控的权限。</div>
+            </section>
+          </div>
+        </section>
+
+        <section class="cp-rule-box">
+          <p><strong>规则</strong></p>
+          <p>• 主数字使用稳定的 tabular nums，避免统计卡位移</p>
+          <p>• 主趋势色统一品牌蓝，辅助线和网格使用弱灰</p>
+          <p>• Tooltip 白底、4px 圆角、overlay shadow，不直接漂浮裸字</p>
+          <p>• 空态、加载态、错误态、无权限态都必须完整</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

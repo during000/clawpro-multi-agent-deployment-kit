@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通道配置 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-[16px] font-semibold text-gray-800">通道配置</h2>
+                    <button onclick="openAddChannelModal()" class="px-4 py-2 bg-[#0052d9] text-white text-[13px] rounded hover:bg-[#0040b0] transition-colors">
+                        + 添加自定义通道
+                    </button>
+                </div>
+
+                <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
+                    <div id="channel-list">
+                        {{block "channel_list" .}}
+                        {{if .Error}}
+                        <div class="text-[#f64041] font-medium text-[14px] px-6 py-3 bg-red-50 border-b border-red-100">{{.Error}}</div>
+                        {{end}}
+                        {{if .Success}}
+                        <div class="text-green-600 font-medium text-[14px] px-6 py-3 bg-green-50 border-b border-green-100">{{.Success}}</div>
+                        {{end}}
+                        <table class="w-full text-[14px] text-left whitespace-nowrap">
+                            <thead class="bg-[#f5f6fa] text-gray-500 text-[12px]">
+                                <tr>
+                                    <th class="px-6 py-3.5 font-medium">通道名称</th>
+                                    <th class="px-6 py-3.5 font-medium">通道标识</th>
+                                    <th class="px-6 py-3.5 font-medium">类型</th>
+                                    <th class="px-6 py-3.5 font-medium">状态</th>
+                                    <th class="px-6 py-3.5 font-medium">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                {{range .Channels}}
+                                <tr class="hover:bg-[#f9fafb]">
+                                    <td class="px-6 py-3.5 font-medium">{{.Name}}</td>
+                                    <td class="px-6 py-3.5 text-gray-500">{{.ChannelID}}</td>
+                                    <td class="px-6 py-3.5">
+                                        {{if .Custom}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-blue-50 text-blue-600">自定义</span>
+                                        {{else}}
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium bg-gray-100 text-gray-500">预定义</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        <button hx-post="/admin/channels/toggle?id={{.ID}}" hx-target="#channel-list" hx-swap="innerHTML"
+                                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none {{if .Enabled}}bg-[#0052d9]{{else}}bg-gray-300{{end}}">
+                                            <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 {{if .Enabled}}translate-x-6{{else}}translate-x-1{{end}}"></span>
+                                        </button>
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        {{if .Custom}}
+                                        <button onclick="deleteChannel({{.ID}}, '{{.Name}}')" class="text-[#f64041] hover:text-red-700 text-[13px]">删除</button>
+                                        {{else}}
+                                        <span class="text-gray-300">—</span>
+                                        {{end}}
+                                    </td>
+                                </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-gray-400 text-[14px]">暂无通道配置</td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Channel Modal -->
+    <div id="add-channel-modal" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-black/40" onclick="closeAddChannelModal()"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto relative">
+                <div class="px-6 pt-6 pb-4 border-b border-gray-100">
+                    <h3 class="text-[16px] font-semibold text-gray-800">添加自定义通道</h3>
+                    <p class="text-[13px] text-gray-500 mt-1">配置企业自研 IM 通道信息，保存后可在通道列表中管理可见性。</p>
+                    <button onclick="closeAddChannelModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+                </div>
+                <div class="px-6 py-5 space-y-6">
+                    <!-- Error message area -->
+                    <div id="add-channel-error" class="hidden text-[#f64041] text-[13px] bg-red-50 rounded px-4 py-2.5"></div>
+
+                    <!-- ① 通道基础信息 -->
+                    <div>
+                        <div class="text-[13px] font-semibold text-gray-700 mb-3">① 通道基础信息</div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[13px] text-gray-600 mb-1">通道名称 <span class="text-red-500">*</span></label>
+                                <input id="ac-name" type="text" placeholder="展示给用户的通道名字，如「海尔工作通」"
+                                    class="w-full border border-gray-200 rounded px-3 py-2 text-[13px] focus:outline-none focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20">
+                            </div>
+                            <div>
+                                <label class="block text-[13px] text-gray-600 mb-1">Channel ID <span class="text-red-500">*</span></label>
+                                <input id="ac-channel-id" type="text" placeholder="写入 openclaw.json 的 key"
+                                    class="w-full border border-gray-200 rounded px-3 py-2 text-[13px] focus:outline-none focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20">
+                                <p class="text-[12px] text-gray-400 mt-1">仅支持英文字母、数字和下划线，需与对应插件名一致</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ② IM 服务器地址 -->
+                    <div>
+                        <div class="text-[13px] font-semibold text-gray-700 mb-3">② IM 服务器地址</div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[13px] text-gray-600 mb-1">Server URL <span class="text-red-500">*</span></label>
+                                <input id="ac-server-url" type="text" placeholder="自定义 IM 的 HTTP API 地址"
+                                    class="w-full border border-gray-200 rounded px-3 py-2 text-[13px] focus:outline-none focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20">
+                            </div>
+                            <div>
+                                <label class="block text-[13px] text-gray-600 mb-1">WebSocket URL <span class="text-red-500">*</span></label>
+                                <input id="ac-ws-url" type="text" placeholder="自定义 IM 的长连接地址"
+                                    class="w-full border border-gray-200 rounded px-3 py-2 text-[13px] focus:outline-none focus:border-[#0052d9] focus:ring-1 focus:ring-[#0052d9]/20">
+                                <p class="text-[12px] text-gray-400 mt-1">WebSocket 地址可与 Server URL 相同，系统会自动处理协议转换</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ③ 用户凭证字段 -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[13px] font-semibold text-gray-700">③ 用户凭证字段</span>
+                            <button onclick="addCredField()" class="text-[#0052d9] text-[13px] hover:text-[#0040b0]">+ 添加字段</button>
+                        </div>
+                        <div id="cred-fields-container" class="space-y-2">
+                            <!-- Dynamically added rows -->
+                        </div>
+                        <p class="text-[12px] text-gray-400 mt-2">这些字段会展示在用户端，用户选择该通道后会看到对应的输入框。</p>
+                    </div>
+                </div>
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">
+                    <button onclick="closeAddChannelModal()" class="px-4 py-2 text-[13px] text-gray-600 bg-white border border-gray-200 rounded hover:bg-gray-50">取消</button>
+                    <button onclick="submitAddChannel()" id="ac-submit-btn" class="px-4 py-2 text-[13px] text-white bg-[#0052d9] rounded hover:bg-[#0040b0]">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{template "admin_scripts" .}}
+
+    <script>
+    function openAddChannelModal() {
+        document.getElementById('add-channel-modal').classList.remove('hidden');
+        document.getElementById('add-channel-error').classList.add('hidden');
+        // Reset form
+        document.getElementById('ac-name').value = '';
+        document.getElementById('ac-channel-id').value = '';
+        document.getElementById('ac-server-url').value = '';
+        document.getElementById('ac-ws-url').value = '';
+        document.getElementById('cred-fields-container').innerHTML = '';
+    }
+
+    function closeAddChannelModal() {
+        document.getElementById('add-channel-modal').classList.add('hidden');
+    }
+
+    function addCredField(key, label) {
+        var container = document.getElementById('cred-fields-container');
+        var row = document.createElement('div');
+        row.className = 'flex gap-2 items-center';
+        row.innerHTML = '<input type="text" placeholder="Key" value="' + (key || '') + '" class="cred-key flex-1 border border-gray-200 rounded px-3 py-1.5 text-[13px] focus:outline-none focus:border-[#0052d9]">' +
+            '<input type="text" placeholder="Label" value="' + (label || '') + '" class="cred-label flex-1 border border-gray-200 rounded px-3 py-1.5 text-[13px] focus:outline-none focus:border-[#0052d9]">' +
+            '<button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-[#f64041] text-[16px] leading-none px-1">&times;</button>';
+        container.appendChild(row);
+    }
+
+    function submitAddChannel() {
+        var errorEl = document.getElementById('add-channel-error');
+        errorEl.classList.add('hidden');
+
+        var channelId = document.getElementById('ac-channel-id').value.trim();
+        var name = document.getElementById('ac-name').value.trim();
+        var serverUrl = document.getElementById('ac-server-url').value.trim();
+        var wsUrl = document.getElementById('ac-ws-url').value.trim();
+
+        // Collect cred fields
+        var credFields = [];
+        var rows = document.getElementById('cred-fields-container').children;
+        for (var i = 0; i < rows.length; i++) {
+            var key = rows[i].querySelector('.cred-key').value.trim();
+            var label = rows[i].querySelector('.cred-label').value.trim();
+            if (key || label) {
+                credFields.push({ key: key, label: label });
+            }
+        }
+
+        // Client-side validation
+        if (!channelId) { showError('Channel ID 不能为空'); return; }
+        if (!/^[a-zA-Z0-9_]+$/.test(channelId)) { showError('Channel ID 仅允许英文字母、数字和下划线'); return; }
+        if (!name) { showError('通道名称不能为空'); return; }
+        if (!serverUrl) { showError('Server URL 不能为空'); return; }
+        if (!wsUrl) { showError('WebSocket URL 不能为空'); return; }
+
+        var body = {
+            channel_id: channelId,
+            name: name,
+            custom_config: {
+                server: {
+                    server_url: serverUrl,
+                    websocket_url: wsUrl
+                },
+                cred_fields: credFields
+            }
+        };
+
+        var btn = document.getElementById('ac-submit-btn');
+        btn.disabled = true;
+        btn.textContent = '保存中...';
+
+        fetch('/admin/channels/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(body)
+        }).then(function(resp) {
+            return resp.json().then(function(data) { return { status: resp.status, data: data }; });
+        }).then(function(result) {
+            btn.disabled = false;
+            btn.textContent = '保存';
+            if (result.data.error) {
+                showError(result.data.error);
+            } else {
+                closeAddChannelModal();
+                location.reload();
+            }
+        }).catch(function(err) {
+            btn.disabled = false;
+            btn.textContent = '保存';
+            showError('请求失败: ' + err.message);
+        });
+
+        function showError(msg) {
+            errorEl.textContent = msg;
+            errorEl.classList.remove('hidden');
+        }
+    }
+
+    function deleteChannel(id, name) {
+        if (!confirm('确定要删除通道「' + name + '」吗？')) return;
+        fetch('/admin/channels/delete?id=' + id, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' }
+        }).then(function(resp) { return resp.json(); })
+        .then(function(data) {
+            if (data.error) { alert(data.error); }
+            else { location.reload(); }
+        }).catch(function(err) {
+            alert('删除失败: ' + err.message);
+        });
+    }
+    </script>
+</body>
+</html>

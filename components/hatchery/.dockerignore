@@ -1,0 +1,10 @@
+hatchery
+*.db
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.claude/
+.git/

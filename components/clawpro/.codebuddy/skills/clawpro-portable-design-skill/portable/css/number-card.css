@@ -1,0 +1,59 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable NumberCard — ClawPro
+ * KPI / 数字统计卡：rounded 4px + 蓝灰描边 + p-20 + 默认无阴影。
+ * Icon 18×18 / Label 14px medium / Value 24px semibold tabular-nums DIN。
+ * 配套：portable/react/number-card.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-number-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  padding: 20px;
+}
+
+.cp-number-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.cp-number-card__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-number-card__label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cp-text-title);
+}
+
+.cp-number-card__value-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.cp-number-card__footer {
+  margin-top: 8px;
+}
+
+/* ─── StatNumber：24px semibold + tabular-nums + DIN ─── */
+.cp-stat-number {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--cp-text-title);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--cp-font-din);
+}
+.cp-stat-number--shrink {
+  flex-shrink: 0;
+}

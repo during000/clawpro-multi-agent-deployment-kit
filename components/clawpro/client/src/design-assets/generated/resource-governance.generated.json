@@ -1,0 +1,344 @@
+{
+  "$schema": "clawpro-resource-governance",
+  "stage": 5,
+  "generatedAt": "2026-07-20T04:15:15.265Z",
+  "mode": "dry-run",
+  "note": "阶段 5 重复资源实际治理：A 类清理冗余副本（保留 canonical）、B 类引用替换（本仓库 B=0）、C 类只标待确认。删除前对每个候选独立现场复核（红线/引用安全集/canonical 在场/字节一致），任一不过即跳过。本文件为治理事实记录；阶段 2/3/4 的 inventory/duplicates 仍为治理前基线，页面用 removedIds 隐藏已删资源。",
+  "inputs": {
+    "duplicates": {
+      "path": "client/src/design-assets/generated/resource-duplicates.generated.json",
+      "generatedAt": "2026-07-20T04:15:15.228Z"
+    },
+    "inventory": {
+      "path": "client/src/design-assets/generated/resource-inventory.generated.json",
+      "generatedAt": "2026-07-20T04:04:38.191Z"
+    },
+    "usage": {
+      "path": "client/src/design-assets/generated/resource-usage.generated.json",
+      "generatedAt": "2026-07-20T04:04:38.191Z"
+    }
+  },
+  "reverificationRules": [
+    "组分级=A 且组非红线",
+    "成员 role=duplicate 且 action=remove-redundant",
+    "成员非红线类目（brand-logo/channel-icon/agent-avatar）、非红线视觉（brand-fixed/avatar-like）",
+    "usageCount=0 且 dynamicDirReferenced=false 且 usage 表无该 id 且 不在 unresolvedRefs 命中 且 父目录不在 dirReferences",
+    "候选文件在磁盘、同组 canonical 文件在磁盘、且候选与 canonical 现场字节 hash 完全一致"
+  ],
+  "summary": {
+    "groupsTotal": 1,
+    "aGroups": 0,
+    "bGroups": 0,
+    "cGroups": 1,
+    "removeRedundantCandidates": 0,
+    "removed": 0,
+    "skipped": 0,
+    "bReplaced": 0,
+    "cNeedsReviewGroups": 0,
+    "reviewedConfirmedGroups": 1,
+    "bytesReclaimed": 0
+  },
+  "removedIds": [],
+  "removed": [],
+  "skipped": [],
+  "cNeedsReview": [],
+  "groups": [
+    {
+      "id": "dup-001",
+      "grade": "C",
+      "method": "exact-file-hash",
+      "redLine": true,
+      "state": "reviewed-confirmed",
+      "reviewStatus": "confirmed",
+      "reasons": [
+        "命中红线（品牌 Logo / 渠道图标 / Agent 头像）：禁止仅凭 hash 自动归并，需人工确认是否同一资源",
+        "已人工确认（design @ 2026-06-14）：企业微信（wework → channels.wecom）与 企业微信应用（wework-app → channels.wecomApp）是两个独立渠道，当前有意暂复用同一品牌图标；两文件均被引用、均保留，不归并。待设计提供「企业微信应用」独立图标后再单独替换 channel-wecom-app.svg。"
+      ],
+      "reasonKind": "reviewed-confirmed",
+      "members": [
+        {
+          "id": "public__admin-channel-icons-channel-wecom__83a4d718",
+          "path": "client/public/assets/admin-channel-icons/channel-wecom.svg",
+          "role": "reviewed",
+          "result": "kept"
+        },
+        {
+          "id": "public__admin-channel-icons-channel-wecom-app__a5b69567",
+          "path": "client/public/assets/admin-channel-icons/channel-wecom-app.svg",
+          "role": "reviewed",
+          "result": "kept"
+        }
+      ]
+    }
+  ],
+  "rollback": {
+    "method": "git",
+    "note": "全部删除均由 git 跟踪，可整体或逐个回滚",
+    "commands": [
+      "git status   # 查看被删文件",
+      "git checkout -- <path>   # 复原单个文件",
+      "git restore client/src/design-assets/scripts/apply-governance.mjs  # 仅示例"
+    ]
+  },
+  "canonical": {
+    "stage": 6,
+    "generatedAt": "2026-07-20T04:15:15.422Z",
+    "entryFile": "client/src/design-assets/canonical-assets.ts",
+    "note": "阶段 6 canonical 入口接入状态。入口只收已确认 normal、业务专属、运行时可服务资源；红线资源（品牌/渠道/头像）分列不归并；needs-review 资源不入口。",
+    "summary": {
+      "entries": 14,
+      "byGroup": {
+        "brands": 1,
+        "channels": 6,
+        "avatars": 7
+      },
+      "connectedToEntry": 6,
+      "availableNotConnected": 8
+    },
+    "entries": [
+      {
+        "key": "brands.clawproLogo",
+        "group": "brands",
+        "id": "public__admin-sidebar-clawpro-logo__101245ff",
+        "path": "/assets/admin-sidebar/clawpro-logo.svg",
+        "sourcePath": "client/public/assets/admin-sidebar/clawpro-logo.svg",
+        "category": "brand-logo",
+        "visualType": "brand-fixed",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": false,
+        "consumers": []
+      },
+      {
+        "key": "channels.wechat",
+        "group": "channels",
+        "id": "public__admin-channel-icons-channel-wechat__ed886289",
+        "path": "/assets/admin-channel-icons/channel-wechat.svg",
+        "sourcePath": "client/public/assets/admin-channel-icons/channel-wechat.svg",
+        "category": "channel-icon",
+        "visualType": "brand-fixed",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": true,
+        "consumers": [
+          "client/src/pages/admin/ChannelConfig.tsx",
+          "client/src/pages/preview/SkillMapAbDemo.tsx"
+        ]
+      },
+      {
+        "key": "channels.qq",
+        "group": "channels",
+        "id": "public__admin-channel-icons-channel-qq__6a9f7733",
+        "path": "/assets/admin-channel-icons/channel-qq.svg",
+        "sourcePath": "client/public/assets/admin-channel-icons/channel-qq.svg",
+        "category": "channel-icon",
+        "visualType": "brand-fixed",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": true,
+        "consumers": [
+          "client/src/pages/admin/ChannelConfig.tsx",
+          "client/src/pages/preview/SkillMapAbDemo.tsx"
+        ]
+      },
+      {
+        "key": "channels.wecom",
+        "group": "channels",
+        "id": "public__admin-channel-icons-channel-wecom__83a4d718",
+        "path": "/assets/admin-channel-icons/channel-wecom.svg",
+        "sourcePath": "client/public/assets/admin-channel-icons/channel-wecom.svg",
+        "category": "channel-icon",
+        "visualType": "brand-fixed",
+        "status": "normal",
+        "duplicateGroupId": "dup-001",
+        "redLine": true,
+        "connectedToCanonicalEntry": true,
+        "consumers": [
+          "client/src/pages/admin/ChannelConfig.tsx",
+          "client/src/pages/preview/SkillMapAbDemo.tsx"
+        ]
+      },
+      {
+        "key": "channels.wecomApp",
+        "group": "channels",
+        "id": "public__admin-channel-icons-channel-wecom-app__a5b69567",
+        "path": "/assets/admin-channel-icons/channel-wecom-app.svg",
+        "sourcePath": "client/public/assets/admin-channel-icons/channel-wecom-app.svg",
+        "category": "channel-icon",
+        "visualType": "brand-fixed",
+        "status": "normal",
+        "duplicateGroupId": "dup-001",
+        "redLine": true,
+        "connectedToCanonicalEntry": true,
+        "consumers": [
+          "client/src/pages/admin/ChannelConfig.tsx",
+          "client/src/pages/preview/SkillMapAbDemo.tsx"
+        ]
+      },
+      {
+        "key": "channels.dingtalk",
+        "group": "channels",
+        "id": "public__admin-channel-icons-channel-dingtalk__b203af27",
+        "path": "/assets/admin-channel-icons/channel-dingtalk.svg",
+        "sourcePath": "client/public/assets/admin-channel-icons/channel-dingtalk.svg",
+        "category": "channel-icon",
+        "visualType": "brand-fixed",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": true,
+        "consumers": [
+          "client/src/pages/admin/ChannelConfig.tsx",
+          "client/src/pages/preview/SkillMapAbDemo.tsx"
+        ]
+      },
+      {
+        "key": "channels.feishu",
+        "group": "channels",
+        "id": "public__admin-channel-icons-channel-feishu__e5fadf69",
+        "path": "/assets/admin-channel-icons/channel-feishu.svg",
+        "sourcePath": "client/public/assets/admin-channel-icons/channel-feishu.svg",
+        "category": "channel-icon",
+        "visualType": "brand-fixed",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": true,
+        "consumers": [
+          "client/src/pages/admin/ChannelConfig.tsx",
+          "client/src/pages/preview/SkillMapAbDemo.tsx"
+        ]
+      },
+      {
+        "key": "avatars.default",
+        "group": "avatars",
+        "id": "public__avatars-avatar-default__89f8f33a",
+        "path": "/assets/avatars/avatar-default.png",
+        "sourcePath": "client/public/assets/avatars/avatar-default.png",
+        "category": "agent-avatar",
+        "visualType": "avatar-like",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": false,
+        "consumers": []
+      },
+      {
+        "key": "avatars.designer",
+        "group": "avatars",
+        "id": "public__avatars-avatar-designer__702459f9",
+        "path": "/assets/avatars/avatar-designer.png",
+        "sourcePath": "client/public/assets/avatars/avatar-designer.png",
+        "category": "agent-avatar",
+        "visualType": "avatar-like",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": false,
+        "consumers": []
+      },
+      {
+        "key": "avatars.analyst",
+        "group": "avatars",
+        "id": "public__avatars-avatar-analyst__9391da24",
+        "path": "/assets/avatars/avatar-analyst.png",
+        "sourcePath": "client/public/assets/avatars/avatar-analyst.png",
+        "category": "agent-avatar",
+        "visualType": "avatar-like",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": false,
+        "consumers": []
+      },
+      {
+        "key": "avatars.creator",
+        "group": "avatars",
+        "id": "public__avatars-avatar-creator__08dab2a7",
+        "path": "/assets/avatars/avatar-creator.png",
+        "sourcePath": "client/public/assets/avatars/avatar-creator.png",
+        "category": "agent-avatar",
+        "visualType": "avatar-like",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": false,
+        "consumers": []
+      },
+      {
+        "key": "avatars.developer",
+        "group": "avatars",
+        "id": "public__avatars-avatar-developer__1f7a0684",
+        "path": "/assets/avatars/avatar-developer.png",
+        "sourcePath": "client/public/assets/avatars/avatar-developer.png",
+        "category": "agent-avatar",
+        "visualType": "avatar-like",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": false,
+        "consumers": []
+      },
+      {
+        "key": "avatars.pm",
+        "group": "avatars",
+        "id": "public__avatars-avatar-pm__24dd4cba",
+        "path": "/assets/avatars/avatar-pm.png",
+        "sourcePath": "client/public/assets/avatars/avatar-pm.png",
+        "category": "agent-avatar",
+        "visualType": "avatar-like",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": false,
+        "consumers": []
+      },
+      {
+        "key": "avatars.operator",
+        "group": "avatars",
+        "id": "public__avatars-avatar-operator__394feb69",
+        "path": "/assets/avatars/avatar-operator.png",
+        "sourcePath": "client/public/assets/avatars/avatar-operator.png",
+        "category": "agent-avatar",
+        "visualType": "avatar-like",
+        "status": "normal",
+        "duplicateGroupId": null,
+        "redLine": true,
+        "connectedToCanonicalEntry": false,
+        "consumers": []
+      }
+    ],
+    "adoption": {
+      "migratedThisStage": [
+        "client/src/pages/admin/ChannelConfig.tsx",
+        "client/src/pages/preview/SkillMapAbDemo.tsx"
+      ],
+      "connectedKeys": [
+        "channels.wechat",
+        "channels.qq",
+        "channels.wecom",
+        "channels.wecomApp",
+        "channels.dingtalk",
+        "channels.feishu"
+      ],
+      "availableNotConnectedKeys": [
+        "brands.clawproLogo",
+        "avatars.default",
+        "avatars.designer",
+        "avatars.analyst",
+        "avatars.creator",
+        "avatars.developer",
+        "avatars.pm",
+        "avatars.operator"
+      ]
+    },
+    "governedDuplicateRefMigration": "无需替换：阶段 5 实际移除的 127 个 A 类冗余副本均无任何引用线索，故无页面层 / 非组件源码引用需迁移到 canonical。",
+    "oneChangeMultiEffect": {
+      "capability": "已接入 canonicalAssets 入口的 key，修改 canonical-assets.ts 中其路径会统一影响所有 import 处；未接入 key 仅建立入口，现有散落引用保持原样（不做全量迁移）。",
+      "componentSourceNote": "AgentAvatar.tsx（ROLE_AVATAR）与 TopNav 等组件源码内的资源引用按共享组件处理，本阶段只记录、不改源码、不引入口。"
+    }
+  }
+}

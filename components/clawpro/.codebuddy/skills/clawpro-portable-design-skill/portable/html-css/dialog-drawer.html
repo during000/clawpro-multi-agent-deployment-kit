@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Monitor Drawer</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(20, 71, 230, 0.05), transparent 28%),
+          linear-gradient(180deg, #F7F9FC 0%, #F2F5FA 100%);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      button,
+      a { font: inherit; }
+      .cp-app {
+        min-height: 100vh;
+        position: relative;
+      }
+      .cp-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.18);
+      }
+      .cp-shell {
+        position: relative;
+        min-height: 100vh;
+        padding: 32px;
+      }
+      .cp-page {
+        max-width: 1120px;
+        margin: 0 auto;
+      }
+      .cp-page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .cp-page-header h1 {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-page-header p {
+        margin: 8px 0 0;
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--cp-text-secondary);
+      }
+      .cp-page-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .cp-page-btn,
+      .cp-drawer-btn,
+      .cp-link-btn,
+      .cp-icon-btn,
+      .cp-inline-link { border-radius: 4px; }
+      .cp-page-btn,
+      .cp-drawer-btn {
+        display: inline-flex;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--cp-border);
+        background: white;
+        padding: 0 12px;
+        font-size: 12px;
+        line-height: 1;
+        color: var(--cp-text-title);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .cp-page-btn--primary,
+      .cp-drawer-btn--primary {
+        border-color: var(--cp-brand-black);
+        background: var(--cp-brand-black);
+        color: white;
+      }
+      .cp-card-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .cp-kpi-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: white;
+        padding: 18px 20px;
+      }
+      .cp-kpi-label {
+        margin-bottom: 10px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-title);
+      }
+      .cp-kpi-value {
+        font-family: var(--cp-font-din);
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 600;
+        color: var(--cp-text-emphasis);
+        font-variant-numeric: tabular-nums;
+      }
+      .cp-content-card {
+        overflow: hidden;
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: white;
+      }
+      .cp-content-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .cp-content-head strong {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--cp-text-title);
+      }
+      .cp-pill {
+        display: inline-flex;
+        height: 22px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #BFE8C8;
+        border-radius: 999px;
+        padding: 0 8px;
+        font-size: 12px;
+        line-height: 1;
+        color: #008236;
+        background: #E9F8EB;
+      }
+      .cp-mini-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      .cp-mini-table th,
+      .cp-mini-table td {
+        height: 44px;
+        padding: 0 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .cp-mini-table th {
+        background: var(--cp-bg-subtle);
+        color: var(--cp-text-muted);
+        font-weight: 500;
+      }
+      .cp-mini-table td {
+        background: white;
+        color: var(--cp-text-body);
+      }
+      .cp-mini-table tbody tr:last-child td { border-bottom: 0; }
+      .cp-link-btn,
+      .cp-inline-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-brand);
+        text-decoration: none;
+      }
+      .cp-link-btn svg,
+      .cp-inline-link svg,
+      .cp-meta-link svg {
+        width: 12px;
+        height: 12px;
+      }
+      .cp-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(640px, calc(100vw - 24px));
+        border-left: 1px solid var(--cp-border);
+        background: white;
+        box-shadow: var(--cp-shadow-overlay);
+        display: flex;
+        flex-direction: column;
+      }
+      .cp-drawer-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px;
+        border-bottom: 1px solid var(--cp-border);
+        background: white;
+      }
+      .cp-drawer-header-main { min-width: 0; }
+      .cp-drawer-header h2 {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--cp-text-title);
+      }
+      .cp-drawer-header p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-drawer-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .cp-icon-btn {
+        display: inline-flex;
+        width: 28px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        background: transparent;
+        color: var(--cp-text-title);
+      }
+      .cp-icon-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .cp-drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+      }
+      .cp-section + .cp-section { margin-top: 24px; }
+      .cp-section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .cp-section-head strong {
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-info-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: white;
+      }
+      .cp-agent-meta { padding: 14px 16px; }
+      .cp-agent-name {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--cp-text-title);
+      }
+      .cp-agent-id {
+        margin-top: 6px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-meta-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 8px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-brand);
+        text-decoration: none;
+      }
+      .cp-number-grid {
+        display: grid;
+        gap: 12px;
+      }
+      .cp-number-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .cp-number-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cp-number-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: white;
+        padding: 20px;
+      }
+      .cp-number-card__header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .cp-number-card__icon {
+        display: inline-flex;
+        width: 18px;
+        height: 18px;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .cp-number-card__icon svg {
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+      .cp-number-card__label {
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 500;
+        color: var(--cp-text-title);
+      }
+      .cp-number-card__value {
+        display: block;
+        font-family: var(--cp-font-din);
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 600;
+        color: var(--cp-text-emphasis);
+        font-variant-numeric: tabular-nums;
+      }
+      .cp-session-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        overflow: hidden;
+        background: white;
+        font-size: 12px;
+      }
+      .cp-session-table th,
+      .cp-session-table td {
+        height: 40px;
+        padding: 0 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .cp-session-table th {
+        background: var(--cp-bg-subtle);
+        color: var(--cp-text-muted);
+        font-weight: 500;
+      }
+      .cp-session-table td { color: var(--cp-text-body); }
+      .cp-session-table tbody tr:last-child td { border-bottom: 0; }
+      .cp-session-table .cp-right { text-align: right; }
+      .cp-code {
+        color: var(--cp-text-title);
+        font-family: var(--cp-font-din);
+        font-variant-numeric: tabular-nums;
+      }
+      .cp-empty-box {
+        border: 1px dashed var(--cp-border);
+        border-radius: 4px;
+        background: white;
+        padding: 24px 16px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--cp-text-weak);
+      }
+      .cp-drawer-footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 16px;
+        border-top: 1px solid var(--cp-border);
+        background: white;
+      }
+      .cp-drawer-btn { min-width: 84px; }
+      @media (max-width: 980px) {
+        .cp-card-grid,
+        .cp-number-grid--3,
+        .cp-number-grid--2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 760px) {
+        .cp-shell { padding: 16px; }
+        .cp-page-header { flex-direction: column; }
+        .cp-card-grid,
+        .cp-number-grid--3,
+        .cp-number-grid--2 { grid-template-columns: 1fr; }
+        .cp-drawer { width: calc(100vw - 12px); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cp-app">
+      <div class="cp-backdrop"></div>
+      <div class="cp-shell">
+        <div class="cp-page">
+          <header class="cp-page-header">
+            <div>
+              <h1>OpenClaw 监控</h1>
+              <p>这是用于对照抽屉的背景页面。右侧监控抽屉保持打开，便于直接检查 Header / Body / Footer 结构、信息分组和滚动行为。</p>
+            </div>
+            <div class="cp-page-actions">
+              <button class="cp-page-btn" type="button">刷新列表</button>
+              <button class="cp-page-btn cp-page-btn--primary" type="button">新建 Agent</button>
+            </div>
+          </header>
+          <section class="cp-card-grid" aria-label="背景 KPI 卡">
+            <article class="cp-kpi-card"><div class="cp-kpi-label">活跃 Agent</div><div class="cp-kpi-value">184</div></article>
+            <article class="cp-kpi-card"><div class="cp-kpi-label">故障实例</div><div class="cp-kpi-value">7</div></article>
+            <article class="cp-kpi-card"><div class="cp-kpi-label">平均响应</div><div class="cp-kpi-value">362ms</div></article>
+            <article class="cp-kpi-card"><div class="cp-kpi-label">今日 Tokens</div><div class="cp-kpi-value">952,152</div></article>
+          </section>
+          <section class="cp-content-card">
+            <div class="cp-content-head">
+              <strong>最近告警</strong>
+              <span class="cp-pill">监控正常</span>
+            </div>
+            <table class="cp-mini-table">
+              <thead>
+                <tr><th>Agent</th><th>事件</th><th>时间</th><th>处理</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Alice 的技术助手</td><td>Tokens 消耗突增</td><td>2026-06-09 14:20</td><td><button class="cp-link-btn" type="button">查看监控</button></td></tr>
+                <tr><td>运营值班机器人</td><td>CLS 采集延迟</td><td>2026-06-09 13:42</td><td><button class="cp-link-btn" type="button">查看详情</button></td></tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+      <aside class="cp-drawer" aria-label="监控抽屉预览">
+        <header class="cp-drawer-header">
+          <div class="cp-drawer-header-main">
+            <h2>Alice 的技术助手 - 监控</h2>
+            <p>参考 OpenClawMonitor.tsx 的监控抽屉结构，保持右侧详情抽屉的标准 Header / Body / Footer 分层。</p>
+          </div>
+          <div class="cp-drawer-header-actions">
+            <button class="cp-icon-btn" type="button" aria-label="刷新">
+              <svg viewBox="0 0 16 16" fill="none"><path d="M13.2 8A5.2 5.2 0 1 1 8 2.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M10.6 2.8H13.2V5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+            <button class="cp-icon-btn" type="button" aria-label="关闭">
+              <svg viewBox="0 0 16 16" fill="none"><path d="M4 4 12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M12 4 4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+            </button>
+          </div>
+        </header>
+        <div class="cp-drawer-body">
+          <section class="cp-section">
+            <div class="cp-info-card cp-agent-meta">
+              <h3 class="cp-agent-name">Alice 的技术助手</h3>
+              <div class="cp-agent-id">agt-prod-20260609-01</div>
+              <a class="cp-meta-link" href="#">
+                去腾讯云控制台管理
+                <svg viewBox="0 0 16 16" fill="none"><path d="M6 4H4.667A1.667 1.667 0 0 0 3 5.667v5.666A1.667 1.667 0 0 0 4.667 13h5.666A1.667 1.667 0 0 0 12 11.333V10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.667 3H13v4.333" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7 9 13 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </a>
+            </div>
+          </section>
+          <section class="cp-section">
+            <div class="cp-section-head">
+              <strong>Tokens 分析</strong>
+              <button class="cp-inline-link" type="button">
+                查看完整 Tokens 监控
+                <svg viewBox="0 0 16 16" fill="none"><path d="M6 4H4.667A1.667 1.667 0 0 0 3 5.667v5.666A1.667 1.667 0 0 0 4.667 13h5.666A1.667 1.667 0 0 0 12 11.333V10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.667 3H13v4.333" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7 9 13 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </button>
+            </div>
+            <div class="cp-number-grid cp-number-grid--3">
+              <article class="cp-number-card">
+                <div class="cp-number-card__header">
+                  <span class="cp-number-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 18 18" fill="none"><defs><radialGradient id="drawer-token-in" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)"><stop stop-color="#202020"></stop><stop offset="1" stop-color="#0080FF"></stop></radialGradient></defs><path d="M9 2.2v8.2" stroke="url(#drawer-token-in)" stroke-width="1.8" stroke-linecap="round"></path><path d="m5.9 7.8 3.1 3.1 3.1-3.1" stroke="url(#drawer-token-in)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3.2 13.4h11.6" stroke="url(#drawer-token-in)" stroke-width="1.8" stroke-linecap="round"></path></svg>
+                  </span>
+                  <span class="cp-number-card__label">输入 Tokens</span>
+                </div>
+                <strong class="cp-number-card__value">1,234</strong>
+              </article>
+              <article class="cp-number-card">
+                <div class="cp-number-card__header">
+                  <span class="cp-number-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 18 18" fill="none"><defs><radialGradient id="drawer-token-out" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)"><stop stop-color="#202020"></stop><stop offset="1" stop-color="#0080FF"></stop></radialGradient></defs><path d="M9 15.8V7.6" stroke="url(#drawer-token-out)" stroke-width="1.8" stroke-linecap="round"></path><path d="m12.1 10-3.1-3.1L5.9 10" stroke="url(#drawer-token-out)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3.2 4.6h11.6" stroke="url(#drawer-token-out)" stroke-width="1.8" stroke-linecap="round"></path></svg>
+                  </span>
+                  <span class="cp-number-card__label">输出 Tokens</span>
+                </div>
+                <strong class="cp-number-card__value">5,678</strong>
+              </article>
+              <article class="cp-number-card">
+                <div class="cp-number-card__header">
+                  <span class="cp-number-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 18 18" fill="none"><defs><radialGradient id="drawer-token-total" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)"><stop stop-color="#202020"></stop><stop offset="1" stop-color="#0080FF"></stop></radialGradient></defs><path d="m9 2.4 1.4 4.2 4.2 1.4-4.2 1.4L9 13.6l-1.4-4.2-4.2-1.4 4.2-1.4L9 2.4Z" fill="url(#drawer-token-total)"></path></svg>
+                  </span>
+                  <span class="cp-number-card__label">总 Tokens</span>
+                </div>
+                <strong class="cp-number-card__value">6,912</strong>
+              </article>
+            </div>
+          </section>
+          <section class="cp-section">
+            <div class="cp-section-head">
+              <strong>会话记录</strong>
+              <button class="cp-inline-link" type="button">
+                查看完整会话管理
+                <svg viewBox="0 0 16 16" fill="none"><path d="M6 4H4.667A1.667 1.667 0 0 0 3 5.667v5.666A1.667 1.667 0 0 0 4.667 13h5.666A1.667 1.667 0 0 0 12 11.333V10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.667 3H13v4.333" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7 9 13 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </button>
+            </div>
+            <div class="cp-number-grid cp-number-grid--2" style="margin-bottom: 12px;">
+              <article class="cp-number-card">
+                <div class="cp-number-card__header">
+                  <span class="cp-number-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 18 18" fill="none"><defs><radialGradient id="drawer-session-count" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)"><stop stop-color="#202020"></stop><stop offset="1" stop-color="#0080FF"></stop></radialGradient></defs><path d="M4.5 5.8A1.3 1.3 0 0 1 5.8 4.5h6.4a1.3 1.3 0 0 1 1.3 1.3v4A1.3 1.3 0 0 1 12.2 11H9.5l-2.4 2v-2H5.8A1.3 1.3 0 0 1 4.5 9.8v-4Z" stroke="url(#drawer-session-count)" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+                  </span>
+                  <span class="cp-number-card__label">总会话数</span>
+                </div>
+                <strong class="cp-number-card__value">42</strong>
+              </article>
+              <article class="cp-number-card">
+                <div class="cp-number-card__header">
+                  <span class="cp-number-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 18 18" fill="none"><defs><radialGradient id="drawer-session-round" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.81 9) scale(13.5 720)"><stop stop-color="#202020"></stop><stop offset="1" stop-color="#0080FF"></stop></radialGradient></defs><circle cx="9" cy="9" r="5.4" stroke="url(#drawer-session-round)" stroke-width="1.4"></circle><path d="M9 5.9v3.3l2.2 1.4" stroke="url(#drawer-session-round)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </span>
+                  <span class="cp-number-card__label">平均轮次</span>
+                </div>
+                <strong class="cp-number-card__value">8.5</strong>
+              </article>
+            </div>
+            <table class="cp-session-table">
+              <thead>
+                <tr><th>会话</th><th>类型</th><th>模型</th><th class="cp-right">最新时间</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="cp-code">c3b2ac3c</td><td>Feishu Dm</td><td>hunyuan-turbo-latest</td><td class="cp-right">2026-06-09 17:49</td></tr>
+                <tr><td class="cp-code">81c87c7b</td><td>QQ Dm</td><td>hunyuan-turbo-latest</td><td class="cp-right">2026-06-09 10:07</td></tr>
+                <tr><td class="cp-code">267e462d</td><td>CLI</td><td>deepseek-v3.2</td><td class="cp-right">2026-06-08 12:54</td></tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="cp-section">
+            <div class="cp-section-head"><strong>CLS 状态关闭时的降级区域</strong></div>
+            <div class="cp-empty-box">当前环境未开启 CLS 日志服务时，会话记录区可直接降级为轻量文字提示，不使用大插画。</div>
+          </section>
+        </div>
+        <footer class="cp-drawer-footer">
+          <button class="cp-drawer-btn" type="button">关闭</button>
+          <button class="cp-drawer-btn cp-drawer-btn--primary" type="button">查看完整监控</button>
+        </footer>
+      </aside>
+    </div>
+  </body>
+</html>

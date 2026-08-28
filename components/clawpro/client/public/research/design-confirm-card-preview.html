@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>强切换 vs 弱切换 · 组件可视化</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 48px 24px; background: #FFFFFF;
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+      color: #171717; display: flex; justify-content: center;
+    }
+    .wrap { width: 100%; max-width: 880px; }
+    h1.page { font-size: 22px; font-weight: 600; margin: 0 0 6px; }
+    p.sub { font-size: 13px; color: #737373; margin: 0 0 32px; line-height: 1.6; }
+
+    .panel {
+      border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px 26px 26px;
+      margin-bottom: 22px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); background: #fff;
+    }
+    .panel-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+    .panel-title { font-size: 16px; font-weight: 600; }
+    .panel-en { font-size: 13px; color: #1447E6; font-weight: 500; }
+    .panel-tag {
+      font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px;
+      background: #EFF6FF; color: #1447E6; border: 1px solid #BFDBFE;
+    }
+    .panel-tag.weak { background: #F5F5F5; color: #737373; border-color: #E5E5E5; }
+    .panel-desc { font-size: 13px; color: #737373; line-height: 1.6; margin: 6px 0 20px; }
+    .demo { padding: 24px; background: #FAFAFA; border-radius: 10px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+
+    /* ===== 强切换：Tenant Capsule Tabs（胶囊滑块） ===== */
+    .capsule {
+      position: relative; display: inline-flex; align-items: center; height: 36px;
+      border-radius: 9999px; padding: 0 4px; background: rgba(219,221,228,0.32);
+    }
+    .capsule .thumb {
+      position: absolute; top: 50%; transform: translateY(-50%); height: 28px;
+      border-radius: 9999px; background: #fff; border: 1px solid #CDD4DC;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      transition: left .2s ease-out, width .2s ease-out;
+    }
+    .capsule button {
+      position: relative; z-index: 1; border: 0; background: transparent; cursor: pointer;
+      padding: 4px 12px; font-size: 14px; line-height: 22px; border-radius: 9999px;
+      font-family: inherit; transition: color .15s;
+    }
+    .capsule button[data-active="true"] { color: #020617; font-weight: 500; }
+    .capsule button[data-active="false"] { color: #334155; font-weight: 400; }
+    .capsule button[data-active="false"]:hover { color: #020617; }
+
+    /* ===== 弱切换：Tenant Text Switch（文字切换器） ===== */
+    .textswitch { display: inline-flex; align-items: center; gap: 12px; }
+    .textswitch button {
+      border: 0; background: transparent; cursor: pointer; padding: 0;
+      font-family: inherit; font-size: 14px; line-height: 22px; letter-spacing: 0.07px;
+      font-weight: 400; transition: color .15s;
+    }
+    .textswitch button[data-active="true"] { color: #020617; cursor: default; }
+    .textswitch button[data-active="false"] { color: #A7A7A7; }
+    .textswitch button[data-active="false"]:hover { color: #020617; }
+    .textswitch .sep { color: #E2E8F0; font-size: 14px; user-select: none; }
+
+    .spec { margin-top: 18px; font-size: 12px; color: #A3A3A3; }
+    .spec code { font-family: Menlo, monospace; background:#F5F5F5; padding:1px 5px; border-radius:4px; color:#404040; }
+
+    table.cmp { width:100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+    table.cmp th, table.cmp td { border:1px solid #E5E5E5; padding:10px 12px; text-align:left; }
+    table.cmp th { background:#FAFAFA; color:#404040; font-weight:600; }
+    table.cmp td { color:#404040; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 class="page">D-03 让你确认的组件：强切换 vs 弱切换</h1>
+    <p class="sub">
+      卡片让你确认的，是用户端（Tenant）两种「切换」交互到底要不要拆成两个独立组件规范。<br/>
+      下面是项目源码 <code style="font-family:Menlo,monospace;font-size:12px;background:#F5F5F5;padding:1px 5px;border-radius:4px;">client/src/components/ui/segment.tsx</code> 里它们真实的样子（可点击）：
+    </p>
+
+    <!-- 强切换 -->
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">强切换</span>
+        <span class="panel-en">Tenant Capsule Tabs（胶囊滑块）</span>
+        <span class="panel-tag">主切换</span>
+      </div>
+      <div class="panel-desc">
+        视觉重、有白色滑块背景 + 阴影。用于<b>主导航 / 主分类</b>切换（我的 Agent / 技能广场 / 模型额度、子分类筛选）。组件：<code>CenterTabs</code> / <code>TenantSegment</code>。
+      </div>
+      <div class="demo">
+        <div class="capsule" id="cap1">
+          <div class="thumb"></div>
+          <button data-active="true">我的 Agent</button>
+          <button data-active="false">技能广场</button>
+          <button data-active="false">模型额度</button>
+        </div>
+      </div>
+      <div class="spec">
+        容器 <code>h-36 / radius 9999 / bg rgba(219,221,228,0.32)</code> ·
+        滑块 <code>#FFF + border #CDD4DC + shadow 0 1px 4px</code> ·
+        active <code>#020617 / 500</code> · inactive <code>#334155 / 400</code>
+      </div>
+    </div>
+
+    <!-- 对比 -->
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">一句话区分</span></div>
+      <table class="cmp">
+        <tr><th>维度</th><th>强切换 · Capsule Tabs</th><th>弱切换 · Text Switch</th></tr>
+        <tr><td>视觉</td><td>白色胶囊滑块 + 阴影，分量重</td><td>纯文字 + <code>/</code> 分隔，分量轻</td></tr>
+        <tr><td>语义</td><td>主导航 / 主分类，页面级切换</td><td>辅助开关，主操作旁的次要切换</td></tr>
+        <tr><td>典型位置</td><td>顶部导航中央、页内大分类</td><td>列表右上角「普通 / 多组织」</td></tr>
+        <tr><td>会不会喧宾夺主</td><td>本身就是主角</td><td>不能盖过主操作，所以做轻</td></tr>
+      </table>
+      <div class="spec" style="margin-top:14px">
+        卡片选项 A（推荐）就是「<b>拆成这两套规范</b>」——把上面两个组件分别立为 Tenant Capsule Tabs 与 Tenant Text Switch，各管各的语义；B 是只留胶囊版，弱切换也复用它；C 是不拆、页面自己看着选。
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 胶囊滑块：根据 active 按钮定位 thumb
+    function layoutCapsule(id) {
+      const cap = document.getElementById(id);
+      const thumb = cap.querySelector('.thumb');
+      const active = cap.querySelector('button[data-active="true"]');
+      const cr = cap.getBoundingClientRect();
+      const br = active.getBoundingClientRect();
+      thumb.style.left = (br.left - cr.left) + 'px';
+      thumb.style.width = br.width + 'px';
+    }
+    function bindCapsule(id) {
+      const cap = document.getElementById(id);
+      cap.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          cap.querySelectorAll('button').forEach(b => b.setAttribute('data-active', 'false'));
+          btn.setAttribute('data-active', 'true');
+          layoutCapsule(id);
+        });
+      });
+      layoutCapsule(id);
+    }
+    function bindTextSwitch(id) {
+      const ts = document.getElementById(id);
+      ts.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          ts.querySelectorAll('button').forEach(b => b.setAttribute('data-active', 'false'));
+          btn.setAttribute('data-active', 'true');
+        });
+      });
+    }
+    window.addEventListener('load', () => { bindCapsule('cap1'); });
+    window.addEventListener('resize', () => layoutCapsule('cap1'));
+  </script>
+</body>
+</html>

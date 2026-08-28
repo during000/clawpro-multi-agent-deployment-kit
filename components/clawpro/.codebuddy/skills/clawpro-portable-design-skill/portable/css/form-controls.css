@@ -1,0 +1,54 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Form Controls（granular 基元）— ClawPro
+ * 与 input.css 的复合 .cp-field 互补，提供可单独组合的字段基元：
+ *   Label / FieldGroup / HelperText / FieldError。
+ *   Anatomy：Field > Label(optional) > Control > Helper/Error(optional)
+ *   筛选条用 gap-3 组织；同行控件等高 h-9；圆角 Admin 4px / Tenant 双轨。
+ * 配套：portable/react/form-controls.tsx
+ * 规范：component-specs/form-controls.md §4 / §6
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ─── Label ─── */
+.cp-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--cp-text-secondary);
+  user-select: none;
+}
+
+.cp-label__required {
+  color: var(--cp-text-danger);
+}
+
+/* ─── FieldGroup（label + control + helper 竖排） ─── */
+.cp-field-group {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ─── 筛选条容器（统一 gap-3，控件本身不写 margin） ─── */
+.cp-field-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ─── Helper / Error ─── */
+.cp-helper-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cp-text-muted);
+}
+
+.cp-field-error {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cp-text-danger);
+}

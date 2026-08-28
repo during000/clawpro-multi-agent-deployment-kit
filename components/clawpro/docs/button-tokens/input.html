@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Input 使用图鉴 · ClawPro Design v2</title>
+<style>
+  /* ============================================================
+   *  ClawPro Design v2 · Input 图鉴
+   *  事实标准（input.tsx / textarea.tsx / input-group.tsx）：
+   *    Input · normal      : 1px #D3D6DB · bg transparent
+   *    Input · hover/focus : 1px #355EF1（仅边色蓝，无 box-shadow 光晕）
+   *    Input · disabled    : bg #F3F3F4 · border #D3D6DB · text #B0B6C3
+   *    Input · invalid     : border #D42A1E
+   *    placeholder         : #B0B6C3
+   *    selection           : bg rgba(53,94,241,.10)
+   *    InputGroup · invalid: ring rgba(212,42,30,.20)（容器级，唯一允许的光晕）
+   *  圆角铁律：仅 2/3/4/full 四档（≤ 4px）
+   * ============================================================ */
+  :root{
+    --primary:#1447E6;
+    --primary-strong:#355EF1;
+    --primary-tint:rgba(53,94,241,.10);
+    --destructive:#D42A1E;
+    --destructive-tint:rgba(212,42,30,.20);
+
+    --fg:#0A0A0A;
+    --fg-1:#020617;
+    --fg-2:#334155;
+    --fg-3:#737373;
+    --fg-4:#A3A3A3;
+    --fg-disabled:#B0B6C3;
+
+    --card:#FFFFFF;
+    --border:#E5E5E5;
+    --border-input:#D3D6DB;
+    --border-input-focus:#355EF1;
+    --bg-disabled:#F3F3F4;
+    --surface:linear-gradient(180deg,#FFFFFF 0%,#F5F5F5 100%);
+
+    --shadow-card:0 1px 2px rgba(2,6,23,.04);
+    --shadow-config:0 4px 12px rgba(2,6,23,.06);
+
+    --tag-shadcn-bg:#EFF6FF;--tag-shadcn-fg:#1447E6;
+    --tag-claw-bg:#FEF3C7;--tag-claw-fg:#92400E;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--surface);color:var(--fg);
+    font-family:"PingFang SC","Helvetica Neue","Open Sans",Menlo,"DIN Alternate",-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  code,.mono{font-family:Menlo,"DIN Alternate",ui-monospace,"SF Mono",Consolas,monospace;font-size:12px}
+  a{color:inherit;text-decoration:none}
+
+  .layout{display:grid;grid-template-columns:220px 1fr;gap:32px;max-width:1320px;margin:0 auto;padding:32px 32px 96px;align-items:start}
+  @media (max-width:980px){.layout{grid-template-columns:1fr;padding:20px}}
+
+  .nav{position:sticky;top:24px;background:var(--card);border-radius:4px;padding:16px;font-size:13px;box-shadow:var(--shadow-card)}
+  .nav .back{display:flex;align-items:center;gap:6px;margin:0 0 14px;padding:8px 10px;border-radius:3px;background:#F5F5F5;color:var(--fg-2);font-size:12px;transition:all .15s;border:1px solid transparent}
+  .nav .back:hover{background:#FFFFFF;border-color:#E3E3E3;color:var(--fg-1);box-shadow:var(--shadow-card)}
+  .nav .back .arrow{font-family:Menlo,monospace;color:var(--fg-3)}
+  .nav .nav-title{font-size:11px;color:var(--fg-3);letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px;padding-left:8px}
+  .nav ol{list-style:none;margin:0;padding:0;counter-reset:n}
+  .nav li{counter-increment:n}
+  .nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:3px;color:var(--fg-2);transition:all .15s}
+  .nav a::before{content:counter(n,decimal-leading-zero);font-family:Menlo,monospace;font-size:10px;color:var(--fg-4);background:#F5F5F5;padding:2px 6px;border-radius:2px;flex-shrink:0}
+  .nav a:hover{background:#F5F5F5;color:var(--fg-1)}
+  .nav .meta{margin-top:14px;padding:10px;background:#F5F5F5;border-radius:3px;font-size:11px;color:var(--fg-3);line-height:1.5}
+  .nav .meta b{color:var(--fg-1);font-weight:600}
+  @media (max-width:980px){.nav{position:static}}
+
+  .crumb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--fg-3);margin:0 0 16px}
+  .crumb a{color:var(--fg-3);transition:color .15s}
+  .crumb a:hover{color:var(--primary)}
+  .crumb .sep{color:var(--fg-4);font-family:Menlo,monospace}
+  .crumb .here{color:var(--fg-1);font-weight:500}
+
+  .hero{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:32px 36px;margin-bottom:28px;box-shadow:var(--shadow-card);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(20,71,230,.06) 0%,transparent 70%)}
+  .hero h1{margin:0 0 8px;font-size:30px;letter-spacing:-.02em;font-weight:700;color:var(--fg-1);position:relative;z-index:1}
+  .hero .lead{margin:0;color:var(--fg-2);max-width:760px;font-size:15px;position:relative;z-index:1}
+  .hero .lead b{color:var(--fg-1)}
+
+  .compare{margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:#fff;border:1px solid var(--border);border-radius:4px;padding:20px;position:relative;z-index:1}
+  .compare .col{display:flex;flex-direction:column;gap:10px;align-items:stretch;padding:16px 14px;border-radius:3px;background:#F8F9FB;border:1px dashed transparent;transition:all .2s}
+  .compare .col:hover{border-color:#E3E3E3;background:#F5F5F5}
+  .compare .col .role{font-size:12px;font-weight:600;color:var(--fg-1);text-align:center}
+  .compare .col .role .strength{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .compare .col .desc{font-size:11px;color:var(--fg-3);text-align:center;min-height:32px}
+  .compare .col .vname{margin:0 auto;font-family:Menlo,monospace;font-size:10px;color:var(--fg-2);background:#fff;border:1px solid var(--border);padding:2px 8px;border-radius:2px}
+
+  .section{margin-top:48px;scroll-margin-top:24px}
+  .section-title{display:flex;align-items:center;gap:14px;margin:0 0 18px}
+  .section-title .num{width:36px;height:36px;border-radius:3px;background:linear-gradient(90deg,#020617 70%,#1447E6 100%);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;font-family:Menlo,monospace}
+  .section-title h2{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--fg-1)}
+  .section-title .sub{color:var(--fg-3);font-size:13px;margin-left:auto}
+
+  .tier{margin:32px 0 14px;display:flex;align-items:center;gap:12px;font-size:13px}
+  .tier .bar{flex:0 0 4px;height:18px;border-radius:2px}
+  .tier b{color:var(--fg-1);font-weight:600;font-size:14px}
+  .tier .desc{color:var(--fg-3)}
+
+  .scene-list{display:flex;flex-direction:column;gap:14px}
+  .scene{background:var(--card);border:1px solid var(--border);border-radius:4px;display:grid;grid-template-columns:260px 1fr 300px;overflow:hidden;transition:all .2s;box-shadow:var(--shadow-card)}
+  .scene:hover{box-shadow:var(--shadow-config)}
+  @media (max-width:1100px){.scene{grid-template-columns:1fr}}
+  .scene .when{padding:22px 22px 22px 24px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;justify-content:center;position:relative}
+  .scene .when::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:0 2px 2px 0}
+  .scene[data-tier="strong"] .when::before{background:var(--primary)}
+  .scene[data-tier="mid"]    .when::before{background:#475569}
+  .scene[data-tier="weak"]   .when::before{background:var(--fg-4)}
+  .scene[data-tier="danger"] .when::before{background:var(--destructive)}
+  .scene .when .badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;background:#fff;border:1px solid var(--border);color:var(--fg-2);padding:3px 10px;border-radius:999px;width:fit-content;letter-spacing:.04em}
+  .scene[data-tier="strong"] .when .badge{border-color:#E3E3E3;color:var(--primary);background:#F5F5F5}
+  .scene[data-tier="danger"] .when .badge{border-color:#FCA5A5;color:#B91C1C;background:#FEF2F2}
+  .scene .when .label{font-size:17px;font-weight:600;color:var(--fg-1);letter-spacing:-.01em;margin-top:6px}
+  .scene .when .hint{font-size:12px;color:var(--fg-3);line-height:1.6;margin-top:2px}
+  .scene .when .examples{font-size:12px;color:var(--fg-2);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)}
+  .scene .when .examples b{color:var(--fg-1);font-weight:600}
+  .scene .stage{padding:24px;display:flex;align-items:center;justify-content:center;gap:8px;background:radial-gradient(circle at 50% 50%,#F8F9FB 0%,#fff 70%);min-height:140px;position:relative}
+  .scene .stage::after{content:"focus 看交互 →";position:absolute;bottom:10px;right:14px;font-size:10px;color:var(--fg-4);opacity:.6}
+  .scene .stage .demo{width:min(360px,100%);display:flex;flex-direction:column;gap:6px}
+  .scene .stage .demo .lbl{font-size:11px;color:var(--fg-3);font-weight:500}
+
+  .ticket{padding:18px 20px;border-left:1px solid var(--border);background:#FAFAFA;display:flex;flex-direction:column;gap:12px}
+  .ticket .head{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-bottom:10px;border-bottom:1px dashed var(--border)}
+  .ticket .head .pill{font-family:Menlo,monospace;font-size:12px;font-weight:600;background:var(--fg-1);color:#fff;padding:4px 10px;border-radius:3px}
+  .ticket .head .pill.size{background:#475569}
+  .ticket .head .src{font-size:10px;color:var(--fg-4);margin-left:auto}
+  .ticket .head .src.shadcn{color:var(--tag-shadcn-fg)}
+  .ticket .head .src.claw{color:var(--tag-claw-fg)}
+  .ticket .meta-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--fg-2)}
+  .ticket .meta-row .k{color:var(--fg-3);font-size:11px}
+  .ticket .swatch-line{display:flex;gap:4px}
+  .ticket .swatch-line .sw{flex:1;height:18px;border-radius:2px;border:1px solid var(--border);position:relative}
+  .ticket .swatch-line .sw[data-label]:hover::after{content:attr(data-label);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--fg-1);color:#fff;font-size:10px;padding:3px 6px;border-radius:2px;white-space:nowrap;z-index:5}
+  .ticket .copy{background:var(--fg-1);color:#fff;padding:10px 12px;border-radius:3px;font-family:Menlo,monospace;font-size:11px;line-height:1.5;word-break:break-all;cursor:pointer;position:relative;transition:background .15s}
+  .ticket .copy:hover{background:#0F172A}
+  .ticket .copy::after{content:"📋";position:absolute;top:8px;right:8px;font-size:11px;opacity:.6}
+  .ticket .copy.copied::after{content:"✓ 已复制";color:#86EFAC;font-size:10px;opacity:1}
+  .ticket .copy .c{color:#7DD3FC} .ticket .copy .p{color:#FCA5A5} .ticket .copy .s{color:#FDE68A}
+
+  /* Input 事实标准实现 */
+  .ipt{display:flex;align-items:center;width:100%;height:36px;border:1px solid var(--border-input);border-radius:4px;background:transparent;padding:5px 12px;font-size:14px;color:var(--fg-1);outline:none;transition:border-color .15s;font-family:inherit}
+  .ipt::placeholder{color:var(--fg-disabled)}
+  .ipt::selection{background:var(--primary-tint);color:var(--fg-1)}
+  .ipt:hover:not(:disabled):not([aria-invalid="true"]){border-color:var(--border-input-focus)}
+  .ipt:focus-visible,.ipt.is-focus{border-color:var(--border-input-focus)}
+  .ipt:disabled,.ipt.is-disabled{background:var(--bg-disabled);color:var(--fg-disabled);border-color:var(--border-input);cursor:not-allowed;pointer-events:none}
+  .ipt[aria-invalid="true"],.ipt.is-invalid{border-color:var(--destructive)}
+  .ipt[readonly]{color:var(--fg-2)}
+
+  .igroup{display:flex;align-items:stretch;width:100%;min-height:36px;border:1px solid var(--border-input);border-radius:4px;background:transparent;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s;overflow:hidden}
+  .igroup:hover{border-color:var(--border-input-focus)}
+  .igroup:focus-within{border-color:var(--border-input-focus)}
+  .igroup.is-invalid{border-color:var(--destructive);box-shadow:0 0 0 3px var(--destructive-tint)}
+  .igroup.col{flex-direction:column}
+  .igroup > .ipt{flex:1;border:0;box-shadow:none;background:transparent;height:auto;min-height:34px;padding:5px 12px}
+  .igroup > .ipt:hover,.igroup > .ipt:focus-visible{border:0;box-shadow:none}
+
+  .addon{display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--fg-3);font-size:13px;user-select:none}
+  .addon.start{padding-right:0}
+  .addon.end{padding-left:0}
+  .addon.block{padding:8px 12px;width:100%;justify-content:flex-start;font-size:12px;color:var(--fg-2);background:#FAFAFA}
+  .addon.block.top{border-bottom:1px solid var(--border)}
+  .addon.block.bottom{border-top:1px solid var(--border)}
+  .addon svg{width:16px;height:16px;flex-shrink:0}
+  .addon kbd{font-family:Menlo,monospace;font-size:10px;background:#F5F5F5;border:1px solid #E3E3E3;border-bottom-width:2px;color:var(--fg-2);padding:1px 6px;border-radius:2px}
+
+  .igbtn{display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;color:var(--fg-2);font-family:inherit;font-size:12px;cursor:pointer;border-radius:2px;padding:0 8px;height:24px;transition:background .15s,color .15s}
+  .igbtn:hover{background:#F5F5F5;color:var(--fg-1)}
+  .igbtn.primary{background:linear-gradient(90deg,#020617 70%,#1447E6 100%);color:#fff;height:28px;padding:0 12px;border-radius:3px}
+  .igbtn.primary:hover{background:linear-gradient(90deg,#020617 70%,#0A226F 100%);color:#fff}
+  .igbtn svg{width:14px;height:14px}
+
+  .tarea{display:block;width:100%;min-height:64px;border:1px solid var(--border-input);border-radius:4px;background:transparent;padding:8px 12px;font-size:14px;font-family:inherit;color:var(--fg-1);outline:none;resize:vertical;transition:border-color .15s}
+  .tarea::placeholder{color:var(--fg-disabled)}
+  .tarea:hover:not(:disabled):not([aria-invalid="true"]){border-color:var(--border-input-focus)}
+  .tarea:focus-visible{border-color:var(--border-input-focus)}
+  .tarea:disabled{background:var(--bg-disabled);color:var(--fg-disabled);cursor:not-allowed}
+  .tarea[aria-invalid="true"]{border-color:var(--destructive)}
+
+  .help{font-size:11px;color:var(--fg-3);margin-top:2px;display:flex;align-items:center;gap:4px}
+  .help.error{color:var(--destructive)}
+  .help svg{width:12px;height:12px}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:24px;box-shadow:var(--shadow-card)}
+  .grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media (max-width:900px){.grid-5,.grid-4{grid-template-columns:repeat(2,1fr)}}
+
+  .demo-cell{display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:18px 14px;border-radius:3px;background:#FAFAFA;border:1px solid transparent;transition:all .2s}
+  .demo-cell:hover{border-color:#E3E3E3;background:#fff;box-shadow:var(--shadow-card)}
+  .demo-cell .name{font-size:13px;font-weight:600;color:var(--fg-1);text-align:center}
+  .demo-cell .desc{font-size:11px;color:var(--fg-3);text-align:center}
+  .demo-cell code{font-size:10px;background:#fff;border:1px solid var(--border);padding:1px 6px;border-radius:2px;color:var(--fg-2);align-self:center}
+
+  .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:var(--shadow-card)}
+  .table-tools{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center;background:#FAFAFA}
+  .table-tools input{flex:1;height:34px;padding:0 12px;border:1px solid var(--border-input);border-radius:4px;font-size:13px;font-family:inherit;background:#fff;outline:none;transition:border-color .15s}
+  .table-tools input:hover,.table-tools input:focus{border-color:var(--border-input-focus)}
+  .table-tools .filter{display:flex;gap:4px}
+  .table-tools .filter button{padding:6px 12px;border-radius:3px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:12px;color:var(--fg-2);font-family:inherit;transition:all .15s}
+  .table-tools .filter button.on{background:var(--fg-1);color:#fff;border-color:var(--fg-1)}
+  .table-tools .filter button:hover:not(.on){background:#F5F5F5;border-color:#E3E3E3}
+
+  .token-row{display:grid;grid-template-columns:200px 90px 1fr 220px 200px;align-items:center;border-bottom:1px solid var(--border);transition:background .15s}
+  .token-row:last-child{border-bottom:0}
+  .token-row:hover{background:#FAFAFA}
+  .token-row.head{background:#F5F5F5;font-size:11px;color:var(--fg-3);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+  .token-row .cell{padding:14px 16px}
+  .token-row .name{font-family:Menlo,monospace;font-size:12px;font-weight:600;color:var(--fg-1)}
+  .token-row .role{color:var(--fg-2);font-size:13px}
+  .token-row .chip{display:flex;align-items:center;gap:8px}
+  .token-row .chip .box{width:32px;height:20px;border-radius:2px;border:1px solid var(--border);flex-shrink:0}
+  .token-row .chip .val{font-family:Menlo,monospace;font-size:11px;color:var(--fg-1)}
+  .token-row .preview{display:flex;justify-content:flex-end}
+  .group-divider{background:linear-gradient(90deg,#020617 70%,#1447E6 100%);color:#fff;font-size:11px;padding:10px 18px;letter-spacing:.08em;font-weight:600}
+  .src-tag{font-size:10px;padding:2px 8px;border-radius:2px;font-weight:600;letter-spacing:.04em}
+  .src-tag.shadcn{background:var(--tag-shadcn-bg);color:var(--tag-shadcn-fg)}
+  .src-tag.claw{background:var(--tag-claw-bg);color:var(--tag-claw-fg)}
+
+  .tip{margin-top:18px;background:#FFFBEB;border:1px solid #FCD34D;border-radius:4px;padding:16px 20px;display:flex;gap:12px;font-size:13px;color:#78350F;line-height:1.7}
+  .tip .ico{font-size:20px;flex-shrink:0}
+  .tip code{background:#fff;border:1px solid #FCD34D;padding:1px 6px;border-radius:2px;color:#78350F}
+
+  footer{margin-top:64px;color:var(--fg-4);font-size:12px;text-align:center;line-height:1.8}
+  footer code{background:#fff;border:1px solid var(--border);padding:2px 6px;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="nav">
+    <a class="back" href="index.html"><span class="arrow">←</span>组件总览</a>
+    <div class="nav-title">目录</div>
+    <ol>
+      <li><a href="#overview">主角对比</a></li>
+      <li><a href="#scenes">按场景查</a></li>
+      <li><a href="#states">5 种状态</a></li>
+      <li><a href="#anatomy">Addon 对齐</a></li>
+      <li><a href="#tokens">Token 索引</a></li>
+    </ol>
+    <div class="meta">
+      <b>Source</b><br/>
+      <code>input.tsx</code> + <code>input-group.tsx</code> + <code>textarea.tsx</code><br/>
+      <b>Spec</b> · ClawPro DS v2
+    </div>
+  </aside>
+
+  <main>
+    <nav class="crumb" aria-label="breadcrumb">
+      <a href="index.html">组件总览</a>
+      <span class="sep">/</span>
+      <span class="here">Input 使用图鉴</span>
+    </nav>
+
+    <section class="hero" id="overview">
+      <h1>Input 使用图鉴</h1>
+      <p class="lead">每一行讲清三件事：<b>什么场景用</b>、<b>长这样</b>、<b>叫什么名字</b>。产品同学拿这页就能直接和前端对齐——单行文本、搜索、密码、校验提示，"用 <code style="background:#F5F5F5;padding:1px 6px;border-radius:2px;border:1px solid #E3E3E3">InputGroup</code> 加个图标"就够。</p>
+
+      <div class="compare">
+        <div class="col">
+          <div class="role"><i class="strength" style="background:var(--primary)"></i>基础输入</div>
+          <input class="ipt" placeholder="请输入名称" />
+          <div class="desc">最常用的单行文本，表单首选</div>
+          <div class="vname">Input</div>
+        </div>
+        <div class="col">
+          <div class="role"><i class="strength" style="background:var(--primary)"></i>带图标 / 搜索</div>
+          <div class="igroup">
+            <span class="addon start"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <input class="ipt" placeholder="搜索…" />
+          </div>
+          <div class="desc">放图标 / 单位 / 快捷键</div>
+          <div class="vname">InputGroup</div>
+        </div>
+        <div class="col">
+          <div class="role"><i class="strength" style="background:#475569"></i>带操作按钮</div>
+          <div class="igroup">
+            <input class="ipt" type="password" value="secret123" />
+            <span class="addon end"><button class="igbtn">显示</button></span>
+          </div>
+          <div class="desc">右侧塞按钮 / 切换 / 清除</div>
+          <div class="vname">+ InputGroupButton</div>
+        </div>
+        <div class="col">
+          <div class="role"><i class="strength" style="background:var(--destructive)"></i>校验失败</div>
+          <input class="ipt is-invalid" value="invalid@" aria-invalid="true" />
+          <div class="desc">aria-invalid 自动套红边</div>
+          <div class="vname">aria-invalid</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="scenes">
+      <div class="section-title">
+        <span class="num">01</span>
+        <h2>按场景查 · PRD 提问指南</h2>
+        <span class="sub">右侧 token 价签可点击复制</span>
+      </div>
+
+      <div class="tier"><div class="bar" style="background:var(--primary)"></div><b>基础输入</b><span class="desc">· 表单 90% 的场景 · 单纯一个输入框</span></div>
+      <div class="scene-list">
+        <div class="scene" data-tier="strong">
+          <div class="when">
+            <span class="badge">⭐ 最常用</span>
+            <div class="label">单行文本</div>
+            <div class="hint">名称、标题、链接、邮箱…直接放进表单 Field 里就行</div>
+            <div class="examples">例：<b>Agent 名称</b>、邮箱、URL</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="lbl">Agent 名称</div><input class="ipt" placeholder="例如 客服助手" /></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill">Input</span><span class="pill size">h-9</span><span class="src shadcn">shadcn</span></div>
+            <div class="meta-row"><span class="k">尺寸</span><span>36 高 · 12 横向内距</span></div>
+            <div class="meta-row"><span class="k">交互</span><span>hover/focus → 边色 #355EF1</span></div>
+            <div class="swatch-line">
+              <div class="sw" style="background:#fff;border:1px solid #D3D6DB" data-label="border #D3D6DB"></div>
+              <div class="sw" style="background:#fff;border:1px solid #355EF1" data-label="hover/focus #355EF1"></div>
+              <div class="sw" style="background:#020617" data-label="text #020617"></div>
+            </div>
+            <div class="copy" data-copy='&lt;Input placeholder="例如 客服助手" /&gt;'>&lt;<span class="c">Input</span> <span class="p">placeholder</span>=<span class="s">"例如 客服助手"</span> /&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="strong">
+          <div class="when">
+            <span class="badge">多行</span>
+            <div class="label">多行文本 · Textarea</div>
+            <div class="hint">长描述、备注、Prompt 内容用这个，自动支持中文输入法（IME Composition）</div>
+            <div class="examples">例：<b>Agent 描述</b>、System Prompt、备注</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="lbl">Agent 描述</div><textarea class="tarea" placeholder="描述这个 Agent 的能力与边界…"></textarea></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill">Textarea</span><span class="pill size">min-h-16</span><span class="src shadcn">shadcn</span></div>
+            <div class="meta-row"><span class="k">最小高</span><span>64px · 可纵向拖拽</span></div>
+            <div class="meta-row"><span class="k">特殊</span><span>field-sizing-content · IME 安全</span></div>
+            <div class="swatch-line"><div class="sw" style="background:#fff;border:1px solid #D3D6DB" data-label="border #D3D6DB"></div></div>
+            <div class="copy" data-copy='&lt;Textarea placeholder="…" /&gt;'>&lt;<span class="c">Textarea</span> <span class="p">placeholder</span>=<span class="s">"…"</span> /&gt;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier"><div class="bar" style="background:#475569"></div><b>带辅助元素</b><span class="desc">· 用 InputGroup 给输入框加图标 / 单位 / 按钮</span></div>
+      <div class="scene-list">
+        <div class="scene" data-tier="mid">
+          <div class="when">
+            <span class="badge">前缀图标</span>
+            <div class="label">搜索 / 邮箱 / URL</div>
+            <div class="hint">左侧加图标做语义提示，焦点会整体高亮</div>
+            <div class="examples">例：<b>搜索</b>、邮箱、链接</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="lbl">搜索 Agent</div><div class="igroup"><span class="addon start"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><input class="ipt" placeholder="按名称、标签搜索…" /></div></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill">InputGroup</span><span class="pill size">inline-start</span><span class="src claw">claw figma</span></div>
+            <div class="meta-row"><span class="k">结构</span><span>Addon + Input</span></div>
+            <div class="meta-row"><span class="k">对齐</span><span>align="inline-start"</span></div>
+            <div class="swatch-line"><div class="sw" style="background:#fff;border:1px solid #D3D6DB" data-label="border #D3D6DB"></div><div class="sw" style="background:#737373" data-label="icon #737373"></div></div>
+            <div class="copy" data-copy='&lt;InputGroup&gt;&lt;InputGroupAddon&gt;&lt;Search/&gt;&lt;/InputGroupAddon&gt;&lt;InputGroupInput/&gt;&lt;/InputGroup&gt;'>&lt;<span class="c">InputGroup</span>&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupAddon</span>&gt;&lt;<span class="c">Search</span>/&gt;&lt;/<span class="c">InputGroupAddon</span>&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupInput</span>/&gt;<br/>&lt;/<span class="c">InputGroup</span>&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="mid">
+          <div class="when">
+            <span class="badge">后缀单位</span>
+            <div class="label">数字 + 单位 / 货币</div>
+            <div class="hint">右侧贴单位文本，让数字含义一目了然</div>
+            <div class="examples">例：<b>金额 ¥</b>、Token 上限、超时秒数</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="lbl">超时时间</div><div class="igroup"><input class="ipt" value="30" /><span class="addon end" style="color:var(--fg-2)">秒</span></div></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill">InputGroup</span><span class="pill size">inline-end</span><span class="src claw">claw figma</span></div>
+            <div class="meta-row"><span class="k">结构</span><span>Input + Addon (text)</span></div>
+            <div class="meta-row"><span class="k">对齐</span><span>align="inline-end"</span></div>
+            <div class="swatch-line"><div class="sw" style="background:#fff;border:1px solid #D3D6DB" data-label="border #D3D6DB"></div></div>
+            <div class="copy" data-copy='&lt;InputGroup&gt;&lt;InputGroupInput/&gt;&lt;InputGroupAddon align="inline-end"&gt;秒&lt;/InputGroupAddon&gt;&lt;/InputGroup&gt;'>&lt;<span class="c">InputGroup</span>&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupInput</span>/&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupAddon</span> <span class="p">align</span>=<span class="s">"inline-end"</span>&gt;秒&lt;/<span class="c">InputGroupAddon</span>&gt;<br/>&lt;/<span class="c">InputGroup</span>&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="mid">
+          <div class="when">
+            <span class="badge">右侧操作</span>
+            <div class="label">密码可见切换 · 清空</div>
+            <div class="hint">用 <code>InputGroupButton</code> 在右侧塞个迷你按钮，hover 才有底色</div>
+            <div class="examples">例：<b>👁 显示密码</b>、清空、复制</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="lbl">密码</div><div class="igroup"><input class="ipt" type="password" value="secret123" /><span class="addon end"><button class="igbtn">显示</button></span></div></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill">InputGroup</span><span class="pill size">+ Button xs</span><span class="src claw">claw figma</span></div>
+            <div class="meta-row"><span class="k">按钮尺寸</span><span>xs · h-6 · variant=ghost</span></div>
+            <div class="meta-row"><span class="k">边距</span><span>负 margin 紧贴右内边</span></div>
+            <div class="swatch-line"><div class="sw" style="background:#F5F5F5" data-label="hover #F5F5F5"></div></div>
+            <div class="copy" data-copy='&lt;InputGroup&gt;&lt;InputGroupInput type="password"/&gt;&lt;InputGroupAddon align="inline-end"&gt;&lt;InputGroupButton&gt;显示&lt;/InputGroupButton&gt;&lt;/InputGroupAddon&gt;&lt;/InputGroup&gt;'>&lt;<span class="c">InputGroup</span>&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupInput</span> <span class="p">type</span>=<span class="s">"password"</span>/&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupAddon</span> <span class="p">align</span>=<span class="s">"inline-end"</span>&gt;<br/>&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="c">InputGroupButton</span>&gt;显示&lt;/<span class="c">InputGroupButton</span>&gt;<br/>&nbsp;&nbsp;&lt;/<span class="c">InputGroupAddon</span>&gt;<br/>&lt;/<span class="c">InputGroup</span>&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="mid">
+          <div class="when">
+            <span class="badge">快捷键</span>
+            <div class="label">命令面板 · ⌘K</div>
+            <div class="hint">右侧贴 <code>kbd</code> 提示快捷键，告诉用户能用键盘呼出</div>
+            <div class="examples">例：<b>全局搜索</b>、命令面板</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="lbl">命令</div><div class="igroup"><span class="addon start"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><input class="ipt" placeholder="输入命令或搜索…" /><span class="addon end"><kbd>⌘</kbd><kbd>K</kbd></span></div></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill">InputGroup</span><span class="pill size">+ kbd</span><span class="src claw">claw figma</span></div>
+            <div class="meta-row"><span class="k">前后缀</span><span>start: icon · end: kbd</span></div>
+            <div class="meta-row"><span class="k">使用</span><span>常用于 Cmdk / 全局搜索</span></div>
+            <div class="swatch-line"><div class="sw" style="background:#F5F5F5;border:1px solid #E3E3E3" data-label="kbd #F5F5F5"></div></div>
+            <div class="copy" data-copy='&lt;InputGroup&gt;&lt;InputGroupAddon&gt;&lt;Search/&gt;&lt;/InputGroupAddon&gt;&lt;InputGroupInput/&gt;&lt;InputGroupAddon align="inline-end"&gt;&lt;kbd&gt;⌘K&lt;/kbd&gt;&lt;/InputGroupAddon&gt;&lt;/InputGroup&gt;'>&lt;<span class="c">InputGroup</span>&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupAddon</span>&gt;&lt;<span class="c">Search</span>/&gt;&lt;/<span class="c">InputGroupAddon</span>&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupInput</span>/&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupAddon</span> <span class="p">align</span>=<span class="s">"inline-end"</span>&gt;&lt;kbd&gt;⌘K&lt;/kbd&gt;&lt;/<span class="c">InputGroupAddon</span>&gt;<br/>&lt;/<span class="c">InputGroup</span>&gt;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier"><div class="bar" style="background:var(--fg-4)"></div><b>只读 / 复合</b><span class="desc">· 展示 + 复制 · 多行编辑器</span></div>
+      <div class="scene-list">
+        <div class="scene" data-tier="weak">
+          <div class="when">
+            <span class="badge">只读</span>
+            <div class="label">展示并允许复制</div>
+            <div class="hint">值是只读的，但用户能选中复制；右侧加复制按钮更友好。事实标准 readonly 不改底色</div>
+            <div class="examples">例：<b>API Key</b>、Webhook URL、Agent ID</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="lbl">API Key</div><div class="igroup"><input class="ipt" readonly value="sk-•••••••••••••••••••••a8f3" /><span class="addon end"><button class="igbtn">复制</button></span></div></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill">Input</span><span class="pill size">readOnly</span><span class="src shadcn">shadcn</span></div>
+            <div class="meta-row"><span class="k">行为</span><span>禁用编辑 / 允许选中复制</span></div>
+            <div class="meta-row"><span class="k">底色</span><span>不变（与可编辑同色）</span></div>
+            <div class="swatch-line"><div class="sw" style="background:#fff;border:1px solid #D3D6DB" data-label="readonly #FFF"></div></div>
+            <div class="copy" data-copy='&lt;Input readOnly value="sk-…" /&gt;'>&lt;<span class="c">Input</span> <span class="p">readOnly</span> <span class="p">value</span>=<span class="s">"sk-…"</span> /&gt;</div>
+          </div>
+        </div>
+
+        <div class="scene" data-tier="weak">
+          <div class="when">
+            <span class="badge">编辑器</span>
+            <div class="label">底部带工具条的多行</div>
+            <div class="hint">block-end Addon 把工具条粘在底部，常见于聊天 / Prompt 编辑</div>
+            <div class="examples">例：<b>对话输入</b>、PromptEditor</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="igroup col"><textarea class="ipt" style="height:auto;min-height:60px;padding:10px 12px" placeholder="给 Agent 发条消息…"></textarea><span class="addon block bottom"><span style="color:var(--fg-3)">Enter 发送 · Shift+Enter 换行</span><button class="igbtn primary" style="margin-left:auto">发送</button></span></div></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill">InputGroup</span><span class="pill size">block-end</span><span class="src claw">claw figma</span></div>
+            <div class="meta-row"><span class="k">布局</span><span>纵向 · Textarea + 底部工具条</span></div>
+            <div class="meta-row"><span class="k">对齐</span><span>align="block-end"</span></div>
+            <div class="swatch-line"><div class="sw" style="background:#FAFAFA;border:1px solid #E5E5E5" data-label="addon #FAFAFA"></div><div class="sw" style="background:linear-gradient(90deg,#020617 70%,#1447E6)" data-label="primary CTA"></div></div>
+            <div class="copy" data-copy='&lt;InputGroup&gt;&lt;InputGroupTextarea/&gt;&lt;InputGroupAddon align="block-end"&gt;…&lt;Button variant="claw-primary"&gt;发送&lt;/Button&gt;&lt;/InputGroupAddon&gt;&lt;/InputGroup&gt;'>&lt;<span class="c">InputGroup</span>&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupTextarea</span>/&gt;<br/>&nbsp;&nbsp;&lt;<span class="c">InputGroupAddon</span> <span class="p">align</span>=<span class="s">"block-end"</span>&gt;<br/>&nbsp;&nbsp;&nbsp;&nbsp;…&lt;<span class="c">Button</span> <span class="p">variant</span>=<span class="s">"claw-primary"</span>&gt;发送&lt;/<span class="c">Button</span>&gt;<br/>&nbsp;&nbsp;&lt;/<span class="c">InputGroupAddon</span>&gt;<br/>&lt;/<span class="c">InputGroup</span>&gt;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier"><div class="bar" style="background:var(--destructive)"></div><b>校验失败</b><span class="desc">· aria-invalid 自动套红边 · 配 helper 文案</span></div>
+      <div class="scene-list">
+        <div class="scene" data-tier="danger">
+          <div class="when">
+            <span class="badge">⚠ 校验</span>
+            <div class="label">输入不合法</div>
+            <div class="hint">通过 <code>aria-invalid</code> 让框变红，下方追加错误文案——别用 toast，就近提示最直观</div>
+            <div class="examples">例：<b>邮箱格式错误</b>、必填、长度超限</div>
+          </div>
+          <div class="stage"><div class="demo"><div class="lbl">邮箱</div><input class="ipt is-invalid" value="user@invalid" aria-invalid="true" /><div class="help error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>请输入有效的邮箱地址</div></div></div>
+          <div class="ticket">
+            <div class="head"><span class="pill" style="background:var(--destructive)">aria-invalid</span><span class="pill size">+ helper</span><span class="src shadcn">shadcn</span></div>
+            <div class="meta-row"><span class="k">边色</span><span>destructive #D42A1E</span></div>
+            <div class="meta-row"><span class="k">外环</span><span>仅 InputGroup 容器才有 ring</span></div>
+            <div class="swatch-line"><div class="sw" style="background:#D42A1E" data-label="border #D42A1E"></div><div class="sw" style="background:rgba(212,42,30,.2)" data-label="ring 20%"></div></div>
+            <div class="copy" data-copy='&lt;Input aria-invalid={!!error} /&gt;'>&lt;<span class="c">Input</span> <span class="p">aria-invalid</span>={<span class="s">!!error</span>} /&gt;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <span class="ico">💡</span>
+        <div><b>给产品同学的口令</b><br/>说"<code>InputGroup</code> 加个搜索图标"或"<code>aria-invalid</code> + helper 文案"，前端就知道你要的样式。带按钮的右侧操作直接用 <code>InputGroupButton</code>，不需要额外画图。</div>
+      </div>
+    </section>
+
+    <section class="section" id="states">
+      <div class="section-title"><span class="num">02</span><h2>同一个输入框的 5 种状态</h2><span class="sub">所有 Input / Textarea 通用</span></div>
+      <div class="card">
+        <div class="grid-5">
+          <div class="demo-cell"><input class="ipt" placeholder="请输入" /><div class="name">默认</div><div class="desc">border #D3D6DB</div></div>
+          <div class="demo-cell"><input class="ipt" placeholder="请输入" style="border-color:#355EF1" /><div class="name">悬停</div><div class="desc">hover · 边色 #355EF1</div></div>
+          <div class="demo-cell"><input class="ipt is-focus" value="focused" /><div class="name">键盘聚焦</div><div class="desc">focus · 仅边色蓝</div></div>
+          <div class="demo-cell"><input class="ipt is-disabled" disabled value="不可编辑" /><div class="name">禁用</div><div class="desc">bg #F3F3F4 · text #B0B6C3</div></div>
+          <div class="demo-cell"><input class="ipt is-invalid" value="非法输入" aria-invalid="true" /><div class="name">校验失败</div><div class="desc">aria-invalid · #D42A1E</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="anatomy">
+      <div class="section-title"><span class="num">03</span><h2>4 种 Addon 对齐方向</h2><span class="sub">InputGroupAddon align 的 4 个值</span></div>
+      <div class="card">
+        <div class="grid-4">
+          <div class="demo-cell"><div class="igroup"><span class="addon start"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><input class="ipt" placeholder="搜索" /></div><div class="name">左前缀</div><div class="desc">图标 / 协议 / 货币</div><code>inline-start</code></div>
+          <div class="demo-cell"><div class="igroup"><input class="ipt" value="100" /><span class="addon end" style="color:var(--fg-2)">元</span></div><div class="name">右后缀</div><div class="desc">单位 / 操作按钮</div><code>inline-end</code></div>
+          <div class="demo-cell"><div class="igroup col"><span class="addon block top">https://example.com/</span><input class="ipt" placeholder="path/to/resource" /></div><div class="name">顶部</div><div class="desc">长前缀 / 标签</div><code>block-start</code></div>
+          <div class="demo-cell"><div class="igroup col"><textarea class="ipt" style="height:auto;min-height:48px;padding:8px 12px" placeholder="输入消息…"></textarea><span class="addon block bottom"><span style="color:var(--fg-3)">128 字符</span><button class="igbtn primary" style="margin-left:auto">发送</button></span></div><div class="name">底部</div><div class="desc">工具条 / 字数统计</div><code>block-end</code></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tokens">
+      <div class="section-title"><span class="num">04</span><h2>完整 Token 索引</h2><span class="sub">设计 / 前端速查 · 与 input.tsx / input-group.tsx / textarea.tsx 一一对应</span></div>
+      <div class="table-wrap">
+        <div class="table-tools">
+          <input id="tk-search" placeholder="搜索 token 名 / 用途…" />
+          <div class="filter"><button class="on" data-f="all">全部</button><button data-f="shadcn">shadcn</button><button data-f="claw">claw figma</button></div>
+        </div>
+        <div class="token-row head">
+          <div class="cell">Token 名</div><div class="cell">来源</div><div class="cell">用途</div><div class="cell">值</div><div class="cell" style="text-align:right">实物预览</div>
+        </div>
+
+        <div class="group-divider">CONTAINER · 容器结构（6 个）</div>
+        <div class="token-row" data-src="shadcn" data-key="Input 单行"><div class="cell name">Input</div><div class="cell"><span class="src-tag shadcn">shadcn</span></div><div class="cell role">单行文本输入</div><div class="cell chip"><span class="val">h-9 · px-3 · rounded-[4px]</span></div><div class="cell preview"><input class="ipt" placeholder="单行" style="height:30px"/></div></div>
+        <div class="token-row" data-src="shadcn" data-key="Textarea 多行"><div class="cell name">Textarea</div><div class="cell"><span class="src-tag shadcn">shadcn</span></div><div class="cell role">多行文本输入 · IME 安全</div><div class="cell chip"><span class="val">min-h-16 · field-sizing-content</span></div><div class="cell preview"><textarea class="tarea" style="min-height:32px;height:32px;padding:4px 8px;font-size:11px">多行</textarea></div></div>
+        <div class="token-row" data-src="claw" data-key="InputGroup 容器 包裹"><div class="cell name">InputGroup</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">输入框容器（合并边 + focus + invalid ring）</div><div class="cell chip"><span class="val">flex · rounded-[4px]</span></div><div class="cell preview"><div class="igroup" style="height:30px"><span class="addon start" style="padding:0 8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><input class="ipt" placeholder="…" style="height:28px;font-size:12px"/></div></div></div>
+        <div class="token-row" data-src="claw" data-key="InputGroupAddon 前后缀"><div class="cell name">InputGroupAddon</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">前/后/上/下缀容器</div><div class="cell chip"><span class="val">align: 4 个方向</span></div><div class="cell preview"><span class="addon" style="background:#F5F5F5;border-radius:2px;padding:2px 8px;font-size:11px;color:#334155">addon</span></div></div>
+        <div class="token-row" data-src="claw" data-key="InputGroupButton 右侧按钮"><div class="cell name">InputGroupButton</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">输入框内迷你按钮（默认 ghost）</div><div class="cell chip"><span class="val">xs · h-6 · variant=ghost</span></div><div class="cell preview"><button class="igbtn">操作</button></div></div>
+        <div class="token-row" data-src="claw" data-key="InputGroupText 文本辅助"><div class="cell name">InputGroupText</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">前后缀的纯文字 / 单位</div><div class="cell chip"><span class="val">text-muted-foreground</span></div><div class="cell preview"><span style="color:var(--fg-3);font-size:12px">¥ / 秒 / @</span></div></div>
+
+        <div class="group-divider">ALIGN · Addon 对齐方向（4 个）</div>
+        <div class="token-row" data-src="claw" data-key="inline-start 左前缀"><div class="cell name">inline-start</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">左前缀（默认）</div><div class="cell chip"><span class="val">order-first · pl-3</span></div><div class="cell preview"><div class="igroup" style="height:30px"><span class="addon start" style="padding:0 6px;font-size:11px">@</span><input class="ipt" style="height:28px"/></div></div></div>
+        <div class="token-row" data-src="claw" data-key="inline-end 右后缀"><div class="cell name">inline-end</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">右后缀</div><div class="cell chip"><span class="val">order-last · pr-3</span></div><div class="cell preview"><div class="igroup" style="height:30px"><input class="ipt" style="height:28px"/><span class="addon end" style="padding:0 6px;font-size:11px">秒</span></div></div></div>
+        <div class="token-row" data-src="claw" data-key="block-start 顶部"><div class="cell name">block-start</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">顶部块前缀</div><div class="cell chip"><span class="val">flex-col · order-first</span></div><div class="cell preview"><div class="igroup col" style="min-height:auto"><span class="addon block top" style="padding:2px 8px;font-size:10px">https://</span><input class="ipt" style="height:24px;font-size:11px"/></div></div></div>
+        <div class="token-row" data-src="claw" data-key="block-end 底部"><div class="cell name">block-end</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">底部工具条</div><div class="cell chip"><span class="val">flex-col · order-last</span></div><div class="cell preview"><div class="igroup col" style="min-height:auto"><input class="ipt" style="height:24px;font-size:11px"/><span class="addon block bottom" style="padding:2px 8px;font-size:10px">128 字</span></div></div></div>
+
+        <div class="group-divider">SIZE · 内嵌按钮尺寸（4 个）</div>
+        <div class="token-row" data-src="claw" data-key="xs 24 默认"><div class="cell name">xs</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">InputGroupButton 默认</div><div class="cell chip"><span class="val">h-6 · px-2 · gap-1</span></div><div class="cell preview"><button class="igbtn">操作</button></div></div>
+        <div class="token-row" data-src="claw" data-key="sm 32 稍大"><div class="cell name">sm</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">稍大的输入内按钮</div><div class="cell chip"><span class="val">h-8 · px-2.5 · gap-1.5</span></div><div class="cell preview"><button class="igbtn primary" style="height:24px;padding:0 10px;font-size:11px;border-radius:2px">发送</button></div></div>
+        <div class="token-row" data-src="claw" data-key="icon-xs 24 方形"><div class="cell name">icon-xs</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">纯图标小方按钮</div><div class="cell chip"><span class="val">size-6</span></div><div class="cell preview"><button class="igbtn" style="width:24px;height:24px;padding:0;justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></div>
+        <div class="token-row" data-src="claw" data-key="icon-sm 32 方形"><div class="cell name">icon-sm</div><div class="cell"><span class="src-tag claw">claw figma</span></div><div class="cell role">稍大的纯图标按钮</div><div class="cell chip"><span class="val">size-8</span></div><div class="cell preview"><button class="igbtn" style="width:28px;height:28px;padding:0;justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+
+        <div class="group-divider">STATE · 状态修饰（4 个）</div>
+        <div class="token-row" data-src="shadcn" data-key="hover focus 蓝边"><div class="cell name">hover / focus</div><div class="cell"><span class="src-tag shadcn">shadcn</span></div><div class="cell role">悬停 / 键盘聚焦 · 边色 #355EF1</div><div class="cell chip"><div class="box" style="background:#fff;border:1px solid #355EF1"></div><span class="val">border #355EF1</span></div><div class="cell preview"><input class="ipt is-focus" style="height:28px;font-size:11px" value="focused"/></div></div>
+        <div class="token-row" data-src="shadcn" data-key="aria-invalid 红边"><div class="cell name">aria-invalid</div><div class="cell"><span class="src-tag shadcn">shadcn</span></div><div class="cell role">校验失败 · 红色边框</div><div class="cell chip"><div class="box" style="background:#fff;border:1px solid #D42A1E"></div><span class="val">border #D42A1E</span></div><div class="cell preview"><input class="ipt is-invalid" style="height:28px;font-size:11px" value="error"/></div></div>
+        <div class="token-row" data-src="shadcn" data-key="disabled 禁用 灰底"><div class="cell name">disabled</div><div class="cell"><span class="src-tag shadcn">shadcn</span></div><div class="cell role">禁用态 · 灰底 + 灰字</div><div class="cell chip"><div class="box" style="background:#F3F3F4;border:1px solid #D3D6DB"></div><span class="val">bg #F3F3F4 · text #B0B6C3</span></div><div class="cell preview"><input class="ipt is-disabled" disabled style="height:28px;font-size:11px" value="禁用"/></div></div>
+        <div class="token-row" data-src="shadcn" data-key="readonly 只读"><div class="cell name">readOnly</div><div class="cell"><span class="src-tag shadcn">shadcn</span></div><div class="cell role">只读态 · 可选中复制（不改底色）</div><div class="cell chip"><div class="box" style="background:#fff;border:1px solid #D3D6DB"></div><span class="val">同 normal · text #334155</span></div><div class="cell preview"><input class="ipt" readonly style="height:28px;font-size:11px" value="readonly"/></div></div>
+      </div>
+    </section>
+
+    <footer>
+      Source · <code>client/src/components/ui/input.tsx</code> + <code>input-group.tsx</code> + <code>textarea.tsx</code><br/>
+      ClawPro Design v2 · 与 Button 图鉴同源风格
+    </footer>
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('.copy').forEach(el=>{
+    el.addEventListener('click',async()=>{
+      const text = el.dataset.copy || el.textContent;
+      try{
+        await navigator.clipboard.writeText(text);
+        el.classList.add('copied');
+        setTimeout(()=>el.classList.remove('copied'),1500);
+      }catch(e){}
+    });
+  });
+
+  const search = document.getElementById('tk-search');
+  const filterBtns = document.querySelectorAll('.table-tools .filter button');
+  let currentFilter = 'all';
+  function applyFilter(){
+    const q = (search.value||'').toLowerCase().trim();
+    document.querySelectorAll('.token-row[data-key]').forEach(row=>{
+      const matchSrc = currentFilter==='all' || row.dataset.src===currentFilter;
+      const matchQ   = !q || row.dataset.key.toLowerCase().includes(q) || row.querySelector('.name').textContent.toLowerCase().includes(q);
+      row.style.display = (matchSrc && matchQ) ? '' : 'none';
+    });
+  }
+  search.addEventListener('input',applyFilter);
+  filterBtns.forEach(b=>b.addEventListener('click',()=>{
+    filterBtns.forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    currentFilter = b.dataset.f;
+    applyFilter();
+  }));
+
+  document.querySelectorAll('.nav a').forEach(a=>{
+    const href = a.getAttribute('href');
+    if(href && href.startsWith('#')){
+      a.addEventListener('click',e=>{
+        const id = href.slice(1);
+        const target = document.getElementById(id);
+        if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
+      });
+    }
+  });
+</script>
+</body>
+</html>

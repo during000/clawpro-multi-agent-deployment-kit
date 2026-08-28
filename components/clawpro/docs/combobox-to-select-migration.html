@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Combobox → Select 全量替换计划</title>
+<style>
+  :root {
+    --brand: #1447E6;
+    --brand-tint: #EFF6FF;
+    --black: #020617;
+    --border: #E2E8F0;
+    --border-strong: #CBD5E1;
+    --text-title: #0F172A;
+    --text-body: #334155;
+    --text-secondary: #475569;
+    --text-weak: #94A3B8;
+    --text-muted: #64748B;
+    --bg: #F8FAFC;
+    --surface: #FFFFFF;
+    --warn-bg: #FFF7ED;
+    --warn-border: #FED7AA;
+    --warn-text: #C2410C;
+    --ok-bg: #F0FDF4;
+    --ok-border: #BBF7D0;
+    --ok-text: #15803D;
+    --info-bg: #EFF6FF;
+    --info-border: #BFDBFE;
+    --info-text: #1D4ED8;
+    --danger-bg: #FEF2F2;
+    --danger-border: #FECACA;
+    --danger-text: #B91C1C;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text-body);
+    line-height: 1.6;
+    padding: 40px 24px 80px;
+    font-size: 14px;
+  }
+  .container { max-width: 1180px; margin: 0 auto; }
+  header.page-head {
+    background: linear-gradient(135deg, #020617 60%, #1447E6 100%);
+    color: #fff;
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-bottom: 28px;
+  }
+  header.page-head h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  header.page-head p { color: #C7D2FE; font-size: 14px; max-width: 760px; }
+  header.page-head .meta { margin-top: 16px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; color: #A5B4FC; }
+  header.page-head .meta b { color: #fff; }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    border: 1px solid;
+  }
+  .callout.warn { background: var(--warn-bg); border-color: var(--warn-border); color: var(--warn-text); }
+  .callout.info { background: var(--info-bg); border-color: var(--info-border); color: var(--info-text); }
+  .callout b { font-weight: 700; }
+  .callout ul { margin: 8px 0 0 20px; }
+  .callout li { margin-bottom: 4px; }
+
+  h2.section {
+    font-size: 19px; font-weight: 700; color: var(--text-title);
+    margin: 36px 0 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  h2.section .badge-count {
+    font-size: 12px; font-weight: 600; background: var(--brand-tint);
+    color: var(--brand); padding: 2px 10px; border-radius: 20px;
+  }
+
+  /* 卡片网格 */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 920px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(15,23,42,0.04);
+  }
+  .card-head {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+  }
+  .card-head .title { font-size: 15px; font-weight: 700; color: var(--text-title); }
+  .card-head .file { font-size: 12px; color: var(--text-muted); font-family: "SF Mono", Menlo, monospace; margin-top: 3px; word-break: break-all; }
+  .tags { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; white-space: nowrap; }
+  .tag.single { background: #EEF2FF; color: #4338CA; }
+  .tag.multi { background: #FCE7F3; color: #BE185D; }
+  .tag.search { background: #ECFEFF; color: #0E7490; }
+  .tag.group { background: #F0FDF4; color: #15803D; }
+  .tag.cascade { background: #FEF3C7; color: #B45309; }
+  .tag.dead { background: #F1F5F9; color: #64748B; }
+
+  .card-body { padding: 18px; }
+  .card-body .ctx { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; }
+  .card-body .ctx b { color: var(--text-title); }
+
+  /* 模拟截图 */
+  .shot {
+    background: var(--bg);
+    border: 1px dashed var(--border-strong);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .shot .shot-label {
+    position: absolute; top: -9px; left: 12px; background: var(--bg);
+    padding: 0 8px; font-size: 11px; color: var(--text-weak); font-weight: 600;
+  }
+
+  /* 触发器外观（role=combobox 按钮） */
+  .trigger {
+    display: inline-flex; align-items: center; justify-content: space-between;
+    height: 36px; padding: 0 12px; background: #fff;
+    border: 1px solid var(--border-strong); border-radius: 4px;
+    font-size: 14px; color: var(--text-title); gap: 8px; min-width: 140px;
+  }
+  .trigger.placeholder { color: var(--text-weak); }
+  .trigger .chev { color: var(--text-weak); font-size: 12px; }
+  .trigger .x { color: var(--text-weak); font-size: 12px; margin-right: -2px; }
+  .trigger.h40 { height: 40px; }
+
+  /* 下拉面板模拟 */
+  .panel {
+    margin-top: 10px; width: 260px; background: #fff;
+    border: 1px solid var(--border); border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(15,23,42,0.10); overflow: hidden;
+  }
+  .panel .search-box {
+    display: flex; align-items: center; gap: 6px; height: 32px;
+    margin: 8px; padding: 0 8px; border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text-weak); font-size: 13px;
+  }
+  .panel .opt {
+    display: flex; align-items: center; gap: 6px; padding: 7px 10px; font-size: 13px;
+    color: var(--text-body); cursor: default;
+  }
+  .panel .opt.sel { background: var(--brand-tint); color: var(--brand); font-weight: 600; }
+  .panel .opt .ck { margin-left: auto; color: var(--brand); }
+  .panel .opt .arrow { color: var(--text-weak); font-size: 10px; width: 12px; }
+  .panel .opt.indent { padding-left: 26px; }
+  .panel .opt.indent2 { padding-left: 42px; }
+  .panel .sec { padding: 8px 10px 4px; font-size: 11px; color: var(--text-weak); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .panel .cbox { width: 14px; height: 14px; border: 1.5px solid var(--border-strong); border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; }
+  .panel .cbox.on { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .panel .cbox.ind { background: #fff; border-color: var(--brand); color: var(--brand); }
+  .panel .foot {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border); padding: 8px 10px; font-size: 12px; color: var(--text-muted);
+  }
+  .panel .foot .btns { display: flex; gap: 6px; }
+  .panel .foot .btn { font-size: 12px; padding: 3px 10px; border-radius: 4px; }
+  .panel .foot .btn.cancel { color: var(--text-muted); border: 1px solid var(--border); }
+  .panel .foot .btn.ok { background: var(--black); color: #fff; }
+  .panel .tabs { display: flex; gap: 6px; padding: 10px; }
+  .panel .tabs .t { flex: 1; text-align: center; padding: 5px; font-size: 12px; font-weight: 600; border: 1px solid var(--border); border-radius: 4px; color: var(--text-secondary); }
+  .panel .tabs .t.on { background: var(--brand-tint); border-color: #BFCFFE; color: var(--brand); }
+  .cascade-wrap { display: flex; }
+  .cascade-wrap .col { width: 130px; border-right: 1px solid var(--border); }
+  .cascade-wrap .col:last-child { border-right: none; }
+
+  /* 替换计划 */
+  .plan { background: var(--info-bg); border: 1px solid var(--info-border); border-radius: 8px; padding: 14px 16px; }
+  .plan .plan-title { font-size: 12px; font-weight: 700; color: var(--info-text); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .plan .map { font-size: 13px; margin-bottom: 6px; }
+  .plan .map .from { color: var(--danger-text); font-family: "SF Mono", Menlo, monospace; font-size: 12px; }
+  .plan .map .arrow { color: var(--text-muted); margin: 0 6px; }
+  .plan .map .to { color: var(--ok-text); font-weight: 600; font-family: "SF Mono", Menlo, monospace; font-size: 12px; }
+  .plan ul { margin: 6px 0 0 18px; font-size: 13px; color: var(--text-secondary); }
+  .plan ul li { margin-bottom: 3px; }
+  .effort { display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 20px; }
+  .effort.low { background: var(--ok-bg); color: var(--ok-text); }
+  .effort.mid { background: var(--warn-bg); color: var(--warn-text); }
+  .effort.high { background: var(--danger-bg); color: var(--danger-text); }
+
+  /* 汇总表 */
+  table.summary { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); font-size: 13px; }
+  table.summary th { background: #F1F5F9; text-align: left; padding: 11px 14px; font-weight: 700; color: var(--text-title); font-size: 12px; }
+  table.summary td { padding: 11px 14px; border-top: 1px solid var(--border); vertical-align: top; }
+  table.summary tr:hover td { background: #FAFBFC; }
+  table.summary code { font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--text-secondary); }
+  .repo-pill { font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 4px; }
+  .repo-pill.design { background: #EDE9FE; color: #6D28D9; }
+  .repo-pill.front { background: #DBEAFE; color: #1D4ED8; }
+
+  .phase-box { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 0; overflow: hidden; }
+  .phase { display: flex; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .phase:last-child { border-bottom: none; }
+  .phase .num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--black); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+  .phase .pc { flex: 1; }
+  .phase .pc h4 { font-size: 14px; color: var(--text-title); margin-bottom: 4px; }
+  .phase .pc p { font-size: 13px; color: var(--text-secondary); }
+  .phase .pc .files { font-size: 12px; color: var(--text-muted); font-family: "SF Mono", Menlo, monospace; margin-top: 4px; }
+  .footer-note { margin-top: 30px; font-size: 12px; color: var(--text-muted); text-align: center; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="page-head">
+    <h1>Combobox → Select 全量替换计划</h1>
+    <p>对两个仓库中所有「Combobox」相关用法的可视化盘点与替换方案。每个条目附「界面截图模拟 + 组件引用名 + 替换映射」。</p>
+    <div class="meta">
+      <span>仓库：<b>design-integration-2026</b> + <b>enterprise-fronted</b></span>
+      <span>真实业务调用：<b>13 处</b></span>
+      <span>可复用筛选组件：<b>5 个</b></span>
+      <span>死代码：<b>1 个</b>（AgentCombobox）</span>
+    </div>
+  </header>
+
+  <div class="callout warn">
+    <b>关键前提：项目里没有真正的 &lt;Combobox&gt; 组件被使用。</b>
+    <ul>
+      <li>除了已删除/无引用的 <code>OpenClawCombobox.tsx</code>（导出 <code>AgentCombobox</code>，基于 cmdk Command 实现）外，所有出现的 <code>combobox</code> 都是无障碍属性 <code>role="combobox"</code>，挂在<b>自建 Popover 下拉触发器</b>（&lt;Button&gt; / &lt;button&gt;）上。</li>
+      <li>这些「伪 Combobox」内部各自手写了树形/分组/搜索/确认逻辑，<b>并非标准 Select 组件</b>。</li>
+      <li>因此「替换成 Select」的真实含义 = <b>用统一的 Select / SearchableSelect / TreeSelectFilter 收敛这些重复的自建下拉</b>，并移除散落的 <code>role="combobox"</code> 与死代码。</li>
+    </ul>
+  </div>
+
+  <!-- ============ design-integration-2026 ============ -->
+  <h2 class="section">design-integration-2026 仓库 <span class="badge-count">7 处</span></h2>
+  <div class="grid">
+
+    <!-- 1 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">① Agent 监控 · 分组筛选</div>
+          <div class="file">pages/admin/OpenClawMonitor.tsx · L452</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag search">搜索</span><span class="tag group">分组树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">组件 <b>InstanceGroupFilter</b>，Agent 监控页工具栏的「分组」筛选器。按 source 分桶（部门 / 自定义分组）。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部分组</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="search-box">🔍 搜索分组</div>
+            <div class="opt sel">全部分组 <span class="ck">✓</span></div>
+            <div class="sec">部门</div>
+            <div class="opt"><span class="arrow">▸</span>研发中心</div>
+            <div class="opt indent">前端组</div>
+            <div class="foot"><span>全部分组</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">自建 Popover + role="combobox"</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt;</span></div>
+          <ul>
+            <li>已有通用组件 <code>_internal/TreeSelectFilter</code>（树+搜索+确认+面包屑），直接替换</li>
+            <li>把 source 分桶数据拍平成 <code>TreeNode[]</code>（分桶用顶层节点表达）</li>
+            <li>移除手写树节点 <code>GroupTreeNodeItem</code></li>
+          </ul>
+          <span class="effort mid">工作量：中</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">② Agent 监控 · 部门筛选</div>
+          <div class="file">pages/admin/OpenClawMonitor.tsx · L595</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag group">部门树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">组件 <b>InstanceDepartmentFilter</b>，Agent 监控页「部门」筛选，无搜索框，底部面包屑路径。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部部门</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="opt sel">全部部门 <span class="ck">✓</span></div>
+            <div class="opt"><span class="arrow">▾</span>A公司</div>
+            <div class="opt indent">技术部</div>
+            <div class="opt indent2">前端组</div>
+            <div class="foot"><span>A公司 › 技术部</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">自建 Popover + role="combobox"</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt;</span></div>
+          <ul>
+            <li>同 ①，统一为 <code>TreeSelectFilter</code></li>
+            <li>组件本身支持 <code>path</code> 面包屑，无搜索时不传 <code>searchPlaceholder</code>（可加 showSearch 开关）</li>
+            <li>移除手写 <code>InstanceDepartmentTreeNode</code></li>
+          </ul>
+          <span class="effort low">工作量：低</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">③ 通用 · 分组多选筛选器</div>
+          <div class="file">components/GroupMultiFilter.tsx · L129</div>
+        </div>
+        <div class="tags"><span class="tag multi">多选</span><span class="tag search">搜索</span><span class="tag group">分区树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">通用组件 <b>GroupMultiFilter</b>，被 OpsObservation / SessionManagement 复用。三态 checkbox，多分区。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger"><span>前端组 +2</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="search-box">🔍 请输入分组名称</div>
+            <div class="sec">部门</div>
+            <div class="opt"><span class="cbox ind">–</span>研发中心</div>
+            <div class="opt indent"><span class="cbox on">✓</span>前端组</div>
+            <div class="opt indent"><span class="cbox">&nbsp;</span>后端组</div>
+            <div class="foot"><span>已选 3 项</span><span class="btns"><span class="btn cancel">清空</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">role="combobox" trigger</span><span class="arrow">→</span><span class="to">保留组件 · 仅清理 trigger</span></div>
+          <ul>
+            <li>标准 Select 不支持「树形多选 + 三态」，<b>不宜直接替换为 Select</b></li>
+            <li>保留 <code>GroupMultiFilter</code> 作为「多选树筛选」唯一实现，仅把 trigger 样式对齐标准 Select（h-9 / token 描边）</li>
+            <li>可去掉 <code>role="combobox"</code> 或保留（ARIA 合规，建议保留）</li>
+          </ul>
+          <span class="effort low">工作量：低（保留）</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">④ 通用 · 分组单选筛选器</div>
+          <div class="file">components/GroupSingleFilter.tsx · L182</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag group">分区树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">通用组件 <b>GroupSingleFilter</b>，单选树+面包屑，无搜索框。外观复刻 Agent 列表。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部分组</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="opt sel">全部分组 <span class="ck">✓</span></div>
+            <div class="sec">自定义分组</div>
+            <div class="opt"><span class="arrow">▾</span>核心团队</div>
+            <div class="opt indent">A 小组</div>
+            <div class="foot"><span>核心团队 › A 小组</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">GroupSingleFilter（自建）</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt;</span></div>
+          <ul>
+            <li>能力与 <code>TreeSelectFilter</code> 高度重合，建议<b>合并收敛</b>到 TreeSelectFilter</li>
+            <li>若需保留分区（部门/自定义分组），给 TreeSelectFilter 增加 <code>sections</code> 能力</li>
+          </ul>
+          <span class="effort mid">工作量：中</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑤ Tokens 监控 · 部门筛选</div>
+          <div class="file">pages/admin/TokensMonitor.tsx · L283</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag group">部门树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">组件 <b>TokenDepartmentFilter</b>，Tokens 监控页「按部门」筛选，无搜索。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部部门</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="opt sel">全部部门 <span class="ck">✓</span></div>
+            <div class="opt"><span class="arrow">▾</span>A公司</div>
+            <div class="opt indent">数据部</div>
+            <div class="foot"><span>A公司 › 数据部</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">自建 Popover + role="combobox"</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt;</span></div>
+          <ul><li>同 ②，统一为 TreeSelectFilter；移除手写 <code>TokenDepartmentTreeNode</code></li></ul>
+          <span class="effort low">工作量：低</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑥ Tokens 监控 · 分组筛选</div>
+          <div class="file">pages/admin/TokensMonitor.tsx · L430</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag search">搜索</span><span class="tag group">分组树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">组件 <b>TokenGroupFilter</b>，Tokens 监控页「按分组」Tab 筛选，带搜索框 + 分区。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部分组</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="search-box">🔍 搜索分组</div>
+            <div class="opt sel">全部分组 <span class="ck">✓</span></div>
+            <div class="opt"><span class="arrow">▸</span>业务线 A</div>
+            <div class="foot"><span>—</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">自建 Popover + role="combobox"</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt;</span></div>
+          <ul><li>同 ①，统一为 TreeSelectFilter（带搜索）；移除手写 <code>TokenGroupTreeNode</code></li></ul>
+          <span class="effort mid">工作量：中</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑦ 通用底层 · 树形单选筛选器</div>
+          <div class="file">components/_internal/TreeSelectFilter.tsx · L197</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag search">搜索</span><span class="tag group">树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">通用底层组件 <b>TreeSelectFilter</b> 本身的触发器。这是<b>替换的目标组件</b>，本身不需替换。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟（标准形态 · 替换基准）</span>
+          <div class="trigger"><span>全部</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="search-box">🔍 搜索</div>
+            <div class="opt sel">全部 <span class="ck">✓</span></div>
+            <div class="opt"><span class="arrow">▾</span>父节点</div>
+            <div class="opt indent">子节点</div>
+            <div class="foot"><span>父节点 › 子节点</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">—</span><span class="arrow"></span><span class="to">作为收敛目标，保留并增强</span></div>
+          <ul>
+            <li>建议增加 <code>sections</code>（分区）与 <code>showSearch</code> 开关，承接 ①②④⑤⑥</li>
+            <li>触发器自身 <code>role="combobox"</code> 属于 ARIA 合规，保留</li>
+          </ul>
+          <span class="effort low">无需替换</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ enterprise-fronted ============ -->
+  <h2 class="section">enterprise-fronted 仓库 <span class="badge-count">6 处 + 死代码</span></h2>
+  <div class="grid">
+
+    <!-- F1 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑧ 模型配置 · 厂商级联选择</div>
+          <div class="file">pages/admin/ModelConfig.tsx · L583</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag cascade">级联</span><span class="tag group">二级</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">组件 <b>ModelCascader</b>，选择「模型厂商」的二级级联菜单（Coding Plan / API → 厂商）。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder h40"><span>选择模型厂商</span><span class="chev">⇅</span></div>
+          <div class="panel">
+            <div class="cascade-wrap">
+              <div class="col">
+                <div class="opt sel">Coding Plan <span class="arrow" style="margin-left:auto">▸</span></div>
+                <div class="opt">API <span class="arrow" style="margin-left:auto">▸</span></div>
+              </div>
+              <div class="col">
+                <div class="opt sel">Claude <span class="ck">✓</span></div>
+                <div class="opt">OpenAI</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">ModelCascader（级联）</span><span class="arrow">→</span><span class="to">保留（Select 不支持级联）</span></div>
+          <ul>
+            <li>这是<b>级联选择器（Cascader）</b>，标准 Select 无法表达二级联动</li>
+            <li><b>不替换</b>，仅去掉散落的 <code>role="combobox"</code> 改为 Cascader 专用语义；trigger 高度 h-10 建议统一 h-9</li>
+          </ul>
+          <span class="effort high">工作量：保留/重构为独立 Cascader</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- F2 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑨ 成员管理 · 部门筛选</div>
+          <div class="file">pages/admin/MemberManagement.tsx · L1597</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag group">部门树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">部门筛选 Popover，内部已用 <b>SelectPanel</b>（commitMode=confirm, showSearch=false）+ 部门树。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部部门</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="opt sel">全部部门 <span class="ck">✓</span></div>
+            <div class="opt"><span class="arrow">▾</span>总部</div>
+            <div class="opt indent">人力资源部</div>
+            <div class="foot"><span>总部 › 人力资源部</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">role="combobox" 外壳 + SelectPanel</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt; 或保留 SelectPanel</span></div>
+          <ul>
+            <li>已基于 <code>SelectPanel</code>，最接近规范。仅需把 trigger 的 <code>role="combobox"</code> 与手写树收敛</li>
+            <li>推荐统一为 <code>TreeSelectFilter</code>（前端仓也有同名组件）</li>
+          </ul>
+          <span class="effort low">工作量：低</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- F3 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑩ 文件管理 · 分组筛选</div>
+          <div class="file">pages/admin/FileManagement.tsx · L158</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag search">搜索</span><span class="tag group">分组树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">实例「分组」筛选，已用 <b>SelectPanel</b>（带搜索 + 确认）。compact 时改为漏斗图标 button。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部分组</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="search-box">🔍 搜索分组</div>
+            <div class="opt sel">全部分组 <span class="ck">✓</span></div>
+            <div class="opt"><span class="arrow">▾</span>项目组</div>
+            <div class="opt indent">Alpha</div>
+            <div class="foot"><span>项目组 › Alpha</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">role="combobox" 外壳 + SelectPanel</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt;</span></div>
+          <ul><li>同 ⑨。保留 compact 漏斗变体（作为 TreeSelectFilter 的 triggerVariant）</li></ul>
+          <span class="effort low">工作量：低</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- F4 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑪ 部门信息 · 部门筛选</div>
+          <div class="file">pages/admin/DepartmentInfo.tsx · L95</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag group">部门树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">部门筛选 Popover，手写 footer 面包屑 + 取消/确认，无搜索。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部部门</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="opt sel">全部部门 <span class="ck">✓</span></div>
+            <div class="opt"><span class="arrow">▾</span>集团</div>
+            <div class="opt indent">研发中心</div>
+            <div class="foot"><span>集团 › 研发中心</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">自建 Popover + role="combobox"</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt;</span></div>
+          <ul><li>完全自建，统一为 TreeSelectFilter；移除手写树与 footer</li></ul>
+          <span class="effort low">工作量：低</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- F5 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑫ Tokens 监控 · 分组/部门筛选</div>
+          <div class="file">pages/admin/TokensMonitor.tsx · L351 / L445</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag search">搜索</span><span class="tag group">树</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">前端仓 Tokens 监控两个筛选（分组带搜索 / 部门无搜索），均已用 <b>SelectPanel</b>。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger placeholder"><span>全部分组</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="search-box">🔍 搜索</div>
+            <div class="opt sel">全部分组 <span class="ck">✓</span></div>
+            <div class="opt"><span class="arrow">▸</span>分组节点</div>
+            <div class="foot"><span>—</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">role="combobox" 外壳 ×2</span><span class="arrow">→</span><span class="to">&lt;TreeSelectFilter /&gt; ×2</span></div>
+          <ul><li>两处统一为 TreeSelectFilter（分组传 showSearch，部门不传）</li></ul>
+          <span class="effort low">工作量：低</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- F6 -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="title">⑬ CLS 开启范围选择器</div>
+          <div class="file">components/CollectScopePopover.tsx · L252</div>
+        </div>
+        <div class="tags"><span class="tag multi">多选</span><span class="tag search">搜索</span><span class="tag group">Tab+分区</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">组件 <b>CollectScopePopover</b>，「全部用户 / 按分组」Tab + 树多选三态 + 已选 chip。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger"><span>按分组 · 已选 3</span><span class="chev">▾</span></div>
+          <div class="panel">
+            <div class="tabs"><span class="t">全部用户</span><span class="t on">按分组</span></div>
+            <div class="search-box">🔍 搜索</div>
+            <div class="opt"><span class="cbox ind">–</span>研发中心</div>
+            <div class="opt indent"><span class="cbox on">✓</span>前端组</div>
+            <div class="foot"><span>已选 3 项</span><span class="btns"><span class="btn cancel">取消</span><span class="btn ok">确认</span></span></div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">role="combobox" trigger</span><span class="arrow">→</span><span class="to">保留（等价 ScopeSelect）</span></div>
+          <ul>
+            <li>语义是「应用范围多选」，标准 Select <b>无法替代</b>（含 Tab + 三态多选）</li>
+            <li><b>不替换</b>，建议与 design 仓 <code>ScopeSelect</code> 对齐统一；仅清理 trigger 样式</li>
+          </ul>
+          <span class="effort low">工作量：保留</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- F7 死代码 -->
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-head">
+        <div>
+          <div class="title">⑭ AgentCombobox（唯一真正的 Combobox 实现）</div>
+          <div class="file">components/OpenClawCombobox.tsx · L33 · 基于 cmdk Command</div>
+        </div>
+        <div class="tags"><span class="tag single">单选</span><span class="tag search">搜索</span><span class="tag dead">死代码 · 无引用</span></div>
+      </div>
+      <div class="card-body">
+        <div class="ctx">导出 <b>AgentCombobox</b>，唯一真正基于 <code>Popover + Command(cmdk)</code> 的 Combobox。<b>全仓无任何 import 引用</b>，且 design 仓的同名文件已被删除合并入 SearchableSelect。</div>
+        <div class="shot">
+          <span class="shot-label">界面模拟</span>
+          <div class="trigger"><span>Agent-A</span><span style="display:flex;gap:6px"><span class="x">✕</span><span class="chev">▾</span></span></div>
+          <div class="panel">
+            <div class="search-box">🔍 搜索 Agent 名称...</div>
+            <div class="opt sel"><span class="ck">✓</span>全部 Agent</div>
+            <div class="opt">Agent-A</div>
+            <div class="opt">Agent-B</div>
+          </div>
+        </div>
+        <div class="plan">
+          <div class="plan-title">替换计划</div>
+          <div class="map"><span class="from">AgentCombobox (cmdk)</span><span class="arrow">→</span><span class="to">&lt;SearchableSelect /&gt; 或直接删除</span></div>
+          <ul>
+            <li>无引用，<b>建议直接删除</b> <code>OpenClawCombobox.tsx</code>（及 cmdk 依赖如无其它使用）</li>
+            <li>若将来需要「搜索单选」，使用现成的 <code>SearchableSelect</code>（已是规范实现）</li>
+            <li>design 仓已完成此收敛，前端仓只需对齐删除</li>
+          </ul>
+          <span class="effort low">工作量：低（删除）</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ 汇总表 ============ -->
+  <h2 class="section">替换映射汇总表</h2>
+  <table class="summary">
+    <thead>
+      <tr>
+        <th style="width:30px">#</th>
+        <th>位置</th>
+        <th>当前实现</th>
+        <th>替换目标</th>
+        <th>能否用标准 Select</th>
+        <th>工作量</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>①</td><td><span class="repo-pill design">design</span> OpenClawMonitor·分组 L452</td><td>自建 Popover + role=combobox</td><td>TreeSelectFilter</td><td>需树形扩展</td><td>中</td></tr>
+      <tr><td>②</td><td><span class="repo-pill design">design</span> OpenClawMonitor·部门 L595</td><td>自建 Popover</td><td>TreeSelectFilter</td><td>需树形扩展</td><td>低</td></tr>
+      <tr><td>③</td><td><span class="repo-pill design">design</span> GroupMultiFilter L129</td><td>多选树（三态）</td><td>保留 · 清理 trigger</td><td>否（多选树）</td><td>低</td></tr>
+      <tr><td>④</td><td><span class="repo-pill design">design</span> GroupSingleFilter L182</td><td>单选分区树</td><td>合并到 TreeSelectFilter</td><td>需分区扩展</td><td>中</td></tr>
+      <tr><td>⑤</td><td><span class="repo-pill design">design</span> TokensMonitor·部门 L283</td><td>自建 Popover</td><td>TreeSelectFilter</td><td>需树形扩展</td><td>低</td></tr>
+      <tr><td>⑥</td><td><span class="repo-pill design">design</span> TokensMonitor·分组 L430</td><td>自建 Popover + 搜索</td><td>TreeSelectFilter</td><td>需树形扩展</td><td>中</td></tr>
+      <tr><td>⑦</td><td><span class="repo-pill design">design</span> TreeSelectFilter L197</td><td>通用底层组件</td><td>收敛目标（保留增强）</td><td>—</td><td>—</td></tr>
+      <tr><td>⑧</td><td><span class="repo-pill front">front</span> ModelConfig·级联 L583</td><td>ModelCascader 级联</td><td>保留（独立 Cascader）</td><td>否（级联）</td><td>保留</td></tr>
+      <tr><td>⑨</td><td><span class="repo-pill front">front</span> MemberManagement·部门 L1597</td><td>SelectPanel + role=combobox</td><td>TreeSelectFilter</td><td>需树形扩展</td><td>低</td></tr>
+      <tr><td>⑩</td><td><span class="repo-pill front">front</span> FileManagement·分组 L158</td><td>SelectPanel + 搜索</td><td>TreeSelectFilter</td><td>需树形扩展</td><td>低</td></tr>
+      <tr><td>⑪</td><td><span class="repo-pill front">front</span> DepartmentInfo·部门 L95</td><td>自建 Popover</td><td>TreeSelectFilter</td><td>需树形扩展</td><td>低</td></tr>
+      <tr><td>⑫</td><td><span class="repo-pill front">front</span> TokensMonitor L351/L445</td><td>SelectPanel ×2</td><td>TreeSelectFilter ×2</td><td>需树形扩展</td><td>低</td></tr>
+      <tr><td>⑬</td><td><span class="repo-pill front">front</span> CollectScopePopover L252</td><td>Tab + 多选树三态</td><td>保留（对齐 ScopeSelect）</td><td>否（范围多选）</td><td>保留</td></tr>
+      <tr><td>⑭</td><td><span class="repo-pill front">front</span> AgentCombobox（cmdk）</td><td>真 Combobox · 无引用</td><td>删除 / SearchableSelect</td><td>是（SearchableSelect）</td><td>低（删除）</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ 分阶段计划 ============ -->
+  <h2 class="section">分阶段执行计划</h2>
+  <div class="phase-box">
+    <div class="phase">
+      <div class="num">1</div>
+      <div class="pc">
+        <h4>清理死代码（最低风险，先做）</h4>
+        <p>删除无引用的 <code>AgentCombobox</code> 及（如无其它使用的）cmdk 依赖。这是唯一真正的 Combobox，删除后项目里再无 Combobox 组件。</p>
+        <div class="files">enterprise-fronted/components/OpenClawCombobox.tsx</div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="num">2</div>
+      <div class="pc">
+        <h4>增强收敛目标组件 TreeSelectFilter</h4>
+        <p>为 <code>TreeSelectFilter</code> 增加 <code>sections</code>（分区）、<code>showSearch</code> 开关、<code>triggerVariant</code>（button/filter-icon）三项能力，使其能承接所有单选树/部门/分组筛选场景。</p>
+        <div class="files">两仓 components/_internal/TreeSelectFilter.tsx</div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="num">3</div>
+      <div class="pc">
+        <h4>替换「单选树」类自建下拉（主体工作）</h4>
+        <p>把 ①②⑤⑥⑨⑩⑪⑫ 共 9 个单选树筛选器全部替换为增强后的 <code>TreeSelectFilter</code>，并合并 ④ <code>GroupSingleFilter</code>。删除各页手写的 TreeNode 组件，移除散落的 <code>role="combobox"</code>。</p>
+        <div class="files">OpenClawMonitor / TokensMonitor / MemberManagement / FileManagement / DepartmentInfo / GroupSingleFilter</div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="num">4</div>
+      <div class="pc">
+        <h4>保留并对齐「非 Select 语义」组件</h4>
+        <p>③ GroupMultiFilter（多选树）、⑧ ModelCascader（级联）、⑬ CollectScopePopover（范围多选）<b>不替换为 Select</b>，仅统一 trigger 视觉（h-9 / token 描边），并在设计台标注为独立组件族。</p>
+        <div class="files">GroupMultiFilter / ModelConfig·ModelCascader / CollectScopePopover</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-note">
+    本报告为可视化盘点稿；界面为还原模拟，非真实截图。共 13 处业务调用 + 1 处死代码。建议按 4 阶段推进，先低风险后主体。
+  </p>
+
+</div>
+</body>
+</html>

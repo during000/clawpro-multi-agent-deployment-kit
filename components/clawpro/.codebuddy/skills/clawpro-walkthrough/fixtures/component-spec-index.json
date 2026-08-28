@@ -1,0 +1,1287 @@
+{
+  "schema": "clawpro.component-spec-index/v1",
+  "source_root": ".codebuddy/skills/clawpro-portable-design-skill/component-specs",
+  "generated_at": "2026-07-02T05:54:13.052Z",
+  "aggregate_sha256": "c2e277c9c035d0fe44da6baaf07c4ee97e1b1380e54e3d9adb1f6d76fa4f5e7c",
+  "count": 40,
+  "items": [
+    {
+      "id": "admin-sidebar",
+      "file": "component-specs/admin-sidebar.md",
+      "name": "Admin Sidebar",
+      "sha256": "6f21bce7ae4e49de6fab6ebfc8c9dad7ac3b9987f64bdee41186a0ceca7d127f",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Interaction & Behavior",
+        "7. Accessibility",
+        "8. Demo Repo Usage",
+        "9. Portable Fallback",
+        "10. Migration Rules",
+        "11. Do / Don't",
+        "12. QA Checklist",
+        "13. References",
+        "14. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/admin-sidebar"
+      ],
+      "variants": [
+        "coming-soon",
+        "custom",
+        "new"
+      ],
+      "radius_hint": {
+        "4px": 4,
+        "full": 1
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 38777
+    },
+    {
+      "id": "alert",
+      "file": "component-specs/alert.md",
+      "name": "Alert",
+      "sha256": "eb2e20d1d6ce6d855a50914b792eecbc8f0ec1cebfa8bf4b627516db7e3166a7",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Source Files",
+        "4. Visual Standard",
+        "5. Usage Examples",
+        "6. AdminNoticeAlert（管控端顶部公告条）",
+        "7. Variant 选择决策",
+        "8. Prohibitions",
+        "9. Accessibility",
+        "10. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/admin-notice-alert",
+        "@/components/ui/alert"
+      ],
+      "variants": [
+        "error",
+        "info",
+        "operation-info",
+        "product-news",
+        "success",
+        "warning"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 11514
+    },
+    {
+      "id": "avatar",
+      "file": "component-specs/avatar.md",
+      "name": "Avatar",
+      "sha256": "84a97d84640ed66af510eb1e65693bf9146a596fe3d7b12a42e3daf4a538663a",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Portable Fallback",
+        "5. Do / Don't",
+        "6. QA Checklist",
+        "7. References",
+        "代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 1
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 3353
+    },
+    {
+      "id": "badge",
+      "file": "component-specs/badge.md",
+      "name": "Badge",
+      "sha256": "d9ee37d5afdf5740de7680eb9d11e81592a40617e3db0aedfcbf0ab1b7b34f7f",
+      "sections": [
+        "0. 语义路由（先看这一段）",
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Interaction",
+        "7. Accessibility",
+        "8. Demo Repo Usage",
+        "9. Portable Fallback",
+        "10. Migration Rules",
+        "11. Do / Don't",
+        "12. QA Checklist",
+        "13. References",
+        "14. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/badge"
+      ],
+      "variants": [
+        "badge",
+        "blue",
+        "default",
+        "destructive",
+        "green",
+        "outline",
+        "purple",
+        "red",
+        "secondary"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 2
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 10244
+    },
+    {
+      "id": "batch-actions-bar",
+      "file": "component-specs/batch-actions-bar.md",
+      "name": "Batch Actions Bar",
+      "sha256": "63b1849dc2a05416e22a90fac95acf02150a2f1827fa645eacf59c456b88a6c1",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [
+        "claw-outline",
+        "ghost"
+      ],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 11,
+      "bytes": 12919
+    },
+    {
+      "id": "breadcrumb",
+      "file": "component-specs/breadcrumb.md",
+      "name": "Breadcrumb",
+      "sha256": "4a91c8c87ede70b44ebf0bba7c3e74abeb7756e3093fe656380caa1db36724a9",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Portable Fallback",
+        "5. Do / Don't",
+        "6. QA Checklist",
+        "7. References",
+        "8. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 4352
+    },
+    {
+      "id": "button",
+      "file": "component-specs/button.md",
+      "name": "Button",
+      "sha256": "a579f5ba296fd729936cc852daff44ab9fe0b1a8689b13eff93889946fd17f1e",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/button"
+      ],
+      "variants": [
+        "claw-outline",
+        "claw-primary",
+        "default",
+        "dialog-confirm",
+        "outline",
+        "tenant-destructive",
+        "tenant-dialog-confirm",
+        "tenant-ghost",
+        "tenant-outline",
+        "tenant-outline-strong",
+        "tenant-primary"
+      ],
+      "radius_hint": {
+        "4px": 4,
+        "full": 7
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 10,
+      "bytes": 9924
+    },
+    {
+      "id": "card-surface",
+      "file": "component-specs/card-surface.md",
+      "name": "Card / Surface",
+      "sha256": "80478695ef8429a4256e16fcac3677fad0f0253a50fb2c1f0a40ad4e3055ec5a",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/Surface"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 4,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 4,
+      "bytes": 6223
+    },
+    {
+      "id": "chart-stat",
+      "file": "component-specs/chart-stat.md",
+      "name": "Chart / Stat",
+      "sha256": "fb58441feb544a1d60453153a5e0c257ab9dce47f45bd57a54ad01ed08e249ce",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 2,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 8,
+      "bytes": 7153
+    },
+    {
+      "id": "combobox",
+      "file": "component-specs/combobox.md",
+      "name": "Combobox",
+      "sha256": "0211f57ddd11feb1e01f85c012cdc43bdcdde638eee1d5116bde62465ae4ace4",
+      "sections": [
+        "1. Purpose（仍适用）",
+        "2. Scope（仍适用）",
+        "3. Visual Standard（仍适用）",
+        "4. Real Demo Repo Usage",
+        "5. Migration Rules",
+        "6. 文档侧待清理项（已知）",
+        "7. Portable Fallback"
+      ],
+      "imports": [
+        "@/components/ui/combobox",
+        "@/components/ui/select"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 3,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 5006
+    },
+    {
+      "id": "dark-veil",
+      "file": "component-specs/dark-veil.md",
+      "name": "DarkVeil",
+      "sha256": "fde1521cfd6f1860ca3e4d15b0770230136c152cca9c1bc72a95a90587a75665",
+      "sections": [
+        "0. Auto-Trigger（先判要不要用，再谈怎么用）",
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Recipe（hero 参数配方 —— 抄 `CloudDevActivation.tsx`）",
+        "5. Props API & 关键算法",
+        "6. Demo Repo Usage",
+        "7. States & Behavior",
+        "8. Accessibility",
+        "9. Portable Fallback（三档：L0 完整 / L1 静态 CSS / L2 纯色·截图）",
+        "10. Migration Rules",
+        "11. Do / Don't",
+        "12. QA Checklist",
+        "13. References"
+      ],
+      "imports": [
+        "@/components/ui/DarkVeil"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 2
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 13152
+    },
+    {
+      "id": "data-table",
+      "file": "component-specs/data-table.md",
+      "name": "DataTable",
+      "sha256": "2421e26ce376101ee4b1112892832355f58a5807c7a0fd0e8bf33877a9d145aa",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. API",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/Surface",
+        "@/components/ui/table"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 11,
+      "bytes": 12558
+    },
+    {
+      "id": "date-picker",
+      "file": "component-specs/date-picker.md",
+      "name": "Date Picker",
+      "sha256": "d8d8cee8d88a54decb779f08b6c81394c360b48d8ab6b5d6697630170aa60794",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）",
+        "13. DateTimePicker 变体（日期 + 时分秒）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 2,
+        "full": 1
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 5,
+      "bytes": 12331
+    },
+    {
+      "id": "datetime-display",
+      "file": "component-specs/datetime-display.md",
+      "name": "Datetime Display 规范（卡片/列表中\"创建时间·最近活跃·任意 datetime\"展示）",
+      "sha256": "45980f9ee817f4d05126a37210e1be5be00b395b972a3e879fffbefe0f61a33b",
+      "sections": [
+        "0. 设计原则（背后的\"为什么\"）",
+        "1. 终态规则总览（一张表看完）",
+        "2. 时间字段实现规则",
+        "3. 复用与扩展",
+        "4. AI 执行指令（机器读这一节）",
+        "5. 验收清单（Code Review / QA 用）",
+        "6. 改动落地位置（首个参考实现）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 7180
+    },
+    {
+      "id": "dialog-drawer",
+      "file": "component-specs/dialog-drawer.md",
+      "name": "Dialog / Drawer",
+      "sha256": "76c20a1986a108c63b97b8351c7d8a344b6913480ecbfdf0426107d495c127e7",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [
+        "claw-outline",
+        "dialog-confirm",
+        "ghost"
+      ],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 5,
+      "bytes": 8079
+    },
+    {
+      "id": "empty-state",
+      "file": "component-specs/empty-state.md",
+      "name": "Empty State",
+      "sha256": "17bcb63f4d8bd999109477bfa861e45fabf6617bf1ad30d675e25f83490d49d9",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. 容器场景速查（强制）",
+        "6. 单行 vs 双行规则（强制）",
+        "7. States",
+        "8. Demo Repo Usage",
+        "9. Portable Fallback",
+        "10. Migration Rules",
+        "11. Do / Don't",
+        "12. QA Checklist",
+        "13. References",
+        "14. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/empty"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 8579
+    },
+    {
+      "id": "file-browser",
+      "file": "component-specs/file-browser.md",
+      "name": "FileBrowser（多版本资产文件浏览器）",
+      "sha256": "0ccc5d31b10005c4bc3f86086e34b9dfe895e4a8feab9071a0584cf92023f9ab",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Source Files",
+        "4. Visual Standard",
+        "5. API",
+        "6. Default Behaviors",
+        "7. Usage Guidelines",
+        "8. Coverage（页面覆盖）",
+        "9. Related Components"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 6244
+    },
+    {
+      "id": "form-controls",
+      "file": "component-specs/form-controls.md",
+      "name": "Form Controls",
+      "sha256": "f65cf072fff459a2ec953b0c377084e6331fa23bc3a56bcd6a5c4ca6e469fe48",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 2,
+        "full": 1
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 4,
+      "bytes": 5964
+    },
+    {
+      "id": "input-select",
+      "file": "component-specs/input-select.md",
+      "name": "Input & Select",
+      "sha256": "985310a82d070e9a178c9af5a5f5b3e58f38c36a06bce34976dc81ec6bac5da3",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard — Input",
+        "4. Visual Standard — Select",
+        "5. Portable Fallback",
+        "6. Migration Rules",
+        "7. Do / Don't",
+        "8. QA Checklist",
+        "9. References",
+        "10. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 6111
+    },
+    {
+      "id": "loading-progress",
+      "file": "component-specs/loading-progress.md",
+      "name": "Loading / Progress",
+      "sha256": "0665f24e7d810854be72000fb214bdeaf41490f2c04931b7484153274a27836a",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 7,
+      "bytes": 5091
+    },
+    {
+      "id": "number-card",
+      "file": "component-specs/number-card.md",
+      "name": "NumberCard",
+      "sha256": "2f8a970db1b41d927dd7658ee73f484e830496651aa6bbb1075e5c55821640c3",
+      "sections": [
+        "0. Auto-Trigger / 强制识别规则（AI 必读）",
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "3.1 Icon Source（图标来源 · 强制）",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/number-card"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 9,
+      "bytes": 12976
+    },
+    {
+      "id": "page-header",
+      "file": "component-specs/page-header.md",
+      "name": "Page Header",
+      "sha256": "8c0b6ef2bc020e9b5a6c3f3d0d7cd30d7568a050a7bf1f526087ef8ff22cd8ce",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/admin-page-header",
+        "@/components/ui/button"
+      ],
+      "variants": [
+        "claw-outline",
+        "claw-primary"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 4,
+      "bytes": 5280
+    },
+    {
+      "id": "pagination",
+      "file": "component-specs/pagination.md",
+      "name": "Pagination",
+      "sha256": "b156cc714bd8a5a0e3bbea6931db76f7617e7082aa7c2ae2fdf0dab4a5e6c79e",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/pagination"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 4,
+      "bytes": 6425
+    },
+    {
+      "id": "popover-dropdown-menu",
+      "file": "component-specs/popover-dropdown-menu.md",
+      "name": "Popover / Dropdown Menu",
+      "sha256": "8ce5925eee23de6140390d9a741897664062f9e68fc648283681cb4181b93577",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [
+        "ghost",
+        "z-index"
+      ],
+      "radius_hint": {
+        "4px": 2,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 8,
+      "bytes": 9659
+    },
+    {
+      "id": "search-filter-bar",
+      "file": "component-specs/search-filter-bar.md",
+      "name": "Search / Filter Bar",
+      "sha256": "aeb4bf721bdfc853a912ad17bc47004e0e352d356fe9b83e351e67c8c2eeefe0",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [
+        "claw-outline",
+        "claw-primary"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 5,
+      "bytes": 11144
+    },
+    {
+      "id": "segment",
+      "file": "component-specs/segment.md",
+      "name": "Segment（分段切换器）",
+      "sha256": "b3a4a2c70b3e9c995b81e7c9d8a4fa6c115bffe0f7bca4ae9618f1dfe4aa6fb8",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/segment"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 6,
+        "full": 1
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 8,
+      "bytes": 13792
+    },
+    {
+      "id": "selection-controls",
+      "file": "component-specs/selection-controls.md",
+      "name": "Selection Controls (Switch / Checkbox / Radio)",
+      "sha256": "c521c8bf82e6504de55b10873d202448e09c2c9e5f96dde3119ce3ead6d5b950",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. 通用规则",
+        "4. Checkbox",
+        "5. Radio",
+        "6. Switch",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 6,
+      "bytes": 7167
+    },
+    {
+      "id": "status-tag",
+      "file": "component-specs/status-tag.md",
+      "name": "StatusTag",
+      "sha256": "043a29403326a6902c193394bc9df05c22cf4f9c32bc8d01823364f3fa307464",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Interaction",
+        "7. Accessibility",
+        "8. Demo Repo Usage",
+        "9. Portable Fallback",
+        "10. Migration Rules",
+        "11. Do / Don't",
+        "12. QA Checklist",
+        "13. References",
+        "14. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/status-tag"
+      ],
+      "variants": [
+        "blue",
+        "dot",
+        "fill",
+        "gray",
+        "green",
+        "orange",
+        "outline",
+        "red",
+        "role",
+        "secondary",
+        "soft",
+        "text",
+        "violet"
+      ],
+      "radius_hint": {
+        "4px": 4,
+        "full": 5
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 13103
+    },
+    {
+      "id": "stepper",
+      "file": "component-specs/stepper.md",
+      "name": "Stepper（步骤条）",
+      "sha256": "06ff869f09ad1efc4cfc26b3402b0e7b1af07f7cae33cc24624c0fee1e1434db",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. API",
+        "6. Portable Fallback",
+        "7. Migration Rules",
+        "8. Do / Don't",
+        "9. QA Checklist",
+        "10. References"
+      ],
+      "imports": [
+        "@/components/ui/stepper"
+      ],
+      "variants": [
+        "active",
+        "completed",
+        "pending"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 1
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 5348
+    },
+    {
+      "id": "table",
+      "file": "component-specs/table.md",
+      "name": "Table",
+      "sha256": "03e3c8fc18bca8ae8d0017db54886dbae93d19007ac895391f4076679bf7b956",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "4.1 Scope Boundary",
+        "5. 操作列规则（强制）",
+        "6. 固定列（Fixed Columns）",
+        "7. 表格内状态/标签样式规则（强制）",
+        "8. 表格页脚（分页器）",
+        "9. 空态规则",
+        "10. States",
+        "11. Demo Repo Usage",
+        "12. Portable Fallback",
+        "13. Migration Rules",
+        "14. Do / Don't",
+        "15. QA Checklist",
+        "16. References",
+        "17. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/pagination",
+        "@/components/ui/table"
+      ],
+      "variants": [
+        "gray-header",
+        "link",
+        "white"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 12798
+    },
+    {
+      "id": "tabs",
+      "file": "component-specs/tabs.md",
+      "name": "Tabs（LineTabs · 下划线一级 Tab）",
+      "sha256": "5f131b51657399a5684cf047276ded7a0847e030583102210f3646d7d5d397af",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/line-tabs"
+      ],
+      "variants": [
+        "outline"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 7,
+      "bytes": 9397
+    },
+    {
+      "id": "tag-label",
+      "file": "component-specs/tag-label.md",
+      "name": "Tag / Label",
+      "sha256": "50ae72734fc1c9d628d1a22a96ca942b93f94d1b191b3fd32f8185a39e2ba87d",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Portable Fallback",
+        "5. Do / Don't",
+        "6. QA Checklist",
+        "7. References",
+        "8. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [
+        "green",
+        "orange",
+        "secondary"
+      ],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 4507
+    },
+    {
+      "id": "tenant-topnav",
+      "file": "component-specs/tenant-topnav.md",
+      "name": "Tenant TopNav",
+      "sha256": "b491e952a9395f1ef3acde9d269a7dbb7bdfaf7a39738a308a174af294049f73",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "12. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 6,
+      "bytes": 6128
+    },
+    {
+      "id": "toast",
+      "file": "component-specs/toast.md",
+      "name": "Toast",
+      "sha256": "d38f5d09532e6d9a71cd14d34da4642c28ee6c13c27b29a691ea37a08cdc9b2c",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Portable Fallback",
+        "5. 强制规则",
+        "6. Do / Don't",
+        "7. QA Checklist",
+        "8. References",
+        "9. 代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/sonner"
+      ],
+      "variants": [
+        "error",
+        "info",
+        "success",
+        "warning",
+        "z-index"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 1
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 6165
+    },
+    {
+      "id": "tooltip",
+      "file": "component-specs/tooltip.md",
+      "name": "Tooltip",
+      "sha256": "eb9e9b97777b1129744e1e2338f4b804149f1e72b50d42ccdc4783cc8086c26a",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Portable Fallback",
+        "5. Do / Don't",
+        "6. QA Checklist",
+        "7. References",
+        "8. 代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [
+        "link"
+      ],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 4530
+    },
+    {
+      "id": "transfer",
+      "file": "component-specs/transfer.md",
+      "name": "Transfer",
+      "sha256": "d98f11bb957b1e7f5112610e5a1bd439281e9b20e87b84983414f0790336d8ab",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. 移动模式",
+        "6. States",
+        "7. Props 速查",
+        "8. Demo Repo Usage",
+        "9. Portable Fallback",
+        "10. Migration Rules",
+        "11. 强制规则",
+        "12. Do / Don't",
+        "13. QA Checklist",
+        "14. References",
+        "代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/Typography",
+        "@/components/ui/tooltip",
+        "@/components/ui/transfer"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 1,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 12887
+    },
+    {
+      "id": "tree-select",
+      "file": "component-specs/tree-select.md",
+      "name": "TreeSelect（树形单选下拉）",
+      "sha256": "e9c3a82c862bba0895c95139ab8e4824a930e97977a76a7775558cde674a766e",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. 入口与变体",
+        "4. Visual Standard",
+        "5. Anatomy",
+        "6. API",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References"
+      ],
+      "imports": [
+        "@/components/ui/tree-select"
+      ],
+      "variants": [
+        "claw-outline",
+        "dialog-confirm"
+      ],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 7,
+      "bytes": 6581
+    },
+    {
+      "id": "tree",
+      "file": "component-specs/tree.md",
+      "name": "Tree",
+      "sha256": "c01393642786affbe63c017f4a158c290f007de24a64bf07391d65643bb2f6c5",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. Portable Fallback",
+        "6. Migration Rules",
+        "7. Do / Don't",
+        "8. QA Checklist",
+        "9. References",
+        "代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 2,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 5299
+    },
+    {
+      "id": "typography",
+      "file": "component-specs/typography.md",
+      "name": "Typography",
+      "sha256": "0ec30dd60bf06f579e124bc72bac37da824a3688ea1b75f845bb362afbaef993",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Design Principles",
+        "4. Color Tokens (tone)",
+        "5. Component Hierarchy",
+        "6. Font Stacks",
+        "7. Usage Examples",
+        "8. Variant Selection Decision",
+        "9. Prohibitions",
+        "代码对照（✅/❌）"
+      ],
+      "imports": [
+        "@/components/ui/Typography"
+      ],
+      "variants": [],
+      "radius_hint": {
+        "4px": 0,
+        "full": 0
+      },
+      "has_portable_fallback": false,
+      "qa_checks": 0,
+      "bytes": 6643
+    },
+    {
+      "id": "upload-file-browser",
+      "file": "component-specs/upload-file-browser.md",
+      "name": "Upload / File Browser",
+      "sha256": "e979fc5c6b25c1cdb21a66e72c6bdfc3b6f2b505a76dbc5bb962f15e98eb2953",
+      "sections": [
+        "1. Purpose",
+        "2. Scope",
+        "3. Visual Standard",
+        "4. Anatomy",
+        "5. States",
+        "6. Demo Repo Usage",
+        "7. Portable Fallback",
+        "8. Migration Rules",
+        "9. Do / Don't",
+        "10. QA Checklist",
+        "11. References",
+        "代码对照（✅/❌）"
+      ],
+      "imports": [],
+      "variants": [],
+      "radius_hint": {
+        "4px": 2,
+        "full": 0
+      },
+      "has_portable_fallback": true,
+      "qa_checks": 8,
+      "bytes": 6801
+    }
+  ]
+}

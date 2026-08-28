@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的 Agent / 技能广场 / 模型额度 Icon 盘点</title>
+  <style>
+    :root {
+      --brand: #1447E6;
+      --black: #020617;
+      --text: #0A0A0A;
+      --slate: #334155;
+      --muted: #737373;
+      --weak: #A3A3A3;
+      --line: #E5E5E5;
+      --line-blue: #E2E8F0;
+      --soft: #F5F5F5;
+      --blue-soft: #EFF6FF;
+      --card-shadow: 0px 1px 4px rgba(0,0,0,0.05), 0px 0px 2px rgba(0,0,0,0.1);
+      --segment-shadow: 0px 1.11px 2.22px rgba(0,0,0,0.05);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 1200px;
+      font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
+      -webkit-font-smoothing: antialiased;
+    }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; background: rgba(255,255,255,.94); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line-blue);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; }
+    .brand-mark { width: 32px; height: 32px; border-radius: 4px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #1447E6, #2563EB); }
+    .top-meta { color: var(--muted); font-size: 12px; }
+    .shell { max-width: 1920px; margin: 0 auto; display: flex; min-height: calc(100vh - 64px); }
+    .rail { width: 80px; flex: 0 0 80px; }
+    main { position: relative; flex: 1; min-width: 0; padding: 32px 42px 75px; border-left: 1px solid var(--line-blue); border-right: 1px solid var(--line-blue); }
+    main::before, main::after {
+      content: ""; position: absolute; top: 156px; bottom: 75px; width: calc((100vw - 100%) / 2); pointer-events: none;
+      background-image: radial-gradient(circle, #DFE2E5 1px, transparent 1.1px); background-size: 12px 12px;
+    }
+    main::before { right: 100%; } main::after { left: 100%; }
+    .hero { position: relative; padding-bottom: 28px; margin-bottom: 32px; border-bottom: 1px solid var(--line-blue); }
+    .eyebrow { margin: 0 0 8px; color: var(--brand); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+    h1 { margin: 0; font-size: 28px; line-height: 1.35; font-weight: 500; letter-spacing: -0.02em; }
+    .hero p { max-width: 920px; margin: 12px 0 0; color: var(--slate); font-size: 14px; line-height: 1.8; }
+    section { margin: 0 0 40px; }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+    h2 { margin: 0; font-size: 18px; font-weight: 500; }
+    .section-head p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    h3 { margin: 0; font-size: 15px; font-weight: 600; }
+    .card { background: #fff; border-radius: 4px; border: 1px solid rgba(229,229,229,.86); box-shadow: var(--card-shadow); }
+    .inner { background: #fff; border-radius: 4px; border: 1px solid var(--line); }
+    .p20 { padding: 20px; } .p16 { padding: 16px; } .p14 { padding: 14px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+    .muted { color: var(--muted); } .weak { color: var(--weak); } .brand-text { color: var(--brand); }
+    .tag { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 2px; background: var(--blue-soft); color: var(--brand); font-size: 12px; font-weight: 600; }
+    .path { display: inline-flex; align-items: center; padding: 3px 6px; border-radius: 3px; background: #FAFAFA; border: 1px solid #F0F0F0; color: var(--slate); font-family: Menlo, Consolas, monospace; font-size: 11px; }
+    .paths { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .table th { text-align: left; padding: 10px 12px; color: var(--muted); font-size: 12px; font-weight: 500; background: #FAFAFA; border-bottom: 1px solid var(--line); }
+    .table td { padding: 12px; border-bottom: 1px solid #F5F5F5; color: var(--slate); vertical-align: top; line-height: 1.65; }
+    .table tr:last-child td { border-bottom: 0; }
+    .scale-row { display: grid; grid-template-columns: 96px 1fr 220px; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid #F5F5F5; }
+    .scale-row:last-child { border-bottom: 0; }
+    .size-pill { display: inline-flex; align-items: center; justify-content: center; height: 28px; min-width: 64px; padding: 0 10px; border-radius: 4px; background: #F5F5F5; color: var(--black); font-family: "DIN Alternate", "Helvetica Neue", sans-serif; font-size: 13px; font-weight: 700; }
+    .i { width: 16px; height: 16px; display: inline-block; vertical-align: -3px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .i-fill { fill: currentColor; stroke: none; }
+    .icon-cell { display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; background: #F5F5F5; color: var(--slate); border: 1px solid var(--line); flex: 0 0 auto; }
+    .icon-cell.s12 { width: 20px; height: 20px; } .icon-cell.s12 .i { width: 12px; height: 12px; }
+    .icon-cell.s14 { width: 24px; height: 24px; } .icon-cell.s14 .i { width: 14px; height: 14px; }
+    .icon-cell.s16 { width: 28px; height: 28px; } .icon-cell.s16 .i { width: 16px; height: 16px; }
+    .icon-cell.s20 { width: 32px; height: 32px; } .icon-cell.s20 .i { width: 20px; height: 20px; }
+    .icon-cell.blue { color: #fff; border: 0; background: #3B82F6; }
+    .icon-cell.purple { color: #fff; border: 0; background: #8B5CF6; }
+    .icon-cell.orange { color: #fff; border: 0; background: #F97316; }
+    .icon-cell.dark { color: #fff; border: 0; background: linear-gradient(90deg, #020617 70%, #1447E6 100%); }
+    .icon-cell.green { color: #16A34A; background: #F0FDF4; border-color: #DCFCE7; }
+    .icon-cell.red { color: #DC2626; background: #FEF2F2; border-color: #FEE2E2; }
+    .icon-cell.weak { color: var(--weak); background: #fff; }
+    .icon-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .icon-chip { width: 86px; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+    .icon-chip label { max-width: 86px; color: var(--muted); font-size: 11px; text-align: center; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .module-card { min-height: 284px; display: flex; flex-direction: column; gap: 14px; }
+    .module-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .module-title small { color: var(--muted); font-size: 12px; }
+    .spec-list { margin: 10px 0 0; padding-left: 18px; color: var(--slate); font-size: 12px; line-height: 1.75; }
+    .slice { background: #fff; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+    .slice-head { height: 36px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #FAFAFA; border-bottom: 1px solid #F0F0F0; color: var(--muted); font-size: 12px; }
+    .toolbar { display: flex; align-items: center; gap: 8px; }
+    .input { height: 32px; min-width: 180px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--line); border-radius: 4px; color: var(--weak); font-size: 12px; background: #fff; }
+    .seg { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border-radius: 4px; background: #F5F5F5; }
+    .seg span { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 3px; color: var(--muted); }
+    .seg span.active { background: #fff; color: var(--black); box-shadow: var(--segment-shadow); }
+    .agent-slice { padding: 20px; display: flex; flex-direction: column; gap: 24px; }
+    .row { display: flex; align-items: center; gap: 12px; }
+    .between { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .avatar { width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle at 65% 40%, #C7D2FE 0 18%, #EFF6FF 19% 52%, #93C5FD 53% 100%); display: grid; place-items: center; color: #1447E6; font-weight: 700; }
+    .letter { width: 40px; height: 40px; border-radius: 4px; display: grid; place-items: center; background: #E8F4FD; color: #1A73E8; font-weight: 700; }
+    .letter.sm { width: 36px; height: 36px; } .letter.lg { width: 48px; height: 48px; font-size: 20px; }
+    .title-line { height: 14px; width: 140px; border-radius: 2px; background: #0A0A0A; opacity: .9; }
+    .sub-line { height: 10px; width: 96px; border-radius: 2px; background: #D8DEE8; }
+    .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--slate); font-size: 12px; }
+    .mini-badge { padding: 2px 6px; border: 1px solid #DAE0E9; border-radius: 2px; background: linear-gradient(180deg,#fff,#F9FBFC); color: var(--slate); font-size: 12px; }
+    .btn { height: 36px; padding: 0 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--black); font-size: 13px; }
+    .btn.square { width: 48px; padding: 0; }
+    .btn.primary { border: 0; color: #fff; background: linear-gradient(90deg, #020617 70%, #1447E6 100%); }
+    .stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    .stat { padding: 14px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+    .stat-label { margin-top: 8px; color: var(--muted); font-size: 12px; }
+    .stat-value { margin-top: 8px; color: var(--black); font-family: "DIN Alternate", "Helvetica Neue", sans-serif; font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .recommend { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .rec { padding: 16px; background: #fff; border: 1px solid var(--line); border-radius: 4px; }
+    .rec strong { display: block; margin-bottom: 8px; font-size: 14px; }
+    .rec p { margin: 0; color: var(--slate); font-size: 12px; line-height: 1.7; }
+    .note { padding: 12px 14px; border-radius: 4px; background: #FAFAFA; border: 1px solid #F0F0F0; color: var(--slate); font-size: 12px; line-height: 1.8; }
+    code { font-family: Menlo, Consolas, monospace; font-size: 11px; background: #F5F5F5; border-radius: 3px; padding: 2px 4px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand"><div class="brand-mark">IC</div><span>用户端三页 Icon 盘点</span></div>
+    <div class="top-meta">范围：我的 Agent / 管理视图、技能广场、模型额度 · 输出日期：2026-05-22</div>
+  </div>
+
+  <div class="shell">
+    <div class="rail"></div>
+    <main>
+      <header class="hero">
+        <p class="eyebrow">ICON AUDIT</p>
+        <h1>我的 Agent / 技能广场 / 模型额度 Icon 使用盘点</h1>
+        <p>基于当前页面实现与 Chrome 预览采样整理，按「规格刻度尺、使用场景分类、代表模块切片、优化建议」组织。重点帮助设计侧判断：哪些是通用操作图标、哪些是业务身份图标、哪些是状态/数据语义图标，以及后续替换时应该改哪个模块。</p>
+        <div class="paths">
+          <span class="path">client/src/pages/tenant/MyOpenClaw.tsx</span>
+          <span class="path">client/src/components/agent/AgentCard.tsx</span>
+          <span class="path">client/src/components/agent/StatusBadge.tsx</span>
+          <span class="path">client/src/pages/tenant/SkillSquare.tsx</span>
+          <span class="path">client/src/pages/tenant/ModelQuota.tsx</span>
+          <span class="path">client/src/components/topnav/NavIcons.tsx</span>
+        </div>
+      </header>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>一、规格刻度尺</h2>
+            <p>按实际代码和页面采样归纳尺寸层级。后续改 icon 时优先保持所在刻度，不跨级替换。</p>
+          </div>
+          <span class="tag">Size ruler</span>
+        </div>
+        <div class="card p20">
+          <div class="scale-row">
+            <div><span class="size-pill">12px</span></div>
+            <div>
+              <strong>微型元信息 / 辅助提示</strong><br />
+              <span class="muted">用于 ID 复制、下载量、文件树箭头、版本说明 Info 等，不承担主要操作入口。</span>
+            </div>
+            <div class="icon-list" style="margin:0">
+              <div class="icon-cell s12"><svg class="i"><use href="#copy" /></svg></div>
+              <div class="icon-cell s12"><svg class="i"><use href="#download" /></svg></div>
+              <div class="icon-cell s12"><svg class="i"><use href="#info" /></svg></div>
+            </div>
+          </div>
+          <div class="scale-row">
+            <div><span class="size-pill">14px</span></div>
+            <div>
+              <strong>紧凑状态 / 列表行操作</strong><br />
+              <span class="muted">技能下发状态 Check/X/Loader、列表行「+」下发、模型额度说明 Info，适合贴近文字的轻量图标。</span>
+            </div>
+            <div class="icon-list" style="margin:0">
+              <div class="icon-cell s14 green"><svg class="i"><use href="#check" /></svg></div>
+              <div class="icon-cell s14 red"><svg class="i"><use href="#x" /></svg></div>
+              <div class="icon-cell s14"><svg class="i"><use href="#plus" /></svg></div>
+            </div>
+          </div>
+          <div class="scale-row">
+            <div><span class="size-pill">16px</span></div>
+            <div>
+              <strong>默认操作图标</strong><br />
+              <span class="muted">顶部导航、搜索、刷新、创建、视图切换、Agent 卡片按钮、模型统计卡内 icon 都以 16px 为主。</span>
+            </div>
+            <div class="icon-list" style="margin:0">
+              <div class="icon-cell s16"><svg class="i"><use href="#search" /></svg></div>
+              <div class="icon-cell s16"><svg class="i"><use href="#refresh" /></svg></div>
+              <div class="icon-cell s16"><svg class="i"><use href="#grid" /></svg></div>
+              <div class="icon-cell s16"><svg class="i"><use href="#message" /></svg></div>
+            </div>
+          </div>
+          <div class="scale-row">
+            <div><span class="size-pill">20px</span></div>
+            <div>
+              <strong>详情页返回 / 强导航</strong><br />
+              <span class="muted">技能详情返回按钮为 20px，属于层级更高的页面级导航，不建议用于普通卡片内。</span>
+            </div>
+            <div class="icon-list" style="margin:0">
+              <div class="icon-cell s20"><svg class="i"><use href="#arrow-left" /></svg></div>
+            </div>
+          </div>
+          <div class="scale-row">
+            <div><span class="size-pill">32–48px</span></div>
+            <div>
+              <strong>图标容器 / 业务身份图标</strong><br />
+              <span class="muted">模型统计容器 32px；技能字母图标 40/36/48px；Agent 角色头像 48px 圆形。这里改的是「模块身份」而不是普通功能 icon。</span>
+            </div>
+            <div class="icon-list" style="margin:0">
+              <div class="icon-cell s16 blue" style="width:32px;height:32px"><svg class="i"><use href="#activity" /></svg></div>
+              <div class="letter sm">A</div>
+              <div class="avatar" style="width:48px;height:48px">D</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>二、使用场景分类</h2>
+            <p>按照「整个模块」归类，方便设计明确替换入口：替换一类 icon 时，应优先改对应组件，而不是逐个页面散改。</p>
+          </div>
+          <span class="tag">Scenario map</span>
+        </div>
+        <div class="grid-3">
+          <div class="card p20 module-card">
+            <div class="module-title"><h3>顶部导航公共图标</h3><small>三页共用</small></div>
+            <div class="icon-list">
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#book" /></svg></div><label>HelpIcon</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#bell" /></svg></div><label>BellIcon</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#switch" /></svg></div><label>管控端</label></div>
+              <div class="icon-chip"><div class="icon-cell s14"><svg class="i"><use href="#chevron-down" /></svg></div><label>UserMenu</label></div>
+            </div>
+            <ul class="spec-list">
+              <li>尺寸：主图标 16px，下拉箭头 14px，红点 4px。</li>
+              <li>颜色：全部 <code>currentColor</code>，跟随按钮 hover。</li>
+              <li>替换入口：<code>components/topnav/NavIcons.tsx</code>。</li>
+            </ul>
+          </div>
+
+          <div class="card p20 module-card">
+            <div class="module-title"><h3>我的 Agent / 管理视图</h3><small>实体 + 操作</small></div>
+            <div class="icon-list">
+              <div class="icon-chip"><div class="avatar">P</div><label>角色头像</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 green"><svg class="i"><use href="#status" /></svg></div><label>状态</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#refresh" /></svg></div><label>刷新</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#more" /></svg></div><label>更多</label></div>
+              <div class="icon-chip"><div class="icon-cell s12"><svg class="i"><use href="#copy" /></svg></div><label>复制 ID</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 dark"><svg class="i"><use href="#gear" /></svg></div><label>详细配置</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 dark"><svg class="i"><use href="#message" /></svg></div><label>开始对话</label></div>
+            </div>
+            <ul class="spec-list">
+              <li>Agent 身份：48px PNG 圆形头像，灰显状态使用 opacity + grayscale。</li>
+              <li>状态：16px inline SVG，共 8 种状态，透明底 + 12px 文案。</li>
+              <li>卡片操作：右上 28×28，底部按钮 120×36 / 48×36。</li>
+            </ul>
+          </div>
+
+          <div class="card p20 module-card">
+            <div class="module-title"><h3>技能广场</h3><small>技能身份 + 下发</small></div>
+            <div class="icon-list">
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#search" /></svg></div><label>搜索</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#grid" /></svg></div><label>卡片视图</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#list" /></svg></div><label>列表视图</label></div>
+              <div class="icon-chip"><div class="letter">A</div><label>技能字母</label></div>
+              <div class="icon-chip"><div class="icon-cell s12"><svg class="i"><use href="#download" /></svg></div><label>下载量</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#plus" /></svg></div><label>下发</label></div>
+              <div class="icon-chip"><div class="icon-cell s14 green"><svg class="i"><use href="#check" /></svg></div><label>已下发</label></div>
+              <div class="icon-chip"><div class="icon-cell s14 red"><svg class="i"><use href="#x" /></svg></div><label>失败</label></div>
+            </div>
+            <ul class="spec-list">
+              <li>技能卡主视觉不是 SVG，而是 40px 字母色块；列表行降为 36px，详情页升为 48px。</li>
+              <li>下发状态为 14px：Loader / CheckCircle / XCircle / Circle。</li>
+              <li>详情页文件树使用 Folder、FolderOpen、FileText、Chevron 组合。</li>
+            </ul>
+          </div>
+
+          <div class="card p20 module-card">
+            <div class="module-title"><h3>技能详情页附属图标</h3><small>从技能广场进入</small></div>
+            <div class="icon-list">
+              <div class="icon-chip"><div class="icon-cell s20"><svg class="i"><use href="#arrow-left" /></svg></div><label>返回</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#download" /></svg></div><label>下载</label></div>
+              <div class="icon-chip"><div class="icon-cell s14"><svg class="i"><use href="#folder" /></svg></div><label>目录</label></div>
+              <div class="icon-chip"><div class="icon-cell s14"><svg class="i"><use href="#file" /></svg></div><label>文件</label></div>
+              <div class="icon-chip"><div class="icon-cell s12"><svg class="i"><use href="#eye" /></svg></div><label>预览</label></div>
+              <div class="icon-chip"><div class="icon-cell s12"><svg class="i"><use href="#code" /></svg></div><label>源码</label></div>
+            </div>
+            <ul class="spec-list">
+              <li>详情 Header 图标层级更高：返回 20px、身份色块 48px。</li>
+              <li>文件树为 14px 图标 + 12px Chevron，视觉应弱化。</li>
+            </ul>
+          </div>
+
+          <div class="card p20 module-card">
+            <div class="module-title"><h3>模型额度</h3><small>数据语义</small></div>
+            <div class="icon-list">
+              <div class="icon-chip"><div class="icon-cell s14"><svg class="i"><use href="#filter" /></svg></div><label>组织筛选</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#calendar" /></svg></div><label>日期</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 blue"><svg class="i"><use href="#activity" /></svg></div><label>总请求</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 blue"><svg class="i"><use href="#down" /></svg></div><label>输入</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 purple"><svg class="i"><use href="#up" /></svg></div><label>输出</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 purple"><svg class="i"><use href="#zap" /></svg></div><label>总量</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 orange"><svg class="i"><use href="#zap" /></svg></div><label>配额</label></div>
+            </div>
+            <ul class="spec-list">
+              <li>统计卡：32px 色块容器内放 16px 白色图标。</li>
+              <li>数据语义靠色块区分：请求/输入蓝，输出/总量紫，配额橙。</li>
+              <li>分页 Chevron 16px，Info 14px，筛选 Filter 14px。</li>
+            </ul>
+          </div>
+
+          <div class="card p20 module-card">
+            <div class="module-title"><h3>弹窗 / 下拉菜单</h3><small>操作语义</small></div>
+            <div class="icon-list">
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#rotate" /></svg></div><label>重启</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#drive" /></svg></div><label>重装</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#terminal" /></svg></div><label>终端</label></div>
+              <div class="icon-chip"><div class="icon-cell s16 red"><svg class="i"><use href="#trash" /></svg></div><label>删除</label></div>
+              <div class="icon-chip"><div class="icon-cell s16"><svg class="i"><use href="#user-minus" /></svg></div><label>移除角色</label></div>
+            </div>
+            <ul class="spec-list">
+              <li>Agent 更多菜单统一 16px + 右侧文字，危险操作用红色语义。</li>
+              <li>禁用项保持图标同尺寸，降低 opacity，避免布局跳动。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>三、代表模块切片</h2>
+            <p>用接近当前页面结构的切片标出 icon 所在位置。设计替换时建议以这些模块为单位出稿。</p>
+          </div>
+          <span class="tag">Module slices</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="card p16">
+            <h3>切片 A：我的 Agent 卡片</h3>
+            <p class="muted" style="font-size:12px;line-height:1.7">关键 icon：角色头像 48、状态 16、刷新/更多 16、复制 12、详细配置自定义 16、对话自定义 16。</p>
+            <div class="slice agent-slice" style="margin-top:12px">
+              <div class="between">
+                <div class="row">
+                  <div class="avatar">D</div>
+                  <div>
+                    <div class="title-line"></div>
+                    <div class="row" style="gap:6px;margin-top:8px"><div class="icon-cell s16 green"><svg class="i"><use href="#status" /></svg></div><span style="font-size:12px">运行中</span></div>
+                  </div>
+                </div>
+                <div class="row" style="gap:4px"><div class="icon-cell s16"><svg class="i"><use href="#refresh" /></svg></div><div class="icon-cell s16"><svg class="i"><use href="#more" /></svg></div></div>
+              </div>
+              <div class="meta"><span class="mini-badge">开发工程师</span><span>｜</span><span>类型：OpenClaw</span><span>｜</span><span>ID：ins-running01</span><div class="icon-cell s12"><svg class="i"><use href="#copy" /></svg></div></div>
+              <div class="between"><span class="weak" style="font-size:12px">2026-03-01 10:23:45 创建</span><div class="row"><button class="btn"><svg class="i"><use href="#gear" /></svg>详细配置</button><button class="btn square"><svg class="i"><use href="#message" /></svg></button></div></div>
+            </div>
+          </div>
+
+          <div class="card p16">
+            <h3>切片 B：技能广场工具栏 + 卡片</h3>
+            <p class="muted" style="font-size:12px;line-height:1.7">关键 icon：搜索 16、排序 Select Chevron 16、刷新 16、视图切换 16、下载量 12、下发 16、下发状态 14。</p>
+            <div class="slice" style="margin-top:12px;padding:14px">
+              <div class="between">
+                <div class="input"><svg class="i"><use href="#search" /></svg>搜索技能名称或描述...</div>
+                <div class="row"><button class="btn" style="height:32px">发布时间 <svg class="i"><use href="#chevron-down" /></svg></button><div class="icon-cell s16"><svg class="i"><use href="#refresh" /></svg></div><div class="seg"><span class="active"><svg class="i"><use href="#grid" /></svg></span><span><svg class="i"><use href="#list" /></svg></span></div></div>
+              </div>
+              <div class="card p16" style="margin-top:14px;box-shadow:none">
+                <div class="between"><div class="row"><div class="letter">A</div><div><strong style="font-size:14px">SQL 查询优化助手</strong><div class="weak" style="font-size:12px;margin-top:4px">v1.0.0</div></div></div><div class="row weak" style="font-size:12px"><svg class="i" style="width:12px;height:12px"><use href="#download" /></svg>945</div></div>
+                <p class="muted" style="font-size:13px;line-height:1.6">分析 SQL 执行计划并给出索引优化建议。</p>
+                <div class="between"><span class="weak" style="font-size:12px">2025-03-25</span><div class="row"><div class="icon-cell s14 red"><svg class="i"><use href="#x" /></svg></div><button class="btn square" style="width:32px;height:32px"><svg class="i"><use href="#plus" /></svg></button></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card p16">
+            <h3>切片 C：技能详情 / 文件树</h3>
+            <p class="muted" style="font-size:12px;line-height:1.7">关键 icon：返回 20、技能字母 48、下载/下发 16、文件树目录/文件 14、预览/源码 12。</p>
+            <div class="slice" style="margin-top:12px">
+              <div class="slice-head"><span class="row"><svg class="i" style="width:20px;height:20px"><use href="#arrow-left" /></svg><span class="letter lg">A</span><strong>企业知识检索</strong><span class="mini-badge">v1.2.0</span></span><span class="row"><button class="btn"><svg class="i"><use href="#download" /></svg>下载</button><button class="btn primary"><svg class="i"><use href="#plus" /></svg>下发</button></span></div>
+              <div style="display:grid;grid-template-columns:180px 1fr;min-height:150px">
+                <div style="border-right:1px solid var(--line);padding:10px">
+                  <div class="row" style="font-size:12px;margin-bottom:10px"><svg class="i" style="width:14px;height:14px;color:var(--weak)"><use href="#folder" /></svg>src <svg class="i" style="width:12px;height:12px;margin-left:auto;color:var(--weak)"><use href="#chevron-down" /></svg></div>
+                  <div class="row brand-text" style="font-size:12px"><svg class="i" style="width:14px;height:14px;color:var(--weak)"><use href="#file" /></svg>SKILL.md</div>
+                </div>
+                <div>
+                  <div class="slice-head" style="border-top:0"><span>SKILL.md</span><span class="seg"><span class="active"><svg class="i" style="width:12px;height:12px"><use href="#eye" /></svg></span><span><svg class="i" style="width:12px;height:12px"><use href="#code" /></svg></span></span></div>
+                  <div style="padding:16px;color:var(--muted);font-size:12px;line-height:1.7">这里展示技能说明或源码内容。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card p16">
+            <h3>切片 D：模型额度统计区</h3>
+            <p class="muted" style="font-size:12px;line-height:1.7">关键 icon：筛选 14、日期 16、刷新 14/16、统计卡 32 容器 + 16 图标、Info 14、分页 16。</p>
+            <div class="slice" style="margin-top:12px;padding:14px">
+              <div class="between" style="margin-bottom:14px"><button class="btn" style="height:32px"><svg class="i" style="width:14px;height:14px"><use href="#filter" /></svg>默认</button><div class="row"><button class="btn" style="height:32px"><svg class="i"><use href="#calendar" /></svg>2026-05-22</button><button class="btn" style="height:32px"><svg class="i" style="width:14px;height:14px"><use href="#refresh" /></svg>刷新</button></div></div>
+              <div class="stat-grid">
+                <div class="stat"><div class="icon-cell s16 blue" style="width:32px;height:32px"><svg class="i"><use href="#activity" /></svg></div><div class="stat-label">总请求数</div><div class="stat-value">2,186</div></div>
+                <div class="stat"><div class="icon-cell s16 blue" style="width:32px;height:32px"><svg class="i"><use href="#down" /></svg></div><div class="stat-label">输入 Tokens</div><div class="stat-value">262k</div></div>
+                <div class="stat"><div class="icon-cell s16 purple" style="width:32px;height:32px"><svg class="i"><use href="#up" /></svg></div><div class="stat-label">输出 Tokens</div><div class="stat-value">174k</div></div>
+                <div class="stat"><div class="icon-cell s16 purple" style="width:32px;height:32px"><svg class="i"><use href="#zap" /></svg></div><div class="stat-label">总 Tokens</div><div class="stat-value">437k</div></div>
+                <div class="stat"><div class="icon-cell s16 orange" style="width:32px;height:32px"><svg class="i"><use href="#zap" /></svg></div><div class="stat-label">今日配额 <svg class="i" style="width:14px;height:14px;color:var(--weak)"><use href="#info" /></svg></div><div class="stat-value">87.4%</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>四、三页 Icon 清单</h2>
+            <p>把现有 icon 按页面和模块列出，便于后续逐项验收。</p>
+          </div>
+          <span class="tag">Inventory</span>
+        </div>
+        <div class="card">
+          <table class="table">
+            <thead><tr><th style="width:16%">页面 / 模块</th><th style="width:24%">Icon / 资产</th><th style="width:20%">规格</th><th>使用说明与替换建议</th></tr></thead>
+            <tbody>
+              <tr><td>公共顶部导航</td><td>HelpIcon、BellIcon、SwitchAdminIcon、ChevronDownIcon</td><td>16px / 14px；currentColor；红点 4px</td><td>三页共用。替换时改 <code>NavIcons.tsx</code>，保持 viewBox 与 currentColor，不要散落到业务页。</td></tr>
+              <tr><td>我的 Agent · 顶部工具</td><td>LayoutGrid、MessageSquare、Plus</td><td>16px；Segment 28/32 容器；创建按钮内 16px</td><td>视图切换和创建 Agent 是页面级操作。建议补齐 icon-only 按钮的 aria-label，并保持选中态使用 <code>--shadow-segment</code>。</td></tr>
+              <tr><td>我的 Agent · 卡片身份</td><td>AgentAvatar PNG；StatusBadge inline SVG</td><td>头像 48px 圆形；状态 16px + 12px 文案</td><td>角色头像来自 <code>/assets/avatars/</code>；状态图标来自 <code>StatusBadge.tsx</code> 的 8 套 inline SVG。建议状态图标保持集中维护。</td></tr>
+              <tr><td>我的 Agent · 卡片操作</td><td>RefreshCw、MoreVertical、Copy、Check、自定义 Gear、自定义 Chat</td><td>刷新/更多 16px in 28×28；复制 12px；底部按钮 16px</td><td>Gear/Chat 现在是内联渐变 SVG，视觉独特但复用困难。建议抽为 <code>AgentConfigIcon</code>、<code>AgentChatIcon</code>。</td></tr>
+              <tr><td>我的 Agent · 更多菜单</td><td>RefreshCw、RotateCcw、HardDriveDownload、Terminal、UserMinus、Trash2</td><td>16px + 文字；禁用 opacity；删除红色</td><td>属于操作语义集合。建议未来建立 <code>agentActionIcons</code> 映射，菜单和快捷按钮共用。</td></tr>
+              <tr><td>技能广场 · 工具栏</td><td>Search、ChevronDown、RefreshCw、LayoutGrid、List</td><td>16px；搜索嵌入 Input；Segment 32/28 容器</td><td>已符合「操作图标 16px」规则。图标-only 刷新与视图切换建议补充 title/aria-label。</td></tr>
+              <tr><td>技能广场 · 技能卡</td><td>字母色块、Download、Plus、DistributionStatusIcon</td><td>字母 40px；Download 12px；Plus 16px；状态 14px</td><td>技能主视觉是「字母头像」而非技能图标。若产品未来支持自定义技能图标，需定义 40/36/48 三档同源规则。</td></tr>
+              <tr><td>技能详情 · 文件树</td><td>Folder、FolderOpen、FileText、ChevronDown、ChevronRight、Eye、Code、Info</td><td>目录/文件 14px；Chevron / Eye / Code / Info 12px</td><td>文件树 icon 应弱化为 #A3A3A3，仅选中态由文字/背景表达，不建议用强品牌蓝填充所有文件图标。</td></tr>
+              <tr><td>模型额度 · 筛选栏</td><td>Filter、Calendar、RefreshCw</td><td>Filter 14px；Calendar 16px；Refresh 14px in 32px 按钮</td><td>筛选和日期都属于表单控件图标，建议统一为弱灰 #A3A3A3 或 #737373，hover 再转品牌蓝。</td></tr>
+              <tr><td>模型额度 · 统计卡</td><td>Activity、ArrowDownToLine、ArrowUpFromLine、Zap、Info</td><td>32px 色块容器 + 16px 白色 icon；Info 14px</td><td>建议按语义 token 改为：请求/模型蓝、输入靛蓝、输出紫、总量蓝紫、配额橙红，避免同色表达过多含义。</td></tr>
+              <tr><td>模型额度 · 表格分页</td><td>ChevronLeft、ChevronRight</td><td>16px；按钮 28×28</td><td>属于分页系统图标，可与全站 Pagination 统一，避免每页单独实现。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>五、优化建议</h2>
+            <p>按照影响面从高到低排序，优先处理能减少后续设计和研发重复劳动的事项。</p>
+          </div>
+          <span class="tag">Suggestions</span>
+        </div>
+        <div class="recommend">
+          <div class="rec"><strong>1. 建立用户端 Icon Token 表</strong><p>把 12/14/16/20/32/40/48 的尺寸、容器、颜色、hover 规则写成组件或常量。后续设计替换时只需要说「替换 16px 操作 icon」或「替换 40px 技能身份图标」。</p></div>
+          <div class="rec"><strong>2. 抽离 Agent 专属渐变 SVG</strong><p>当前「详细配置」「开始对话」是内联 SVG，且用了径向渐变。建议抽为命名组件，放在 <code>components/agent/AgentIcons.tsx</code>，避免卡片内重复与 gradient id 冲突。</p></div>
+          <div class="rec"><strong>3. 明确“技能字母图标”是否是最终形态</strong><p>技能广场主视觉目前是字母色块，并非真实图标。若设计要改成技能图标，需要定义：卡片 40px、列表 36px、详情 48px，且需要兜底字母样式。</p></div>
+          <div class="rec"><strong>4. 统一数据类图标颜色语义</strong><p>模型额度当前蓝/紫/橙可读，但输入和请求同蓝、输出和总量同紫，信息密度高时区分不够。建议使用固定语义：请求蓝、输入靛蓝、输出紫、总量蓝紫、配额橙红。</p></div>
+          <div class="rec"><strong>5. 补充 icon-only 按钮可访问名称</strong><p>技能广场的刷新、卡片/列表切换、技能卡「+」下发等 icon-only 按钮应补 <code>aria-label</code> 或 <code>title</code>，Chrome 采样中部分 label 为空。</p></div>
+          <div class="rec"><strong>6. 清理未使用 icon import</strong><p>技能广场存在部分导入但未在主流程使用的 icon。建议在下一次触达时顺手清理，降低设计盘点与研发维护噪音。</p></div>
+          <div class="rec"><strong>7. 状态图标保持“图标 + 文案”组合</strong><p>我的 Agent 状态已经是 16px 状态图标 + 12px 文案的强识别组合，不建议改成单独颜色点；如设计替换，应一次性覆盖 8 种状态。</p></div>
+          <div class="rec"><strong>8. 公共导航 icon 不与 lucide 混用修改</strong><p>TopNav 是 Figma 导出的 inline SVG，业务页多为 lucide。改导航时应进入 <code>NavIcons.tsx</code>，不要直接替换为 lucide，以免和设计稿形态不一致。</p></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>六、设计改 icon 的推荐路径</h2>
+            <p>按模块改动，避免只改可见页面导致详情态、禁用态、弹窗态遗漏。</p>
+          </div>
+          <span class="tag">Change path</span>
+        </div>
+        <div class="grid-3">
+          <div class="note"><strong>改顶部导航：</strong><br />替换 <code>components/topnav/NavIcons.tsx</code>；保持 16px、currentColor、红点 4px。</div>
+          <div class="note"><strong>改 Agent 卡片：</strong><br />角色头像改 <code>/assets/avatars/</code>；状态改 <code>StatusBadge.tsx</code>；操作改 <code>AgentCard.tsx</code> 或抽 <code>AgentIcons.tsx</code>。</div>
+          <div class="note"><strong>改技能主视觉：</strong><br />先确定是否从「字母色块」升级为真实 icon；同步覆盖卡片、列表行、详情页三处尺寸。</div>
+          <div class="note"><strong>改模型额度统计：</strong><br />优先改 <code>StatCard</code> 的 icon 和 iconColor；配额卡单独覆盖 Zap + Info。</div>
+          <div class="note"><strong>改文件树：</strong><br />统一处理 Folder / FileText / Chevron / Eye / Code；注意弱化颜色，不抢正文内容。</div>
+          <div class="note"><strong>改操作菜单：</strong><br />以语义为单位替换：刷新、重启、重装、终端、移除、删除；保留危险/禁用色。</div>
+        </div>
+      </section>
+    </main>
+    <div class="rail"></div>
+  </div>
+
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+    <defs>
+      <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.5 6.2"/><path d="M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h-4"/><path d="M6 22v-4h4"/></symbol>
+      <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+      <symbol id="copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><rect x="4" y="4" width="11" height="11" rx="2"/></symbol>
+      <symbol id="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+      <symbol id="x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></symbol>
+      <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></symbol>
+      <symbol id="grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+      <symbol id="list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+      <symbol id="message" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-8 8H6l-3 3v-7a8 8 0 1 1 18-4Z"/></symbol>
+      <symbol id="more" viewBox="0 0 24 24"><path d="M12 5h.01M12 12h.01M12 19h.01"/></symbol>
+      <symbol id="gear" viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M4 12h2M18 12h2M12 4v2M12 18v2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M17.7 6.3l-1.4 1.4M7.7 16.3l-1.4 1.4"/></symbol>
+      <symbol id="status" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8.5 12.5c1.2-1.4 2.4-1.4 3.5-.3 1.2 1.1 2.4 1 3.5-.2"/></symbol>
+      <symbol id="book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4v15.5"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M9 7h7"/></symbol>
+      <symbol id="bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0v5l-2 3h16l-2-3Z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+      <symbol id="switch" viewBox="0 0 24 24"><path d="M20 7H5"/><path d="m8 4-4 3 4 3"/><path d="M4 17h15"/><path d="m16 14 4 3-4 3"/></symbol>
+      <symbol id="chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+      <symbol id="chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+      <symbol id="arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+      <symbol id="folder" viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol>
+      <symbol id="file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></symbol>
+      <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="code" viewBox="0 0 24 24"><path d="m8 9-4 3 4 3"/><path d="m16 9 4 3-4 3"/><path d="m14 5-4 14"/></symbol>
+      <symbol id="filter" viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7Z"/></symbol>
+      <symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+      <symbol id="activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 8-6-16-3 8H2"/></symbol>
+      <symbol id="down" viewBox="0 0 24 24"><path d="M12 3v14"/><path d="m7 12 5 5 5-5"/><path d="M5 21h14"/></symbol>
+      <symbol id="up" viewBox="0 0 24 24"><path d="M12 21V7"/><path d="m7 12 5-5 5 5"/><path d="M5 3h14"/></symbol>
+      <symbol id="zap" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7Z"/></symbol>
+      <symbol id="rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v7h7"/></symbol>
+      <symbol id="drive" viewBox="0 0 24 24"><path d="M5 3h14l2 8v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8Z"/><path d="M3 11h18"/><path d="M7 16h.01"/></symbol>
+      <symbol id="terminal" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></symbol>
+      <symbol id="trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></symbol>
+      <symbol id="user-minus" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M17 11h5"/></symbol>
+    </defs>
+  </svg>
+</body>
+</html>

@@ -1,0 +1,56 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Breadcrumb — ClawPro
+ * 仅文字 + 间距，不加背景 / 边框 / 卡片容器。
+ *   字号 14px；当前页 text-title / medium 不可点击；
+ *   祖先页 text-muted 可点击，hover 加深到 text-title；
+ *   分隔符 text-weak；分隔符左右 gap 6px。
+ * 配套：portable/react/breadcrumb.tsx
+ * 规范：component-specs/breadcrumb.md §3
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.cp-breadcrumb__link {
+  color: var(--cp-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  cursor: pointer;
+}
+
+.cp-breadcrumb__link:hover {
+  color: var(--cp-text-title);
+}
+
+.cp-breadcrumb__page {
+  font-weight: 500;
+  color: var(--cp-text-title);
+}
+
+.cp-breadcrumb__sep {
+  display: inline-flex;
+  align-items: center;
+  color: var(--cp-text-weak);
+  user-select: none;
+}
+
+.cp-breadcrumb__sep > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cp-breadcrumb__ellipsis {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  color: var(--cp-text-weak);
+}

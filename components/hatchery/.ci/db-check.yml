@@ -1,0 +1,19 @@
+version: v2.0
+
+on:
+  mr: ["*"]
+
+jobs:
+  build:
+    runs-on:
+      self-hosted: true
+      pool-name: build
+    steps:
+    - checkout: self
+    - run: |
+        export BASE_BRANCH=${{ci.head_ref}}
+        .ci/ci-check-schema.sh 
+
+notices:
+- type: wework-message
+  if: FAILURE

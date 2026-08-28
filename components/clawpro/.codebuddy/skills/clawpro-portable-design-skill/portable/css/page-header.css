@@ -1,0 +1,60 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable PageHeader — ClawPro（Admin 优先）
+ * 左信息右操作，支持换行；三层次：Title / Description / Actions。
+ *   Title 24px(2xl) medium text-title；Description mt-1 14px text-secondary；
+ *   Actions 右侧 gap-2；底部 spacing 仅 mb-6（默认）/ mb-8（loose）两档。
+ *   标题右侧 accessory 用 title-row 槽，不外贴 Badge。
+ * 配套：portable/react/page-header.tsx
+ * 规范：component-specs/page-header.md §3
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px; /* mb-6 */
+}
+
+.cp-page-header--loose {
+  margin-bottom: 32px; /* mb-8 */
+}
+
+.cp-page-header__content {
+  min-width: 0;
+}
+
+.cp-page-header--has-actions .cp-page-header__content {
+  flex: 1 1 0%;
+}
+
+.cp-page-header__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.cp-page-header__title {
+  margin: 0;
+  font-size: 24px; /* 2xl */
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--cp-text-title);
+}
+
+.cp-page-header__desc {
+  margin-top: 4px; /* mt-1 */
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cp-text-secondary);
+}
+
+.cp-page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+}

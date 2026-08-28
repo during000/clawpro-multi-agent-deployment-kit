@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Batch Actions Bar</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      .cp-shell {
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+      .cp-header {
+        margin-bottom: 24px;
+      }
+      .cp-header h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-header p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-group {
+        display: grid;
+        gap: 24px;
+      }
+      .cp-demo-block {
+        display: grid;
+        gap: 12px;
+      }
+      .cp-demo-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-surface {
+        overflow: hidden;
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+      }
+      .cp-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      .cp-table th,
+      .cp-table td {
+        height: 54px;
+        padding: 0 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--cp-border);
+        white-space: nowrap;
+      }
+      .cp-table th {
+        color: var(--cp-text-muted);
+        background: var(--cp-bg-subtle);
+        font-weight: 400;
+      }
+      .cp-table__select-col {
+        width: 44px;
+        padding-right: 8px;
+      }
+      .cp-table tr[data-state="selected"] {
+        background: rgba(20, 71, 230, 0.03);
+      }
+      .cp-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      .cp-checkbox {
+        display: inline-flex;
+        width: 16px;
+        height: 16px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--cp-border-control);
+        border-radius: 4px;
+        background: white;
+        color: white;
+        font-size: 12px;
+        line-height: 1;
+      }
+      .cp-checkbox.is-checked,
+      .cp-checkbox.is-indeterminate {
+        border-color: var(--cp-brand-blue);
+        background: var(--cp-brand-blue);
+      }
+      .cp-checkbox.is-indeterminate::before {
+        content: "";
+        width: 8px;
+        height: 2px;
+        border-radius: 999px;
+        background: white;
+      }
+      .cp-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .cp-status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+      .cp-status--green { color: #16A34A; }
+      .cp-status--red { color: #DC2626; }
+      .cp-batch-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border-top: 1px solid var(--cp-border);
+        background: white;
+        padding: 10px 16px;
+      }
+      .cp-batch-bar--all {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--bg-grey-normal);
+      }
+      .cp-batch-summary {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-batch-summary strong {
+        color: var(--cp-text-secondary);
+        font-weight: 400;
+      }
+      .cp-batch-summary .cp-count {
+        color: var(--cp-text-brand);
+        font-weight: 500;
+      }
+      .cp-batch-separator {
+        color: var(--cp-text-weak);
+      }
+      .cp-batch-link {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--cp-text-brand);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .cp-batch-link:hover {
+        text-decoration: underline;
+      }
+      .cp-batch-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+      .cp-btn {
+        display: inline-flex;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        padding: 0 12px;
+        border: 1px solid var(--cp-border);
+        background: white;
+        color: var(--cp-text-title);
+        font-size: 12px;
+        line-height: 1;
+        text-decoration: none;
+      }
+      .cp-btn--ghost {
+        border-color: transparent;
+        background: transparent;
+      }
+      .cp-btn--ghost:hover {
+        background: rgba(2, 6, 23, 0.04);
+      }
+      .cp-rule-box {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: #FAFAFA;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-rule-box p {
+        margin: 0;
+      }
+      .cp-rule-box p + p {
+        margin-top: 4px;
+      }
+      @media (max-width: 768px) {
+        body { padding: 16px; }
+        .cp-table th,
+        .cp-table td { padding: 0 12px; }
+        .cp-batch-bar,
+        .cp-batch-bar--all {
+          flex-wrap: wrap;
+          align-items: flex-start;
+        }
+        .cp-batch-actions {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>Batch Actions Bar</h1>
+        <p>根据 `component-specs/batch-actions-bar.md` 和设计系统展示页示例生成，覆盖部分选中与跨页全选两种典型状态。</p>
+      </header>
+
+      <div class="cp-group">
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">部分选中状态</h2>
+          <div class="cp-surface">
+            <table class="cp-table">
+              <thead>
+                <tr>
+                  <th class="cp-table__select-col"><span class="cp-checkbox is-indeterminate" aria-hidden="true"></span></th>
+                  <th>名称</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-state="selected">
+                  <td class="cp-table__select-col"><span class="cp-checkbox is-checked" aria-hidden="true">✓</span></td>
+                  <td>Agent-001</td>
+                  <td><span class="cp-status cp-status--green">运行中</span></td>
+                </tr>
+                <tr data-state="selected">
+                  <td class="cp-table__select-col"><span class="cp-checkbox is-checked" aria-hidden="true">✓</span></td>
+                  <td>Agent-002</td>
+                  <td><span class="cp-status cp-status--red">已停止</span></td>
+                </tr>
+                <tr>
+                  <td class="cp-table__select-col"><span class="cp-checkbox" aria-hidden="true"></span></td>
+                  <td>Agent-003</td>
+                  <td><span class="cp-status cp-status--green">运行中</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="cp-batch-bar">
+              <div class="cp-batch-summary">
+                <strong>已选择 <span class="cp-count">2</span> 项</strong>
+                <span class="cp-batch-separator">·</span>
+                <button class="cp-batch-link" type="button">选择全部 156 项</button>
+              </div>
+              <div class="cp-batch-actions">
+                <button class="cp-btn" type="button">批量删除</button>
+                <button class="cp-btn" type="button">批量导出</button>
+                <button class="cp-btn cp-btn--ghost" type="button">取消选择</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">全选 / 跨页选择态</h2>
+          <div class="cp-batch-bar cp-batch-bar--all">
+            <div class="cp-batch-summary">
+              <strong>已选择全部 <span class="cp-count">156</span> 项（跨页）</strong>
+            </div>
+            <div class="cp-batch-actions">
+              <button class="cp-btn" type="button">批量删除</button>
+              <button class="cp-btn cp-btn--ghost" type="button">取消选择</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="cp-rule-box">
+          <p><strong>规则</strong></p>
+          <p>• sticky bottom，表格勾选后浮出</p>
+          <p>• 左侧：已选数量 + 跨页全选链接</p>
+          <p>• 右侧：批量操作按钮 + 取消选择</p>
+          <p>• 全选态时背景变浅蓝 `#EFF6FF`</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

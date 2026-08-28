@@ -1,0 +1,90 @@
+{
+  "$schema": "clawpro-resource-duplicates",
+  "stage": 4,
+  "generatedAt": "2026-07-20T04:15:15.228Z",
+  "note": "阶段 4 重复审查与治理分级：只识别/分级/建议，不删除不替换不改文件（实际治理见阶段 5）。红线（品牌/渠道/头像）一律 C 不归并；registry 事实源标 keep-registry-source 永不删；usageCount=0 仅在同时无目录级动态引用与 unresolved 命中时才作为删除候选。",
+  "detectionMethods": [
+    "exact-file-hash：文件字节 SHA-256 完全一致",
+    "svg-normalized-hash：SVG 去格式差异后内容一致（本仓库实测为 0 组，逻辑保留）",
+    "filename-similar：include 范围、跨目录同名、非纯数字命名的疑似重复（C 类人工确认）"
+  ],
+  "grading": {
+    "A": "内容完全一致 + 冗余副本无任何引用线索 → 阶段 5 可自动清理候选（保留 canonical）",
+    "B": "内容完全一致 + 存在业务引用 → 阶段 5 小范围替换引用到 canonical 后再移除",
+    "C": "红线资源 / 文件名疑似 / 仅余 registry 事实源副本 → 人工确认，不自动处理"
+  },
+  "summary": {
+    "fileResourcesHashed": 555,
+    "readFail": 0,
+    "groups": 1,
+    "byGrade": {
+      "C": 1
+    },
+    "byMethod": {
+      "exact-file-hash": 1
+    },
+    "redLineGroups": 1,
+    "membersInGroups": 2,
+    "removeRedundantCandidates": 0,
+    "replaceRefsCandidates": 0,
+    "keepRegistrySourceMembers": 0,
+    "canonicalSuggestions": 0,
+    "reviewConfirmedGroups": 1,
+    "reviewPendingGroups": 0
+  },
+  "gradeLists": {
+    "A": [],
+    "B": [],
+    "C": [
+      "dup-001"
+    ]
+  },
+  "canonicalSuggestions": [],
+  "groups": [
+    {
+      "grade": "C",
+      "method": "exact-file-hash",
+      "redLine": true,
+      "canonicalSuggestionId": null,
+      "registrySourceIds": [],
+      "members": [
+        {
+          "id": "public__admin-channel-icons-channel-wecom__83a4d718",
+          "sourcePath": "client/public/assets/admin-channel-icons/channel-wecom.svg",
+          "scanScope": "include",
+          "type": "svg",
+          "bytes": 37070,
+          "usageCount": 1,
+          "dynamicDirReferenced": false,
+          "primaryCategory": "channel-icon",
+          "visualType": "brand-fixed",
+          "role": "reviewed",
+          "action": "reviewed-keep"
+        },
+        {
+          "id": "public__admin-channel-icons-channel-wecom-app__a5b69567",
+          "sourcePath": "client/public/assets/admin-channel-icons/channel-wecom-app.svg",
+          "scanScope": "include",
+          "type": "svg",
+          "bytes": 37070,
+          "usageCount": 1,
+          "dynamicDirReferenced": false,
+          "primaryCategory": "channel-icon",
+          "visualType": "brand-fixed",
+          "role": "reviewed",
+          "action": "reviewed-keep"
+        }
+      ],
+      "reasons": [
+        "命中红线（品牌 Logo / 渠道图标 / Agent 头像）：禁止仅凭 hash 自动归并，需人工确认是否同一资源",
+        "已人工确认（design @ 2026-06-14）：企业微信（wework → channels.wecom）与 企业微信应用（wework-app → channels.wecomApp）是两个独立渠道，当前有意暂复用同一品牌图标；两文件均被引用、均保留，不归并。待设计提供「企业微信应用」独立图标后再单独替换 channel-wecom-app.svg。"
+      ],
+      "reviewStatus": "confirmed",
+      "reviewDecision": "keep-both-intentional-shared-icon",
+      "reviewNote": "企业微信（wework → channels.wecom）与 企业微信应用（wework-app → channels.wecomApp）是两个独立渠道，当前有意暂复用同一品牌图标；两文件均被引用、均保留，不归并。待设计提供「企业微信应用」独立图标后再单独替换 channel-wecom-app.svg。",
+      "reviewedBy": "design",
+      "reviewedAt": "2026-06-14",
+      "id": "dup-001"
+    }
+  ]
+}

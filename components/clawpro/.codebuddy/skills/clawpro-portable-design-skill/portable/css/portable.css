@@ -1,0 +1,42 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable CSS · 总入口
+ * ClawPro Portable Design Skill
+ *
+ * 用法（在你的项目入口文件，例如 main.tsx / index.tsx）：
+ *
+ *   import "clawpro-portable/css/portable.css";
+ *
+ * 顺序很重要：tokens → globals → 各组件样式
+ * ════════════════════════════════════════════════════════════════════ */
+
+@import "./tokens.css";
+@import "./globals.css";
+@import "./button.css";
+@import "./badge.css";
+@import "./input.css";
+@import "./admin-sidebar.css";
+@import "./segment.css";
+@import "./table.css";
+@import "./card.css";
+@import "./status-tag.css";
+@import "./pagination.css";
+@import "./empty-state.css";
+@import "./number-card.css";
+@import "./tabs.css";
+@import "./date-picker.css";
+@import "./search-filter-bar.css";
+@import "./dialog-drawer.css";
+@import "./selection-controls.css";
+@import "./breadcrumb.css";
+@import "./tooltip.css";
+@import "./avatar.css";
+@import "./page-header.css";
+@import "./loading-progress.css";
+@import "./form-controls.css";
+@import "./tree.css";
+@import "./tree-select.css";
+@import "./popover-menu.css";
+@import "./transfer.css";
+@import "./chart-stat.css";
+@import "./file-browser.css";
+@import "./batch-actions-bar.css";

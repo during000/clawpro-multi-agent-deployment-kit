@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://clawpro.local/contracts/node-handoff.schema.json",
+  "title": "ClawPro DevFlow Node Handoff",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "node_id",
+    "status",
+    "summary",
+    "artifacts",
+    "decision",
+    "next_node"
+  ],
+  "properties": {
+    "contract_version": { "const": "1.0" },
+    "node_id": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": ["completed", "failed", "blocked", "waiting_confirmation"]
+    },
+    "summary": { "type": "string", "minLength": 1 },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "path", "media_type"],
+        "properties": {
+          "name": { "type": "string" },
+          "path": { "type": "string" },
+          "media_type": { "type": "string" },
+          "size": { "type": "integer", "minimum": 0 },
+          "sha256": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "decision": {
+      "type": "object",
+      "required": ["result", "reason"],
+      "properties": {
+        "result": {
+          "enum": ["passed", "failed", "blocked", "not_applicable"]
+        },
+        "reason": { "type": "string" },
+        "issues": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "metrics": { "type": "object" },
+    "next_node": { "type": ["string", "null"] },
+    "retry": {
+      "type": ["object", "null"],
+      "properties": {
+        "target_node": { "type": "string" },
+        "reason": { "type": "string" },
+        "required_fixes": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["target_node", "reason", "required_fixes"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

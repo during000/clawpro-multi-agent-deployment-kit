@@ -1,0 +1,97 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Loading / Progress — ClawPro
+ *   Spinner：16 / 20px，品牌蓝或弱灰，按钮内用小尺寸。
+ *   Skeleton：贴合最终布局尺寸，不要一块大灰条替代复杂布局。
+ *   Progress：4-6px 高，品牌蓝进度 + 弱灰轨道，单色不渐变。
+ *   TableSkeleton：骨架行高 54px，3 段灰条接近真实列宽。
+ *   轻量动效，支持 reduced motion。
+ * 配套：portable/react/loading-progress.tsx
+ * 规范：component-specs/loading-progress.md §3
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ─── Spinner ─── */
+.cp-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--cp-brand-blue);
+  animation: cp-spin 0.7s linear infinite;
+}
+
+.cp-spinner--sm { width: 16px; height: 16px; }
+.cp-spinner--md { width: 20px; height: 20px; }
+.cp-spinner--muted { color: var(--cp-text-weak); }
+
+@keyframes cp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Skeleton ─── */
+.cp-skeleton {
+  display: block;
+  border-radius: var(--radius);
+  background: #f3f3f4;
+  animation: cp-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes cp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ─── Progress ─── */
+.cp-progress {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: var(--cp-bg-subtle);
+}
+
+.cp-progress__bar {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--cp-brand-blue);
+  transition: width 0.3s ease;
+}
+
+/* ─── TableSkeleton ─── */
+.cp-table-skeleton {
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  overflow: hidden;
+}
+
+.cp-table-skeleton__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 54px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--cp-border);
+}
+
+.cp-table-skeleton__row:last-child {
+  border-bottom: none;
+}
+
+.cp-table-skeleton__cell {
+  height: 16px;
+  border-radius: var(--radius);
+  background: var(--cp-bg-subtle);
+  animation: cp-pulse 1.5s ease-in-out infinite;
+}
+
+.cp-table-skeleton__cell--a { width: 128px; }
+.cp-table-skeleton__cell--b { width: 80px; }
+.cp-table-skeleton__cell--c { flex: 1 1 0%; }
+
+/* ─── reduced motion 降级 ─── */
+@media (prefers-reduced-motion: reduce) {
+  .cp-spinner { animation-duration: 1.4s; }
+  .cp-skeleton,
+  .cp-table-skeleton__cell { animation: none; }
+}

@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Input Select + Table</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background:
+          radial-gradient(circle at top right, rgba(20, 71, 230, 0.05), transparent 26%),
+          linear-gradient(180deg, #f7f9fc 0%, #f4f7fb 100%);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      button, input, select { font: inherit; }
+      .cp-shell {
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+      .cp-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .cp-header h1 {
+        margin: 0;
+        color: var(--cp-text-title);
+        font-size: 28px;
+        line-height: 1.35;
+      }
+      .cp-header p {
+        margin: 8px 0 0;
+        max-width: 760px;
+        color: var(--cp-text-secondary);
+        font-size: 13px;
+        line-height: 22px;
+      }
+      .cp-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .cp-btn,
+      .cp-input,
+      .cp-select,
+      .cp-chip,
+      .cp-pagination-btn {
+        border-radius: 4px;
+      }
+      .cp-btn {
+        display: inline-flex;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border: 1px solid var(--cp-border);
+        background: #fff;
+        padding: 0 12px;
+        color: var(--cp-text-title);
+        font-size: 12px;
+        line-height: 1;
+        white-space: nowrap;
+      }
+      .cp-btn--primary {
+        border-color: var(--cp-brand-black);
+        background: var(--cp-brand-black);
+        color: #fff;
+      }
+      .cp-btn--primary:hover {
+        border-color: var(--cp-brand-black);
+        background: #1a1a1a;
+        color: #fff;
+      }
+      .cp-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: #fff;
+      }
+      .cp-filter-card {
+        margin-bottom: 16px;
+        padding: 16px;
+      }
+      .cp-filter-grid {
+        display: grid;
+        grid-template-columns: 1.3fr repeat(4, minmax(0, 1fr)) auto;
+        gap: 12px;
+        align-items: end;
+      }
+      .cp-field {
+        display: grid;
+        gap: 6px;
+      }
+      .cp-field label {
+        color: var(--cp-text-secondary);
+        font-size: 12px;
+        line-height: 18px;
+      }
+      .cp-input {
+        width: 100%;
+        height: 36px;
+        border: 1px solid var(--cp-border);
+        background: #fff;
+        padding: 0 12px;
+        color: var(--cp-text-emphasis);
+        font-size: 14px;
+        line-height: 1;
+        outline: none;
+        transition: border-color 140ms ease;
+      }
+      .cp-input::placeholder {
+        color: var(--cp-text-weak);
+      }
+      .cp-input:hover,
+      .cp-input:focus {
+        border-color: var(--cp-control-accent);
+      }
+      .cp-custom-select {
+        position: relative;
+      }
+      .cp-select-trigger {
+        display: flex;
+        border-radius: 4px;
+        width: 100%;
+        height: 36px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid var(--cp-border);
+        background: #fff;
+        padding: 0 12px;
+        color: var(--cp-text-emphasis);
+        font-size: 14px;
+        line-height: 1;
+        outline: none;
+        cursor: pointer;
+        transition: border-color 140ms ease;
+      }
+      .cp-select-trigger:hover,
+      .cp-select-trigger[aria-expanded="true"] {
+        border-color: var(--cp-control-accent);
+      }
+      .cp-select-label {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .cp-select-chevron {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        color: var(--cp-text-muted);
+        transition: transform 140ms ease;
+      }
+      .cp-custom-select.is-open .cp-select-chevron {
+        transform: rotate(180deg);
+      }
+      .cp-select-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        z-index: 20;
+        display: none;
+        padding: 8px;
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: 0px 0px 2px rgba(0,0,0,0.1), 0px 4px 16px rgba(0,0,0,0.12);
+      }
+      .cp-custom-select.is-open .cp-select-panel {
+        display: block;
+      }
+      .cp-select-option {
+        display: flex;
+        width: 100%;
+        height: 32px;
+        align-items: center;
+        gap: 8px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        padding: 0 12px;
+        color: var(--cp-text-title);
+        font-size: 14px;
+        text-align: left;
+        cursor: pointer;
+      }
+      .cp-select-option:hover {
+        background: #f3f3f4;
+      }
+      .cp-select-option.is-selected {
+        color: var(--cp-control-accent);
+        font-weight: 500;
+      }
+      .cp-select-check {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        color: var(--cp-control-accent);
+        opacity: 0;
+      }
+      .cp-select-option.is-selected .cp-select-check {
+        opacity: 1;
+      }
+      .cp-filter-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .cp-filter-summary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+      .cp-summary-label {
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        line-height: 18px;
+      }
+      .cp-chip {
+        display: inline-flex;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 0 8px;
+        border: 1px solid var(--cp-border);
+        background: var(--bg-grey-normal);
+        color: var(--cp-text-secondary);
+        font-size: 12px;
+        line-height: 1;
+      }
+      .cp-chip strong {
+        color: var(--cp-text-title);
+        font-weight: 500;
+      }
+      .cp-table-surface {
+        overflow: hidden;
+      }
+      .cp-table-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .cp-table-toolbar h2 {
+        margin: 0;
+        color: var(--cp-text-title);
+        font-size: 15px;
+        line-height: 22px;
+      }
+      .cp-table-toolbar p {
+        margin: 4px 0 0;
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        line-height: 18px;
+      }
+      .cp-table-toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .cp-table-wrap {
+        overflow-x: auto;
+      }
+      .cp-table {
+        width: 100%;
+        min-width: 1040px;
+        border-collapse: collapse;
+        font-size: 12px;
+        color: var(--cp-text-body);
+      }
+      .cp-table thead {
+        background: var(--cp-bg-subtle);
+      }
+      .cp-table th,
+      .cp-table td {
+        padding: 0 16px;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+        white-space: nowrap;
+      }
+      .cp-table th {
+        height: 40px;
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .cp-table td {
+        height: 54px;
+        color: var(--cp-text-body);
+        font-size: 12px;
+      }
+      .cp-table tbody tr:hover td {
+        background: var(--bg-grey-normal);
+      }
+      .cp-name {
+        display: grid;
+        gap: 4px;
+        white-space: normal;
+      }
+      .cp-name strong {
+        color: var(--cp-text-emphasis);
+        font-size: 12px;
+        line-height: 18px;
+        font-weight: 500;
+      }
+      .cp-name span,
+      .cp-subtle {
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        line-height: 18px;
+      }
+      .cp-status {
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: 500;
+      }
+      .cp-status--online { color: #008236; }
+      .cp-status--draft { color: #C2410C; }
+      .cp-status--paused { color: #737373; }
+      .cp-actions {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        white-space: nowrap;
+      }
+      .cp-actions a,
+      .cp-actions button {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--cp-text-brand);
+        font-size: 12px;
+        line-height: 18px;
+        cursor: pointer;
+      }
+      .cp-actions a:hover,
+      .cp-actions button:hover {
+        text-decoration: underline;
+      }
+      .cp-actions .is-disabled {
+        color: #d0dafa;
+        cursor: not-allowed;
+        text-decoration: none;
+      }
+      .cp-table-footer {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 16px;
+        padding: 8px 16px;
+        border-top: 1px solid #f0f0f0;
+      }
+      .cp-table-footer span {
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        line-height: 18px;
+      }
+      .cp-pagination {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .cp-pagination-btn {
+        display: inline-flex;
+        width: 32px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--cp-border);
+        background: #fff;
+        color: var(--cp-text-secondary);
+        font-size: 12px;
+        line-height: 1;
+      }
+      .cp-pagination-btn.is-current {
+        border-color: var(--cp-control-accent);
+        color: var(--cp-control-accent);
+        font-weight: 500;
+      }
+      @media (max-width: 1180px) {
+        .cp-filter-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .cp-filter-actions {
+          justify-content: flex-start;
+        }
+      }
+      @media (max-width: 720px) {
+        .cp-header {
+          flex-direction: column;
+        }
+        .cp-filter-grid {
+          grid-template-columns: 1fr;
+        }
+        body { padding: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cp-shell">
+      <header class="cp-header">
+        <div>
+          <h1>Agent 运行列表</h1>
+          <p>用 `input-select.md` 和 `table.md` 组合出的标准管理页。顶部筛选区只使用白底 `36px` Input / Select，列表区使用灰底表头、12px 密度、品牌蓝文字操作列和左右 16px 对齐页脚。</p>
+        </div>
+        <div class="cp-header-actions">
+          <button class="cp-btn" type="button">导出 CSV</button>
+          <button class="cp-btn cp-btn--primary" type="button">新建 Agent</button>
+        </div>
+      </header>
+
+      <section class="cp-card cp-filter-card">
+        <div class="cp-filter-grid">
+          <div class="cp-field">
+            <label for="agent-keyword">搜索</label>
+            <input id="agent-keyword" class="cp-input" type="text" value="客服" placeholder="请输入 Agent 名称 / ID" />
+          </div>
+          <div class="cp-field">
+            <label for="agent-status-trigger">运行状态</label>
+            <div class="cp-custom-select" data-select data-chip-target="status">
+              <button id="agent-status-trigger" class="cp-select-trigger" type="button" aria-expanded="false" aria-controls="agent-status-panel">
+                <span class="cp-select-label">全部状态</span>
+                <svg class="cp-select-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="cp-select-panel" id="agent-status-panel" role="listbox">
+                <button class="cp-select-option is-selected" type="button" data-value="全部状态" role="option" aria-selected="true"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>全部状态</span></button>
+                <button class="cp-select-option" type="button" data-value="运行中" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>运行中</span></button>
+                <button class="cp-select-option" type="button" data-value="待发布" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>待发布</span></button>
+                <button class="cp-select-option" type="button" data-value="已暂停" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>已暂停</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="cp-field">
+            <label for="agent-model-trigger">模型</label>
+            <div class="cp-custom-select" data-select>
+              <button id="agent-model-trigger" class="cp-select-trigger" type="button" aria-expanded="false" aria-controls="agent-model-panel">
+                <span class="cp-select-label">全部模型</span>
+                <svg class="cp-select-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="cp-select-panel" id="agent-model-panel" role="listbox">
+                <button class="cp-select-option is-selected" type="button" data-value="全部模型" role="option" aria-selected="true"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>全部模型</span></button>
+                <button class="cp-select-option" type="button" data-value="DeepSeek-R1" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DeepSeek-R1</span></button>
+                <button class="cp-select-option" type="button" data-value="GPT-4.1" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>GPT-4.1</span></button>
+                <button class="cp-select-option" type="button" data-value="ClawPro-Reasoner" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>ClawPro-Reasoner</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="cp-field">
+            <label for="agent-owner-trigger">负责人</label>
+            <div class="cp-custom-select" data-select>
+              <button id="agent-owner-trigger" class="cp-select-trigger" type="button" aria-expanded="false" aria-controls="agent-owner-panel">
+                <span class="cp-select-label">全部负责人</span>
+                <svg class="cp-select-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="cp-select-panel" id="agent-owner-panel" role="listbox">
+                <button class="cp-select-option is-selected" type="button" data-value="全部负责人" role="option" aria-selected="true"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>全部负责人</span></button>
+                <button class="cp-select-option" type="button" data-value="产品运营组" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>产品运营组</span></button>
+                <button class="cp-select-option" type="button" data-value="企业客服组" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>企业客服组</span></button>
+                <button class="cp-select-option" type="button" data-value="平台策略组" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>平台策略组</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="cp-field">
+            <label for="agent-env-trigger">环境</label>
+            <div class="cp-custom-select" data-select data-chip-target="env">
+              <button id="agent-env-trigger" class="cp-select-trigger" type="button" aria-expanded="false" aria-controls="agent-env-panel">
+                <span class="cp-select-label">生产环境</span>
+                <svg class="cp-select-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="cp-select-panel" id="agent-env-panel" role="listbox">
+                <button class="cp-select-option is-selected" type="button" data-value="生产环境" role="option" aria-selected="true"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>生产环境</span></button>
+                <button class="cp-select-option" type="button" data-value="预发环境" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>预发环境</span></button>
+                <button class="cp-select-option" type="button" data-value="测试环境" role="option" aria-selected="false"><svg class="cp-select-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>测试环境</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="cp-filter-actions">
+            <button class="cp-btn" type="button">重置</button>
+            <button class="cp-btn cp-btn--primary" type="button">查询</button>
+          </div>
+        </div>
+        <div class="cp-filter-summary">
+          <span class="cp-summary-label">当前条件</span>
+          <span class="cp-chip"><strong>关键词</strong> 客服</span>
+          <span class="cp-chip"><strong>状态</strong> <span data-chip-key="status">全部状态</span></span>
+          <span class="cp-chip"><strong>环境</strong> <span data-chip-key="env">生产环境</span></span>
+        </div>
+      </section>
+
+      <section class="cp-card cp-table-surface">
+        <div class="cp-table-toolbar">
+          <div>
+            <h2>运行实例</h2>
+            <p>表格使用标准灰底表头，不给状态列加胶囊标签，危险操作也不使用红色按钮。</p>
+          </div>
+          <div class="cp-table-toolbar-right">
+            <button class="cp-btn" type="button">批量操作</button>
+            <button class="cp-btn" type="button">刷新</button>
+          </div>
+        </div>
+        <div class="cp-table-wrap">
+          <table class="cp-table">
+            <thead>
+              <tr>
+                <th style="width: 28%;">Agent 名称</th>
+                <th>运行状态</th>
+                <th>模型</th>
+                <th>负责人</th>
+                <th>更新时间</th>
+                <th>实例数</th>
+                <th style="width: 18%;">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="cp-name">
+                    <strong>企业客服总台</strong>
+                    <span>agt-cs-001 · 负责多租户在线接待与知识库问答</span>
+                  </div>
+                </td>
+                <td><span class="cp-status cp-status--online">运行中</span></td>
+                <td>ClawPro-Reasoner</td>
+                <td>企业客服组</td>
+                <td>2026-06-10 10:28</td>
+                <td>24</td>
+                <td>
+                  <div class="cp-actions">
+                    <a href="#">查看</a>
+                    <button type="button">编辑</button>
+                    <button type="button">删除</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="cp-name">
+                    <strong>客户成功回访助手</strong>
+                    <span>agt-cs-014 · 自动汇总 NPS 结果并生成回访建议</span>
+                  </div>
+                </td>
+                <td><span class="cp-status cp-status--draft">待发布</span></td>
+                <td>DeepSeek-R1</td>
+                <td>产品运营组</td>
+                <td>2026-06-10 09:42</td>
+                <td>08</td>
+                <td>
+                  <div class="cp-actions">
+                    <a href="#">查看</a>
+                    <button type="button">发布</button>
+                    <button class="is-disabled" type="button" disabled>删除</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="cp-name">
+                    <strong>平台策略巡检 Agent</strong>
+                    <span>agt-op-103 · 每日巡检策略版本漂移、灰度结果和异常审计</span>
+                  </div>
+                </td>
+                <td><span class="cp-status cp-status--online">运行中</span></td>
+                <td>GPT-4.1</td>
+                <td>平台策略组</td>
+                <td>2026-06-10 08:16</td>
+                <td>12</td>
+                <td>
+                  <div class="cp-actions">
+                    <a href="#">查看</a>
+                    <button type="button">扩容</button>
+                    <button type="button">下线</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="cp-name">
+                    <strong>工单质检助手</strong>
+                    <span>agt-qa-020 · 对话抽检与违规话术识别</span>
+                  </div>
+                </td>
+                <td><span class="cp-status cp-status--paused">已暂停</span></td>
+                <td>ClawPro-Reasoner</td>
+                <td>企业客服组</td>
+                <td>2026-06-09 21:04</td>
+                <td>03</td>
+                <td>
+                  <div class="cp-actions">
+                    <a href="#">查看</a>
+                    <button type="button">恢复</button>
+                    <button type="button">删除</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cp-table-footer">
+          <span>共 128 条</span>
+          <div class="cp-pagination" aria-label="分页">
+            <button class="cp-pagination-btn" type="button">‹</button>
+            <button class="cp-pagination-btn is-current" type="button">1</button>
+            <button class="cp-pagination-btn" type="button">2</button>
+            <button class="cp-pagination-btn" type="button">3</button>
+            <button class="cp-pagination-btn" type="button">›</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script>
+      (function () {
+        const selects = Array.from(document.querySelectorAll('[data-select]'));
+        const chips = {
+          status: document.querySelector('[data-chip-key="status"]'),
+          env: document.querySelector('[data-chip-key="env"]'),
+        };
+
+        function closeAll(except) {
+          selects.forEach((select) => {
+            if (select === except) return;
+            select.classList.remove('is-open');
+            const trigger = select.querySelector('.cp-select-trigger');
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+          });
+        }
+
+        selects.forEach((select) => {
+          const trigger = select.querySelector('.cp-select-trigger');
+          const options = Array.from(select.querySelectorAll('.cp-select-option'));
+          if (!trigger || options.length === 0) return;
+
+          trigger.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const willOpen = !select.classList.contains('is-open');
+            closeAll(select);
+            select.classList.toggle('is-open', willOpen);
+            trigger.setAttribute('aria-expanded', String(willOpen));
+          });
+
+          options.forEach((option) => {
+            option.addEventListener('click', () => {
+              options.forEach((item) => {
+                item.classList.remove('is-selected');
+                item.setAttribute('aria-selected', 'false');
+              });
+              option.classList.add('is-selected');
+              option.setAttribute('aria-selected', 'true');
+              const value = option.dataset.value || option.textContent.trim();
+              const label = trigger.querySelector('.cp-select-label');
+              if (label) label.textContent = value;
+              const chipKey = select.dataset.chipTarget;
+              if (chipKey && chips[chipKey]) chips[chipKey].textContent = value;
+              select.classList.remove('is-open');
+              trigger.setAttribute('aria-expanded', 'false');
+            });
+          });
+        });
+
+        document.addEventListener('click', (event) => {
+          if (!event.target.closest('[data-select]')) closeAll();
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') closeAll();
+        });
+      })();
+    </script>
+  </body>
+</html>

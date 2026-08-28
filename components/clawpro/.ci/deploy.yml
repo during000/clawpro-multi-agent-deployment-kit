@@ -1,0 +1,26 @@
+version: v2.0
+
+name: clawprodemo-auto-deploy
+
+on:
+  push:
+    branches:
+      - main
+
+stages:
+  - name: deploy
+    jobs:
+      deploy_clawpro_demo:
+        name: Build and deploy ClawPro demo
+        steps:
+          - checkout: self
+          - run: |
+              set -euo pipefail
+
+              export DEPLOY_HOST="9.135.95.157"
+              export DEPLOY_PORT="36000"
+              export DEPLOY_USER="petzhou"
+              export DEPLOY_PATH="/data/www/clawprodemo"
+              export DEPLOY_SSH_PRIVATE_KEY="${{ settings.DEPLOY_SSH_PRIVATE_KEY.password }}"
+
+              bash scripts/ci-deploy-clawprodemo.sh

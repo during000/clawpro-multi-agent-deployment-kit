@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Popover / Dropdown — Portable Fallback</title>
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <style>
+    body {
+      font-family: var(--cp-font-sans);
+      color: var(--cp-text-title);
+      background: var(--cp-page-bg);
+      padding: 2rem;
+    }
+    .demo {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .section {
+      background: white;
+      border: 1px solid var(--cp-border);
+      border-radius: 4px;
+      padding: 2rem;
+    }
+    .section h2 {
+      margin-top: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    /* ─── Popover ─── */
+    .popover-trigger {
+      position: relative;
+      display: inline-block;
+    }
+    .popover-content {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      background: white;
+      border: 1px solid var(--cp-border);
+      border-radius: 4px;
+      box-shadow: var(--cp-shadow-overlay);
+      padding: 1rem;
+      min-width: 200px;
+      display: none;
+      z-index: 10;
+    }
+    .popover-content.active {
+      display: block;
+    }
+    .popover-content p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ─── Dropdown ─── */
+    .dropdown-trigger {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      background: white;
+      border: 1px solid var(--cp-border);
+      border-radius: 4px;
+      box-shadow: var(--cp-shadow-overlay);
+      min-width: 180px;
+      display: none;
+      z-index: 10;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .dropdown-menu.active {
+      display: block;
+    }
+    .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--cp-text-title);
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .dropdown-item:hover {
+      background-color: var(--bg-grey-hover);
+    }
+    .dropdown-item.active {
+      background-color: var(--bg-grey-normal);
+      color: var(--cp-text-brand);
+    }
+
+    /* ─── Tooltip ─── */
+    .tooltip-trigger {
+      display: inline-block;
+      position: relative;
+      border-bottom: 1px dashed var(--cp-text-weak);
+      cursor: help;
+    }
+    .tooltip-content {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--cp-brand-black);
+      color: white;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      display: none;
+      z-index: 10;
+      box-shadow: var(--cp-shadow-overlay);
+    }
+    .tooltip-content::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: var(--cp-brand-black);
+    }
+    .tooltip-trigger:hover .tooltip-content {
+      display: block;
+    }
+
+    /* ─── Button ─── */
+    button {
+      padding: 0.5rem 1rem;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--cp-border);
+      border-radius: 4px;
+      background: white;
+      color: var(--cp-text-title);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:hover {
+      border-color: var(--cp-brand-blue);
+      background: var(--bg-grey-hover);
+    }
+    button.primary {
+      background: var(--cp-brand-black);
+      color: white;
+      border-color: var(--cp-brand-black);
+    }
+    button.primary:hover {
+      background: #404040;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo">
+    <!-- Popover Demo -->
+    <div class="section">
+      <h2>Popover（带描述的浮层）</h2>
+      <div class="popover-trigger">
+        <button onclick="togglePopover()">打开 Popover</button>
+        <div class="popover-content" id="popover">
+          <p>
+            这是一个 Popover。它通常用于展示额外信息、说明或轻量配置面板，不打断主流程。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dropdown Menu Demo -->
+    <div class="section">
+      <h2>Dropdown Menu（操作菜单）</h2>
+      <div class="dropdown-trigger">
+        <button onclick="toggleDropdown()">更多操作 ▼</button>
+        <div class="dropdown-menu" id="dropdown">
+          <button class="dropdown-item" onclick="selectItem('edit')">编辑</button>
+          <button class="dropdown-item" onclick="selectItem('copy')">复制</button>
+          <button class="dropdown-item" onclick="selectItem('delete')">删除</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tooltip Demo -->
+    <div class="section">
+      <h2>Tooltip（鼠标悬停提示）</h2>
+      <p>
+        将鼠标悬停在
+        <span class="tooltip-trigger">
+          这里 ❓
+          <div class="tooltip-content">这是一个 Tooltip</div>
+        </span>
+        查看工具提示。
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function togglePopover() {
+      const popover = document.getElementById('popover');
+      popover.classList.toggle('active');
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdown');
+      dropdown.classList.toggle('active');
+    }
+
+    function selectItem(action) {
+      alert('选中: ' + action);
+      document.getElementById('dropdown').classList.remove('active');
+    }
+
+    // 点击外部关闭
+    document.addEventListener('click', (e) => {
+      const popover = document.getElementById('popover');
+      const dropdown = document.getElementById('dropdown');
+
+      if (!e.target.closest('.popover-trigger')) {
+        popover.classList.remove('active');
+      }
+      if (!e.target.closest('.dropdown-trigger')) {
+        dropdown.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>

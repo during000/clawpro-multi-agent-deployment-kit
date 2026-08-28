@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配额用量 - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "admin_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-[14px] font-semibold text-gray-700 mb-3">全局配额</h2>
+                <div id="siteSection" class="space-y-3 mb-8">
+                    <div class="text-[13px] text-gray-400 py-8 text-center">加载中...</div>
+                </div>
+
+                <h2 class="text-[14px] font-semibold text-gray-700 mb-3">模型配额</h2>
+                <div id="globalSection" class="space-y-3 mb-8">
+                    <div class="text-[13px] text-gray-400 py-8 text-center">加载中...</div>
+                </div>
+
+                <h2 class="text-[14px] font-semibold text-gray-700 mb-3">用户配额</h2>
+                <div id="userSection" class="space-y-3">
+                    <div class="text-[13px] text-gray-400 py-8 text-center">加载中...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {{template "admin_scripts" .}}
+    <script>
+    (function() {
+        var today = new Date().toISOString().slice(0, 10);
+        var jsonHeaders = {'Accept': 'application/json'};
+
+        function barColor(used, quota) {
+            if (quota < 0) return 'bg-[#0052d9] opacity-40';
+            var pct = used * 100 / quota;
+            if (pct >= 90) return 'bg-red-500';
+            if (pct >= 70) return 'bg-yellow-500';
+            return 'bg-[#0052d9]';
+        }
+
+        function barWidth(used, quota) {
+            if (quota < 0) return '100%';
+            return Math.min(100, used * 100 / quota).toFixed(1) + '%';
+        }
+
+        function quotaLabel(used, quota) {
+            if (quota >= 0) {
+                var pct = Math.min(100, Math.round(used * 100 / quota));
+                return used.toLocaleString() + ' / ' + quota.toLocaleString() + ' (' + pct + '%)';
+            }
+            return used.toLocaleString() + ' / 无限制';
+        }
+
+        function renderCard(title, used, quota) {
+            var cls = barColor(used, quota);
+            var w = barWidth(used, quota);
+            return '<div class="bg-white rounded shadow-sm border border-gray-100 px-5 py-4">' +
+                '<div class="flex items-center justify-between mb-2">' +
+                    '<span class="text-[14px] font-semibold text-gray-800">' + title + '</span>' +
+                    '<span class="text-[12px] text-gray-700 font-medium">' + quotaLabel(used, quota) + '</span>' +
+                '</div>' +
+                '<div class="w-full bg-gray-100 rounded-full h-1.5">' +
+                    '<div class="h-1.5 rounded-full transition-all duration-300 ' + cls + '" style="width:' + w + '"></div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        function emptyHtml(msg) {
+            return '<div class="bg-white rounded shadow-sm border border-gray-100 py-8 text-center">' +
+                '<p class="text-[13px] text-gray-400">' + msg + '</p></div>';
+        }
+
+        function fetchJSON(url) {
+            return fetch(url, {headers: jsonHeaders}).then(function(r) { return r.json(); });
+        }
+
+        // Global quota
+        Promise.all([
+            fetchJSON('/admin/config'),
+            fetchJSON('/admin/usage/data?group_by=&start_date=' + today + '&end_date=' + today)
+        ]).then(function(results) {
+            var config = results[0].config || {};
+            var rows = results[1].rows || [];
+            var used = 0;
+            rows.forEach(function(r) { used += r.total_tokens || 0; });
+            var quota = config.global_token_quota_day;
+            var container = document.getElementById('siteSection');
+            if (quota < 0 && used <= 0) {
+                container.innerHTML = emptyHtml('未设置全局配额');
+            } else {
+                container.innerHTML = renderCard('每日 Token 总量', used, quota);
+            }
+        }).catch(function() {
+            document.getElementById('siteSection').innerHTML = emptyHtml('加载失败');
+        });
+
+        // Model quota
+        Promise.all([
+            fetchJSON('/admin/models'),
+            fetchJSON('/admin/usage/data?group_by=model&start_date=' + today + '&end_date=' + today)
+        ]).then(function(results) {
+            var models = results[0].models || [];
+            var usageRows = results[1].rows || [];
+            var container = document.getElementById('globalSection');
+
+            // Build usage map: ai_model_id -> total_tokens
+            var usageMap = {};
+            usageRows.forEach(function(row) { usageMap[row.ai_model_id] = row.total_tokens || 0; });
+
+            // Filter enabled models (exclude hatchery/custom)
+            var filtered = models.filter(function(m) { return m.Enabled && !(m.Provider === 'hatchery' && m.ModelID === 'custom'); });
+            if (filtered.length === 0) {
+                container.innerHTML = emptyHtml('暂无模型数据');
+                return;
+            }
+            container.innerHTML = filtered.map(function(m) {
+                var used = usageMap[m.ID] || 0;
+                var name = m.Provider + '/' + m.ModelID;
+                return renderCard(name, used, m.QuotaDay);
+            }).join('');
+        }).catch(function() {
+            document.getElementById('globalSection').innerHTML = emptyHtml('加载失败');
+        });
+
+        // User quota
+        Promise.all([
+            fetchJSON('/admin/quotas'),
+            fetchJSON('/admin/usage/data?group_by=user&start_date=' + today + '&end_date=' + today)
+        ]).then(function(results) {
+            var quotas = results[0].quotas || [];
+            var usageRows = results[1].rows || [];
+            var container = document.getElementById('userSection');
+
+            // Build usage map: user_id -> total_tokens
+            var usageMap = {};
+            usageRows.forEach(function(row) { usageMap[row.user_id] = row.total_tokens || 0; });
+
+            if (quotas.length === 0) {
+                container.innerHTML = emptyHtml('暂无用户数据');
+                return;
+            }
+            container.innerHTML = quotas.map(function(q) {
+                var used = usageMap[q.user_id] || 0;
+                return renderCard(q.username, used, q.token_quota_day);
+            }).join('');
+        }).catch(function() {
+            document.getElementById('userSection').innerHTML = emptyHtml('加载失败');
+        });
+    })();
+    </script>
+</body>
+</html>

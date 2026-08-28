@@ -1,0 +1,110 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Tree — ClawPro
+ * 层级结构（分组 / 文件树 / 目录导航）。
+ *   行高 32px；圆角 4px；缩进 8 + depth×16；行间距 4px。
+ *   文字 #09090b；hover/选中底色统一 #f4f4f5（选中加 font-medium）；
+ *   图标统一中灰 #71717a 16px；箭头 14px 展开 rotate-90；计数弱灰 #a1a1aa。
+ *   禁用 #a1a1aa + opacity .6 + not-allowed。
+ * 配套：portable/react/tree.tsx
+ * 规范：component-specs/tree.md §3
+ * ════════════════════════════════════════════════════════════════════ */
+
+.cp-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cp-tree__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding-right: 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  line-height: 1;
+  color: #09090b;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+  user-select: none;
+}
+
+.cp-tree__row:hover {
+  background: #f4f4f5;
+}
+
+.cp-tree__row--active {
+  background: #f4f4f5;
+  font-weight: 500;
+}
+
+.cp-tree__row--disabled {
+  color: #a1a1aa;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cp-tree__row--disabled:hover {
+  background: transparent;
+}
+
+.cp-tree__arrow {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: #71717a;
+  transition: transform 0.12s ease;
+}
+
+.cp-tree__arrow > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cp-tree__arrow--open {
+  transform: rotate(90deg);
+}
+
+.cp-tree__arrow--placeholder {
+  visibility: hidden;
+}
+
+.cp-tree__icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: #71717a;
+}
+
+.cp-tree__icon > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cp-tree__label {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-tree__count {
+  flex: 0 0 auto;
+  font-size: 11px;
+  color: #a1a1aa;
+  font-variant-numeric: tabular-nums;
+}
+
+.cp-tree__children {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

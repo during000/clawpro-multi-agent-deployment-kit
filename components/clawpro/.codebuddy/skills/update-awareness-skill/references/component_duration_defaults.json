@@ -1,0 +1,18 @@
+{
+  "GuideGlobalModal": {"mode": "required"},
+  "GuideModuleFloat": {"mode": "fixed_days", "days": 14},
+  "GuideNavBubble": {"mode": "fixed_days", "days": 14},
+  "GuidePointBubble": {"mode": "fixed_days", "days": 14},
+  "GuideUpdateBar": {"mode": "required"},
+  "GuideChangelogDrawer": {"mode": "permanent"},
+  "ProductUpdatesDrawer": {"mode": "permanent"},
+  "GuideHighlightBubble": {"mode": "fixed_days", "days": 14},
+  "GuideNewTag": {"mode": "fixed_days", "days": 14},
+  "PageAlertAdapter": {"mode": "required"},
+  "FieldRuleHint": {"mode": "required"},
+  "PreviousNameLabel": {"mode": "fixed_days", "days": 30},
+  "占位：PageAlertAdapter": {"mode": "required"},
+  "占位：FieldRuleHint": {"mode": "required"},
+  "占位：PreviousNameLabel": {"mode": "fixed_days", "days": 30},
+  "占位：SidebarDetailAdapter": {"mode": "required"}
+}

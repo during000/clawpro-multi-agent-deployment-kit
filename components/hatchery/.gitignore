@@ -1,0 +1,53 @@
+# Binary
+hatchery
+hatchery_test_bin
+build/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# log
+log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/
+.codebuddy/
+
+# Generated files
+docs/openapi.json
+
+# OpenSpec
+openspec/
+
+.*~
+
+# env
+.envtat_coverage.out
+tat_coverage.out
+coverage-report/
+coverage.out
+build-and-push.sh
+vpc_cover.out
+coverage_detail.html
+.env
+
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+nginx-local.conf
+docker-compose.yml

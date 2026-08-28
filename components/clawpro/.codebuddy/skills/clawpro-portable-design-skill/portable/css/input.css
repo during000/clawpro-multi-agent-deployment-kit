@@ -1,0 +1,400 @@
+/* ════════════════════════════════════════════════════════════════════
+ * Portable Input / Select / Field — ClawPro
+ * 与 demo 仓 client/src/components/ui/input.tsx · select.tsx 1:1 对齐
+ * （spec input-select.md §3 / §4）。
+ *
+ * 铁律：
+ *   - Input / Select Trigger 几何完全一致：h-36 / 4px 圆角 / px-12 / 14px。
+ *   - 默认白底 + 蓝灰描边 var(--cp-border)。
+ *   - Hover / Focus / Open：只把边框切到控件交互蓝 var(--cp-control-accent) (#355EF1)，**无 ring 无 shadow**。
+ *   - 报错：边框 #d42a1e。
+ *   - Disabled：底色 #f3f3f4 + 灰字 + cursor-not-allowed，且无任何 hover 反馈。
+ * 配套：portable/react/input-select.tsx
+ * ════════════════════════════════════════════════════════════════════ */
+
+/* ─── Input ─── */
+.cp-input {
+  height: 36px;
+  width: 100%;
+  min-width: 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  padding: 0 12px;
+  font-family: var(--cp-font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--cp-text-emphasis);
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.cp-input::placeholder {
+  color: var(--cp-text-weak);
+}
+/* Hover / Focus —— 只变边框色，无 ring 无 shadow */
+.cp-input:hover:not(:disabled):not([aria-invalid="true"]) {
+  border-color: var(--cp-control-accent);
+}
+.cp-input:focus:not(:disabled):not([aria-invalid="true"]) {
+  border-color: var(--cp-control-accent);
+}
+/* 报错态 */
+.cp-input[aria-invalid="true"] {
+  border-color: #d42a1e;
+}
+/* 禁用态：锁死，无 hover 反馈 */
+.cp-input:disabled {
+  cursor: not-allowed;
+  background: #f3f3f4;
+  color: var(--cp-text-weak);
+  border-color: var(--cp-border);
+}
+
+/* 搜索型输入：左侧留出图标位（图标用 .cp-input-search__icon 绝对定位） */
+.cp-input-search {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.cp-input-search .cp-input {
+  padding-left: 36px;
+}
+.cp-input-search__icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  color: var(--cp-text-weak);
+  pointer-events: none;
+}
+
+/* ─── Select（自定义浮层，trigger 与 Input 完全一致） ─── */
+.cp-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.cp-select__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  font-family: var(--cp-font-sans);
+  font-size: 14px;
+  color: var(--cp-text-emphasis);
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.cp-select__trigger:hover:not(:disabled),
+.cp-select__trigger[aria-expanded="true"] {
+  border-color: var(--cp-control-accent);
+}
+.cp-select__trigger[aria-invalid="true"],
+.cp-select__trigger[aria-invalid="true"]:hover {
+  border-color: #d42a1e;
+}
+.cp-select__trigger:disabled {
+  cursor: not-allowed;
+  background: #f3f3f4;
+  color: var(--cp-text-weak);
+  border-color: var(--cp-border);
+}
+/* 未选中时占位文字弱化 */
+.cp-select__trigger[data-placeholder="true"] .cp-select__value {
+  color: var(--cp-text-weak);
+}
+.cp-select__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cp-select__chevron {
+  flex-shrink: 0;
+  color: var(--cp-text-weak);
+  transition: transform 150ms ease;
+}
+.cp-select__trigger[aria-expanded="true"] .cp-select__chevron {
+  transform: rotate(180deg);
+}
+
+/* 浮层面板：白底 / 无边框 / 4px 圆角 / 标准三层阴影 / p-8 */
+.cp-select__panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  z-index: 50;
+  width: 100%;
+  padding: 8px;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow:
+    0 0 2px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.cp-select__panel[hidden] {
+  display: none;
+}
+.cp-select__empty {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--cp-text-weak);
+}
+
+/* 选项：h-32 / 6px 圆角 / px-12 / hover 灰底 / 选中蓝字 + Check */
+.cp-select__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-family: var(--cp-font-sans);
+  font-size: 14px;
+  color: var(--cp-text-emphasis);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 100ms ease, color 100ms ease;
+}
+.cp-select__item:hover:not(:disabled),
+.cp-select__item[data-highlight="true"]:not(:disabled) {
+  background: #f3f3f4;
+}
+.cp-select__item--selected {
+  color: var(--cp-control-accent);
+  font-weight: 500;
+}
+.cp-select__item:disabled {
+  cursor: not-allowed;
+  color: var(--cp-text-weak);
+}
+.cp-select__check {
+  flex-shrink: 0;
+  color: var(--cp-control-accent);
+}
+
+/* ─── Field（Label + control + helper 成组） ─── */
+.cp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cp-field__label {
+  display: block;
+  font-family: var(--cp-font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cp-text-emphasis);
+}
+.cp-field__required {
+  margin-left: 4px;
+  color: #d42a1e;
+}
+.cp-field__helper {
+  font-size: 12px;
+  color: var(--cp-text-weak);
+}
+.cp-field__helper--danger {
+  color: #d42a1e;
+}
+
+/* ─── SearchableSelect（带搜索的对象选择器） ─── */
+.cp-searchable-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+/* 触发器（与 Select 一致，底部带蓝灰描边） */
+.cp-searchable-select__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--radius);
+  background: var(--cp-surface);
+  font-family: var(--cp-font-sans);
+  font-size: 14px;
+  color: var(--cp-text-emphasis);
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 120ms ease;
+}
+
+/* 触发器 Hover / Open 状态：边框切蓝 */
+.cp-searchable-select__trigger:hover:not(.cp-searchable-select__trigger--disabled),
+.cp-searchable-select__trigger--open {
+  border-color: var(--cp-control-accent);
+}
+
+/* 触发器 Disabled 状态 */
+.cp-searchable-select__trigger--disabled {
+  cursor: not-allowed;
+  background: #f3f3f4;
+  color: var(--cp-text-weak);
+  border-color: var(--cp-border);
+}
+
+/* 占位符文字弱化 */
+.cp-searchable-select__trigger[data-placeholder="true"] .cp-select__value {
+  color: var(--cp-text-weak);
+}
+
+/* Chevron 图标 */
+.cp-searchable-select__chevron {
+  flex-shrink: 0;
+  color: var(--cp-text-weak);
+  transition: transform 150ms ease;
+}
+
+.cp-searchable-select__trigger--open .cp-searchable-select__chevron {
+  transform: rotate(180deg);
+}
+
+/* 清除按钮 */
+.cp-searchable-select__clear {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  background: transparent;
+  color: var(--cp-text-weak);
+  cursor: pointer;
+  outline: none;
+  transition: color 100ms ease;
+  padding: 0;
+  margin: 0;
+}
+
+.cp-searchable-select__clear:hover {
+  color: var(--cp-text-emphasis);
+}
+
+.cp-searchable-select__clear:active {
+  color: var(--cp-control-accent);
+}
+
+/* 面板：Portal 渲染到 document.body，white 底 + 4px 圆角 + 标准阴影 */
+.cp-searchable-select__panel {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow:
+    0 0 2px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* 搜索框容器 */
+.cp-searchable-select__search {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--cp-border);
+  margin-bottom: 8px;
+}
+
+/* 搜索 Input */
+.cp-searchable-select__search-input {
+  height: 32px !important;
+  padding: 0 12px !important;
+}
+
+/* 选项列表容器 */
+.cp-searchable-select__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* 单个选项：h-32 / 6px 圆角 / 左对齐 / truncate / hover 灰底 */
+.cp-searchable-select__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-family: var(--cp-font-sans);
+  font-size: 14px;
+  color: var(--cp-text-emphasis);
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 100ms ease, color 100ms ease;
+}
+
+/* 选项 Hover / Focus */
+.cp-searchable-select__option:hover:not(:disabled),
+.cp-searchable-select__option:focus:not(:disabled) {
+  background: #f3f3f4;
+}
+
+/* 选项 Selected 状态：品牌蓝 + 加粗 */
+.cp-searchable-select__option--selected {
+  color: var(--cp-control-accent);
+  font-weight: 500;
+  background: var(--cp-brand-tint, #f0f4ff);
+}
+
+/* 选项 Disabled */
+.cp-searchable-select__option:disabled {
+  cursor: not-allowed;
+  color: var(--cp-text-weak);
+}
+
+/* Check 图标 */
+.cp-searchable-select__check {
+  flex-shrink: 0;
+  color: var(--cp-control-accent);
+  width: 16px;
+  height: 16px;
+}
+
+/* 空状态提示 */
+.cp-searchable-select__empty {
+  padding: 12px;
+  font-size: 12px;
+  color: var(--cp-text-weak);
+  text-align: center;
+}
+
+/* 计数信息：底部弱提示 */
+.cp-searchable-select__count {
+  padding: 8px 12px;
+  border-top: 1px solid var(--cp-border);
+  font-size: 12px;
+  color: var(--cp-text-weak);
+  text-align: center;
+}

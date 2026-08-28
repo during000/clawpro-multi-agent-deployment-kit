@@ -1,0 +1,1440 @@
+{
+  "sourceHash": "a8a8fb2abe6d6363",
+  "sourcePath": "client/src/pages/DesignSystemComponents.tsx",
+  "summary": {
+    "total": 78,
+    "byGroup": {
+      "foundation": 11,
+      "data": 17,
+      "action": 6,
+      "form": 19,
+      "feedback": 11,
+      "admin": 3,
+      "navigation": 11
+    },
+    "byPlatform": {
+      "Global 全局": 59,
+      "Admin 管控端": 11,
+      "Tenant 用户端": 3
+    },
+    "hidden": 1
+  },
+  "anchors": {
+    "color": {
+      "id": "color",
+      "group": "foundation",
+      "name": "Color",
+      "cnName": "颜色 Token 色卡",
+      "platform": "Global 全局",
+      "adoption": "核心参考",
+      "source": "client/src/index.css",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · 色彩系统",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "核心参考",
+        "Color Token"
+      ],
+      "url": "http://localhost:3002/design-system#color"
+    },
+    "typography": {
+      "id": "typography",
+      "group": "foundation",
+      "name": "Typography",
+      "cnName": "字体语义组件",
+      "platform": "Global 全局",
+      "adoption": "核心参考",
+      "source": "client/src/components/ui/Typography.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Typography 字体组件",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "核心参考"
+      ],
+      "url": "http://localhost:3002/design-system#typography"
+    },
+    "surface-card": {
+      "id": "surface-card",
+      "group": "foundation",
+      "name": "SurfaceCard",
+      "cnName": "表层卡片容器",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/Surface.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Surface 卡片规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#surface-card"
+    },
+    "surface-inner": {
+      "id": "surface-inner",
+      "group": "foundation",
+      "name": "SurfaceInner",
+      "cnName": "内嵌卡片容器",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/Surface.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Surface 卡片规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#surface-inner"
+    },
+    "surface-config": {
+      "id": "surface-config",
+      "group": "foundation",
+      "name": "SurfaceConfig",
+      "cnName": "高亮配置卡",
+      "platform": "Admin 管控端",
+      "adoption": "常用",
+      "source": "client/src/components/ui/Surface.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Surface 卡片规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#surface-config"
+    },
+    "surface-overlay": {
+      "id": "surface-overlay",
+      "group": "foundation",
+      "name": "SurfaceOverlay",
+      "cnName": "浮层容器",
+      "platform": "Tenant 用户端",
+      "adoption": "专用",
+      "source": "client/src/components/ui/Surface.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Surface 卡片规范",
+      "hidden": true,
+      "tags": [
+        "已接入预览",
+        "Tenant 用户端",
+        "专用"
+      ],
+      "url": "http://localhost:3002/design-system#surface-overlay"
+    },
+    "tenant-card": {
+      "id": "tenant-card",
+      "group": "foundation",
+      "name": "TenantCard",
+      "cnName": "用户端业务卡片",
+      "platform": "Tenant 用户端",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/Surface.tsx",
+      "doc": "SKILL-TENANT.md · TenantCard / Surface.tsx L6",
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "Tenant 用户端",
+        "卡片三态"
+      ],
+      "url": "http://localhost:3002/design-system#tenant-card"
+    },
+    "dark-veil": {
+      "id": "dark-veil",
+      "group": "foundation",
+      "name": "DarkVeil",
+      "cnName": "动态背景",
+      "platform": "Admin 管控端",
+      "adoption": "专用",
+      "source": "client/src/components/ui/DarkVeil.tsx",
+      "doc": "SKILL-GLOBAL-COMPONENTS.md · DarkVeil 动态背景 / component-specs/dark-veil.md",
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "Admin 管控端",
+        "纯背景",
+        "WebGL"
+      ],
+      "url": "http://localhost:3002/design-system#dark-veil"
+    },
+    "number-card": {
+      "id": "number-card",
+      "group": "data",
+      "name": "NumberCard",
+      "cnName": "数字卡片",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/number-card.tsx",
+      "doc": "SKILL-GLOBAL-COMPONENTS.md · NumberCard 数字卡片",
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "概览卡",
+        "数字 KPI"
+      ],
+      "url": "http://localhost:3002/design-system#number-card"
+    },
+    "button": {
+      "id": "button",
+      "group": "action",
+      "name": "Button",
+      "cnName": "按钮",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/button.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Button 组件",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#button"
+    },
+    "input": {
+      "id": "input",
+      "group": "form",
+      "name": "Input",
+      "cnName": "输入框",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/input.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Input 组件",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#input"
+    },
+    "input-group": {
+      "id": "input-group",
+      "group": "form",
+      "name": "InputGroup",
+      "cnName": "输入组合",
+      "platform": null,
+      "adoption": "常用",
+      "source": "client/src/components/ui/input-group.tsx",
+      "doc": null,
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "表单组件"
+      ],
+      "url": "http://localhost:3002/design-system#input-group"
+    },
+    "textarea": {
+      "id": "textarea",
+      "group": "form",
+      "name": "Textarea",
+      "cnName": "多行文本域",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/textarea.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · 其他组件速查",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#textarea"
+    },
+    "date-picker": {
+      "id": "date-picker",
+      "group": "form",
+      "name": "DatePicker",
+      "cnName": "日期选择",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/date-picker.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · DatePicker 组件",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#date-picker"
+    },
+    "date-time-picker": {
+      "id": "date-time-picker",
+      "group": "form",
+      "name": "DateTimePicker",
+      "cnName": "日期时间选择",
+      "platform": "Global 全局",
+      "adoption": "专用",
+      "source": "client/src/components/ui/date-time-picker.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · DatePicker 组件（DateTimePicker 变体）",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "新增"
+      ],
+      "url": "http://localhost:3002/design-system#date-time-picker"
+    },
+    "checkbox": {
+      "id": "checkbox",
+      "group": "form",
+      "name": "Checkbox",
+      "cnName": "复选框",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/checkbox.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Checkbox 组件",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#checkbox"
+    },
+    "field": {
+      "id": "field",
+      "group": "form",
+      "name": "Field",
+      "cnName": "表单字段结构",
+      "platform": null,
+      "adoption": "常用",
+      "source": "client/src/components/ui/field.tsx",
+      "doc": null,
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "表单结构"
+      ],
+      "url": "http://localhost:3002/design-system#field"
+    },
+    "radio-group": {
+      "id": "radio-group",
+      "group": "form",
+      "name": "RadioGroup",
+      "cnName": "单选组",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/radio-group.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · 其他组件速查",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#radio-group"
+    },
+    "radio-card": {
+      "id": "radio-card",
+      "group": "form",
+      "name": "RadioCard",
+      "cnName": "单选卡片",
+      "platform": null,
+      "adoption": "常用",
+      "source": "client/src/components/ui/radio-card.tsx",
+      "doc": null,
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "表单组件"
+      ],
+      "url": "http://localhost:3002/design-system#radio-card"
+    },
+    "switch": {
+      "id": "switch",
+      "group": "form",
+      "name": "Switch",
+      "cnName": "开关",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/switch.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Switch 组件",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#switch"
+    },
+    "alert": {
+      "id": "alert",
+      "group": "feedback",
+      "name": "Alert",
+      "cnName": "提示条",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/alert.tsx / admin-notice-alert.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Alert 提示组件",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#alert"
+    },
+    "dialog": {
+      "id": "dialog",
+      "group": "feedback",
+      "name": "Dialog",
+      "cnName": "弹窗",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/dialog.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Dialog 组件",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#dialog"
+    },
+    "alert-dialog": {
+      "id": "alert-dialog",
+      "group": "feedback",
+      "name": "AlertDialog",
+      "cnName": "危险确认弹窗",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/alert-dialog.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · AlertDialog",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#alert-dialog"
+    },
+    "drawer": {
+      "id": "drawer",
+      "group": "admin",
+      "name": "Drawer",
+      "cnName": "右侧详情抽屉",
+      "platform": "Admin 管控端",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/drawer.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Drawer / 右侧抽屉（管控端详情类）",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#drawer"
+    },
+    "tooltip": {
+      "id": "tooltip",
+      "group": "feedback",
+      "name": "Tooltip",
+      "cnName": "气泡提示",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/tooltip.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · 其他组件速查",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#tooltip"
+    },
+    "popover": {
+      "id": "popover",
+      "group": "feedback",
+      "name": "Popover",
+      "cnName": "气泡浮层",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/popover.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · 其他组件速查",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#popover"
+    },
+    "info-popover": {
+      "id": "info-popover",
+      "group": "feedback",
+      "name": "InfoPopover",
+      "cnName": "说明气泡",
+      "platform": null,
+      "adoption": "常用",
+      "source": "client/src/components/ui/info-popover.tsx",
+      "doc": null,
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "反馈组件"
+      ],
+      "url": "http://localhost:3002/design-system#info-popover"
+    },
+    "progress": {
+      "id": "progress",
+      "group": "feedback",
+      "name": "Progress",
+      "cnName": "进度条",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/progress.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · 进度条",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#progress"
+    },
+    "table": {
+      "id": "table",
+      "group": "data",
+      "name": "Table",
+      "cnName": "表格",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/table.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Table 表格组件规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#table"
+    },
+    "pagination": {
+      "id": "pagination",
+      "group": "data",
+      "name": "Pagination",
+      "cnName": "分页器",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/pagination.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Pagination 分页器规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "高频参考"
+      ],
+      "url": "http://localhost:3002/design-system#pagination"
+    },
+    "kbd": {
+      "id": "kbd",
+      "group": "data",
+      "name": "Kbd",
+      "cnName": "快捷键标签",
+      "platform": null,
+      "adoption": "常用",
+      "source": "client/src/components/ui/kbd.tsx",
+      "doc": null,
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "数据展示"
+      ],
+      "url": "http://localhost:3002/design-system#kbd"
+    },
+    "badge": {
+      "id": "badge",
+      "group": "data",
+      "name": "Badge",
+      "cnName": "徽章",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/badge.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Badge",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#badge"
+    },
+    "status-tag": {
+      "id": "status-tag",
+      "group": "data",
+      "name": "StatusTag",
+      "cnName": "状态标签",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/status-tag.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · StatusTag / client/public/research/admin-status-tag-usage-audit.md",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用",
+        "Admin 管控端已拉取"
+      ],
+      "url": "http://localhost:3002/design-system#status-tag"
+    },
+    "empty": {
+      "id": "empty",
+      "group": "data",
+      "name": "Empty",
+      "cnName": "空状态",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/empty.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · 空状态",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#empty"
+    },
+    "segment": {
+      "id": "segment",
+      "group": "data",
+      "name": "Segment",
+      "cnName": "分段选择器",
+      "platform": "Global 全局",
+      "adoption": "核心参考",
+      "source": "client/src/components/ui/segment.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Segment 分段选择器规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "核心参考"
+      ],
+      "url": "http://localhost:3002/design-system#segment"
+    },
+    "tabs": {
+      "id": "tabs",
+      "group": "data",
+      "name": "Tabs",
+      "cnName": "标签页",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/tabs.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · Tabs",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "常用"
+      ],
+      "url": "http://localhost:3002/design-system#tabs"
+    },
+    "topnav": {
+      "id": "topnav",
+      "group": "navigation",
+      "name": "TopNav",
+      "cnName": "用户端顶部导航",
+      "platform": "Tenant 用户端",
+      "adoption": "核心参考",
+      "source": "client/src/components/topnav/TopNav.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · 用户端导航栏完整规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Tenant 用户端"
+      ],
+      "url": "http://localhost:3002/design-system#topnav"
+    },
+    "admin-page-header": {
+      "id": "admin-page-header",
+      "group": "admin",
+      "name": "AdminPageHeader",
+      "cnName": "管控页头",
+      "platform": "Admin 管控端",
+      "adoption": "常用",
+      "source": "client/src/components/ui/admin-page-header.tsx",
+      "doc": null,
+      "hidden": false,
+      "tags": [
+        "新增接入",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#admin-page-header"
+    },
+    "admin-sidebar": {
+      "id": "admin-sidebar",
+      "group": "admin",
+      "name": "AdminSidebar",
+      "cnName": "管控端侧边栏",
+      "platform": "Admin 管控端",
+      "adoption": "核心参考",
+      "source": "client/src/components/ui/admin-sidebar.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill · AdminSidebar",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#admin-sidebar"
+    },
+    "toast": {
+      "id": "toast",
+      "group": "feedback",
+      "name": "Toast",
+      "cnName": "消息提示",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/sonner.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill §27",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#toast"
+    },
+    "avatar": {
+      "id": "avatar",
+      "group": "data",
+      "name": "Avatar",
+      "cnName": "头像",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/avatar.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill §22",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#avatar"
+    },
+    "tree": {
+      "id": "tree",
+      "group": "navigation",
+      "name": "Tree",
+      "cnName": "树结构",
+      "platform": "Admin 管控端",
+      "adoption": "常用",
+      "source": "client/src/pages/admin/MemberManagement/GroupList.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill §13",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#tree"
+    },
+    "breadcrumb": {
+      "id": "breadcrumb",
+      "group": "navigation",
+      "name": "Breadcrumb",
+      "cnName": "面包屑",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "—",
+      "doc": "component-specs/breadcrumb.md",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#breadcrumb"
+    },
+    "transfer": {
+      "id": "transfer",
+      "group": "form",
+      "name": "Transfer",
+      "cnName": "穿梭框",
+      "platform": "Admin 管控端",
+      "adoption": "常用",
+      "source": "client/src/components/ui/transfer.tsx",
+      "doc": ".codebuddy/skills/clawpro-portable-design-skill §31",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#transfer"
+    },
+    "search-filter-bar": {
+      "id": "search-filter-bar",
+      "group": "data",
+      "name": "SearchFilterBar",
+      "cnName": "搜索筛选条",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "—",
+      "doc": "component-specs/search-filter-bar.md",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#search-filter-bar"
+    },
+    "batch-actions-bar": {
+      "id": "batch-actions-bar",
+      "group": "data",
+      "name": "BatchActionsBar",
+      "cnName": "批量操作条",
+      "platform": "Admin 管控端",
+      "adoption": "常用",
+      "source": "—",
+      "doc": "component-specs/batch-actions-bar.md",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#batch-actions-bar"
+    },
+    "chart-stat": {
+      "id": "chart-stat",
+      "group": "data",
+      "name": "ChartStat",
+      "cnName": "图表统计",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "—",
+      "doc": "component-specs/chart-stat.md",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#chart-stat"
+    },
+    "upload": {
+      "id": "upload",
+      "group": "form",
+      "name": "Upload",
+      "cnName": "上传/文件浏览",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "—",
+      "doc": "component-specs/upload-file-browser.md",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#upload"
+    },
+    "tag": {
+      "id": "tag",
+      "group": "data",
+      "name": "Tag",
+      "cnName": "标签",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "—",
+      "doc": "component-specs/tag-label.md",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#tag"
+    },
+    "accordion": {
+      "id": "accordion",
+      "group": "navigation",
+      "name": "Accordion",
+      "cnName": "手风琴",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/accordion.tsx",
+      "doc": "Radix Accordion",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#accordion"
+    },
+    "card": {
+      "id": "card",
+      "group": "foundation",
+      "name": "Card",
+      "cnName": "通用卡片",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/card.tsx",
+      "doc": "Radix Card",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#card"
+    },
+    "dropdown-menu": {
+      "id": "dropdown-menu",
+      "group": "action",
+      "name": "DropdownMenu",
+      "cnName": "下拉菜单",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/dropdown-menu.tsx",
+      "doc": "SKILL-GLOBAL-COMPONENTS.md §17",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#dropdown-menu"
+    },
+    "line-tabs": {
+      "id": "line-tabs",
+      "group": "navigation",
+      "name": "LineTabs",
+      "cnName": "线性标签页",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/line-tabs.tsx",
+      "doc": "SKILL-GLOBAL-COMPONENTS.md §11.5",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#line-tabs"
+    },
+    "sheet": {
+      "id": "sheet",
+      "group": "feedback",
+      "name": "Sheet",
+      "cnName": "侧拉面板",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/sheet.tsx",
+      "doc": "Radix Dialog Sheet",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#sheet"
+    },
+    "skeleton": {
+      "id": "skeleton",
+      "group": "feedback",
+      "name": "Skeleton",
+      "cnName": "骨架屏",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/skeleton.tsx",
+      "doc": "UI Skeleton",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#skeleton"
+    },
+    "slider": {
+      "id": "slider",
+      "group": "form",
+      "name": "Slider",
+      "cnName": "滑块",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/slider.tsx",
+      "doc": "Radix Slider",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#slider"
+    },
+    "separator": {
+      "id": "separator",
+      "group": "foundation",
+      "name": "Separator",
+      "cnName": "分割线",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/separator.tsx",
+      "doc": "Radix Separator",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#separator"
+    },
+    "scroll-area": {
+      "id": "scroll-area",
+      "group": "navigation",
+      "name": "ScrollArea",
+      "cnName": "滚动区域",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/scroll-area.tsx",
+      "doc": "Radix ScrollArea",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#scroll-area"
+    },
+    "collapsible": {
+      "id": "collapsible",
+      "group": "navigation",
+      "name": "Collapsible",
+      "cnName": "折叠面板",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/collapsible.tsx",
+      "doc": "Radix Collapsible",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#collapsible"
+    },
+    "toggle-group": {
+      "id": "toggle-group",
+      "group": "action",
+      "name": "ToggleGroup",
+      "cnName": "切换按钮组",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/toggle-group.tsx",
+      "doc": "Radix ToggleGroup",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#toggle-group"
+    },
+    "hover-card": {
+      "id": "hover-card",
+      "group": "feedback",
+      "name": "HoverCard",
+      "cnName": "悬停卡片",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/hover-card.tsx",
+      "doc": "Radix HoverCard",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#hover-card"
+    },
+    "context-menu": {
+      "id": "context-menu",
+      "group": "action",
+      "name": "ContextMenu",
+      "cnName": "右键菜单",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/context-menu.tsx",
+      "doc": "Radix ContextMenu",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#context-menu"
+    },
+    "all-users-tag": {
+      "id": "all-users-tag",
+      "group": "data",
+      "name": "AllUsersTag",
+      "cnName": "全部用户标签",
+      "platform": "Admin 管控端",
+      "adoption": "专用",
+      "source": "client/src/components/ui/all-users-tag.tsx",
+      "doc": "内部规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#all-users-tag"
+    },
+    "back-button": {
+      "id": "back-button",
+      "group": "navigation",
+      "name": "BackButton",
+      "cnName": "返回按钮",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/back-button.tsx",
+      "doc": "内部规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#back-button"
+    },
+    "favorite-button": {
+      "id": "favorite-button",
+      "group": "action",
+      "name": "FavoriteButton",
+      "cnName": "收藏按钮",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/favorite-button.tsx",
+      "doc": "内部规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#favorite-button"
+    },
+    "more-actions-dropdown": {
+      "id": "more-actions-dropdown",
+      "group": "action",
+      "name": "MoreActionsDropdown",
+      "cnName": "更多操作下拉",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/more-actions-dropdown.tsx",
+      "doc": "内部规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#more-actions-dropdown"
+    },
+    "tree-select": {
+      "id": "tree-select",
+      "group": "form",
+      "name": "TreeSelect",
+      "cnName": "树选择器",
+      "platform": "Admin 管控端",
+      "adoption": "常用",
+      "source": "client/src/components/ui/tree-select.tsx",
+      "doc": "内部规范",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#tree-select"
+    },
+    "carousel": {
+      "id": "carousel",
+      "group": "data",
+      "name": "Carousel",
+      "cnName": "轮播",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/carousel.tsx",
+      "doc": "embla-carousel",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#carousel"
+    },
+    "form": {
+      "id": "form",
+      "group": "form",
+      "name": "Form",
+      "cnName": "表单",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/form.tsx",
+      "doc": "react-hook-form + Radix",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#form"
+    },
+    "calendar": {
+      "id": "calendar",
+      "group": "form",
+      "name": "Calendar",
+      "cnName": "日历",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/calendar.tsx",
+      "doc": "react-day-picker",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#calendar"
+    },
+    "input-otp": {
+      "id": "input-otp",
+      "group": "form",
+      "name": "InputOTP",
+      "cnName": "验证码输入",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/input-otp.tsx",
+      "doc": "input-otp",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#input-otp"
+    },
+    "aspect-ratio": {
+      "id": "aspect-ratio",
+      "group": "foundation",
+      "name": "AspectRatio",
+      "cnName": "宽高比容器",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/aspect-ratio.tsx",
+      "doc": "Radix AspectRatio",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#aspect-ratio"
+    },
+    "navigation-menu": {
+      "id": "navigation-menu",
+      "group": "navigation",
+      "name": "NavigationMenu",
+      "cnName": "导航菜单",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/navigation-menu.tsx",
+      "doc": "Radix NavigationMenu",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#navigation-menu"
+    },
+    "menubar": {
+      "id": "menubar",
+      "group": "navigation",
+      "name": "Menubar",
+      "cnName": "菜单栏",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/menubar.tsx",
+      "doc": "Radix Menubar",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#menubar"
+    },
+    "resizable": {
+      "id": "resizable",
+      "group": "navigation",
+      "name": "Resizable",
+      "cnName": "可调节面板",
+      "platform": "Global 全局",
+      "adoption": "常用",
+      "source": "client/src/components/ui/resizable.tsx",
+      "doc": "react-resizable-panels",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#resizable"
+    },
+    "file-browser": {
+      "id": "file-browser",
+      "group": "data",
+      "name": "FileBrowser",
+      "cnName": "文件浏览器",
+      "platform": "Admin 管控端",
+      "adoption": "专用",
+      "source": "client/src/components/ui/file-browser.tsx",
+      "doc": "component-specs/file-browser.md",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Admin 管控端"
+      ],
+      "url": "http://localhost:3002/design-system#file-browser"
+    },
+    "filter-trigger": {
+      "id": "filter-trigger",
+      "group": "form",
+      "name": "FilterTrigger",
+      "cnName": "筛选触发器",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/filter-trigger.tsx",
+      "doc": "SKILL-GLOBAL-COMPONENTS.md §6",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#filter-trigger"
+    },
+    "filter-panel-suite": {
+      "id": "filter-panel-suite",
+      "group": "form",
+      "name": "Select",
+      "cnName": "筛选面板组件套件",
+      "platform": "Global 全局",
+      "adoption": "高频参考",
+      "source": "client/src/components/ui/select.tsx · select-panel.tsx · tree-select.tsx · ScopeSelect/GroupSelect",
+      "doc": "SKILL-GLOBAL-COMPONENTS.md §6",
+      "hidden": false,
+      "tags": [
+        "已接入预览",
+        "Global 全局"
+      ],
+      "url": "http://localhost:3002/design-system#filter-panel-suite"
+    }
+  },
+  "nameIndex": {
+    "Color": "color",
+    "Typography": "typography",
+    "SurfaceCard": "surface-card",
+    "SurfaceInner": "surface-inner",
+    "SurfaceConfig": "surface-config",
+    "SurfaceOverlay": "surface-overlay",
+    "TenantCard": "tenant-card",
+    "DarkVeil": "dark-veil",
+    "NumberCard": "number-card",
+    "Button": "button",
+    "Input": "input",
+    "InputGroup": "input-group",
+    "Textarea": "textarea",
+    "DatePicker": "date-picker",
+    "DateTimePicker": "date-time-picker",
+    "Checkbox": "checkbox",
+    "Field": "field",
+    "RadioGroup": "radio-group",
+    "RadioCard": "radio-card",
+    "Switch": "switch",
+    "Alert": "alert",
+    "Dialog": "dialog",
+    "AlertDialog": "alert-dialog",
+    "Drawer": "drawer",
+    "Tooltip": "tooltip",
+    "Popover": "popover",
+    "InfoPopover": "info-popover",
+    "Progress": "progress",
+    "Table": "table",
+    "Pagination": "pagination",
+    "Kbd": "kbd",
+    "Badge": "badge",
+    "StatusTag": "status-tag",
+    "Empty": "empty",
+    "Segment": "segment",
+    "Tabs": "tabs",
+    "TopNav": "topnav",
+    "AdminPageHeader": "admin-page-header",
+    "AdminSidebar": "admin-sidebar",
+    "Toast": "toast",
+    "Avatar": "avatar",
+    "Tree": "tree",
+    "Breadcrumb": "breadcrumb",
+    "Transfer": "transfer",
+    "SearchFilterBar": "search-filter-bar",
+    "BatchActionsBar": "batch-actions-bar",
+    "ChartStat": "chart-stat",
+    "Upload": "upload",
+    "Tag": "tag",
+    "Accordion": "accordion",
+    "Card": "card",
+    "DropdownMenu": "dropdown-menu",
+    "LineTabs": "line-tabs",
+    "Sheet": "sheet",
+    "Skeleton": "skeleton",
+    "Slider": "slider",
+    "Separator": "separator",
+    "ScrollArea": "scroll-area",
+    "Collapsible": "collapsible",
+    "ToggleGroup": "toggle-group",
+    "HoverCard": "hover-card",
+    "ContextMenu": "context-menu",
+    "AllUsersTag": "all-users-tag",
+    "BackButton": "back-button",
+    "FavoriteButton": "favorite-button",
+    "MoreActionsDropdown": "more-actions-dropdown",
+    "TreeSelect": "tree-select",
+    "Carousel": "carousel",
+    "Form": "form",
+    "Calendar": "calendar",
+    "InputOTP": "input-otp",
+    "AspectRatio": "aspect-ratio",
+    "NavigationMenu": "navigation-menu",
+    "Menubar": "menubar",
+    "Resizable": "resizable",
+    "FileBrowser": "file-browser",
+    "FilterTrigger": "filter-trigger",
+    "Select": "filter-panel-suite"
+  },
+  "cnNameIndex": {
+    "颜色 Token 色卡": "color",
+    "字体语义组件": "typography",
+    "表层卡片容器": "surface-card",
+    "内嵌卡片容器": "surface-inner",
+    "高亮配置卡": "surface-config",
+    "浮层容器": "surface-overlay",
+    "用户端业务卡片": "tenant-card",
+    "动态背景": "dark-veil",
+    "数字卡片": "number-card",
+    "按钮": "button",
+    "输入框": "input",
+    "输入组合": "input-group",
+    "多行文本域": "textarea",
+    "日期选择": "date-picker",
+    "日期时间选择": "date-time-picker",
+    "复选框": "checkbox",
+    "表单字段结构": "field",
+    "单选组": "radio-group",
+    "单选卡片": "radio-card",
+    "开关": "switch",
+    "提示条": "alert",
+    "弹窗": "dialog",
+    "危险确认弹窗": "alert-dialog",
+    "右侧详情抽屉": "drawer",
+    "气泡提示": "tooltip",
+    "气泡浮层": "popover",
+    "说明气泡": "info-popover",
+    "进度条": "progress",
+    "表格": "table",
+    "分页器": "pagination",
+    "快捷键标签": "kbd",
+    "徽章": "badge",
+    "状态标签": "status-tag",
+    "空状态": "empty",
+    "分段选择器": "segment",
+    "标签页": "tabs",
+    "用户端顶部导航": "topnav",
+    "管控页头": "admin-page-header",
+    "管控端侧边栏": "admin-sidebar",
+    "消息提示": "toast",
+    "头像": "avatar",
+    "树结构": "tree",
+    "面包屑": "breadcrumb",
+    "穿梭框": "transfer",
+    "搜索筛选条": "search-filter-bar",
+    "批量操作条": "batch-actions-bar",
+    "图表统计": "chart-stat",
+    "上传/文件浏览": "upload",
+    "标签": "tag",
+    "手风琴": "accordion",
+    "通用卡片": "card",
+    "下拉菜单": "dropdown-menu",
+    "线性标签页": "line-tabs",
+    "侧拉面板": "sheet",
+    "骨架屏": "skeleton",
+    "滑块": "slider",
+    "分割线": "separator",
+    "滚动区域": "scroll-area",
+    "折叠面板": "collapsible",
+    "切换按钮组": "toggle-group",
+    "悬停卡片": "hover-card",
+    "右键菜单": "context-menu",
+    "全部用户标签": "all-users-tag",
+    "返回按钮": "back-button",
+    "收藏按钮": "favorite-button",
+    "更多操作下拉": "more-actions-dropdown",
+    "树选择器": "tree-select",
+    "轮播": "carousel",
+    "表单": "form",
+    "日历": "calendar",
+    "验证码输入": "input-otp",
+    "宽高比容器": "aspect-ratio",
+    "导航菜单": "navigation-menu",
+    "菜单栏": "menubar",
+    "可调节面板": "resizable",
+    "文件浏览器": "file-browser",
+    "筛选触发器": "filter-trigger",
+    "筛选面板组件套件": "filter-panel-suite"
+  }
+}

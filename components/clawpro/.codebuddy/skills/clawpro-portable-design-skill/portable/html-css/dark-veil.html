@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable DarkVeil（L1 静态兜底）</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      .cp-shell {
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+      .cp-header {
+        margin-bottom: 24px;
+      }
+      .cp-header h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-header p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-group {
+        display: grid;
+        gap: 24px;
+      }
+      .cp-demo-block {
+        display: grid;
+        gap: 12px;
+      }
+      .cp-demo-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+        padding: 0;
+        overflow: hidden;
+      }
+
+      /* ── DarkVeil L1 静态兜底（同 portable/css/dark-veil.css；此处内联以便直接预览） ── */
+      :root {
+        --cp-darkveil-base: #e0ebfe;
+        --cp-darkveil-tint: #b2c3ff;
+      }
+      .cp-darkveil-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 48px 60px;
+        min-height: 240px;
+      }
+      .cp-darkveil-hero__bg {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(120% 80% at 30% 120%, var(--cp-darkveil-tint) 0%, transparent 55%),
+          radial-gradient(90% 70% at 75% 130%, color-mix(in srgb, var(--cp-darkveil-tint) 70%, #fff) 0%, transparent 50%),
+          var(--cp-darkveil-base);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%);
+                mask-image: linear-gradient(to bottom, transparent 0%, #000 22%);
+      }
+      .cp-darkveil-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), var(--cp-darkveil-base));
+      }
+      .cp-darkveil-hero__content {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+      }
+      .cp-darkveil-hero__title {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--cp-text-emphasis);
+      }
+      .cp-darkveil-hero__desc {
+        margin: 8px 0 0;
+        max-width: 420px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--cp-text-secondary);
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .cp-darkveil-hero__bg {
+          animation: cp-darkveil-drift 18s ease-in-out infinite alternate;
+        }
+      }
+      @keyframes cp-darkveil-drift {
+        from { background-position: 0 0, 0 0, 0 0; }
+        to   { background-position: 6% 4%, -5% 3%, 0 0; }
+      }
+      /* ── /DarkVeil L1 ── */
+
+      .cp-rule-box {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-bg-subtle);
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-rule-box p {
+        margin: 0;
+      }
+      .cp-rule-box p + p {
+        margin-top: 4px;
+      }
+      @media (max-width: 640px) {
+        body { padding: 16px; }
+        .cp-darkveil-hero { padding: 32px 24px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>DarkVeil（L1 静态兜底）</h1>
+        <p>
+          根据 `component-specs/dark-veil.md §9.2` 生成的 L1 静态 CSS 兜底，零 WebGL、零依赖，
+          模拟 demo 仓 `DarkVeil.tsx`（L0 完整移植）的「白底 + 蓝紫飘带」hero 观感。
+        </p>
+      </header>
+
+      <div class="cp-group">
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">hero 三层配方（基底 + 径向光晕飘带 + 收束叠层）</h2>
+          <div class="cp-card">
+            <!-- 纯背景：bg 与 ::after 均 pointer-events:none，内容层永远 z-10 -->
+            <div class="cp-darkveil-hero">
+              <div class="cp-darkveil-hero__bg" aria-hidden="true"></div>
+              <div class="cp-darkveil-hero__content">
+                <h3 class="cp-darkveil-hero__title">开通云开发能力</h3>
+                <p class="cp-darkveil-hero__desc">
+                  示例 hero 区文案。DarkVeil 仅作装饰背景，文字 / 按钮始终落在 z-10 内容层之上。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cp-rule-box">
+          <p><strong>规则</strong></p>
+          <p>• 纯背景组件：背景层全部 pointer-events:none，不承载信息 / 交互 / 可点击元素</p>
+          <p>• 仅用于命中 Auto-Trigger 的管控端开通页 / 能力 hero，禁止扩散到列表 / 表单 / 整页背景</p>
+          <p>• 三档兜底：L0 完整移植（ogl + WebGL）→ L1 本文件静态 CSS（默认档）→ L2 纯色 / 截图</p>
+          <p>• 配色常量：基底 `--cp-darkveil-base` #E0EBFE、飘带 `--cp-darkveil-tint` #B2C3FF，顶部 mask 22% 淡出露基底</p>
+          <p>• 已尊重 `prefers-reduced-motion`：偏好减少动效时停止流动动画</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

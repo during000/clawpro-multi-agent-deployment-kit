@@ -1,0 +1,30 @@
+version: v2.0
+
+on:
+  mr: ["*"]
+
+jobs:
+  build:
+    runs-on:
+      pool-name: docker
+      container:
+        image: golang:1.24
+    steps:
+    - checkout: self
+      with:
+         enableGitLfs: false
+    - run: |
+        set +e
+        export BASE_BRANCH=${{ci.head_ref}}
+        export TOTAL_THRESHOLD=59
+        export INCREMENTAL_THRESHOLD=60
+        .ci/ci-check-coverage.sh
+        EXIT_CODE=$?
+        if [ -f coverage-report/index.html ]; then
+          echo "::set-output name=coverage_report,type=report,label=PR Coverage Report,path=coverage-report/::index.html"
+        fi
+        exit $EXIT_CODE
+
+notices:
+- type: wework-message
+  if: FAILURE

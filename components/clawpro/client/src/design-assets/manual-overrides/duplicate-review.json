@@ -1,0 +1,18 @@
+{
+  "$schema": "clawpro-duplicate-review-overrides",
+  "note": "重复组人工确认事实源（红线 / 文件名疑似等 C 类重复组的最终人工裁决）。detect-duplicates.mjs 消费：以组内成员 id 的有序集合为 key 精确匹配；confirmed=true 表示该重复组已由人工确认其去留决策，置组 reviewStatus=confirmed，成员动作由 needs-review 改为 reviewed-keep，apply-governance 据此出 reviewed-confirmed 状态、移出待人工确认清单。仅在此登记的成员集合生效，未登记者保持待人工确认，绝不臆测。文件删除等破坏性治理不在此登记（删文件后重跑流水线该组自然消失）。",
+  "updatedAt": "2026-06-14T00:00:00.000Z",
+  "confirmations": [
+    {
+      "memberIds": [
+        "public__admin-channel-icons-channel-wecom__83a4d718",
+        "public__admin-channel-icons-channel-wecom-app__a5b69567"
+      ],
+      "decision": "keep-both-intentional-shared-icon",
+      "confirmed": true,
+      "confirmedBy": "design",
+      "confirmedAt": "2026-06-14",
+      "note": "企业微信（wework → channels.wecom）与 企业微信应用（wework-app → channels.wecomApp）是两个独立渠道，当前有意暂复用同一品牌图标；两文件均被引用、均保留，不归并。待设计提供「企业微信应用」独立图标后再单独替换 channel-wecom-app.svg。"
+    }
+  ]
+}

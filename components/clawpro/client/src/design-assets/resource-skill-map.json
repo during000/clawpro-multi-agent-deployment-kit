@@ -1,0 +1,4934 @@
+{
+  "$schema": "clawpro-resource-skill-map",
+  "stage": 9,
+  "version": "2026-07-20T04:15:26.464Z",
+  "generatedAt": "2026-07-20T04:15:26.465Z",
+  "note": "阶段 9 产物：供 clawpro-portable-design-skill 在当前项目页面生成时稳定选图。候选确定性派生自 inventory（已审计 componentSlot / canonicalKey），slot 约束取自阶段 8 component-resource-map。registrySample 仅为 skill 可移植身份样例，非候选准入闸门。由 build-resource-skill-map.mjs 生成，请勿手改；改口径请改脚本后重跑并跑 check-resource-skill-map.mjs。",
+  "sources": {
+    "inventory": "client/src/design-assets/generated/resource-inventory.generated.json",
+    "componentResourceMap": "client/src/design-assets/manual-overrides/component-resource-map.json",
+    "governance": "client/src/design-assets/generated/resource-governance.generated.json"
+  },
+  "registrySample": ".codebuddy/skills/clawpro-portable-design-skill/assets/icon-registry.example.json",
+  "usageScopeLegend": {
+    "current-project-only": "仅当前项目页面层可用（经 webPath / ESM import 引用），不可进共享组件源码、不可跨仓",
+    "host-injected": "红线资源（品牌/渠道/头像）：当前项目页面经 canonicalAssets 引用；跨仓由宿主仓注入，禁改色当普通图标",
+    "portable-safe": "可移植安全（如 lucide-react 通用图标，不在本资源映射内，由 skill 直接使用）"
+  },
+  "summary": {
+    "slots": 9,
+    "candidates": 176,
+    "redlineCandidates": 14,
+    "bySlot": {
+      "admin-sidebar": 33,
+      "card-left-icon": 74,
+      "number-card": 22,
+      "file-type": 21,
+      "run-status": 8,
+      "feature-card": 4,
+      "agent-avatar": 7,
+      "channel-icon": 6,
+      "brand-logo": 1
+    }
+  },
+  "slots": {
+    "admin-sidebar": {
+      "label": "AdminSidebar 菜单图标",
+      "componentSlotPath": "AdminSidebar.itemIcon",
+      "owningComponents": [
+        "AdminSidebar"
+      ],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "low",
+      "redline": false,
+      "hostInjection": "跨仓由宿主页面传入菜单图标，组件不内置",
+      "constraint": "侧栏菜单图标须从 admin-sidebar 槽位已登记候选中挑选；无合适候选时标 needs-design-confirmation 记录并交设计补绘、由产品联系设计师，不回退 lucide、不在页面手搓 inline svg；自有 SVG 由页面经 img/svg 槽位传入，组件不写死 /assets 路径",
+      "finding": null,
+      "candidateCount": 33,
+      "candidates": [
+        {
+          "id": "public__admin-sidebar-agent__ee63b779",
+          "displayName": "agent",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/agent.svg",
+          "webPath": "/assets/admin-sidebar/agent.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/agent.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-agent-list__2346830d",
+          "displayName": "agent-list",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/agent-list.svg",
+          "webPath": "/assets/admin-sidebar/agent-list.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/agent-list.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-agent-startup-config__5016a459",
+          "displayName": "agent-startup-config",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/agent-startup-config.svg",
+          "webPath": "/assets/admin-sidebar/agent-startup-config.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/agent-startup-config.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-agent-template-icon__c2410aec",
+          "displayName": "agent-template-icon",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/agent-template-icon.svg",
+          "webPath": "/assets/admin-sidebar/agent-template-icon.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/agent-template-icon.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-agent-tool-library__4df556e7",
+          "displayName": "agent-tool-library",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/agent-tool-library.svg",
+          "webPath": "/assets/admin-sidebar/agent-tool-library.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/agent-tool-library.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-ai-agent-security__b8ae74e9",
+          "displayName": "ai-agent-security",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/ai-agent-security.svg",
+          "webPath": "/assets/admin-sidebar/ai-agent-security.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/ai-agent-security.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-archive__cb57d2e9",
+          "displayName": "archive",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/archive.svg",
+          "webPath": "/assets/admin-sidebar/archive.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/archive.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-audit-log__bc1f3639",
+          "displayName": "audit-log",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/audit-log.svg",
+          "webPath": "/assets/admin-sidebar/audit-log.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/audit-log.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-basic-info__d921ea2a",
+          "displayName": "basic-info",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/basic-info.svg",
+          "webPath": "/assets/admin-sidebar/basic-info.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/basic-info.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-channel-config__5cdcb3fe",
+          "displayName": "channel-config",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/channel-config.svg",
+          "webPath": "/assets/admin-sidebar/channel-config.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/channel-config.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-cloud-dev__aefb24c2",
+          "displayName": "cloud-dev",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/cloud-dev.svg",
+          "webPath": "/assets/admin-sidebar/cloud-dev.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/cloud-dev.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-code__fe39ee41",
+          "displayName": "code",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/code.svg",
+          "webPath": "/assets/admin-sidebar/code.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/code.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-code-block__3e952bed",
+          "displayName": "code-block",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/code-block.svg",
+          "webPath": "/assets/admin-sidebar/code-block.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/code-block.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-credential-management__5719c9b0",
+          "displayName": "credential-management",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/credential-management.svg",
+          "webPath": "/assets/admin-sidebar/credential-management.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/credential-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-cube__e94cf830",
+          "displayName": "cube",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/cube.svg",
+          "webPath": "/assets/admin-sidebar/cube.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/cube.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-fee__d391efe9",
+          "displayName": "fee",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/fee.svg",
+          "webPath": "/assets/admin-sidebar/fee.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/fee.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-file-management__35a0c0ca",
+          "displayName": "file-management",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/file-management.svg",
+          "webPath": "/assets/admin-sidebar/file-management.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/file-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-group-collapse-arrow__93d4294d",
+          "displayName": "group-collapse-arrow",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/group-collapse-arrow.svg",
+          "webPath": "/assets/admin-sidebar/group-collapse-arrow.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/group-collapse-arrow.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-image-management__0beadec9",
+          "displayName": "image-management",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/image-management.svg",
+          "webPath": "/assets/admin-sidebar/image-management.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/image-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-knowledge-management__23ff423a",
+          "displayName": "knowledge-management",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/knowledge-management.svg",
+          "webPath": "/assets/admin-sidebar/knowledge-management.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/knowledge-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-list__b70f87fa",
+          "displayName": "list",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/list.svg",
+          "webPath": "/assets/admin-sidebar/list.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/list.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-memory-management__900338b9",
+          "displayName": "memory-management",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/memory-management.svg",
+          "webPath": "/assets/admin-sidebar/memory-management.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/memory-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-model-config__f7600471",
+          "displayName": "model-config",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/model-config.svg",
+          "webPath": "/assets/admin-sidebar/model-config.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/model-config.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-network-management__665d51a9",
+          "displayName": "network-management",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/network-management.svg",
+          "webPath": "/assets/admin-sidebar/network-management.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/network-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-ops-observation__5a83ef01",
+          "displayName": "ops-observation",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/ops-observation.svg",
+          "webPath": "/assets/admin-sidebar/ops-observation.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/ops-observation.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-platform-policy__75b1adbd",
+          "displayName": "platform-policy",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/platform-policy.svg",
+          "webPath": "/assets/admin-sidebar/platform-policy.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/platform-policy.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-purchase__adcb3c6d",
+          "displayName": "purchase",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/purchase.svg",
+          "webPath": "/assets/admin-sidebar/purchase.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/purchase.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-session-management__3286f3a6",
+          "displayName": "session-management",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/session-management.svg",
+          "webPath": "/assets/admin-sidebar/session-management.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/session-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-sheet__4f546568",
+          "displayName": "sheet",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/sheet.svg",
+          "webPath": "/assets/admin-sidebar/sheet.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/sheet.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-skill-config__cc193613",
+          "displayName": "skill-config",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/skill-config.svg",
+          "webPath": "/assets/admin-sidebar/skill-config.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/skill-config.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-tokens-monitor__fc8a85e5",
+          "displayName": "tokens-monitor",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/tokens-monitor.svg",
+          "webPath": "/assets/admin-sidebar/tokens-monitor.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/tokens-monitor.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-toolbox__e3ec6ba2",
+          "displayName": "toolbox",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/toolbox.svg",
+          "webPath": "/assets/admin-sidebar/toolbox.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/toolbox.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-sidebar-user-management__3143e5c9",
+          "displayName": "user-management",
+          "slot": "admin-sidebar",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/user-management.svg",
+          "webPath": "/assets/admin-sidebar/user-management.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-sidebar/user-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        }
+      ]
+    },
+    "card-left-icon": {
+      "label": "卡片左侧图标",
+      "componentSlotPath": "Card.leftIcon",
+      "owningComponents": [
+        "Card"
+      ],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "medium",
+      "redline": false,
+      "hostInjection": "跨仓由宿主注入或降级为单色 lucide",
+      "constraint": "多彩渐变语义，lucide 单色难等价；保持自有 SVG，由页面层引用",
+      "finding": null,
+      "candidateCount": 74,
+      "candidates": [
+        {
+          "id": "public____d413addd",
+          "displayName": "关联腾讯云账号",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/关联腾讯云账号.svg",
+          "webPath": "/icon/关联腾讯云账号.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/关联腾讯云账号.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon__6547a756",
+          "displayName": "上传图片默认icon",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/上传图片默认icon.svg",
+          "webPath": "/icon/上传图片默认icon.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/上传图片默认icon.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public____9bbf76c5",
+          "displayName": "所在地域",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/所在地域.svg",
+          "webPath": "/icon/所在地域.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/所在地域.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public____8baf1881",
+          "displayName": "域名",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/域名.svg",
+          "webPath": "/icon/域名.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/域名.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-skill-packages-advanced-dev-skill-package__593062e0",
+          "displayName": "advanced-dev-skill-package",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-skill-packages/advanced-dev-skill-package.svg",
+          "webPath": "/assets/admin-skill-packages/advanced-dev-skill-package.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-skill-packages/advanced-dev-skill-package.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-agent-tool__d3964386",
+          "displayName": "agent-tool",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/agent-tool.svg",
+          "webPath": "/assets/admin-member-config-overview/agent-tool.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/agent-tool.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-ai-agent-security__b5cbc1af",
+          "displayName": "ai-agent-security",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/ai-agent-security.svg",
+          "webPath": "/assets/admin-member-config-overview/ai-agent-security.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/ai-agent-security.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-agent-panel__085ccfe8",
+          "displayName": "allow-agent-panel",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-agent-panel.svg",
+          "webPath": "/assets/admin-platform-policy/allow-agent-panel.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-agent-panel.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-agent-self-upgrade__eb4e8ecf",
+          "displayName": "allow-agent-self-upgrade",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-agent-self-upgrade.svg",
+          "webPath": "/assets/admin-platform-policy/allow-agent-self-upgrade.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-agent-self-upgrade.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-agent-terminal__ed5cf2e1",
+          "displayName": "allow-agent-terminal",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-agent-terminal.svg",
+          "webPath": "/assets/admin-platform-policy/allow-agent-terminal.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-agent-terminal.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-chat-view__6626fa49",
+          "displayName": "allow-chat-view",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-chat-view.svg",
+          "webPath": "/assets/admin-platform-policy/allow-chat-view.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-chat-view.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-cloud-browser__8ab6cb08",
+          "displayName": "allow-cloud-browser",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-cloud-browser.svg",
+          "webPath": "/assets/admin-platform-policy/allow-cloud-browser.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-cloud-browser.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-config-channel__cfd57165",
+          "displayName": "allow-config-channel",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-config-channel.svg",
+          "webPath": "/assets/admin-platform-policy/allow-config-channel.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-config-channel.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-config-model__e583c3cd",
+          "displayName": "allow-config-model",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-config-model.svg",
+          "webPath": "/assets/admin-platform-policy/allow-config-model.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-config-model.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-custom-model__df53bca3",
+          "displayName": "allow-custom-model",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-custom-model.svg",
+          "webPath": "/assets/admin-platform-policy/allow-custom-model.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-custom-model.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-lobster-doctor__ffe24ed0",
+          "displayName": "allow-lobster-doctor",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-lobster-doctor.svg",
+          "webPath": "/assets/admin-platform-policy/allow-lobster-doctor.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-lobster-doctor.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-allow-model-quota__9f63369f",
+          "displayName": "allow-model-quota",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/allow-model-quota.svg",
+          "webPath": "/assets/admin-platform-policy/allow-model-quota.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/allow-model-quota.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__api-icon__f102b38a",
+          "displayName": "api文档-icon",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/api文档-icon.svg",
+          "webPath": "/icon/api文档-icon.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/api文档-icon.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-session-management-app-log-otel-insight__e2356651",
+          "displayName": "app-log-otel-insight",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-session-management/app-log-otel-insight.svg",
+          "webPath": "/assets/admin-session-management/app-log-otel-insight.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-session-management/app-log-otel-insight.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-archive__5ca3c0fb",
+          "displayName": "archive",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/archive.svg",
+          "webPath": "/assets/admin-member-config-overview/archive.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/archive.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-security-asset-visibility__fa00945f",
+          "displayName": "asset-visibility",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-security/asset-visibility.svg",
+          "webPath": "/assets/admin-security/asset-visibility.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-security/asset-visibility.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-security-audit-tracing__892bd25f",
+          "displayName": "audit-tracing",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-security/audit-tracing.svg",
+          "webPath": "/assets/admin-security/audit-tracing.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-security/audit-tracing.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-disk-management-auto-bind-disk__16c1206b",
+          "displayName": "auto-bind-disk",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-disk-management/auto-bind-disk.svg",
+          "webPath": "/assets/admin-disk-management/auto-bind-disk.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-disk-management/auto-bind-disk.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-session-management-business-health-monitoring__1f3dac67",
+          "displayName": "business-health-monitoring",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-session-management/business-health-monitoring.svg",
+          "webPath": "/assets/admin-session-management/business-health-monitoring.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-session-management/business-health-monitoring.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-channel__69c49be0",
+          "displayName": "channel",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/channel.svg",
+          "webPath": "/assets/admin-member-config-overview/channel.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/channel.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-cloud-dev-cloud-database__d78886e5",
+          "displayName": "cloud-database",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-cloud-dev/cloud-database.svg",
+          "webPath": "/assets/admin-cloud-dev/cloud-database.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-cloud-dev/cloud-database.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-cloud-dev__c99679f1",
+          "displayName": "cloud-dev",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/cloud-dev.svg",
+          "webPath": "/assets/admin-member-config-overview/cloud-dev.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/cloud-dev.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-cloud-dev-cloud-function__22d54e52",
+          "displayName": "cloud-function",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-cloud-dev/cloud-function.svg",
+          "webPath": "/assets/admin-cloud-dev/cloud-function.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-cloud-dev/cloud-function.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-cls-log__784a324e",
+          "displayName": "cls-log",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/cls-log.svg",
+          "webPath": "/assets/admin-member-config-overview/cls-log.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/cls-log.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-credential__d59aa11f",
+          "displayName": "credential",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/credential.svg",
+          "webPath": "/assets/admin-member-config-overview/credential.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/credential.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-credential-color__78c9fe19",
+          "displayName": "credential-color",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/credential-color.svg",
+          "webPath": "/assets/admin-member-config-overview/credential-color.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/credential-color.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-agent-page-cross-session__e0a8d5d6",
+          "displayName": "cross-session",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/agent-page/cross-session.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/agent-page/cross-session.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/agent-page/cross-session.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-agent-page-deeper-understanding__e93ffd4a",
+          "displayName": "deeper-understanding",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/agent-page/deeper-understanding.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/agent-page/deeper-understanding.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/agent-page/deeper-understanding.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-default-memory-version-icon__7e4fd7b9",
+          "displayName": "default-memory-version-icon",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/default-memory-version-icon.svg",
+          "webPath": "/assets/admin-memory-management/default-memory-version-icon.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/default-memory-version-icon.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-cloud-dev-enterprise-app-deploy__fb96c492",
+          "displayName": "enterprise-app-deploy",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-cloud-dev/enterprise-app-deploy.svg",
+          "webPath": "/assets/admin-cloud-dev/enterprise-app-deploy.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-cloud-dev/enterprise-app-deploy.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-network-features-enterprise-network-interconnect__845e292c",
+          "displayName": "enterprise-network-interconnect",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-network-features/enterprise-network-interconnect.svg",
+          "webPath": "/assets/admin-network-features/enterprise-network-interconnect.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-network-features/enterprise-network-interconnect.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-cloud-dev-enterprise-security-scalability__7811bc22",
+          "displayName": "enterprise-security-scalability",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-cloud-dev/enterprise-security-scalability.svg",
+          "webPath": "/assets/admin-cloud-dev/enterprise-security-scalability.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-cloud-dev/enterprise-security-scalability.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-agent-page-file-space-file-centralized-management__1e099e56",
+          "displayName": "file-centralized-management",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/agent-page/file-space/file-centralized-management.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/agent-page/file-space/file-centralized-management.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/agent-page/file-space/file-centralized-management.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-file-drive__033e1b79",
+          "displayName": "file-drive",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/file-drive.svg",
+          "webPath": "/assets/admin-member-config-overview/file-drive.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/file-drive.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-agent-page-file-space-file-intelligent-search__4b52ee0d",
+          "displayName": "file-intelligent-search",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/agent-page/file-space/file-intelligent-search.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/agent-page/file-space/file-intelligent-search.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/agent-page/file-space/file-intelligent-search.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-agent-page-file-space-file-secure-storage__3ebad35e",
+          "displayName": "file-secure-storage",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/agent-page/file-space/file-secure-storage.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/agent-page/file-space/file-secure-storage.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/agent-page/file-space/file-secure-storage.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-agent-page-file-space-file-sharing-collaboration__931ee05d",
+          "displayName": "file-sharing-collaboration",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/agent-page/file-space/file-sharing-collaboration.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/agent-page/file-space/file-sharing-collaboration.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/agent-page/file-space/file-sharing-collaboration.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-skill-packages-general-skill-package__cb9330b5",
+          "displayName": "general-skill-package",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-skill-packages/general-skill-package.svg",
+          "webPath": "/assets/admin-skill-packages/general-skill-package.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-skill-packages/general-skill-package.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-global-token-limit__e165bb72",
+          "displayName": "global-token-limit",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/global-token-limit.svg",
+          "webPath": "/assets/admin-platform-policy/global-token-limit.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/global-token-limit.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-session-management-high-token-session-control__40829c16",
+          "displayName": "high-token-session-control",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-session-management/high-token-session-control.svg",
+          "webPath": "/assets/admin-session-management/high-token-session-control.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-session-management/high-token-session-control.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon-aiagent-netgroup__dfc8b0bc",
+          "displayName": "icon-aiagent-netgroup",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/icon-aiagent-netgroup.svg",
+          "webPath": "/icon/icon-aiagent-netgroup.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/icon-aiagent-netgroup.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon-enterprise-security__2c5d6cd3",
+          "displayName": "icon-enterprise-security",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/icon-enterprise-security.svg",
+          "webPath": "/icon/icon-enterprise-security.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/icon-enterprise-security.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-version-compare-icon-free__b9e32a34",
+          "displayName": "icon-free",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/version-compare/icon-free.svg",
+          "webPath": "/assets/admin-memory-management/version-compare/icon-free.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/version-compare/icon-free.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-icon-resource-wallet__1ccd8a47",
+          "displayName": "icon-resource-wallet",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/icon-resource-wallet.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/icon-resource-wallet.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/icon-resource-wallet.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-image__68287a6d",
+          "displayName": "image",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/image.svg",
+          "webPath": "/assets/admin-member-config-overview/image.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/image.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-information__76b5b79f",
+          "displayName": "information",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/information.svg",
+          "webPath": "/assets/admin-member-config-overview/information.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/information.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-memory__9d20ecb3",
+          "displayName": "memory",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/memory.svg",
+          "webPath": "/assets/admin-member-config-overview/memory.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/memory.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-agent-page-memory-stable__9075b382",
+          "displayName": "memory-stable",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/agent-page/memory-stable.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/agent-page/memory-stable.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/agent-page/memory-stable.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-cloud-dev-mini-program-delivery__bf2b9d7a",
+          "displayName": "mini-program-delivery",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-cloud-dev/mini-program-delivery.svg",
+          "webPath": "/assets/admin-cloud-dev/mini-program-delivery.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-cloud-dev/mini-program-delivery.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-model__0df3f454",
+          "displayName": "model",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/model.svg",
+          "webPath": "/assets/admin-member-config-overview/model.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/model.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-network-features-model-acceleration__44096c9d",
+          "displayName": "model-acceleration",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-network-features/model-acceleration.svg",
+          "webPath": "/assets/admin-network-features/model-acceleration.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-network-features/model-acceleration.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-more-setting__fa45c00a",
+          "displayName": "more-setting",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/more-setting.svg",
+          "webPath": "/assets/admin-member-config-overview/more-setting.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/more-setting.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-network__9680f8d2",
+          "displayName": "network",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/network.svg",
+          "webPath": "/assets/admin-member-config-overview/network.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/network.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-skill-packages-ops-team-skill-package__ca7692c5",
+          "displayName": "ops-team-skill-package",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-skill-packages/ops-team-skill-package.svg",
+          "webPath": "/assets/admin-skill-packages/ops-team-skill-package.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-skill-packages/ops-team-skill-package.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-platform-policy__914870cc",
+          "displayName": "platform-policy",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/platform-policy.svg",
+          "webPath": "/assets/admin-member-config-overview/platform-policy.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/platform-policy.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-agent-page-precise-retrieval__e4a9264e",
+          "displayName": "precise-retrieval",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/agent-page/precise-retrieval.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/agent-page/precise-retrieval.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/agent-page/precise-retrieval.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-network-features-public-fast-access__43c9691f",
+          "displayName": "public-fast-access",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-network-features/public-fast-access.svg",
+          "webPath": "/assets/admin-network-features/public-fast-access.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-network-features/public-fast-access.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-resource-config__fa4a6289",
+          "displayName": "resource-config",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/resource-config.svg",
+          "webPath": "/assets/admin-member-config-overview/resource-config.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/resource-config.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-disk-management-self-enable-disk__f372de9c",
+          "displayName": "self-enable-disk",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-disk-management/self-enable-disk.svg",
+          "webPath": "/assets/admin-disk-management/self-enable-disk.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-disk-management/self-enable-disk.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-session-management-session-detail-analysis__eb72600a",
+          "displayName": "session-detail-analysis",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-session-management/session-detail-analysis.svg",
+          "webPath": "/assets/admin-session-management/session-detail-analysis.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-session-management/session-detail-analysis.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-session-management-session-global-monitoring__f31eb7ef",
+          "displayName": "session-global-monitoring",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-session-management/session-global-monitoring.svg",
+          "webPath": "/assets/admin-session-management/session-global-monitoring.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-session-management/session-global-monitoring.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-session-management-single-session-token-insight__053c1556",
+          "displayName": "single-session-token-insight",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-session-management/single-session-token-insight.svg",
+          "webPath": "/assets/admin-session-management/single-session-token-insight.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-session-management/single-session-token-insight.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-member-config-overview-skill__f902f02d",
+          "displayName": "skill",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-member-config-overview/skill.svg",
+          "webPath": "/assets/admin-member-config-overview/skill.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-member-config-overview/skill.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__skillhub-icon__2ef61cb1",
+          "displayName": "SkillHub 地址-icon",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/SkillHub 地址-icon.svg",
+          "webPath": "/icon/SkillHub 地址-icon.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/SkillHub 地址-icon.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-security-skills-scanning__e6898a31",
+          "displayName": "skills-scanning",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-security/skills-scanning.svg",
+          "webPath": "/assets/admin-security/skills-scanning.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-security/skills-scanning.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-cloud-dev-speak-to-deploy__63900c02",
+          "displayName": "speak-to-deploy",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-cloud-dev/speak-to-deploy.svg",
+          "webPath": "/assets/admin-cloud-dev/speak-to-deploy.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-cloud-dev/speak-to-deploy.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-cloud-dev-static-hosting__6dbad70b",
+          "displayName": "static-hosting",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-cloud-dev/static-hosting.svg",
+          "webPath": "/assets/admin-cloud-dev/static-hosting.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-cloud-dev/static-hosting.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-user-agent-limit__cc2dc8d6",
+          "displayName": "user-agent-limit",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/user-agent-limit.svg",
+          "webPath": "/assets/admin-platform-policy/user-agent-limit.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/user-agent-limit.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-platform-policy-user-daily-token-limit__fac4f8f0",
+          "displayName": "user-daily-token-limit",
+          "slot": "card-left-icon",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-solid",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-platform-policy/user-daily-token-limit.svg",
+          "webPath": "/assets/admin-platform-policy/user-daily-token-limit.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-platform-policy/user-daily-token-limit.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        }
+      ]
+    },
+    "number-card": {
+      "label": "NumberCard 卡片图标",
+      "componentSlotPath": "NumberCard.icon",
+      "owningComponents": [
+        "NumberCard"
+      ],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "low",
+      "redline": false,
+      "hostInjection": "跨仓由宿主页面通过 icon prop 传入对应渐变图标",
+      "constraint": "统计卡图标须从 number-card 槽位已登记渐变候选中挑选（阶段 9 候选已扩至 22 枚渐变图标，内置 4 枚仅为其中已固化常用项、非上限）；无合适候选时标 needs-design-confirmation 交设计补绘，不回退扁平 lucide（会破坏渐变家族）、不在页面手搓 inline svg；自有 SVG 由页面经 img/canonical 传入，组件不写死路径",
+      "finding": null,
+      "candidateCount": 22,
+      "candidates": [
+        {
+          "id": "public____f17b4ca6",
+          "displayName": "存在风险",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/存在风险.svg",
+          "webPath": "/icon/存在风险.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/存在风险.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon__c10e8f31",
+          "displayName": "功能上新-icon",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/功能上新-icon.svg",
+          "webPath": "/icon/功能上新-icon.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/功能上新-icon.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon__22f7ff43",
+          "displayName": "功能上新icon",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/功能上新icon.svg",
+          "webPath": "/icon/功能上新icon.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/功能上新icon.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public____8c42b0ab",
+          "displayName": "企业公共空间",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/企业公共空间.svg",
+          "webPath": "/icon/企业公共空间.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/企业公共空间.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon__af5a012e",
+          "displayName": "体验优化-icon",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/体验优化-icon.svg",
+          "webPath": "/icon/体验优化-icon.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/体验优化-icon.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public____3e75d329",
+          "displayName": "威胁告警",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/威胁告警.svg",
+          "webPath": "/icon/威胁告警.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/威胁告警.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public____c3676cfa",
+          "displayName": "已开通智能体网盘",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/已开通智能体网盘.svg",
+          "webPath": "/icon/已开通智能体网盘.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/已开通智能体网盘.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__ai-agent__2c71b619",
+          "displayName": "AI Agent资产",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/AI Agent资产.svg",
+          "webPath": "/icon/AI Agent资产.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/AI Agent资产.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon-aiagent-alarm__855fc869",
+          "displayName": "icon-aiagent-alarm",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/icon-aiagent-alarm.svg",
+          "webPath": "/icon/icon-aiagent-alarm.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/icon-aiagent-alarm.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon-aiagent-assets__37618435",
+          "displayName": "icon-aiagent-assets",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/icon-aiagent-assets.svg",
+          "webPath": "/icon/icon-aiagent-assets.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/icon-aiagent-assets.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__icon-aiagent-risk__326474aa",
+          "displayName": "icon-aiagent-risk",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/icon-aiagent-risk.svg",
+          "webPath": "/icon/icon-aiagent-risk.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/icon-aiagent-risk.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-instance-disabled__dc7070e4",
+          "displayName": "instance-disabled",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/instance-disabled.svg",
+          "webPath": "/assets/admin-memory-management/instance-disabled.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/instance-disabled.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-instance-free__d12a41ee",
+          "displayName": "instance-free",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/instance-free.svg",
+          "webPath": "/assets/admin-memory-management/instance-free.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/instance-free.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-instance-pro__28324613",
+          "displayName": "instance-pro",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/instance-pro.svg",
+          "webPath": "/assets/admin-memory-management/instance-pro.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/instance-pro.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-instance-total__7be2a111",
+          "displayName": "instance-total",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/instance-total.svg",
+          "webPath": "/assets/admin-memory-management/instance-total.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/instance-total.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__memory-personal__be79223b",
+          "displayName": "memory-personal",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/memory-personal.svg",
+          "webPath": "/icon/memory-personal.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/memory-personal.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__monitor-other__0419c1e3",
+          "displayName": "monitor-other",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/monitor-other.svg",
+          "webPath": "/icon/monitor-other.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/monitor-other.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__monitor-running__8460ec9d",
+          "displayName": "monitor-running",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/monitor-running.svg",
+          "webPath": "/icon/monitor-running.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/monitor-running.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__monitor-shutdown__9d6df642",
+          "displayName": "monitor-shutdown",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/icon/monitor-shutdown.svg",
+          "webPath": "/icon/monitor-shutdown.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/icon/monitor-shutdown.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-stat-icon-agent__b9c08f7f",
+          "displayName": "stat-icon-agent",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/stat-icon-agent.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/stat-icon-agent.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/stat-icon-agent.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-stat-icon-risk__a643caae",
+          "displayName": "stat-icon-risk",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/stat-icon-risk.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/stat-icon-risk.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/stat-icon-risk.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-stat-icon-threat__45e6e633",
+          "displayName": "stat-icon-threat",
+          "slot": "number-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": "gradient-line",
+          "scenes": [],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/stat-icon-threat.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/stat-icon-threat.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/stat-icon-threat.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        }
+      ]
+    },
+    "file-type": {
+      "label": "文件类型图标",
+      "componentSlotPath": "FileSpace.fileTypeIcon",
+      "owningComponents": [
+        "FileSpace"
+      ],
+      "recommendedResourceType": "custom-svg | lucide",
+      "allowLucideFallback": true,
+      "riskLevel": "medium",
+      "redline": false,
+      "hostInjection": "跨仓由宿主页面提供文件类型图标或用 lucide",
+      "constraint": "通用文件类型图标，可用 lucide；如抽为资源须脱离本任务单独立项",
+      "finding": "分类将 21 个 src/assets/icons/file-space/* 标为 file-type 槽位，但 FileSpace 实际以 inline SVG 渲染文件类型与工具栏图标，仅 ESM import 4 个关闭态功能介绍图标。",
+      "candidateCount": 21,
+      "candidates": [
+        {
+          "id": "src__icons-file-space-arrows-clockwise-bold-1__ef84b547",
+          "displayName": "arrows-clockwise-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/arrows-clockwise-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/arrows-clockwise-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/arrows-clockwise-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-arrows-down-up-bold-1__db212fa5",
+          "displayName": "arrows-down-up-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/arrows-down-up-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/arrows-down-up-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/arrows-down-up-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-clock-bold-1-1__d1cef576",
+          "displayName": "clock-bold (1) 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/clock-bold (1) 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/clock-bold (1) 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/clock-bold (1) 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-dots-three-vertical-bold-1__47a61aed",
+          "displayName": "dots-three-vertical-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/dots-three-vertical-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/dots-three-vertical-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/dots-three-vertical-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-bold-1__c1369343",
+          "displayName": "file-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-code-bold-1__924fc747",
+          "displayName": "file-code-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-code-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-code-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-code-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-doc-bold-1__a9926129",
+          "displayName": "file-doc-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-doc-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-doc-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-doc-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-jpg-bold-1__a968746e",
+          "displayName": "file-jpg-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-jpg-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-jpg-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-jpg-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-pdf-bold-1__c1f39a30",
+          "displayName": "file-pdf-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-pdf-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-pdf-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-pdf-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-ppt-bold-1__41280562",
+          "displayName": "file-ppt-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-ppt-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-ppt-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-ppt-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-text-bold-1__8359cac6",
+          "displayName": "file-text-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-text-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-text-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-text-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-video-bold-1__5c2e1a00",
+          "displayName": "file-video-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-video-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-video-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-video-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-file-zip-bold-1__163a6760",
+          "displayName": "file-zip-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/file-zip-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/file-zip-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/file-zip-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-folder-bold-1__36a2d74d",
+          "displayName": "folder-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/folder-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/folder-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/folder-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-folder-bold-2__67c173fd",
+          "displayName": "folder-bold 2",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/folder-bold 2.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/folder-bold 2.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/folder-bold 2.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-folder-simple-plus-bold-1__58d9e6d1",
+          "displayName": "folder-simple-plus-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/folder-simple-plus-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/folder-simple-plus-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/folder-simple-plus-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-grid-nine-bold-2__dcc5839c",
+          "displayName": "grid-nine-bold 2",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/grid-nine-bold 2.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/grid-nine-bold 2.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/grid-nine-bold 2.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-house-bold-1__e7c84d33",
+          "displayName": "house-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/house-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/house-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/house-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-list-bullets-bold-1__732b0e4b",
+          "displayName": "list-bullets-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/list-bullets-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/list-bullets-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/list-bullets-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-magnifying-glass-bold-1__58f0a95e",
+          "displayName": "magnifying-glass-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/magnifying-glass-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/magnifying-glass-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/magnifying-glass-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__icons-file-space-upload-simple-bold-1__2aa1fd87",
+          "displayName": "upload-simple-bold 1",
+          "slot": "file-type",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/icons/file-space/upload-simple-bold 1.svg",
+          "webPath": null,
+          "importPath": "@/assets/icons/file-space/upload-simple-bold 1.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/icons/file-space/upload-simple-bold 1.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": true,
+          "recommendedResourceType": "custom-svg | lucide",
+          "usageScope": "current-project-only"
+        }
+      ]
+    },
+    "run-status": {
+      "label": "运行状态图标",
+      "componentSlotPath": "AgentCard.statusIcon",
+      "owningComponents": [
+        "StatusBadge",
+        "AgentCard"
+      ],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "medium",
+      "redline": false,
+      "hostInjection": "状态动画语义为组件私有，跨仓随组件携带",
+      "constraint": "带动画/状态语义，lucide 难等价；保持组件私有 inline 实现，本阶段不抽资源",
+      "finding": "分类将 8 个 src/assets/agent-card/status-*.svg 标为 run-status 槽位，但 StatusBadge 实际以组件内 inline 动画 SVG 渲染状态，未通过这些静态路径引用。",
+      "candidateCount": 8,
+      "candidates": [
+        {
+          "id": "src__agent-card-status-create-fail__ca979285",
+          "displayName": "status-create-fail",
+          "slot": "run-status",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/agent-card/status-create-fail.svg",
+          "webPath": null,
+          "importPath": "@/assets/agent-card/status-create-fail.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/agent-card/status-create-fail.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__agent-card-status-creating__f7348264",
+          "displayName": "status-creating",
+          "slot": "run-status",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/agent-card/status-creating.svg",
+          "webPath": null,
+          "importPath": "@/assets/agent-card/status-creating.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/agent-card/status-creating.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__agent-card-status-load-fail__f2727ef4",
+          "displayName": "status-load-fail",
+          "slot": "run-status",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/agent-card/status-load-fail.svg",
+          "webPath": null,
+          "importPath": "@/assets/agent-card/status-load-fail.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/agent-card/status-load-fail.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__agent-card-status-loading__0b5c8009",
+          "displayName": "status-loading",
+          "slot": "run-status",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/agent-card/status-loading.svg",
+          "webPath": null,
+          "importPath": "@/assets/agent-card/status-loading.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/agent-card/status-loading.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__agent-card-status-maintaining__d43252a9",
+          "displayName": "status-maintaining",
+          "slot": "run-status",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/agent-card/status-maintaining.svg",
+          "webPath": null,
+          "importPath": "@/assets/agent-card/status-maintaining.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/agent-card/status-maintaining.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__agent-card-status-pending__dbba33a9",
+          "displayName": "status-pending",
+          "slot": "run-status",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/agent-card/status-pending.svg",
+          "webPath": null,
+          "importPath": "@/assets/agent-card/status-pending.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/agent-card/status-pending.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__agent-card-status-running__f06752c8",
+          "displayName": "status-running",
+          "slot": "run-status",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/agent-card/status-running.svg",
+          "webPath": null,
+          "importPath": "@/assets/agent-card/status-running.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/agent-card/status-running.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "src__agent-card-status-shutdown__fb220a3f",
+          "displayName": "status-shutdown",
+          "slot": "run-status",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "src",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/src/assets/agent-card/status-shutdown.svg",
+          "webPath": null,
+          "importPath": "@/assets/agent-card/status-shutdown.svg",
+          "canonicalKey": null,
+          "reference": {
+            "kind": "esm-import",
+            "value": "@/assets/agent-card/status-shutdown.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        }
+      ]
+    },
+    "feature-card": {
+      "label": "企业特性卡片图标",
+      "componentSlotPath": "ComparisonTable.featureIcon",
+      "owningComponents": [
+        "ComparisonTable"
+      ],
+      "recommendedResourceType": "custom-svg",
+      "allowLucideFallback": false,
+      "riskLevel": "high",
+      "redline": false,
+      "hostInjection": "跨仓由宿主注入特性图标",
+      "constraint": "组件层硬编码当前项目 /assets 路径不可移植；如改为 canonical/props 注入须单独立项",
+      "finding": null,
+      "candidateCount": 4,
+      "candidates": [
+        {
+          "id": "public__admin-memory-management-version-compare-feature-backup__31607929",
+          "displayName": "feature-backup",
+          "slot": "feature-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/version-compare/feature-backup.svg",
+          "webPath": "/assets/admin-memory-management/version-compare/feature-backup.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/version-compare/feature-backup.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-version-compare-feature-encrypt__770e6ee3",
+          "displayName": "feature-encrypt",
+          "slot": "feature-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/version-compare/feature-encrypt.svg",
+          "webPath": "/assets/admin-memory-management/version-compare/feature-encrypt.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/version-compare/feature-encrypt.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-version-compare-feature-tenant__3b2a6541",
+          "displayName": "feature-tenant",
+          "slot": "feature-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/version-compare/feature-tenant.svg",
+          "webPath": "/assets/admin-memory-management/version-compare/feature-tenant.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/version-compare/feature-tenant.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        },
+        {
+          "id": "public__admin-memory-management-version-compare-feature-token__fc4c8a44",
+          "displayName": "feature-token",
+          "slot": "feature-card",
+          "via": "component-slot",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "own-svg",
+          "visualType": null,
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-memory-management/version-compare/feature-token.svg",
+          "webPath": "/assets/admin-memory-management/version-compare/feature-token.svg",
+          "importPath": null,
+          "canonicalKey": null,
+          "reference": {
+            "kind": "web-path",
+            "value": "/assets/admin-memory-management/version-compare/feature-token.svg"
+          },
+          "redline": false,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "custom-svg",
+          "usageScope": "current-project-only"
+        }
+      ]
+    },
+    "agent-avatar": {
+      "label": "Agent 头像",
+      "componentSlotPath": "AgentCard.avatar",
+      "owningComponents": [
+        "AgentAvatar",
+        "AgentCard"
+      ],
+      "recommendedResourceType": "agent-avatar",
+      "allowLucideFallback": false,
+      "riskLevel": "high",
+      "redline": true,
+      "hostInjection": "跨仓由宿主注入头像；当前项目页面层可用 canonicalAssets.avatars.*",
+      "constraint": "头像不可用图标替代、禁改色当 UI 图标；组件硬编码当前项目路径不可移植，跨仓须宿主注入",
+      "finding": null,
+      "candidateCount": 7,
+      "candidates": [
+        {
+          "id": "public__avatars-avatar-analyst__9391da24",
+          "displayName": "avatar-analyst",
+          "slot": "agent-avatar",
+          "via": "canonical-redline",
+          "type": "png",
+          "source": "public",
+          "primaryCategory": "agent-avatar",
+          "visualType": "avatar-like",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/avatars/avatar-analyst.png",
+          "webPath": "/assets/avatars/avatar-analyst.png",
+          "importPath": null,
+          "canonicalKey": "avatars.analyst",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.avatars.analyst"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "agent-avatar",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__avatars-avatar-creator__08dab2a7",
+          "displayName": "avatar-creator",
+          "slot": "agent-avatar",
+          "via": "canonical-redline",
+          "type": "png",
+          "source": "public",
+          "primaryCategory": "agent-avatar",
+          "visualType": "avatar-like",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/avatars/avatar-creator.png",
+          "webPath": "/assets/avatars/avatar-creator.png",
+          "importPath": null,
+          "canonicalKey": "avatars.creator",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.avatars.creator"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "agent-avatar",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__avatars-avatar-default__89f8f33a",
+          "displayName": "avatar-default",
+          "slot": "agent-avatar",
+          "via": "canonical-redline",
+          "type": "png",
+          "source": "public",
+          "primaryCategory": "agent-avatar",
+          "visualType": "avatar-like",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/avatars/avatar-default.png",
+          "webPath": "/assets/avatars/avatar-default.png",
+          "importPath": null,
+          "canonicalKey": "avatars.default",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.avatars.default"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "agent-avatar",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__avatars-avatar-designer__702459f9",
+          "displayName": "avatar-designer",
+          "slot": "agent-avatar",
+          "via": "canonical-redline",
+          "type": "png",
+          "source": "public",
+          "primaryCategory": "agent-avatar",
+          "visualType": "avatar-like",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/avatars/avatar-designer.png",
+          "webPath": "/assets/avatars/avatar-designer.png",
+          "importPath": null,
+          "canonicalKey": "avatars.designer",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.avatars.designer"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "agent-avatar",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__avatars-avatar-developer__1f7a0684",
+          "displayName": "avatar-developer",
+          "slot": "agent-avatar",
+          "via": "canonical-redline",
+          "type": "png",
+          "source": "public",
+          "primaryCategory": "agent-avatar",
+          "visualType": "avatar-like",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/avatars/avatar-developer.png",
+          "webPath": "/assets/avatars/avatar-developer.png",
+          "importPath": null,
+          "canonicalKey": "avatars.developer",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.avatars.developer"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "agent-avatar",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__avatars-avatar-operator__394feb69",
+          "displayName": "avatar-operator",
+          "slot": "agent-avatar",
+          "via": "canonical-redline",
+          "type": "png",
+          "source": "public",
+          "primaryCategory": "agent-avatar",
+          "visualType": "avatar-like",
+          "scenes": [
+            "tenant"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/avatars/avatar-operator.png",
+          "webPath": "/assets/avatars/avatar-operator.png",
+          "importPath": null,
+          "canonicalKey": "avatars.operator",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.avatars.operator"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "agent-avatar",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__avatars-avatar-pm__24dd4cba",
+          "displayName": "avatar-pm",
+          "slot": "agent-avatar",
+          "via": "canonical-redline",
+          "type": "png",
+          "source": "public",
+          "primaryCategory": "agent-avatar",
+          "visualType": "avatar-like",
+          "scenes": [],
+          "landing": "file",
+          "sourcePath": "client/public/assets/avatars/avatar-pm.png",
+          "webPath": "/assets/avatars/avatar-pm.png",
+          "importPath": null,
+          "canonicalKey": "avatars.pm",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.avatars.pm"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "agent-avatar",
+          "usageScope": "host-injected"
+        }
+      ]
+    },
+    "channel-icon": {
+      "label": "渠道图标",
+      "componentSlotPath": "ChannelConfig.channelIcon",
+      "owningComponents": [
+        "ChannelConfig"
+      ],
+      "recommendedResourceType": "channel-icon",
+      "allowLucideFallback": false,
+      "riskLevel": "low",
+      "redline": true,
+      "hostInjection": "跨仓由宿主注入渠道图标",
+      "constraint": "品牌固定色，禁改色当普通图标；当前项目页面用 canonicalAssets.channels，组件不写死路径",
+      "finding": null,
+      "candidateCount": 6,
+      "candidates": [
+        {
+          "id": "public__admin-channel-icons-channel-dingtalk__b203af27",
+          "displayName": "channel-dingtalk",
+          "slot": "channel-icon",
+          "via": "canonical-redline",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "channel-icon",
+          "visualType": "brand-fixed",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-channel-icons/channel-dingtalk.svg",
+          "webPath": "/assets/admin-channel-icons/channel-dingtalk.svg",
+          "importPath": null,
+          "canonicalKey": "channels.dingtalk",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.channels.dingtalk"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "channel-icon",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__admin-channel-icons-channel-feishu__e5fadf69",
+          "displayName": "channel-feishu",
+          "slot": "channel-icon",
+          "via": "canonical-redline",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "channel-icon",
+          "visualType": "brand-fixed",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-channel-icons/channel-feishu.svg",
+          "webPath": "/assets/admin-channel-icons/channel-feishu.svg",
+          "importPath": null,
+          "canonicalKey": "channels.feishu",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.channels.feishu"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "channel-icon",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__admin-channel-icons-channel-qq__6a9f7733",
+          "displayName": "channel-qq",
+          "slot": "channel-icon",
+          "via": "canonical-redline",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "channel-icon",
+          "visualType": "brand-fixed",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-channel-icons/channel-qq.svg",
+          "webPath": "/assets/admin-channel-icons/channel-qq.svg",
+          "importPath": null,
+          "canonicalKey": "channels.qq",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.channels.qq"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "channel-icon",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__admin-channel-icons-channel-wechat__ed886289",
+          "displayName": "channel-wechat",
+          "slot": "channel-icon",
+          "via": "canonical-redline",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "channel-icon",
+          "visualType": "brand-fixed",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-channel-icons/channel-wechat.svg",
+          "webPath": "/assets/admin-channel-icons/channel-wechat.svg",
+          "importPath": null,
+          "canonicalKey": "channels.wechat",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.channels.wechat"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "channel-icon",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__admin-channel-icons-channel-wecom__83a4d718",
+          "displayName": "channel-wecom",
+          "slot": "channel-icon",
+          "via": "canonical-redline",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "channel-icon",
+          "visualType": "brand-fixed",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-channel-icons/channel-wecom.svg",
+          "webPath": "/assets/admin-channel-icons/channel-wecom.svg",
+          "importPath": null,
+          "canonicalKey": "channels.wecom",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.channels.wecom"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "channel-icon",
+          "usageScope": "host-injected"
+        },
+        {
+          "id": "public__admin-channel-icons-channel-wecom-app__a5b69567",
+          "displayName": "channel-wecom-app",
+          "slot": "channel-icon",
+          "via": "canonical-redline",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "channel-icon",
+          "visualType": "brand-fixed",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-channel-icons/channel-wecom-app.svg",
+          "webPath": "/assets/admin-channel-icons/channel-wecom-app.svg",
+          "importPath": null,
+          "canonicalKey": "channels.wecomApp",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.channels.wecomApp"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "channel-icon",
+          "usageScope": "host-injected"
+        }
+      ]
+    },
+    "brand-logo": {
+      "label": "品牌 Logo",
+      "componentSlotPath": "BrandLogo.logo",
+      "owningComponents": [
+        "AdminSidebar",
+        "TopNav"
+      ],
+      "recommendedResourceType": "brand-logo",
+      "allowLucideFallback": false,
+      "riskLevel": "medium",
+      "redline": true,
+      "hostInjection": "跨仓由宿主注入品牌 Logo",
+      "constraint": "品牌资源禁当普通 icon、禁改色；跨仓由宿主注入",
+      "finding": null,
+      "candidateCount": 1,
+      "candidates": [
+        {
+          "id": "public__admin-sidebar-clawpro-logo__101245ff",
+          "displayName": "clawpro-logo",
+          "slot": "brand-logo",
+          "via": "canonical-redline",
+          "type": "svg",
+          "source": "public",
+          "primaryCategory": "brand-logo",
+          "visualType": "brand-fixed",
+          "scenes": [
+            "admin"
+          ],
+          "landing": "file",
+          "sourcePath": "client/public/assets/admin-sidebar/clawpro-logo.svg",
+          "webPath": "/assets/admin-sidebar/clawpro-logo.svg",
+          "importPath": null,
+          "canonicalKey": "brands.clawproLogo",
+          "reference": {
+            "kind": "canonical",
+            "value": "canonicalAssets.brands.clawproLogo"
+          },
+          "redline": true,
+          "canRecolor": false,
+          "allowLucideFallback": false,
+          "recommendedResourceType": "brand-logo",
+          "usageScope": "host-injected"
+        }
+      ]
+    }
+  }
+}

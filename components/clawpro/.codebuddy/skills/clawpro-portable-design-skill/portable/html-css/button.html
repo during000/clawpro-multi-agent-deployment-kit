@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClawPro Portable Button</title>
+    <link rel="stylesheet" href="../css/tokens.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--cp-page-bg);
+        font-family: var(--cp-font-sans);
+        color: var(--cp-text-body);
+      }
+      .cp-shell {
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+      .cp-header {
+        margin-bottom: 24px;
+      }
+      .cp-header h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--cp-text-title);
+      }
+      .cp-header p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-group {
+        display: grid;
+        gap: 24px;
+      }
+      .cp-demo-block {
+        display: grid;
+        gap: 12px;
+      }
+      .cp-demo-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cp-text-secondary);
+      }
+      .cp-card {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--cp-surface);
+        padding: 20px;
+      }
+      .cp-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px 20px;
+      }
+      .cp-item {
+        display: grid;
+        gap: 8px;
+        justify-items: start;
+      }
+      .cp-item-label {
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 36px;
+        padding: 0 24px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        font-size: 14px;
+        line-height: 1;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .cp-btn:disabled {
+        cursor: not-allowed;
+      }
+      .cp-btn--admin-primary {
+        background: #0A0A0A;
+        color: white;
+      }
+      .cp-btn--admin-outline {
+        background: white;
+        border-color: var(--cp-border);
+        color: var(--cp-text-emphasis);
+      }
+      .cp-btn--dialog-confirm {
+        height: 32px;
+        padding: 0 16px;
+        background: #0A0A0A;
+        color: white;
+      }
+      .cp-btn--tenant-primary {
+        border-radius: 9999px;
+        background: #0A0A0A;
+        color: white;
+      }
+      .cp-btn--tenant-outline {
+        border-radius: 9999px;
+        background: white;
+        border-color: var(--cp-border);
+        color: var(--cp-text-emphasis);
+      }
+      .cp-btn--tenant-outline-strong {
+        border-radius: 9999px;
+        background: white;
+        border-color: #CBCBCB;
+        color: var(--cp-text-emphasis);
+        font-weight: 500;
+      }
+      .cp-btn--tenant-destructive {
+        border-radius: 9999px;
+        background: var(--cp-text-danger);
+        color: white;
+      }
+      .cp-btn--tenant-ghost {
+        border-radius: 9999px;
+        background: transparent;
+        color: var(--cp-text-emphasis);
+      }
+      .cp-btn--disabled {
+        opacity: 0.5;
+      }
+      .cp-button-group {
+        display: flex;
+        width: fit-content;
+        align-items: stretch;
+      }
+      .cp-button-group > *:not(:first-child) {
+        border-left: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+      .cp-button-group > *:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .cp-button-group-text {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 16px;
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: var(--bg-grey-normal);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--cp-text-title);
+      }
+      .cp-group-stack {
+        display: grid;
+        gap: 16px;
+      }
+      .cp-rule-box {
+        border: 1px solid var(--cp-border);
+        border-radius: 4px;
+        background: #FAFAFA;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--cp-text-muted);
+      }
+      .cp-rule-box p {
+        margin: 0;
+      }
+      .cp-rule-box p + p {
+        margin-top: 4px;
+      }
+      @media (max-width: 900px) {
+        .cp-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 640px) {
+        body { padding: 16px; }
+        .cp-card { padding: 16px; }
+        .cp-grid {
+          grid-template-columns: 1fr;
+        }
+        .cp-button-group {
+          flex-wrap: wrap;
+        }
+        .cp-button-group > *:not(:first-child) {
+          border-left: 1px solid var(--cp-border);
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+        }
+        .cp-button-group > *:not(:last-child) {
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cp-shell">
+      <header class="cp-header">
+        <h1>Button / ButtonGroup</h1>
+        <p>根据 `component-specs/button.md` 生成，集中验证 Admin / Tenant 按钮变体以及连续按钮组组合方式。</p>
+      </header>
+
+      <div class="cp-group">
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">按钮变体</h2>
+          <div class="cp-card">
+            <div class="cp-grid">
+              <div class="cp-item">
+                <div class="cp-item-label">claw-primary</div>
+                <button class="cp-btn cp-btn--admin-primary" type="button">创建 Agent</button>
+              </div>
+              <div class="cp-item">
+                <div class="cp-item-label">claw-outline</div>
+                <button class="cp-btn cp-btn--admin-outline" type="button">详细配置</button>
+              </div>
+              <div class="cp-item">
+                <div class="cp-item-label">dialog-confirm</div>
+                <button class="cp-btn cp-btn--dialog-confirm" type="button">确认</button>
+              </div>
+              <div class="cp-item">
+                <div class="cp-item-label">tenant-primary</div>
+                <button class="cp-btn cp-btn--tenant-primary" type="button">创建 Agent</button>
+              </div>
+              <div class="cp-item">
+                <div class="cp-item-label">tenant-outline</div>
+                <button class="cp-btn cp-btn--tenant-outline" type="button">详细配置</button>
+              </div>
+              <div class="cp-item">
+                <div class="cp-item-label">tenant-outline-strong</div>
+                <button class="cp-btn cp-btn--tenant-outline-strong" type="button">管理通道</button>
+              </div>
+              <div class="cp-item">
+                <div class="cp-item-label">tenant-destructive</div>
+                <button class="cp-btn cp-btn--tenant-destructive" type="button">删除</button>
+              </div>
+              <div class="cp-item">
+                <div class="cp-item-label">tenant-ghost</div>
+                <button class="cp-btn cp-btn--tenant-ghost" type="button">低权重操作</button>
+              </div>
+              <div class="cp-item">
+                <div class="cp-item-label">disabled</div>
+                <button class="cp-btn cp-btn--admin-outline cp-btn--disabled" type="button" disabled>Disabled</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cp-demo-block">
+          <h2 class="cp-demo-title">按钮组验证</h2>
+          <div class="cp-card cp-group-stack">
+            <div class="cp-button-group" role="group" aria-label="Admin 操作组">
+              <button class="cp-btn cp-btn--admin-outline" type="button">取消</button>
+              <button class="cp-btn cp-btn--dialog-confirm" type="button">保存配置</button>
+            </div>
+
+            <div class="cp-button-group" role="group" aria-label="批量操作组">
+              <div class="cp-button-group-text">批量操作</div>
+              <button class="cp-btn cp-btn--admin-outline" type="button">批量导出</button>
+              <button class="cp-btn cp-btn--admin-primary" type="button">立即执行</button>
+            </div>
+
+            <div class="cp-button-group" role="group" aria-label="Tenant 操作组">
+              <button class="cp-btn cp-btn--tenant-outline" type="button">详细配置</button>
+              <button class="cp-btn cp-btn--tenant-primary" type="button">创建 Agent</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="cp-rule-box">
+          <p><strong>规则</strong></p>
+          <p>• Admin 按钮使用 `4px` 圆角，Tenant 按钮使用胶囊圆角</p>
+          <p>• 主次操作层级明确，避免在同一组中堆多个强主按钮</p>
+          <p>• ButtonGroup 用于连续操作，不在页面内重复手写拼装样式</p>
+          <p>• fallback 只依赖 `var(--cp-*)` 和 `var(--bg-grey-normal)` 变量</p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

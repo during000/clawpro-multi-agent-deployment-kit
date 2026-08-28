@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Instance.Name}} - {{.SiteName}}</title>
+    <script src="/static/htmx.min.js"></script>
+    <script src="/static/tailwindcss.js"></script>
+    <script src="/static/qrcode.min.js"></script>
+</head>
+<body class="bg-[#f5f6fa] min-h-screen flex flex-col" style="font-family: 'PingFang SC', 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;">
+    {{template "navbar" .}}
+
+    <div class="flex flex-1 overflow-hidden">
+        {{template "home_sidebar" .}}
+
+        <main class="flex-1 overflow-auto py-6 px-10">
+            <div>
+                <!-- Breadcrumb -->
+                <div class="flex items-center mb-4 text-[13px]">
+                    <a href="/openclaw" class="text-[#0052d9] hover:underline">我的 OpenClaw</a>
+                    <svg class="w-3.5 h-3.5 mx-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <span class="text-gray-500">{{.Instance.Name}}</span>
+                </div>
+
+                <!-- Header: Instance Name + Status -->
+                <div class="flex items-center mb-6">
+                    <h1 class="text-[22px] font-bold text-gray-900">{{.Instance.Name}}</h1>
+                    <span id="detail-status" class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-medium text-gray-400 bg-gray-100"
+                        hx-get="/openclaw/status?id={{.Instance.ID}}"
+                        hx-trigger="load"
+                        hx-swap="innerHTML">
+                        加载中...
+                    </span>
+                </div>
+
+                <!-- Gateway UI Button -->
+                <div class="mb-5">
+                    <button id="btn-gateway-ui" onclick="openGatewayUI()" class="inline-flex items-center h-9 px-4 text-[14px] font-medium text-white bg-[#0052d9] rounded hover:bg-[#0034b5] transition-colors">
+                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        安全开启 OpenClaw 面板
+                    </button>
+                </div>
+
+                <!-- Gateway UI Modal -->
+                <div id="gateway-ui-modal" class="fixed inset-0 z-50 hidden">
+                    <div class="absolute inset-0 bg-black bg-opacity-50" onclick="closeGatewayModal()"></div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl w-[520px] max-w-[90vw]">
+                        <div class="flex items-center justify-between px-6 py-4 border-b border-[#e3e6eb]">
+                            <h3 class="text-[16px] font-semibold text-gray-900">OpenClaw 面板信息</h3>
+                            <button onclick="closeGatewayModal()" class="text-gray-400 hover:text-gray-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <div id="gateway-ui-content" class="px-6 py-5 space-y-4">
+                        </div>
+                        <div class="px-6 py-4 border-t border-[#e3e6eb] flex justify-end">
+                            <button onclick="closeGatewayModal()" class="h-9 px-5 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors text-gray-700">关闭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three-column Cards -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+                    <!-- Models + Plugins Column -->
+                    <div class="space-y-5">
+                    <!-- Models Card -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+                        <div class="flex items-center justify-center mb-5 pb-4 border-b border-[#e3e6eb]">
+                            <svg class="w-5 h-5 text-[#0052d9] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span class="text-[15px] font-semibold text-gray-800">模型 (Models)</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[13px] text-gray-500 mb-1.5">模型供应商</label>
+                                <select id="model-provider" onchange="filterModels()" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded bg-white focus:outline-none focus:border-[#0052d9]">
+                                    <option value="">请选择供应商</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] text-gray-500 mb-1.5">模型版本</label>
+                                <select id="model-select" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded bg-white focus:outline-none focus:border-[#0052d9]">
+                                    <option value="">请先选择供应商</option>
+                                </select>
+                            </div>
+                            <!-- 自定义模型配置表单 -->
+                            <div id="custom-model-form" class="space-y-3 hidden">
+                                <div>
+                                    <label class="block text-[13px] text-gray-500 mb-1.5">提供商名称 <span class="text-red-500">*</span></label>
+                                    <input id="cm-provider" type="text" placeholder="例如: deepseek、hunyuan" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]">
+                                </div>
+                                <div>
+                                    <label class="block text-[13px] text-gray-500 mb-1.5">接口类型 <span class="text-red-500">*</span></label>
+                                    <select id="cm-model-type" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded bg-white focus:outline-none focus:border-[#0052d9]">
+                                        <option value="openai-completions">openai-completions</option>
+                                        <option value="anthropic-messages">anthropic-messages</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[13px] text-gray-500 mb-1.5">模型 ID <span class="text-red-500">*</span></label>
+                                    <input id="cm-model-id" type="text" placeholder="例如: deepseek-v3" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]">
+                                </div>
+                                <div>
+                                    <label class="block text-[13px] text-gray-500 mb-1.5">API Key <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <input id="cm-api-key" type="password" placeholder="API Key" class="w-full h-9 px-3 pr-9 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]">
+                                        <button type="button" onclick="var i=this.previousElementSibling;i.type=i.type==='password'?'text':'password'" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l18 18"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[13px] text-gray-500 mb-1.5">URL <span class="text-red-500">*</span></label>
+                                    <input id="cm-url" type="text" placeholder="例如: https://api.deepseek.com/v1" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]">
+                                </div>
+                                <div>
+                                    <label class="block text-[13px] text-gray-500 mb-1.5">上下文长度 <span class="text-red-500">*</span></label>
+                                    <input id="cm-context-len" type="number" value="128000" min="0" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]">
+                                </div>
+                                <div>
+                                    <label class="block text-[13px] text-gray-500 mb-1.5">输入类型</label>
+                                    <div class="flex items-center space-x-4 mt-0.5">
+                                        <label class="flex items-center space-x-1.5 text-[13px] text-gray-700 cursor-pointer">
+                                            <input type="checkbox" id="cm-input-text" value="text" checked class="w-4 h-4 accent-[#0052d9]">
+                                            <span>text</span>
+                                        </label>
+                                        <label class="flex items-center space-x-1.5 text-[13px] text-gray-700 cursor-pointer">
+                                            <input type="checkbox" id="cm-input-image" value="image" class="w-4 h-4 accent-[#0052d9]">
+                                            <span>image</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="btn-set-model" onclick="applyModel()" class="w-full h-9 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors text-gray-700">
+                                应用
+                            </button>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-[#e3e6eb]">
+                            <p class="text-[13px] text-gray-400 mb-3">已配置模型</p>
+                            <div id="model-status" class="space-y-2 mb-4">
+                                <p id="model-status-loading" class="text-[13px] text-gray-400 text-center py-3">加载中...</p>
+                                <div id="custom-model-status"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Plugins Card -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+                        <div class="flex items-center justify-center mb-5 pb-4 border-b border-[#e3e6eb]">
+                            <svg class="w-5 h-5 text-[#0052d9] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg>
+                            <span class="text-[15px] font-semibold text-gray-800">插件 (Plugins)</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[13px] text-gray-500 mb-1.5">插件名称</label>
+                                <input id="plugin-name-input" type="text" placeholder="请输入插件名称" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]">
+                            </div>
+                            <button id="install-plugin-btn" onclick="installPlugin()" class="w-full h-9 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors text-gray-700">
+                                安装插件
+                            </button>
+                        </div>
+                    </div>
+                    </div><!-- end Models + Plugins Column -->
+
+                    <!-- Channels + Approve Column -->
+                    <div class="space-y-5">
+                    <!-- Channels Card -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+                        <div class="flex items-center justify-center mb-5 pb-4 border-b border-[#e3e6eb]">
+                            <svg class="w-5 h-5 text-[#0052d9] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                            <span class="text-[15px] font-semibold text-gray-800">通道 (Channels)</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[13px] text-gray-500 mb-1.5">通道类型</label>
+                                <select id="channel-type" onchange="onChannelTypeChange()" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded bg-white focus:outline-none focus:border-[#0052d9]">
+                                    <option value="" disabled>加载中...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] text-gray-500 mb-1.5">配置方式</label>
+                                <div id="channel-mode-toggle" class="flex rounded border border-[#e3e6eb] overflow-hidden">
+                                    <button id="mode-auto" onclick="switchChannelMode('auto')" class="flex-1 h-9 text-[13px] font-medium bg-[#0052d9] text-white transition-colors">自动配置</button>
+                                    <button id="mode-custom" onclick="switchChannelMode('custom')" class="flex-1 h-9 text-[13px] font-medium bg-white text-gray-600 hover:bg-gray-50 transition-colors">自定义配置</button>
+                                </div>
+                            </div>
+                            <!-- 自动配置区域 -->
+                            <div id="channel-auto" class="space-y-3">
+                                <p id="auto-hint-text" class="text-[13px] text-gray-500">点击下方按钮，扫描二维码自动创建并配置机器人。</p>
+                                <div id="auto-log-area" class="hidden">
+                                    <div class="border border-[#e3e6eb] rounded p-2 bg-gray-50 max-h-32 overflow-y-auto">
+                                        <div id="auto-log-list" class="text-[12px] text-gray-500 space-y-0.5 font-mono"></div>
+                                    </div>
+                                </div>
+                                <div id="auto-qrcode-area" class="hidden">
+                                    <div class="border border-[#e3e6eb] rounded p-3 bg-gray-50">
+                                        <p id="auto-scan-hint" class="text-[13px] text-gray-500 mb-2">请扫描以下二维码：</p>
+                                        <div class="flex justify-center">
+                                            <div id="auto-qrcode-img"></div>
+                                        </div>
+                                        <p id="auto-status-text" class="text-[13px] text-gray-400 text-center mt-2">等待扫码...</p>
+                                    </div>
+                                </div>
+                                <p id="auto-message" class="text-[13px] text-center hidden"></p>
+                                <button id="btn-auto-channel" onclick="startAutoChannel()" class="w-full h-9 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors text-gray-700">
+                                    开始自动配置
+                                </button>
+                            </div>
+                            <!-- 自定义配置区域 -->
+                            <div id="channel-custom" class="space-y-3 hidden">
+                                <div id="channel-params"></div>
+                                <button id="btn-set-channel" onclick="applyChannel()" class="w-full h-9 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors text-gray-700">
+                                    添加并应用
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-[#e3e6eb]">
+                            <p class="text-[13px] text-gray-400 mb-3">已接入通道</p>
+                            <div id="channels-list" class="space-y-2">
+                                <p class="text-[13px] text-gray-400 text-center py-3">加载中...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Approve Card -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+                        <div class="flex items-center justify-center mb-5 pb-4 border-b border-[#e3e6eb]">
+                            <svg class="w-5 h-5 text-[#0052d9] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span class="text-[15px] font-semibold text-gray-800">审批 (Approve)</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[13px] text-gray-500 mb-1.5">审批模块</label>
+                                <select id="approve-module" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded bg-white focus:outline-none focus:border-[#0052d9]">
+                                    <option value="feishu" selected>feishu</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[13px] text-gray-500 mb-1.5">审批码 <span class="text-red-500">*</span></label>
+                                <input id="approve-code" type="text" placeholder="请输入审批码" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]">
+                            </div>
+                            <button id="btn-approve" onclick="submitApprove()" class="w-full h-9 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors text-gray-700">
+                                提交审批
+                            </button>
+                            <p id="approve-message" class="text-[13px] text-center hidden"></p>
+                        </div>
+                    </div>
+                    </div><!-- end Channels + Approve Column -->
+
+                    <!-- Skills Card -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+                        <div class="flex items-center justify-center mb-5 pb-4 border-b border-[#e3e6eb]">
+                            <svg class="w-5 h-5 text-[#0052d9] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            <span class="text-[15px] font-semibold text-gray-800">技能 (Skills)</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[13px] text-gray-500 mb-1.5">Skill 名称</label>
+                                <input id="skill-name-input" type="text" placeholder="请输入 Skill 名称" class="w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]">
+                            </div>
+                            <button id="install-skill-btn" onclick="installSkill()" class="w-full h-9 text-[14px] font-medium border border-[#e3e6eb] rounded hover:bg-gray-50 transition-colors text-gray-700">
+                                安装技能
+                            </button>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-[#e3e6eb]">
+                            <p class="text-[13px] text-gray-400 mb-3">已安装技能</p>
+                            <div id="skills-list" class="space-y-2">
+                                <p class="text-[13px] text-gray-400 text-center py-3">加载中...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    {{template "home_scripts" .}}
+    {{if .Instance.CustomModelConfig}}
+    <script type="application/json" id="custom-model-config-data">{{.Instance.CustomModelConfig}}</script>
+    {{end}}
+    <script>
+    (function() {
+        var instanceId = '{{.Instance.ID}}';
+        if (!instanceId) return;
+
+        // Model data fetched from API
+        var allModels = [];
+        var currentAIModelID = {{.Instance.AIModelID}};
+
+        // Custom model enabled flag (set after fetch)
+        var customModelEnabled = false;
+
+        // Parse saved custom model config
+        var savedCustomConfig = null;
+        var customConfigEl = document.getElementById('custom-model-config-data');
+        if (customConfigEl && customConfigEl.textContent) {
+            try { savedCustomConfig = JSON.parse(customConfigEl.textContent); } catch(e) {}
+        }
+
+        // Create a model status row element
+        function createModelRow(modelIdAttr, labelText, active) {
+            var div = document.createElement('div');
+            div.className = 'flex items-center justify-between px-3 py-2.5 rounded border border-[#e3e6eb]';
+            div.setAttribute('data-ai-model-id', modelIdAttr);
+            var nameSpan = document.createElement('span');
+            nameSpan.className = 'text-[14px] text-gray-800';
+            nameSpan.textContent = labelText;
+            div.appendChild(nameSpan);
+            var badge = document.createElement('span');
+            badge.className = 'inline-flex items-center text-[12px] ' + (active ? 'text-green-700' : 'text-gray-400');
+            var dot = document.createElement('span');
+            dot.className = 'w-1.5 h-1.5 rounded-full mr-1 ' + (active ? 'bg-green-500' : 'bg-gray-300');
+            badge.appendChild(dot);
+            badge.appendChild(document.createTextNode(active ? '已启用' : '未启用'));
+            div.appendChild(badge);
+            return div;
+        }
+
+        // Render custom model status entry
+        function renderCustomModelStatus() {
+            var el = document.getElementById('custom-model-status');
+            el.innerHTML = '';
+            var isCustomActive = currentAIModelID === 0 && savedCustomConfig;
+            if (isCustomActive) {
+                el.appendChild(createModelRow('0', '自定义模型 / ' + (savedCustomConfig.model_id || ''), true));
+            } else if (savedCustomConfig && customModelEnabled) {
+                el.appendChild(createModelRow('0', '自定义模型 / ' + (savedCustomConfig.model_id || ''), false));
+            }
+        }
+
+        // Render model status list from allModels
+        function renderModelStatusList() {
+            var container = document.getElementById('model-status');
+            var loadingEl = document.getElementById('model-status-loading');
+            if (loadingEl) loadingEl.remove();
+            // Remove existing model items (but keep custom-model-status)
+            var existing = container.querySelectorAll('[data-ai-model-id]:not(#custom-model-status [data-ai-model-id])');
+            existing.forEach(function(el) { el.remove(); });
+            var customStatusEl = document.getElementById('custom-model-status');
+            if (allModels.length === 0 && !customModelEnabled) {
+                var p = document.createElement('p');
+                p.className = 'text-[13px] text-gray-400 text-center py-3';
+                p.textContent = '暂无可用模型';
+                container.insertBefore(p, customStatusEl);
+                return;
+            }
+            allModels.forEach(function(m) {
+                var isActive = m.id === currentAIModelID;
+                var div = createModelRow(m.id, m.provider + ' / ' + m.modelId, isActive);
+                container.insertBefore(div, customStatusEl);
+            });
+        }
+
+        // Populate provider dropdown from allModels
+        function populateProviders() {
+            var providerSelect = document.getElementById('model-provider');
+            // Clear existing options except the first placeholder
+            while (providerSelect.options.length > 1) providerSelect.remove(1);
+
+            var providers = [];
+            var seen = {};
+            allModels.forEach(function(m) {
+                if (!seen[m.provider]) {
+                    seen[m.provider] = true;
+                    providers.push(m.provider);
+                }
+            });
+            providers.forEach(function(p) {
+                var opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                providerSelect.appendChild(opt);
+            });
+            if (customModelEnabled) {
+                var opt = document.createElement('option');
+                opt.value = '__custom__';
+                opt.textContent = '自定义模型';
+                providerSelect.appendChild(opt);
+            }
+        }
+
+        // Fetch models from API and initialize UI
+        function fetchModels() {
+            fetch('/openclaw/models')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (!data.ok) return;
+                    allModels = [];
+                    customModelEnabled = false;
+                    (data.models || []).forEach(function(m) {
+                        if (m.provider === 'hatchery' && m.model_id === 'custom') {
+                            customModelEnabled = true;
+                        } else {
+                            allModels.push({ id: m.id, provider: m.provider, modelId: m.model_id });
+                        }
+                    });
+                    populateProviders();
+                    renderModelStatusList();
+                    renderCustomModelStatus();
+                })
+                .catch(function() {
+                    var loadingEl = document.getElementById('model-status-loading');
+                    if (loadingEl) loadingEl.textContent = '加载模型列表失败';
+                });
+        }
+        fetchModels();
+
+        // Filter models by selected provider
+        window.filterModels = function() {
+            var providerSelect = document.getElementById('model-provider');
+            var provider = providerSelect.value;
+            var modelSelect = document.getElementById('model-select');
+            var customForm = document.getElementById('custom-model-form');
+            modelSelect.innerHTML = '';
+
+            if (provider === '__custom__') {
+                // Show custom form, hide model select
+                modelSelect.parentElement.classList.add('hidden');
+                customForm.classList.remove('hidden');
+                // Prefill from saved config
+                if (savedCustomConfig) {
+                    document.getElementById('cm-provider').value = savedCustomConfig.provider || '';
+                    document.getElementById('cm-model-id').value = savedCustomConfig.model_id || '';
+                    document.getElementById('cm-api-key').value = savedCustomConfig.api_key || '';
+                    document.getElementById('cm-url').value = savedCustomConfig.url || '';
+                    document.getElementById('cm-model-type').value = savedCustomConfig.model_type || 'openai-completions';
+                    document.getElementById('cm-context-len').value = savedCustomConfig.context_len || 128000;
+                    var types = savedCustomConfig.input_types || ['text'];
+                    document.getElementById('cm-input-text').checked = types.indexOf('text') !== -1;
+                    document.getElementById('cm-input-image').checked = types.indexOf('image') !== -1;
+                }
+                return;
+            }
+
+            // Hide custom form, show model select
+            modelSelect.parentElement.classList.remove('hidden');
+            customForm.classList.add('hidden');
+
+            if (!provider) {
+                modelSelect.innerHTML = '<option value="">请先选择供应商</option>';
+                return;
+            }
+            var filtered = allModels.filter(function(m) { return m.provider === provider; });
+            if (filtered.length === 0) {
+                modelSelect.innerHTML = '<option value="">无可用模型</option>';
+                return;
+            }
+            filtered.forEach(function(m) {
+                var opt = document.createElement('option');
+                opt.value = m.id;
+                opt.textContent = m.modelId;
+                modelSelect.appendChild(opt);
+            });
+        };
+
+        // Apply model
+        window.applyModel = function() {
+            if (!isRunning()) { alert('实例当前状态异常，无法配置'); return; }
+            var isCustom = document.getElementById('model-provider').value === '__custom__';
+            var aiModelId;
+            if (isCustom) {
+                aiModelId = '0';
+            } else {
+                aiModelId = document.getElementById('model-select').value;
+                if (!aiModelId) {
+                    alert('请先选择模型');
+                    return;
+                }
+            }
+            var btn = document.getElementById('btn-set-model');
+            btn.disabled = true;
+            btn.textContent = '配置中...';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            var form = new URLSearchParams();
+            form.append('id', instanceId);
+            form.append('ai_model_id', aiModelId);
+
+            if (isCustom) {
+                form.append('provider', document.getElementById('cm-provider').value);
+                form.append('model_id', document.getElementById('cm-model-id').value);
+                form.append('api_key', document.getElementById('cm-api-key').value);
+                form.append('url', document.getElementById('cm-url').value);
+                form.append('model_type', document.getElementById('cm-model-type').value);
+                form.append('context_len', document.getElementById('cm-context-len').value);
+                if (document.getElementById('cm-input-text').checked) form.append('input_types', 'text');
+                if (document.getElementById('cm-input-image').checked) form.append('input_types', 'image');
+            }
+
+            fetch('/openclaw/set-model', { method: 'POST', body: form })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    if (isCustom) {
+                        currentAIModelID = 0;
+                        savedCustomConfig = {
+                            provider: document.getElementById('cm-provider').value,
+                            model_id: document.getElementById('cm-model-id').value,
+                            api_key: document.getElementById('cm-api-key').value,
+                            url: document.getElementById('cm-url').value,
+                            model_type: document.getElementById('cm-model-type').value,
+                            input_types: [
+                                document.getElementById('cm-input-text').checked ? 'text' : null,
+                                document.getElementById('cm-input-image').checked ? 'image' : null,
+                            ].filter(Boolean),
+                            context_len: parseInt(document.getElementById('cm-context-len').value) || 0,
+                        };
+                    } else {
+                        currentAIModelID = parseInt(aiModelId);
+                    }
+                    // Update badges in model list
+                    var items = document.querySelectorAll('#model-status [data-ai-model-id]');
+                    items.forEach(function(item) {
+                        var badge = item.querySelector('span:last-child');
+                        var id = parseInt(item.dataset.aiModelId);
+                        if (id === currentAIModelID && id !== 0) {
+                            badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1"></span>已启用';
+                            badge.className = 'inline-flex items-center text-[12px] text-green-700';
+                        } else if (id !== 0) {
+                            badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-1"></span>未启用';
+                            badge.className = 'inline-flex items-center text-[12px] text-gray-400';
+                        }
+                    });
+                    renderCustomModelStatus();
+                })
+                .catch(function() {
+                    alert('请求失败');
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.textContent = '应用';
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+        };
+
+        // Channel mode toggle
+        window.switchChannelMode = function(mode) {
+            var autoBtn = document.getElementById('mode-auto');
+            var customBtn = document.getElementById('mode-custom');
+            var autoArea = document.getElementById('channel-auto');
+            var customArea = document.getElementById('channel-custom');
+            if (mode === 'auto') {
+                autoBtn.className = 'flex-1 h-9 text-[13px] font-medium bg-[#0052d9] text-white transition-colors';
+                customBtn.className = 'flex-1 h-9 text-[13px] font-medium bg-white text-gray-600 hover:bg-gray-50 transition-colors';
+                autoArea.classList.remove('hidden');
+                customArea.classList.add('hidden');
+            } else {
+                customBtn.className = 'flex-1 h-9 text-[13px] font-medium bg-[#0052d9] text-white transition-colors';
+                autoBtn.className = 'flex-1 h-9 text-[13px] font-medium bg-white text-gray-600 hover:bg-gray-50 transition-colors';
+                customArea.classList.remove('hidden');
+                autoArea.classList.add('hidden');
+            }
+        };
+
+        // Channel params fetched from API
+        var channelParams = {};
+
+        // Fetch channels from API and populate UI
+        function fetchChannels() {
+            fetch('/openclaw/channels')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var channels = Array.isArray(data) ? data : [];
+                    var select = document.getElementById('channel-type');
+                    select.innerHTML = '';
+                    if (channels.length === 0) {
+                        select.innerHTML = '<option value="" disabled>暂无可用通道</option>';
+                        return;
+                    }
+                    channels.forEach(function(ch) {
+                        var opt = document.createElement('option');
+                        opt.value = ch.ChannelID;
+                        opt.textContent = ch.Name;
+                        select.appendChild(opt);
+                        channelParams[ch.ChannelID] = (ch.params || []).map(function(p) {
+                            return { key: p.key, label: p.label };
+                        });
+                    });
+                    onChannelTypeChange();
+                })
+                .catch(function() {
+                    var select = document.getElementById('channel-type');
+                    select.innerHTML = '<option value="" disabled>加载通道失败</option>';
+                });
+        }
+        fetchChannels();
+
+        // Channels that support auto configuration
+        var autoChannels = { 'qqbot': true, 'feishu': true, 'openclaw-weixin': true };
+        var autoChannelHints = {
+            'qqbot': { prompt: '点击下方按钮，扫描二维码自动创建并配置 QQ 机器人。', scanHint: '请使用 QQ 扫描以下二维码：' },
+            'feishu': { prompt: '点击下方按钮，扫描二维码自动创建并配置飞书机器人。首次配置需安装浏览器组件，耗时约 2-5 分钟。', scanHint: '请使用飞书扫描以下二维码：' },
+            'openclaw-weixin': { prompt: '点击下方按钮，扫描二维码自动接入微信。', scanHint: '请使用微信扫描以下二维码：' },
+        };
+
+        // Show/hide auto config option based on channel type
+        window.onChannelTypeChange = function() {
+            var channelType = document.getElementById('channel-type').value;
+            var modeToggle = document.getElementById('channel-mode-toggle').parentElement;
+            var autoArea = document.getElementById('channel-auto');
+            var customArea = document.getElementById('channel-custom');
+            if (autoChannels[channelType]) {
+                var hints = autoChannelHints[channelType] || autoChannelHints['qqbot'];
+                document.getElementById('auto-hint-text').textContent = hints.prompt;
+                if (!(channelParams[channelType] && channelParams[channelType].length > 0)) {
+                    modeToggle.classList.add('hidden');
+                    customArea.classList.add('hidden');
+                } else {
+                    modeToggle.classList.remove('hidden');
+                }
+                switchChannelMode('auto');
+            } else {
+                modeToggle.classList.add('hidden');
+                autoArea.classList.add('hidden');
+                customArea.classList.remove('hidden');
+            }
+            // Render param fields
+            var paramsEl = document.getElementById('channel-params');
+            var params = channelParams[channelType] || [];
+            paramsEl.innerHTML = '';
+            params.forEach(function(p, i) {
+                var isSecret = p.key.toLowerCase().indexOf('secret') >= 0;
+                var div = document.createElement('div');
+                div.className = 'mb-3';
+                var input = document.createElement('input');
+                input.setAttribute('data-param-key', p.key);
+                input.type = isSecret ? 'password' : 'text';
+                input.placeholder = p.label;
+                input.className = 'w-full h-9 px-3 text-[14px] border border-[#e3e6eb] rounded focus:outline-none focus:border-[#0052d9]' + (isSecret ? ' pr-9' : '');
+                if (isSecret) {
+                    var wrapper = document.createElement('div');
+                    wrapper.className = 'relative';
+                    wrapper.appendChild(input);
+                    var toggleBtn = document.createElement('button');
+                    toggleBtn.type = 'button';
+                    toggleBtn.className = 'absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600';
+                    toggleBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l18 18"/></svg>';
+                    toggleBtn.addEventListener('click', function() { input.type = input.type === 'password' ? 'text' : 'password'; });
+                    wrapper.appendChild(toggleBtn);
+                    div.appendChild(wrapper);
+                } else {
+                    div.appendChild(input);
+                }
+                paramsEl.appendChild(div);
+            });
+        };
+        // Initialize on load
+        onChannelTypeChange();
+
+        // Auto channel via SSE
+        window.startAutoChannel = function() {
+            if (!isRunning()) { alert('实例当前状态异常，无法配置'); return; }
+            var channelType = document.getElementById('channel-type').value;
+            var btn = document.getElementById('btn-auto-channel');
+            btn.disabled = true;
+            btn.textContent = '配置中...';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            var qrcodeArea = document.getElementById('auto-qrcode-area');
+            var statusText = document.getElementById('auto-status-text');
+            var msgEl = document.getElementById('auto-message');
+            var logArea = document.getElementById('auto-log-area');
+            var logList = document.getElementById('auto-log-list');
+            qrcodeArea.classList.add('hidden');
+            msgEl.classList.add('hidden');
+            msgEl.textContent = '';
+            logArea.classList.add('hidden');
+            logList.innerHTML = '';
+
+            // Update scan hint
+            var hints = autoChannelHints[channelType] || autoChannelHints['qqbot'];
+            document.getElementById('auto-scan-hint').textContent = hints.scanHint;
+
+            var resetBtn = function() {
+                btn.disabled = false;
+                btn.textContent = '开始自动配置';
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            };
+
+            var showMsg = function(text, color) {
+                msgEl.textContent = text;
+                msgEl.className = 'text-[13px] text-center ' + color;
+                msgEl.classList.remove('hidden');
+            };
+
+            var es = new EventSource('/openclaw/auto-channel?id=' + encodeURIComponent(instanceId) + '&channel=' + encodeURIComponent(channelType));
+
+            es.addEventListener('qrcode', function(e) {
+                var data = JSON.parse(e.data);
+                qrcodeArea.classList.remove('hidden');
+                var imgEl = document.getElementById('auto-qrcode-img');
+                var qrData = data.url || data.content;
+                if (qrData && qrData.indexOf('\n') >= 0) {
+                    // ASCII 字符画二维码（如微信），用 canvas 逐像素绘制
+                    imgEl.innerHTML = '';
+                    var canvas = document.createElement('canvas');
+                    var lines = qrData.split('\n');
+                    while (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
+                    var BLACK = new Set(['█','▓','■']);
+                    var TOP_HALF = new Set(['▀']);
+                    var BOTTOM_HALF = new Set(['▄']);
+                    var px = 4;
+                    var maxCols = 0;
+                    lines.forEach(function(l) { if (l.length > maxCols) maxCols = l.length; });
+                    canvas.width = maxCols * px;
+                    canvas.height = lines.length * 2 * px;
+                    var ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#000000';
+                    lines.forEach(function(line, row) {
+                        for (var col = 0; col < line.length; col++) {
+                            var ch = line[col];
+                            var x = col * px;
+                            var yTop = row * 2 * px;
+                            var yBot = yTop + px;
+                            if (BLACK.has(ch)) {
+                                ctx.fillRect(x, yTop, px, px * 2);
+                            } else if (TOP_HALF.has(ch)) {
+                                ctx.fillRect(x, yTop, px, px);
+                            } else if (BOTTOM_HALF.has(ch)) {
+                                ctx.fillRect(x, yBot, px, px);
+                            }
+                        }
+                    });
+                    canvas.style.cssText = 'image-rendering:pixelated;width:280px;height:auto;';
+                    imgEl.appendChild(canvas);
+                } else {
+                    // URL 形式（QQ/飞书），用 qrcode.js 生成图片
+                    var qr = qrcode(0, 'M');
+                    qr.addData(qrData);
+                    qr.make();
+                    imgEl.innerHTML = qr.createImgTag(5, 8);
+                }
+                statusText.textContent = '等待扫码...';
+            });
+
+            es.addEventListener('log', function(e) {
+                var data = JSON.parse(e.data);
+                logArea.classList.remove('hidden');
+                var line = document.createElement('div');
+                var levelColors = { 'success': 'text-green-600', 'warn': 'text-yellow-600', 'error': 'text-[#f64041]' };
+                line.className = levelColors[data.level] || 'text-gray-500';
+                line.textContent = (data.step ? '[' + data.step + '] ' : '') + data.message;
+                logList.appendChild(line);
+                logList.parentElement.scrollTop = logList.parentElement.scrollHeight;
+            });
+
+            es.addEventListener('progress', function(e) {
+                var data = JSON.parse(e.data);
+                var progressText = data.message;
+                if (data.current && data.total) {
+                    progressText += ' (' + data.current + '/' + data.total + ')';
+                }
+                statusText.textContent = progressText;
+            });
+
+            // 飞书脚本通过 finish 事件返回最终结果（原始 JSON），QQ 仍用 done/fail
+            es.addEventListener('finish', function(e) {
+                var data = JSON.parse(e.data);
+                es.close();
+                qrcodeArea.classList.add('hidden');
+                if (data.level === 'success') {
+                    showMsg('配置成功！', 'text-green-600');
+                    loadChannels();
+                } else {
+                    showMsg('配置失败: ' + data.message, 'text-[#f64041]');
+                }
+                resetBtn();
+            });
+
+            es.addEventListener('done', function(e) {
+                es.close();
+                qrcodeArea.classList.add('hidden');
+                showMsg('配置成功！', 'text-green-600');
+                resetBtn();
+                loadChannels();
+            });
+
+            es.addEventListener('fail', function(e) {
+                var data = JSON.parse(e.data);
+                es.close();
+                qrcodeArea.classList.add('hidden');
+                showMsg('配置失败: ' + data.message, 'text-[#f64041]');
+                resetBtn();
+            });
+
+            es.onerror = function() {
+                es.close();
+                qrcodeArea.classList.add('hidden');
+                showMsg('连接中断', 'text-[#f64041]');
+                resetBtn();
+            };
+        };
+
+        // Apply channel
+        window.applyChannel = function() {
+            if (!isRunning()) { alert('实例当前状态异常，无法配置'); return; }
+            var channel = document.getElementById('channel-type').value;
+            var inputs = document.querySelectorAll('#channel-params [data-param-key]');
+            var form = new URLSearchParams();
+            form.append('id', instanceId);
+            form.append('channel', channel);
+            var hasEmpty = false;
+            inputs.forEach(function(input) {
+                if (!input.value.trim()) hasEmpty = true;
+                form.append('key', input.dataset.paramKey);
+                form.append('value', input.value.trim());
+            });
+            if (hasEmpty) {
+                alert('请填写所有配置参数');
+                return;
+            }
+            var btn = document.getElementById('btn-set-channel');
+            btn.disabled = true;
+            btn.textContent = '配置中...';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            fetch('/openclaw/set-channel', { method: 'POST', body: form })
+                .then(function(r) {
+                    if (!r.ok) throw new Error('请求失败');
+                    inputs.forEach(function(input) { input.value = ''; });
+                    loadChannels();
+                })
+                .catch(function() {
+                    alert('请求失败');
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.textContent = '添加并应用';
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+        };
+
+        // Delete channel
+        window.deleteChannel = function(channelName, btn) {
+            if (!confirm('确定要删除通道 ' + channelName + ' 吗？')) return;
+            if (!isRunning()) { alert('实例当前状态异常，无法操作'); return; }
+            // Update UI to "deleting" state immediately
+            var row = btn.closest('[data-channel]');
+            if (row) {
+                var badge = row.querySelector('[data-badge]');
+                if (badge) {
+                    badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-yellow-400 mr-1 animate-pulse"></span>删除中';
+                    badge.className = 'inline-flex items-center text-[12px] text-yellow-600';
+                }
+                btn.disabled = true;
+                btn.classList.add('opacity-30', 'cursor-not-allowed');
+            }
+            var form = new URLSearchParams();
+            form.append('id', instanceId);
+            form.append('channel', channelName);
+            fetch('/openclaw/del-channel', { method: 'POST', body: form })
+                .then(function(r) {
+                    if (!r.ok) throw new Error('请求失败');
+                    loadChannels();
+                })
+                .catch(function() {
+                    alert('删除失败');
+                    loadChannels();
+                });
+        };
+
+        function loadChannels() {
+            fetch('/openclaw/channels?id=' + encodeURIComponent(instanceId))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var el = document.getElementById('channels-list');
+                    if (data && data.error) {
+                        el.innerHTML = '';
+                        var errP = document.createElement('p');
+                        errP.className = 'text-[13px] text-[#f64041] text-center py-3';
+                        errP.textContent = data.error;
+                        el.appendChild(errP);
+                        return;
+                    }
+                    var keys = data ? Object.keys(data) : [];
+                    if (keys.length === 0) {
+                        el.innerHTML = '';
+                        var emptyP = document.createElement('p');
+                        emptyP.className = 'text-[13px] text-gray-400 text-center py-3';
+                        emptyP.textContent = '暂无通道配置';
+                        el.appendChild(emptyP);
+                        return;
+                    }
+                    el.innerHTML = '';
+                    keys.forEach(function(name) {
+                        var ch = data[name];
+                        var div = document.createElement('div');
+                        div.className = 'flex items-center justify-between px-3 py-2.5 rounded border border-[#e3e6eb]';
+                        div.setAttribute('data-channel', name);
+                        var labelSpan = document.createElement('span');
+                        labelSpan.className = 'text-[14px] text-gray-800';
+                        labelSpan.textContent = name;
+                        div.appendChild(labelSpan);
+                        var rightDiv = document.createElement('div');
+                        rightDiv.className = 'flex items-center space-x-2';
+                        var badge = document.createElement('span');
+                        badge.setAttribute('data-badge', '');
+                        if (ch.enabled) {
+                            badge.className = 'inline-flex items-center text-[12px] text-green-700';
+                            var dot = document.createElement('span');
+                            dot.className = 'w-1.5 h-1.5 rounded-full bg-green-500 mr-1';
+                            badge.appendChild(dot);
+                            badge.appendChild(document.createTextNode('已启用'));
+                        } else {
+                            badge.className = 'inline-flex items-center text-[12px] text-gray-400';
+                            var dot = document.createElement('span');
+                            dot.className = 'w-1.5 h-1.5 rounded-full bg-gray-400 mr-1';
+                            badge.appendChild(dot);
+                            badge.appendChild(document.createTextNode('未启用'));
+                        }
+                        rightDiv.appendChild(badge);
+                        var delBtn = document.createElement('button');
+                        delBtn.className = 'text-gray-400 hover:text-[#f64041] transition-colors';
+                        delBtn.title = '删除通道';
+                        delBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>';
+                        (function(n) { delBtn.addEventListener('click', function() { deleteChannel(n, delBtn); }); })(name);
+                        rightDiv.appendChild(delBtn);
+                        div.appendChild(rightDiv);
+                        el.appendChild(div);
+                    });
+                })
+                .catch(function() {
+                    document.getElementById('channels-list').innerHTML = '<p class="text-[13px] text-[#f64041] text-center py-3">加载失败</p>';
+                });
+        }
+
+        function loadSkills() {
+            fetch('/openclaw/skills?id=' + encodeURIComponent(instanceId))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var el = document.getElementById('skills-list');
+                if (data.error) {
+                    el.innerHTML = '';
+                    var errP = document.createElement('p');
+                    errP.className = 'text-[13px] text-[#f64041] text-center py-3';
+                    errP.textContent = data.error;
+                    el.appendChild(errP);
+                    return;
+                }
+                if (!Array.isArray(data) || data.length === 0) {
+                    el.innerHTML = '';
+                    var emptyP = document.createElement('p');
+                    emptyP.className = 'text-[13px] text-gray-400 text-center py-3';
+                    emptyP.textContent = '暂无已安装技能';
+                    el.appendChild(emptyP);
+                    return;
+                }
+                el.innerHTML = '';
+                data.forEach(function(skill) {
+                    var emoji = skill.emoji || '';
+                    var div = document.createElement('div');
+                    div.className = 'group relative flex items-center px-3 py-2.5 rounded border border-[#e3e6eb] hover:border-[#0052d9] hover:bg-[#f2f6fc] transition-colors cursor-default';
+                    if (emoji) {
+                        var emojiSpan = document.createElement('span');
+                        emojiSpan.className = 'mr-2 text-[16px]';
+                        emojiSpan.textContent = emoji;
+                        div.appendChild(emojiSpan);
+                    }
+                    var nameSpan = document.createElement('span');
+                    nameSpan.className = 'text-[14px] text-gray-800';
+                    nameSpan.textContent = skill.name;
+                    div.appendChild(nameSpan);
+                    // tooltip
+                    if (skill.description) {
+                        var tip = document.createElement('div');
+                        tip.className = 'invisible group-hover:visible absolute left-0 bottom-full mb-2 w-64 p-3 bg-[#0d1a26] text-white text-[12px] leading-relaxed rounded-lg shadow-lg z-10';
+                        tip.textContent = skill.description;
+                        div.appendChild(tip);
+                    }
+                    el.appendChild(div);
+                });
+            })
+            .catch(function() {
+                document.getElementById('skills-list').innerHTML = '<p class="text-[13px] text-[#f64041] text-center py-3">加载失败</p>';
+            });
+        }
+
+        window.installSkill = function() {
+            var input = document.getElementById('skill-name-input');
+            var btn = document.getElementById('install-skill-btn');
+            var skillName = input.value.trim();
+            if (!skillName) {
+                input.focus();
+                return;
+            }
+            btn.disabled = true;
+            btn.textContent = '安装中...';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            var formData = new FormData();
+            formData.append('id', instanceId);
+            formData.append('skill_name', skillName);
+
+            fetch('/openclaw/add-skill', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    alert('安装失败: ' + data.error);
+                } else {
+                    input.value = '';
+                    loadSkills();
+                }
+            })
+            .catch(function() {
+                alert('安装失败: 网络错误');
+            })
+            .finally(function() {
+                btn.disabled = false;
+                btn.textContent = '安装技能';
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        }
+
+        window.installPlugin = function() {
+            var input = document.getElementById('plugin-name-input');
+            var btn = document.getElementById('install-plugin-btn');
+            var pluginName = input.value.trim();
+            if (!pluginName) {
+                input.focus();
+                return;
+            }
+            btn.disabled = true;
+            btn.textContent = '安装中...';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            var formData = new FormData();
+            formData.append('id', instanceId);
+            formData.append('plugin', pluginName);
+
+            fetch('/openclaw/add-plugin', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    alert('安装失败: ' + data.error);
+                } else {
+                    input.value = '';
+                    alert('插件安装成功');
+                }
+            })
+            .catch(function() {
+                alert('安装失败: 网络错误');
+            })
+            .finally(function() {
+                btn.disabled = false;
+                btn.textContent = '安装插件';
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        }
+
+        // Load channels and skills only when instance is RUNNING
+        function loadRemoteData() {
+            loadChannels();
+            loadSkills();
+        }
+
+        // Watch instance status, load remote data when RUNNING
+        var statusEl = document.getElementById('detail-status');
+        var remoteDataLoaded = false;
+        function isRunning() {
+            var stateSpan = statusEl.querySelector('[data-state]');
+            return stateSpan && stateSpan.getAttribute('data-state') === 'RUNNING';
+        }
+        function checkAndLoad() {
+            if (remoteDataLoaded) return;
+            if (isRunning()) {
+                remoteDataLoaded = true;
+                loadRemoteData();
+            }
+        }
+        new MutationObserver(checkAndLoad).observe(statusEl, { childList: true, subtree: true });
+        checkAndLoad();
+
+        // Gateway UI
+        window.openGatewayUI = function() {
+            if (!isRunning()) { alert('实例当前状态异常，无法操作'); return; }
+            var btn = document.getElementById('btn-gateway-ui');
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="w-4 h-4 mr-1.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>配置中...';
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            var form = new URLSearchParams();
+            form.append('id', instanceId);
+
+            fetch('/openclaw/set-gateway-ui', { method: 'POST', body: form })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.error) {
+                        alert('操作失败: ' + data.error + (data.detail ? '\n' + data.detail : ''));
+                        return;
+                    }
+                    var content = document.getElementById('gateway-ui-content');
+                    content.innerHTML =
+                        '<div>' +
+                            '<label class="block text-[13px] text-gray-500 mb-1.5">面板地址 (Gateway UI)</label>' +
+                            '<div class="flex items-center">' +
+                                '<input id="gateway-ui-url" type="text" readonly value="' + escapeAttr(data.gatewayUI) + '" class="flex-1 h-9 px-3 text-[14px] border border-[#e3e6eb] rounded-l bg-gray-50 text-gray-800 focus:outline-none">' +
+                                '<button onclick="copyField(\'gateway-ui-url\')" class="h-9 px-3 border border-l-0 border-[#e3e6eb] rounded-r hover:bg-gray-100 transition-colors text-gray-500" title="复制">' +
+                                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>' +
+                                '</button>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div>' +
+                            '<label class="block text-[13px] text-gray-500 mb-1.5">Token</label>' +
+                            '<div class="flex items-center">' +
+                                '<input id="gateway-ui-token" type="text" readonly value="' + escapeAttr(data.token) + '" class="flex-1 h-9 px-3 text-[14px] border border-[#e3e6eb] rounded-l bg-gray-50 text-gray-800 focus:outline-none font-mono">' +
+                                '<button onclick="copyField(\'gateway-ui-token\')" class="h-9 px-3 border border-l-0 border-[#e3e6eb] rounded-r hover:bg-gray-100 transition-colors text-gray-500" title="复制">' +
+                                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>' +
+                                '</button>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="flex">' +
+                            '<a id="gateway-ui-link" href="' + escapeAttr(data.gatewayUI) + '" target="_blank" rel="noopener" class="inline-flex items-center text-[14px] text-[#0052d9] hover:underline">' +
+                                '<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>' +
+                                '在新窗口中打开面板' +
+                            '</a>' +
+                        '</div>';
+                    document.getElementById('gateway-ui-modal').classList.remove('hidden');
+                })
+                .catch(function() {
+                    alert('请求失败，请检查网络');
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.innerHTML = '<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>安全开启 OpenClaw 面板';
+                    btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                });
+        };
+
+        window.closeGatewayModal = function() {
+            document.getElementById('gateway-ui-modal').classList.add('hidden');
+        };
+
+        function escapeAttr(s) {
+            return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        window.copyField = function(id) {
+            var input = document.getElementById(id);
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(input.value).then(function() {
+                    var btn = input.nextElementSibling;
+                    var orig = btn.innerHTML;
+                    btn.innerHTML = '<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
+                    setTimeout(function() { btn.innerHTML = orig; }, 1500);
+                });
+            } else {
+                input.select();
+                document.execCommand('copy');
+            }
+        };
+
+        // Approve
+        window.submitApprove = function() {
+            if (!isRunning()) { alert('实例当前状态异常，无法操作'); return; }
+            var code = document.getElementById('approve-code').value.trim();
+            if (!code) {
+                document.getElementById('approve-code').focus();
+                return;
+            }
+            var module = document.getElementById('approve-module').value;
+            var btn = document.getElementById('btn-approve');
+            var msgEl = document.getElementById('approve-message');
+            btn.disabled = true;
+            btn.textContent = '提交中...';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            msgEl.classList.add('hidden');
+
+            var form = new URLSearchParams();
+            form.append('id', instanceId);
+            form.append('module', module);
+            form.append('code', code);
+
+            fetch('/openclaw/approve', { method: 'POST', body: form })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.error) {
+                        msgEl.textContent = data.error;
+                        msgEl.className = 'text-[13px] text-center text-[#f64041]';
+                    } else {
+                        msgEl.textContent = '审批提交成功';
+                        msgEl.className = 'text-[13px] text-center text-green-600';
+                        document.getElementById('approve-code').value = '';
+                    }
+                    msgEl.classList.remove('hidden');
+                })
+                .catch(function() {
+                    msgEl.textContent = '请求失败';
+                    msgEl.className = 'text-[13px] text-center text-[#f64041]';
+                    msgEl.classList.remove('hidden');
+                })
+                .finally(function() {
+                    btn.disabled = false;
+                    btn.textContent = '提交审批';
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+        };
+    })();
+    </script>
+</body>
+</html>

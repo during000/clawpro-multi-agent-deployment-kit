@@ -1,0 +1,36 @@
+client/src/components/ScopeEditPopover.tsx
+client/src/components/ui/pagination.tsx
+client/src/components/ui/table.tsx
+client/src/index.css
+client/src/pages/admin/ApiDocs.tsx
+client/src/pages/admin/DocManagement.tsx
+client/src/pages/admin/ImageManagement.tsx
+client/src/pages/admin/MemberManagement/GroupView.tsx
+client/src/pages/admin/MemberManagement/NodeContentPanel.tsx
+client/src/pages/admin/MemberManagement/OverrideCell.tsx
+client/src/pages/admin/MemberManagement/SyncResultDialog.tsx
+client/src/pages/admin/MemoryManagement/components/BenchmarkTable.tsx
+client/src/pages/admin/MemoryManagement/components/InstanceTable.tsx
+client/src/pages/admin/MemoryManagement/components/ProDashboard.tsx
+client/src/pages/admin/OpenClawMonitor.tsx
+client/src/pages/admin/ServerManagement.tsx
+client/src/pages/admin/SessionDetail.tsx
+client/src/pages/admin/SkillLibrary/MCPDetail.tsx
+client/src/pages/admin/SkillLibrary/PluginDetail.tsx
+client/src/pages/admin/SkillLibrary/SkillDetail.tsx
+client/src/pages/admin/TokensMonitor.tsx
+client/src/pages/admin/VersionManagement/CommandTaskTab.tsx
+client/src/pages/admin/VersionManagement/HistoryTab.tsx
+client/src/pages/admin/VersionManagement/components/DispatchCommandDialog.tsx
+client/src/pages/admin/VersionManagement/components/RecentHistorySection.tsx
+
+# 5/29 二次走查
+client/src/pages/admin/SkillLibrary/SkillListTab.tsx
+client/src/pages/admin/ChannelConfig.tsx
+docs/design-audit/changelog-2026-05-28.md
+
+# 5/29 三次走查（与 claude-internal 协作期间）
+client/src/components/ui/table.tsx
+client/src/pages/admin/MemberManagement/NodeContentPanel.tsx
+docs/design-audit/changelog-2026-05-28.md
+docs/design-audit/changed-files-2026-05-28.txt
