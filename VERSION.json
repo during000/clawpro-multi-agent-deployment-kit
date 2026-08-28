@@ -1,0 +1,7 @@
+{
+  "name": "clawpro-multi-agent-deployment-kit",
+  "version": "2026.08.28-poc.1",
+  "target": "linux-amd64",
+  "node": ">=22",
+  "python": ">=3.9"
+}
