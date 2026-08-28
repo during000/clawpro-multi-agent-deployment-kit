@@ -1,153 +1,64 @@
-# ClawPro 多 Agent 协作部署包
+# ClawPro 多 Agent 协作部署入口
 
-这个包用于把当前已经跑通的 ClawPro 多 Agent 协作 Demo 部署到另一台 Linux 服务器，并让不同用户电脑上的 TeamAI、CodeBuddy 和 iMate 接入执行任务。
+这个仓库用于让 CodeBuddy 把当前 ClawPro 多 Agent 协作 Demo 部署到一台新的 Linux 服务器。
 
-## 包含内容
+服务器程序以 GitHub Release 附件保存，不会把 70 MB 构建产物写进 Git 历史。部署脚本会自动下载最新 Release、校验 SHA-256、上传服务器并完成安装。
 
-- `server/frontend/`：ClawPro 项目协作前端构建产物。
-- `server/orchestrator/`：工作流编排、节点流转、人工确认、输入输出与产物回传服务。
-- `server/bin/hatchery-linux-amd64`：任务持久化、用户 API Token、HTTPS 领取任务和 WSS 唤醒服务。
-- `client/teamai/teamai-cli-0.19.0.tgz`：包含 ClawPro 任务监听能力的 TeamAI 安装包。
-- `server/install-server.sh`：服务器一键安装脚本。
-- `client/teamai/`：用户电脑上的 TeamAI 安装、配置与监听脚本。
+## 交给 CodeBuddy 部署
 
-任务链路如下：
+先 clone 私有仓库：
+
+```bash
+git clone https://github.com/during000/clawpro-multi-agent-deployment-kit.git
+cd clawpro-multi-agent-deployment-kit
+```
+
+然后在 CodeBuddy 中打开该目录，只需告诉它：
 
 ```text
-ClawPro 创建并保存任务
-→ WSS 通知用户电脑上的 TeamAI
-→ TeamAI 通过 HTTPS 领取完整节点任务和配置资产
-→ TeamAI 调用本地 CodeBuddy，或调用 iMate CLI 管理的 OpenClaw
-→ TeamAI 通过 HTTPS 回传状态、结果和文件
-→ ClawPro 展示结果并流转下一节点
+请按照 CODEBUDDY.md 部署 ClawPro。
+服务器：root@服务器地址
+SSH 端口：22
+域名：clawpro.example.com
+SSH 私钥：/absolute/path/to/id_ed25519
 ```
 
-## 适用范围
+CodeBuddy 会读取仓库内的 [CODEBUDDY.md](CODEBUDDY.md)，自动完成环境检查、Release 下载、完整性校验、服务器上传、安装和健康检查。
 
-这是已经验证过真实本地 Agent 链路的测试/演示部署包，不是正式生产发行版。当前服务器包只支持 `Linux x86_64`；包内 TeamAI 接入脚本适用于安装 Node.js 22 的 macOS 和 Linux。
+## 直接运行
 
-部署前需要：
-
-- 一台 Linux x86_64 服务器，具有 root 权限。
-- 已安装 Docker、systemd、Python 3 和 OpenSSL。
-- 一个指向服务器的域名。
-- 域名前有 HTTPS/WSS 网关或反向代理。包内 Nginx 监听 HTTP 80，TLS 建议由现有网关终止。
-- 用户电脑能通过 HTTPS/WSS 访问该域名。
-
-## 一、部署服务器
-
-把压缩包上传到服务器并解压，然后执行：
+也可以不经过 CodeBuddy，直接执行：
 
 ```bash
-cd clawpro-multi-agent-deployment-kit-20260828
-sudo bash server/install-server.sh --domain clawpro.example.com
-sudo /opt/clawpro-multi-agent/bin/healthcheck
+bash scripts/deploy-remote.sh \
+  --host root@服务器地址 \
+  --port 22 \
+  --domain clawpro.example.com \
+  --identity /absolute/path/to/id_ed25519
 ```
 
-安装脚本会：
+## 部署结果
 
-1. 安装文件到 `/opt/clawpro-multi-agent`。
-2. 首次运行时生成新的管理员密码、后台 Token 和 Cookie 密钥。
-3. 注册并启动 Hatchery、编排服务和 Nginx 三个 systemd 服务。
-4. 不覆盖已经存在的凭证文件和数据库。
+服务器将安装：
 
-管理员初始凭证保存在服务器的：
+- ClawPro 项目协作前端。
+- 工作流编排服务。
+- Hatchery 任务持久化、HTTPS 领取任务与 WSS 唤醒服务。
+- Nginx 反向代理。
 
-```text
-/opt/clawpro-multi-agent/config/hatchery.env
-```
+用户电脑仍需安装 TeamAI、CodeBuddy；使用 iMate 节点时还需安装并登录 iMate CLI。TeamAI 客户端安装包位于下载后的 Release 中。
 
-该文件权限为 `0600`，不要发到群聊、工单或代码仓库。登录 `https://你的域名` 后，在用户设置中创建自己的 API Token，TeamAI 必须使用用户 Token，不能使用后台管理员 Token。
+## 前置条件
 
-常用运维命令：
+- clone 私有仓库的 GitHub 用户已被添加为协作者。
+- 本机已安装并登录 GitHub CLI：`gh auth status` 可通过。
+- 本机可以通过 SSH 登录目标服务器。
+- 目标服务器为 Linux x86_64，具有 root 权限。
+- 域名已经解析到服务器或其 HTTPS 网关。
+- 正式远程 TeamAI 链路必须使用 HTTPS/WSS；仓库不会自动修改企业网关或 DNS。
 
-```bash
-systemctl status clawpro-hatchery clawpro-orchestrator clawpro-nginx
-journalctl -u clawpro-orchestrator -f
-journalctl -u clawpro-hatchery -f
-```
+## Release
 
-## 二、用户电脑接入 TeamAI
+当前版本：[v2026.08.28-poc.1](https://github.com/during000/clawpro-multi-agent-deployment-kit/releases/tag/v2026.08.28-poc.1)
 
-用户电脑需要 Node.js 22、CodeBuddy CLI；使用 iMate 节点时还需要已安装并登录的 iMate CLI。
-
-安装 TeamAI：
-
-```bash
-bash client/teamai/install-teamai.sh
-```
-
-把在 ClawPro 页面创建的用户 API Token 保存到本机文件并限制权限：
-
-```bash
-mkdir -p "$HOME/.teamai"
-chmod 700 "$HOME/.teamai"
-printf '%s' '在这里粘贴用户 API Token' > "$HOME/.teamai/clawpro-token"
-chmod 600 "$HOME/.teamai/clawpro-token"
-```
-
-在需要执行任务的源码工作区完成接入：
-
-```bash
-bash client/teamai/configure-teamai.sh \
-  --endpoint https://clawpro.example.com \
-  --token-file "$HOME/.teamai/clawpro-token" \
-  --workspace /absolute/path/to/workspace \
-  --project-id <ClawPro项目ID>
-```
-
-启动常驻监听：
-
-```bash
-bash client/teamai/run-listener.sh --workspace /absolute/path/to/workspace
-```
-
-监听启动后，ClawPro 创建的任务才会下发到这台电脑。别人打开网页不会自动使用部署者的电脑；每个执行者都需要用自己的 Token、工作区和 TeamAI 监听进程完成接入。
-
-## 三、验收
-
-服务器健康检查：
-
-```bash
-sudo /opt/clawpro-multi-agent/bin/healthcheck
-```
-
-客户端检查：
-
-```bash
-teamai --version
-codebuddy --version
-```
-
-在 ClawPro 中创建一个极简任务，选择已经在线的 CodeBuddy Runtime。预期可看到：
-
-1. TeamAI 收到 WSS 通知并领取任务。
-2. 节点状态从待执行变为执行中、待确认或已完成。
-3. 节点页面能查看输入、输出、配置资产和文件产物。
-4. 需要人工门禁的节点确认后才流转下一节点。
-
-## 四、可选能力
-
-- iMate：需在用户电脑安装并登录 iMate CLI，并保证相应 iMate 项目和 Agent 已授权。
-- iWiki/MCP：需在用户电脑或受控执行环境配置对应 MCP、用户授权和网络访问；部署包不附带任何访问凭证。
-- CloudAgent：在服务器的 `orchestrator.env` 中配置服务端网关与专用凭证后启用；默认关闭。
-
-## 五、升级与卸载
-
-再次运行 `install-server.sh` 会更新程序文件，并保留现有数据库和凭证。升级前仍建议备份：
-
-```bash
-cp /opt/clawpro-multi-agent/data/hatchery.db /root/hatchery.db.backup
-```
-
-停止服务：
-
-```bash
-systemctl disable --now clawpro-nginx clawpro-orchestrator clawpro-hatchery
-```
-
-安装目录包含任务数据库和运行产物，不应直接删除；需要卸载时请先备份后再人工处理。
-
-## 安全说明
-
-包内不包含当前测试环境的域名、IP、Cookie、个人 Token、CloudAgent 密钥或 iMate 凭证。进一步约束见 [SECURITY.md](SECURITY.md)。
+这是测试/演示套件，不是正式生产发行版。安全边界见 [SECURITY.md](SECURITY.md)。
