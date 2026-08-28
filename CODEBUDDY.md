@@ -2,7 +2,12 @@
 
 ## 目标
 
-当用户要求部署本仓库时，把 GitHub Release 中的 ClawPro 多 Agent 协作套件部署到用户明确指定的服务器，并完成健康检查。
+本仓库支持两种任务：
+
+1. 部署已有 Release 到用户明确指定的服务器。
+2. 下载四组件源码快照，继续开发、验证、重新打包并部署修改后的版本。
+
+先判断用户意图；不要在用户只要求初始化源码时修改或部署服务器。
 
 ## 用户只需提供
 
@@ -41,6 +46,21 @@
    - `https://<域名>/health`
    - `https://<域名>/project-collaboration`
 7. 如果 HTTP 健康检查成功但 HTTPS 失败，说明 ClawPro 已安装、外部 DNS/TLS 网关尚未完成；不要虚构部署成功。
+
+## 源码开发流程
+
+用户要求继续开发时：
+
+1. 读取 `DEVELOPMENT.md`。
+2. 执行 `bash scripts/setup-development.sh`，不得跳过 Release SHA-256 校验。
+3. 读取解压后源码根目录的 `CODEBUDDY.md` 和 `SOURCE_STATE.md`。
+4. 根据需求只修改对应组件：
+   - 页面和交互：`repos/clawpro`
+   - 任务持久化、鉴权、WSS/HTTPS：`repos/hatchery`
+   - 本地 Agent 监听与调用：`repos/teamai-cli`
+   - 工作流节点、交接和产物：`repos/orchestrator`
+5. 完成修改后执行相应组件检查；需要生成部署版本时执行 `scripts/package-development.sh`。
+6. 用户要求部署修改版本时，使用 `scripts/deploy-remote.sh --archive ... --checksum ...`，不要重新下载旧 Release 覆盖本地构建。
 
 ## 安全约束
 

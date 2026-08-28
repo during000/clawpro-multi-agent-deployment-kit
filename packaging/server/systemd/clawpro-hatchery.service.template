@@ -1,0 +1,20 @@
+[Unit]
+Description=ClawPro Hatchery task backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=__INSTALL_DIR__/data
+EnvironmentFile=__INSTALL_DIR__/config/hatchery.env
+ExecStart=__INSTALL_DIR__/bin/hatchery --addr 127.0.0.1:8091 --db __INSTALL_DIR__/data/hatchery.db --region ap-guangzhou --domain https://__DOMAIN__ --init-user ${HATCHERY_INIT_USER} --init-pass ${HATCHERY_INIT_PASS} --admin-token ${HATCHERY_ADMIN_TOKEN} --secret ${HATCHERY_COOKIE_SECRET}
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=__INSTALL_DIR__/data
+
+[Install]
+WantedBy=multi-user.target

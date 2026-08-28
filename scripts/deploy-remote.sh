@@ -7,9 +7,11 @@ DOMAIN=""
 IDENTITY=""
 TAG="latest"
 SKIP_PREREQUISITES=0
+LOCAL_ARCHIVE=""
+LOCAL_CHECKSUM=""
 
 usage() {
-  echo "Usage: bash scripts/deploy-remote.sh --host root@server --port 22 --domain clawpro.example.com [--identity /absolute/key] [--tag TAG] [--skip-prerequisites]"
+  echo "Usage: bash scripts/deploy-remote.sh --host root@server --port 22 --domain clawpro.example.com [--identity /absolute/key] [--tag TAG] [--archive /absolute/package.tar.gz] [--checksum /absolute/package.tar.gz.sha256] [--skip-prerequisites]"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -32,6 +34,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     --tag)
       TAG="${2:-}"
+      shift 2
+      ;;
+    --archive)
+      LOCAL_ARCHIVE="${2:-}"
+      shift 2
+      ;;
+    --checksum)
+      LOCAL_CHECKSUM="${2:-}"
       shift 2
       ;;
     --skip-prerequisites)
@@ -75,19 +85,43 @@ if [[ -n "$IDENTITY" && ( "$IDENTITY" != /* || ! -f "$IDENTITY" ) ]]; then
   exit 2
 fi
 
-for command_name in ssh scp gh shasum; do
+if [[ -n "$LOCAL_ARCHIVE" && ( "$LOCAL_ARCHIVE" != /* || ! -f "$LOCAL_ARCHIVE" ) ]]; then
+  echo "--archive must be an existing absolute file path." >&2
+  exit 2
+fi
+
+if [[ -n "$LOCAL_CHECKSUM" && ( "$LOCAL_CHECKSUM" != /* || ! -f "$LOCAL_CHECKSUM" ) ]]; then
+  echo "--checksum must be an existing absolute file path." >&2
+  exit 2
+fi
+
+for command_name in ssh scp; do
   if ! command -v "$command_name" >/dev/null 2>&1; then
     echo "Missing required command: $command_name" >&2
     exit 1
   fi
 done
 
+if [[ -z "$LOCAL_ARCHIVE" ]]; then
+  for command_name in gh shasum; do
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+      echo "Missing required command for GitHub Release deployment: $command_name" >&2
+      exit 1
+    fi
+  done
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-DOWNLOAD_DIR="$REPO_DIR/.downloads/$TAG"
-
-ARCHIVE="$(bash "$SCRIPT_DIR/fetch-release.sh" --tag "$TAG" --destination "$DOWNLOAD_DIR" | tail -n 1)"
-CHECKSUM="$ARCHIVE.sha256"
+if [[ -n "$LOCAL_ARCHIVE" ]]; then
+  ARCHIVE="$LOCAL_ARCHIVE"
+  CHECKSUM="${LOCAL_CHECKSUM:-$LOCAL_ARCHIVE.sha256}"
+  TAG="local-$(date '+%Y%m%d%H%M%S')"
+else
+  DOWNLOAD_DIR="$REPO_DIR/.downloads/$TAG"
+  ARCHIVE="$(bash "$SCRIPT_DIR/fetch-release.sh" --tag "$TAG" --destination "$DOWNLOAD_DIR" | tail -n 1)"
+  CHECKSUM="$ARCHIVE.sha256"
+fi
 if [[ ! -f "$ARCHIVE" || ! -f "$CHECKSUM" ]]; then
   echo "Release archive verification did not produce the expected files." >&2
   exit 1

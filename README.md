@@ -1,6 +1,6 @@
 # ClawPro 多 Agent 协作部署入口
 
-这个仓库用于让 CodeBuddy 把当前 ClawPro 多 Agent 协作 Demo 部署到一台新的 Linux 服务器。
+这个仓库用于让 CodeBuddy 部署和继续开发当前 ClawPro 多 Agent 协作 Demo。
 
 服务器程序以 GitHub Release 附件保存，不会把 70 MB 构建产物写进 Git 历史。部署脚本会自动下载最新 Release、校验 SHA-256、上传服务器并完成安装。
 
@@ -25,6 +25,16 @@ SSH 私钥：/absolute/path/to/id_ed25519
 ```
 
 CodeBuddy 会读取仓库内的 [CODEBUDDY.md](CODEBUDDY.md)，自动完成环境检查、Release 下载、完整性校验、服务器上传、安装和健康检查。
+
+## 继续开发源码
+
+在仓库中告诉 CodeBuddy：
+
+```text
+请按照 CODEBUDDY.md 初始化源码开发环境，我要继续开发 ClawPro 多 Agent 协作功能。
+```
+
+CodeBuddy 会下载经过校验的源码快照，得到 ClawPro、Hatchery、TeamAI 和编排服务四个源码目录。修改完成后，它可以重新构建完整部署包并部署到指定服务器。详细流程见 [DEVELOPMENT.md](DEVELOPMENT.md)。
 
 ## 直接运行
 

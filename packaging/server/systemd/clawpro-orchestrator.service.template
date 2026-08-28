@@ -1,0 +1,23 @@
+[Unit]
+Description=ClawPro multi-Agent workflow orchestrator
+After=network-online.target clawpro-hatchery.service
+Wants=network-online.target
+Requires=clawpro-hatchery.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=__INSTALL_DIR__/orchestrator
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=__INSTALL_DIR__/config/hatchery.env
+EnvironmentFile=__INSTALL_DIR__/config/orchestrator.env
+ExecStart=/usr/bin/python3 __INSTALL_DIR__/orchestrator/server.py --host 127.0.0.1 --port 4188 --hatchery-api http://127.0.0.1:8091 --admin-token ${HATCHERY_ADMIN_TOKEN}
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=__INSTALL_DIR__/orchestrator/.runtime __INSTALL_DIR__/orchestrator/runtime-workspaces __INSTALL_DIR__/orchestrator/real-agent-workspaces
+
+[Install]
+WantedBy=multi-user.target
