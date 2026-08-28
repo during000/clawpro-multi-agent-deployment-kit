@@ -6,10 +6,11 @@
 
 ## 交给 CodeBuddy 部署
 
-先 clone 私有仓库：
+先登录 GitHub CLI 并 clone 私有仓库：
 
 ```bash
-git clone https://github.com/during000/clawpro-multi-agent-deployment-kit.git
+gh auth login
+gh repo clone during000/clawpro-multi-agent-deployment-kit
 cd clawpro-multi-agent-deployment-kit
 ```
 
